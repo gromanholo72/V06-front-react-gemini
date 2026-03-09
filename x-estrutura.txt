@@ -1,0 +1,281 @@
+
+
+//  function App(), Logado(),etc {
+//
+//      const [estado, setEstado] = useState();
+//
+//      useEffect(() => {
+//
+//          return (
+//
+//          );
+//
+//      }, []);
+//
+//      return (
+//      |
+//      );
+//
+//  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// | 🚚 --- FORA DA CASA: CAMINHÃO DE SUPRIMENTOS (Imports) ---
+// | 
+// | 🔩 VITE COMECOU OS TRABALHOS: O Montador busca as peças no 📦 node_modules (Estoque).
+// |
+// | 🔍 MATERIAIS EXTERNOS (Fornecedores Globais)
+// |
+// |    - import { useState, useEffect } from 'react'; // Ferramentas do Engenheiro.
+// |    - import { useNavigate } from 'react-router-dom'; // O Motorista do VLT.
+// |    - import io from 'socket.io-client'; // O fabricante do rádio.
+// |    - const socket = io('http://192.168.15.10:3001'); // 📡🗼 Antena ligada na calçada.
+// |
+// | 🔍 MATERIAIS INTERNOS (Peças fabricadas no Escritório Local)
+// |
+// |    - import './App.css'; // Tinta e acabamento.
+// |    - import { auth, db } from './firebase'; // Chaves e documentos da obra.
+// | 
+// |
+// |
+// |
+// |
+// | function NomeDoComodo({ props }) { // function App(), Logado(), etc.
+// |
+// |
+// |
+// |
+// |
+// |    - 🚕 1. LOGÍSTICA DE TRANSPORTE (useNavigate - O Elevador): Sistema para o morador transitar entre os cômodos.
+// |
+// |        const navigate = useNavigate(); // O Elevador/VLT: Leva o usuário a outras páginas.
+// |
+// |
+// |
+// |
+// |
+// |    - 🗂️ 2. GAVETAS DE MEMÓRIA (useState - As Gavetas): Espaços reservados para guardar informações.
+// |      
+// |        const [dados, setDados] = useState([]); // Gaveta principal de informações.
+// |
+// |        const [carregando, setCarregando] = useState(true); // Status da obra (Loading).
+// |
+// |        const [erro, setErro] = useState(null); // Pasta de incidentes da obra.
+// |
+// |        const [dadosPublicos, setDadosPublicos] = useState(() => {
+// |        |    
+// |        |       const crachaSalvo = localStorage.getItem('dadosPublicos');
+// |        |             
+// |        |       if (crachaSalvo) {
+// |        |       |       
+// |        |       |       console.log("🏠 🔍 App.jsx: Crachá encontrado! Liberando acesso...");
+// |        |       |       return JSON.parse(crachaSalvo); // Retorna os dados da Cuidadora
+// |        |       |
+// |        |       }
+// |        |
+// |        |       return {  - entrega o objeto diretamente para a gaveta dadosPublicos
+// |        |       |
+// |        |       |       func: 'visitante' - sem parenteses: Define o que haverá na gaveta no segundo zero
+// |        |       |
+// |        |       };
+// |        |
+// |        });
+// |
+// |
+// |
+// |
+// |
+// |    - 📅 3. FISCAL DE OBRA COM MONITORAMENTO CONSTANTE (useEffect - Vigilância e Reação) 
+// |
+// |
+// |        useEffect(() => { 
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |       -- 🤝 Aperto de Mão
+// |        |       -- 📡📻 Socket-Client (Rádio Portátil): Ligando rádio para ouvir a 📡🗼 Antena Central.
+// |        |
+// |        |       socket.on('connect', () => { 
+// |        |       |
+// |        |       |       setServidorPredioOnline(true);
+// |        |       |
+// |        |       });
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |       -- 🔑 Entrega das Chaves
+// |        |
+// |        |       socket.on('Login_Aprovado', () => {
+// |        |       |
+// |        |       |       setDadosPublicos(dadosVindosDoServidor);
+// |        |       |
+// |        |       |       localStorage.setItem('dadosPublicos', JSON.stringify(dadosVindosDoServidor));
+// |        |       |
+// |        |       |       navigate('/interno');
+// |        |       | 
+// |        |       });
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |       const monitorarAntenaCasa = () => {
+// |        |       |
+// |        |       |       const statusInternet = navigator.onLine;
+// |        |       |
+// |        |       |       if (statusInternet === true) {
+// |        |       |       |
+// |        |       |       |       setOnline(true);
+// |        |       |       |
+// |        |       |       } else {
+// |        |       |       |
+// |        |       |       |       setOnline(false);
+// |        |       |       |
+// |        |       |       }
+// |        |       |
+// |        |       };
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |       -- ♻️ Armário da Portaria (Navegador do Usuário)
+// |        |       -- Os dados já estão ali dentro do computador do morador. Não precisa de internet.
+// |        |
+// |        |       const crachaSalvo = localStorage.getItem('dadosPublicos');
+// |        |
+// |        |       if (crachaSalvo) {
+// |        |       |
+// |        |       |       setDadosPublicos(JSON.parse(crachaSalvo));
+// |        |       |
+// |        |       |       console.log("♻️ 📦 LocalStorage: Sessão restaurada para o estado do React!");
+// |        |       |
+// |        |       }
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |       
+// |        |       -- O 🚚 caminhão usa a rodovia da internet comum (HTTPS)
+// |        |       -- Fiscal de tarefa única: Busca rápida de dados (sem return).
+// |        |       -- Ele pode buscar os documentos mesmo se o 📡📻 Rádio Portátil estiver desligado
+// |        |       -- Almoxarifado Central (Nuvem/Google)
+// |        |       -- Firebase (via HTTPS)
+// |        |       -- Precisa pegar a rodovia da internet, ir até os servidores do Firebase e voltar com os documentos
+// |        |
+// |        |       const buscarDadosIniciais = async () => {
+// |        |       |    
+// |        |       |       try {    
+// |        |       |       |
+// |        |       |       |       console.log("🏗️ Buscando documentos no Almoxarifado...");
+// |        |       |       |
+// |        |       |       } catch (err) {
+// |        |       |       |
+// |        |       |       |       console.log("⚠️ Erro na entrega do material!");
+// |        |       |       |
+// |        |       |       }
+// |        |       };
+// |        |
+// |        |       buscarDadosIniciais();
+// |        |
+// |        |    
+// |        |
+// |        |
+// |        |
+// |        |       -- contrato de encerramento. Só é acionado na saída do morador.
+// |        |       -- chamado tecnicamente de Função de Limpeza (Cleanup Function)
+// |        |       -- Sem ele, sua obra sofre de um problema grave chamado Vazamento de Memória (Memory Leak)
+// |        |       -- Imagine que você liga o 📡📻 Rádio Portátil (Socket), mas quando sai de casa, esquece ele ligado.
+// |        |       -- O rádio vai continuar gastando bateria e ouvindo sinais, mesmo que não tenha ninguém em casa para ouvir
+// |        |       -- 🧹 O Gerente limpa a sujeira para não deixar a casa pesada (Memory Leak).
+// |        |
+// |        |       return () => { 
+// |        |       |
+// |        |       |       socket.off('connect');
+// |        |       |
+// |        |       |       
+// |        |       |       -- 🚪 socket.off: Desliga os ouvidos do rádio para não haver "fantasmas".
+// |        |       |       -- 📦 pararDeOuvirFirebase: Interrompe a escuta do Almoxarifado.
+// |        |       |       -- 📶 removeEventListener: Desliga os sensores de Wi-Fi/4G da janela.
+// |        |       |       -- 🏗️🗑️ Faxina concluída. Memória limpa e conexões encerradas! ✅
+// |        |       |
+// |        |       };
+// |        |
+// |        |
+// |        |
+// |        |
+// |        |
+// |        }, []); - Colchetes vazio useEffect roda apenas na Entrada e na Saída - "Tarefa Única de Inauguração"
+// |
+// |
+
+
+// |
+// |
+// |
+// |
+// |    - 🛠️ 4. FERRAMENTAS DE TRABALHO (Funções de Ação / Engrenagens)
+// |
+// |        -- ⚙️ O Engenheiro prepara os motores que o morador aciona ao tocar na fachada.
+// |
+// |        const fazerLogout = () => {
+// |        |    
+// |        |       localStorage.removeItem('dadosPublicos');
+// |        |
+// |        |       setDadosPublicos(
+// |        |       |
+// |        |       |       { func: 'visitante' } - com parenteses: Abre a gaveta existente e troca o conteúdo.
+// |        |       |
+// |        |       );
+// |        |
+// |        |       navigate('/'); 
+// |        |
+// |        };
+
+// |        -- 📤 enviarDados: Função para mandar documentos via 📡📻 Rádio.
+// |
+// |
+// |
+// |
+// |
+// |    - 🏗️5. MOMENTO DA CONSTRUÇÃO (A FACHADA DA CASA / return)
+// |
+// |        -- 🧠 React (Engenheiro da Obra - Design e Inteligência): A autoridade técnica no canteiro.
+// |        -- 🧱 Transforma a inteligência das gavetas e engrenagens em paredes visíveis.
+// |
+// |        return (
+// |        |
+// |        |       -- 🔑 Entrega das chaves: O que estiver aqui dentro é o que a Cuidadora vê e toca.
+// |        |
+// |        |       <div className="App-Container">
+// |        |       |
+// |        |       |    {/* 🏠 Casa (react) - é o site que o usuário vê (Front-end) */}
+// |        |       |
+// |        |       |    {carregando ? (
+// |        |       |       <div className="andaime">🏗️ Carregando materiais...</div>
+// |        |       |    ) : (
+// |        |       |       <button onClick={enviarDados}>📤 Acionar Engrenagem</button>
+// |        |       |    )}
+// |        |       |
+// |        |        </div>
+// |        |
+// |        );
+// |
+// |
+// | }  <--- 🏁 FIM DA FUNÇÃO

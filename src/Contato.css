@@ -1,0 +1,80 @@
+/* .divContainerTudo {
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+    width: 100%;
+} */
+
+/* .Card-Apresentacao-Principal {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 650px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-top: 6px solid #1a237e; 
+
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+} */
+
+
+
+
+
+/* ✍️ TEXTOS DO CARD */
+.Texto-Destaque {
+    font-size: 1.6rem;
+    color: #1a237e;
+    margin-bottom: 5px;
+}
+
+.Subtexto-Especialidade {
+    display: block;
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    margin-bottom: 25px;
+    font-style: italic;
+}
+
+.Texto-Instrucao {
+    font-size: 1.05rem;
+    color: #34495e;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* 💬 ELEMENTOS DO CHAT */
+.Zona-Chat-Interativo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.ChatDireto {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.ChatDireto:hover {
+    transform: scale(1.1); /* Efeito de pulsação ao passar o mouse */
+}
+
+.Legenda-Chat {
+    font-weight: 600;
+    color: #4faa80; /* Usando o seu verde de estudo */
+    font-size: 0.9rem;
+}

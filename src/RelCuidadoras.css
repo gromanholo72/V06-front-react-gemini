@@ -1,0 +1,33 @@
+.TabelaContainer {
+  /* overflow-x: auto; */
+  background: white;
+  border-radius: 8px;
+}
+
+.TabelaEstilizada {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.TabelaEstilizada th, .TabelaEstilizada td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.TabelaEstilizada th {
+  background-color: #f8f9fa;
+  color: #444;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.TagSucesso {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}

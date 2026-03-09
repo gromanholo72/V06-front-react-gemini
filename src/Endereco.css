@@ -1,0 +1,266 @@
+
+/* 🏠 1. COMPONENTE-PRINCIPAL (PALCO DO SETOR) */
+.perfil-endereco-componente-principal {
+
+    /* background-color: rgb(243, 243, 129); */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+/* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */
+.perfil-endereco-componente-suporte {
+
+    width: 100%;
+    min-width: 300px;
+    max-width: 600px;
+    display: grid;
+    gap: 20px;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+/* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */
+.perfil-endereco-usuario-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    /* IMPLEMENTAÇÃO: Sombra acentuada para profundidade no Palco Principal */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+
+    margin: 20px;
+}
+
+/* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */
+.perfil-endereco-card-titulo {
+    /* IMPLEMENTAÇÃO: Tom verde suave aprovado pelo senhor */
+    background-color: rgb(145, 215, 185);
+    /* border-bottom: 4px solid #e0e0e0; */
+    padding: 15px 20px;
+    font-weight: bold;
+    color: #333333;
+    font-size: 20px;
+    text-align: left;
+}
+
+
+
+
+
+
+
+
+
+
+/* 📄 5. CARD-BODY (ÁREA DE CONTEÚDO) */
+.perfil-endereco-card-corpo {
+    /* background-color: rgb(243, 178, 125); */
+    padding-top: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    display: flex;
+    /* flex-direction: column; */
+    gap: 15px;
+
+
+    flex-wrap: wrap; 
+    width: 100%;
+    box-sizing: border-box;
+
+
+
+}
+
+
+.Campo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+
+
+
+
+
+
+.flex-cep {
+    flex: 1 1 110px;
+}
+
+.flex-rua {
+    flex: 6 1 320px;
+    /* min-width: 270px; */
+}
+
+.flex-numero {
+    flex: 1 1 80px; 
+}
+
+.flex-bairro {
+    flex: 4 1 210px;
+}
+
+.flex-cidade {
+    flex: 4 1 210px;
+}
+
+.flex-estado {
+    flex: 1 1 70px;
+}
+
+
+
+
+
+
+
+
+
+/* 🔍 6. CAMPOS (AGRUPADORES DE DADOS) */
+.perfil-endereco-card-corpo div, .Campo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.perfil-endereco-card-corpo label {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    text-align: left;
+    margin-left: 4px;
+}
+
+/* 🎫 7. INPUTS (ACABAMENTO DOS DADOS) */
+.perfil-endereco-card-corpo input {
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    font-size: 14px;
+    /* IMPLEMENTAÇÃO: Fundo levemente ajustado para contraste */
+    background-color: rgb(250, 250, 250);
+    color: black;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+    /* IMPLEMENTAÇÃO: Define o cursor de texto como padrão ao entrar em obra (edição) */
+    cursor: text;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* 🚫 8. INPUT-DISABLED (BLOQUEIO TÉCNICO) */
+.perfil-endereco-card-corpo input:disabled {
+    /* IMPLEMENTAÇÃO: Aplica o tom cinza escura quando travado pelo Cofre Central */
+    background-color: rgb(240, 240, 240);
+    color: #777;
+    /* IMPLEMENTAÇÃO: Muda para sinal de proibido quando a edição está fechada */
+    cursor: not-allowed;
+}
+
+
+
+
+
+/* 🕹️ 9. ÁREA DE BOTÕES (COMANDO DOS CARDS) */
+.AreaBotoes {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.AreaBotoes button {
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: filter 0.2s;
+}
+
+.BotaoEditar { background-color: #007bff; color: white; width: 100%; }
+.BotaoSalvar { background-color: #28a745; color: white; flex: 2; }
+.BotaoCancelar { background-color: #dc3545; color: white; flex: 1; }
+
+.AreaBotoes button:hover {
+    /* IMPLEMENTAÇÃO: Efeito visual ao passar o mouse nas ferramentas */
+    filter: brightness(0.9);
+}
+
+/* ✨ 10. ANIMAÇÃO (ZERO MOVIMENTO) */
+@keyframes fadeInSecoTotal {
+    from { 
+        opacity: 0;
+        /* transform: translate(0, 0) !important; */
+    }
+    to { 
+        opacity: 1;
+        /* transform: translate(0, 0) !important; */
+    }
+}
+
+
+
+    
+
+@media (max-width: 768px) {
+
+    .AreaBotoes { flex-direction: column; }
+ 
+    .perfil-endereco-card-corpo label {
+
+        font-size: 16px !important;
+    
+    }
+
+    .perfil-endereco-card-corpo input {
+
+        font-size: 18px !important;
+    
+    }
+
+    .AreaBotoes button {
+        padding: 20px !important;
+        font-size: 18px !important;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

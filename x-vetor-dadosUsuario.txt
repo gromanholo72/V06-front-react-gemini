@@ -1,0 +1,163 @@
+
+
+const [dadosForm, setdadosForm] = useState({
+
+    cpef: "",
+    nome: "",
+    mail: "",
+    fone: "",
+    senh: "",
+    datc: dataHoje
+
+});
+
+
+const [dadosUsuarioSensíveis, setdadosUsuarioSensíveis] = useState({
+
+    func: "visitante", // Setando o padrão aqui
+    perm: "basica",
+    situ: "ativo",
+
+    senh: ""
+
+});
+
+
+
+const [dadosUsuarioPublicos, setdadosUsuarioPublicos] = useState({
+    cpef: "",
+
+    nome: "",
+    mail: "",
+    fone: "",
+
+    datc: dataHoje
+
+});
+
+
+
+const [dadosUsuarioCompleto, setdadosUsuarioCompleto] = useState({
+
+    cpef: "",
+
+    nome: "",
+    mail: "",
+    fone: "",
+
+    func: "visitante",
+    perm: "basica",
+    situ: "ativo",
+
+    senh: "",
+    datc: dataHoje,
+
+    cepe,
+    ruaa,
+    nume,
+    bair,
+    cida,
+    esta
+
+});
+
+
+
+
+
+
+
+const [dadosUsuarioCompleto, setdadosUsuarioCompleto] = useState({
+
+    cpef: "121.149.148-01",
+
+    nome: "Giuliano Aparecido Romanholo",
+    mail: "",
+    fone: "",
+
+    func: "administrador",
+    perm: "total",
+    situ: "ativo",
+
+    senh: "Olhoquetudove@7",
+    datc: dataHoje,
+
+    cepe,
+    ruaa,
+    nume,
+    bair,
+    cida,
+    esta
+
+});
+
+
+
+
+
+
+
+
+
+
+
+const [dadosUsuarioCompleto, setdadosUsuarioCompleto] = useState({
+
+    cpef: "233.606.620-32",
+
+    nome: "",
+    mail: "",
+    fone: "",
+
+    func: "administrador",
+    perm: "basica",
+    situ: "ativo",
+
+    senh: "",
+    datc: dataHoje,
+
+    cepe,
+    ruaa,
+    nume,
+    bair,
+    cida,
+    esta
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 📝 dadosForm: Use esta gaveta APENAS enquanto o usuário está digitando. É o canteiro temporário. Assim que ele clica em "Cadastrar", você limpa essa gaveta.
+
+// 🔐 dadosPrivados (Sensíveis): Guarde aqui apenas o que é perigoso (Senha, CPF).
+
+// 📢 dadosPublicos: Guarde aqui o que pode ser exibido no crachá (Nome, Função, Foto).
+
+// 🏗️ dadosUsuarioCompleto: Não crie um useState para isso! Você pode criar apenas uma variável simples que junta as duas gavetas acima quando precisar enviar tudo para o Prédio.
+
+
+//  const [dadosPublicos, setDadosPublicos] = useState({ func: 'visitante' });
+
+
+
+
+
+
+
+
+
+
+
+
+
+

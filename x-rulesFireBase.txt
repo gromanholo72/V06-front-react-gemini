@@ -1,0 +1,31 @@
+{
+  "rules": {
+    
+    
+    
+    ".read": true,
+    ".write": false
+    
+    
+  }
+}
+
+
+
+{
+  "rules": {
+    ".read": "auth != null && auth.uid === '12114914801'",
+    ".write": false
+  }
+}
+
+
+
+{
+  "rules": {
+    ".read": "auth.uid === '12114914801'",
+    ".write": auth.uid === '12114914801'
+  }
+}
+
+

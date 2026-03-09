@@ -1,0 +1,41 @@
+/* // 🧱 Estilização do PulsarTitulo focado no Background */
+
+.container-pulsar-titulo {
+    /* comentário */
+    display: block;
+    width: 100%;
+}
+
+.Container-Missao-Destaque {
+    /* comentário */
+    padding: 5px;
+    border-radius: 12px;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* 📐 Quando ativo, o fundo começa a pulsar em vermelho */
+.efeito-pulsar-ativo .Container-Missao-Destaque {
+    /* comentário */
+    animation: pulsarBackgroundVermelho 2s infinite ease-in-out;
+}
+
+
+
+/* 📐 Animação do fundo "respirando" */
+@keyframes pulsarBackgroundVermelho {
+    /* comentário */
+    0% {
+        background-color: rgba(255, 0, 0, 0.05); /* Vermelho quase invisível */
+        transform: scale(1);
+    }
+    50% {
+        background-color: rgba(255, 0, 0, 0.15); /* Vermelho suave de alerta */
+        transform: scale(1.1); /* Micro pulso de escala */
+    }
+    100% {
+        background-color: rgba(255, 0, 0, 0.05);
+        transform: scale(1);
+    }
+}

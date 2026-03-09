@@ -1,0 +1,32 @@
+
+
+
+// 🌐 API RESTful (O Malote de Documentos)
+// |
+// |-- 📄 Protocolo: HTTP (Protocolo de Documentos/Páginas).
+// |-- 🏗️ Estilo: RESTful (Arquitetura baseada em Pedidos/Requests).
+// |-- 🔑 Persistência: Conexão Temporária (Abre e fecha o portão a cada pedido).
+// |-- 🛠️ Uso Ideal: Cadastro de usuários, busca de histórico e salvar perfil.
+
+// 📞 Socket.io (O Fluxo de Telemetria)
+// |
+// |-- 📡 Protocolo: WS (Websocket - Protocolo de Fluxo Contínuo).
+// |-- ⚡ Estilo: Event-Driven (Arquitetura baseada em Eventos/Gritos).
+// |-- 💈 Persistência: Conexão Persistente (O Poste fica ligado direto).
+// |-- 🚀 Uso Ideal: Chats, Sensores de Obra, Contagem de Usuários e Dashboards.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

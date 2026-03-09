@@ -1,0 +1,292 @@
+
+/* 📋 CARD-LOGAR: O envelope principal da página */
+.Card-Logar {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 15px;
+
+}
+
+/* 🏢 LOGINTUDO: Container que agrupa a gaveta e o formulário */
+.LoginTudo {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    width: 100%;
+    max-width: 400px;
+
+}
+
+/* 📝 LOGINFORM: O card sólido de entrada */
+.LoginForm {
+
+    background: #306396;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+    margin: 0 auto;
+
+}
+
+
+
+
+.LoginForm h3 {
+    color: white;
+    font-size: 24px;
+    text-align: center;
+
+    margin-bottom: 10px;
+    border-top: 2px solid #f4f7f6;
+    border-bottom: 2px solid #f4f7f6;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+
+}
+
+.LoginForm img {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #61dafb;
+}
+
+/* 📏 INPUTLAGURATOTAL: Estrutura dos campos de entrada */
+.InputLaguraTotal {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.LoginForm label {
+    font-weight: 600;
+    color: white;
+    font-size: 14px;
+    text-align: left;
+    margin-left: 2px;
+}
+
+.LoginForm input {
+    padding: 10px;
+    border: 2px solid #eceff1;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.LoginForm input:focus {
+    outline: none;
+    border-color: #ff4d4d; 
+}
+
+
+
+
+
+
+
+
+
+
+/* ⚡ BOTAOPADRAOLOGIN: Ação principal de entrada */
+.BotaoPadraoLogin {
+    background-color: rgb(79, 170, 128);
+    background-color: rgb(212, 175, 55);
+    color: white;
+    color: black;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.BotaoPadraoLogin:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+}
+
+/* 🔗 CAMPOLINK: Botões de navegação secundária */
+.CampoLink {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+#BotaoLinkCadastro, #BotaoLinkEsqueci {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background-color: #eceff1;
+    color: #546e7a;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+#BotaoLinkCadastro:hover, #BotaoLinkEsqueci:hover {
+    background-color: #cfd8dc;
+}
+
+/* 🧪 CPEFTEXTES: Painel de botões de teste */
+.CpefTextes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+/* 🔘 BOT-TESTES: Estilo dos botões do programador */
+.bot1, .bot2, .bot4, .bot5, .bot6, .bot7, .bot8 {
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #34495e;
+    color: white;
+    border: 1px solid #95a5a6;
+    border-radius: 5px;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.bot1:hover, .bot2:hover, .bot4:hover {
+    background-color: #7f8c8d;
+    transform: scale(1.05);
+}
+
+/* Animação de entrada dos cards */
+@keyframes surgir-card {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+
+
+
+
+    .LoginForm h3 {
+       
+        font-size: 34px;
+       
+    }
+
+
+
+    .LoginForm label {
+
+        font-size: 16px;
+
+    }
+    
+
+    
+    .LoginForm input {
+
+        padding: 14px;
+        font-size: 20px;
+       
+    }
+
+
+
+    .BotaoPadraoLogin {
+      
+        padding: 18px;
+        font-size: 22px;
+       
+    }
+
+
+
+    #BotaoLinkCadastro, #BotaoLinkEsqueci {
+    
+        padding: 18px;
+        font-size: 20px;
+
+    }
+
+
+}
+
+
+
+
+/* 🧱 Definição da animação de pulsação */
+@keyframes pulsarFoco {
+    0% {
+        background-color: #ffffff;
+        border-color: #ddd;
+        box-shadow: 0 0 0 rgba(255, 0, 0, 0);
+    }
+    50% {
+        /* 🧱 O pico da animação: fundo avermelhado leve e borda pulsante */
+        background-color: #bea2a2; 
+        border-color: red;
+        box-shadow: 0 0 8px rgba(255, 77, 77, 0.3);
+    }
+    100% {
+        background-color: #ffffff;
+        border-color: #ddd;
+        box-shadow: 0 0 0 rgba(255, 0, 0, 0);
+    }
+}
+
+
+
+
+
+/* PULSAR INPUT PARA QUEM VEIO DO CADASTRO BEM SUCEDIDO */
+
+/* 🧱 Animação de pulsação profissional */
+/* @keyframes pulsarFoco {
+    0% { box-shadow: 0 0 0px red; border-color: #ff4d4d; }
+    50% { box-shadow: 0 0 15px red; border-color: red; }
+    100% { box-shadow: 0 0 0px red; border-color: #ff4d4d; }
+} */
+
+/* Classe que será aplicada apenas quando o usuário vier do cadastro */
+.input-pulsar {
+    animation: pulsarFoco 1.5s infinite ease-in-out;
+    background-color: red; 
+    border: 2px solid  red; 
+}

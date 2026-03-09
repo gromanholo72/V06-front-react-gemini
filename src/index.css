@@ -1,0 +1,58 @@
+
+/* 🏠 1. ZERAMENTO DA OBRA (RESET GLOBAL) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Impede que o usuário selecione texto por acidente em botões */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 🌍 2. CONFIGURAÇÕES DO SOLO (HTML & BODY) */
+html, body {
+  /* Garante que a fundação sempre tenha a altura total da janela */
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* Fundo profissional padrão para destacar os cards */
+  background-color: #f4f7f6; 
+  color: #333;
+  
+  /* 🛡️ BLINDAGEM DE MOVIMENTO (PADRÃO GIULIANO) */
+  /* Barra sempre presente para evitar pulos laterais de layout */
+  overflow-y: scroll; 
+  /* Proibido balançar para os lados */
+  overflow-x: hidden; 
+  
+  /* Acabamento fino de renderização de fontes */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 🌳 3. RECEPTÁCULO DO REACT (DIV ROOT) */
+#root {
+  /* Faz com que a div onde o React mora também ocupe a altura toda */
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 📋 4. TRAVA PARA MODAIS E MENUS (SEÇÃO ABERTA) */
+body.no-scroll {
+  overflow-x: hidden;
+}
+
+/* 🔗 5. RESET DE LINKS */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 🖼️ 6. BLINDAGEM DE IMAGENS */
+img {
+  max-width: 100%;
+  display: block;
+}

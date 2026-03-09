@@ -1,0 +1,387 @@
+
+
+
+/* 🧱 Reset de Layout para Centralização */
+.whatsapp-layout {
+    background-color: #d1d7db;
+    /* background-color: red; */
+    /* background-color: #73ca94; */
+    width: 100%;
+    /* height: 100vh; */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: 0; */
+    padding: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  
+}
+
+
+
+
+
+
+
+/* 🧱 Janela Principal (Altura em 80vh para visibilidade) */
+/* .chat-window {
+    width: 100%;
+    height: calc(100vh - 20px);
+    justify-content: center;
+    display: flex;
+    border-radius: 3px;
+    overflow: hidden;
+} */
+
+.chat-window {
+    width: 100%;
+    /* 📐 Mantém sua altura calculada e centralização */
+    height: calc(100vh - 20px); 
+
+
+    
+    display: flex;
+    justify-content: center;
+    border-radius: 3px;
+    /* overflow: hidden; */
+    /* overflow: auto; */
+    background-color: #fff;
+    /* 📱 Importante para mobile: */
+    position: relative; 
+    height: calc(100vh - 150px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🧱 Lado Direito: Conversa Principal */
+.sidebar {
+   
+    background-color: white;
+
+}
+
+
+
+
+
+/* 🧱 Reset: Esconde ambos por padrão */
+.sidebar, .main-chat {
+    display: none; 
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    max-width: 500px; 
+
+
+    /* 🚀 ADICIONADO: Garante que Header, Mensagens e Footer virem uma pilha */
+    flex-direction: column; 
+    position: relative;
+    /* overflow: hidden; */
+
+
+}
+
+/* 🚀 Lógica de Ativação: Quem tiver .active ganha o display: flex */
+.sidebar.active {
+    display: flex;
+}
+
+.main-chat.active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* overflow: hidden; */
+}
+
+
+
+
+
+
+
+
+
+.sidebar-header {
+    background-color: #ededed;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+
+.user-avatar {
+    font-size: 24px;
+    background: #ccc;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* 🧱 Card de Usuário na Lista */
+.chat-card {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    gap: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f2f2f2;
+    transition: background 0.2s;
+}
+
+.chat-card:hover {
+    background-color: #f5f5f5;
+}
+
+.card-avatar {
+    font-size: 20px;
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-name {
+    font-weight: 500;
+    color: #111;
+}
+
+.card-status {
+    font-size: 16px;
+    color: #667781;
+}
+
+
+
+
+
+
+
+
+
+
+
+.chat-header {
+    background-color: #ededed;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 60px;
+    border-bottom: 1px solid #ddd;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.chat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-name {
+    font-weight: 500;
+}
+
+.chat-status {
+    font-size: 12px;
+    color: #667781;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* 🧱 Área das Mensagens com Wallpaper */
+.chat-messages {
+    /* 🚀 O SEGREDO: Faz esta área ocupar todo o espaço entre Header e Footer */
+    flex: 1; 
+    
+    /* 📐 Garante que apenas as mensagens rolem, mantendo o footer fixo */
+    height: 0; 
+    min-height: 0;
+    overflow-y: auto; 
+    
+    /* 🎨 Seu Estilo Visual Original */
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+    background-repeat: repeat;
+    
+    
+}
+
+/* 🧱 Bolhas de Mensagem (WhatsApp Style) */
+.msg-bubble {
+    max-width: 100%;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 14.5px;
+    position: relative;
+    box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+}
+
+.msg-bubble.sent {
+    align-self: flex-end;
+    background-color: #dcf8c6;
+    border-top-right-radius: 0;
+    text-align: right;
+}
+
+.msg-bubble.received {
+    align-self: flex-start;
+    background-color: #ffffff;
+    border-top-left-radius: 0;
+    /* text-align: left; */
+}
+
+
+
+.msg-bubble.sent .msg-author {
+   
+    font-size: 12px;
+
+    color: #056162;
+
+    text-align: right;
+}
+
+
+.msg-author {
+    display: block;
+
+    font-size: 12px;
+
+    font-weight: bold;
+    
+    color: #056162; 
+
+    /* margin-bottom: 2px; */
+
+    text-align: left;
+}
+
+.msg-text {
+    font-size: 16px;
+    text-align: left;
+    margin: 0;
+    color: #111;
+    /* line-height: 19px; */
+}
+
+.msg-time {
+    display: block;
+    font-size: 10px;
+    color: #667781;
+    text-align: right;
+    /* margin-top: 2px; */
+}
+
+
+
+
+
+
+
+
+
+
+/* 🧱 Rodapé e Linha de Mensagem (Fixa no final) */
+.chat-footer {
+    background-color: #f0f2f5;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 62px;
+}
+
+.chat-footer input {
+    flex: 1;
+    border: none;
+    padding: 9px 12px;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+}
+
+
+
+.send-btn {
+    background-color: #00a884; 
+    color: #fff;
+    border: none;
+    width: 35px; 
+    height: 35px;
+    border-radius: 50%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    transition: background-color 0.2s;
+}
+
+.send-btn:hover {
+    background-color: #008f6f;
+}
+
+.send-icon {
+    width: 20px;
+    height: 20px;
+    fill: white;
+    margin-left: 2px; 
+}
+
+
+
+
+
+
+
+
+

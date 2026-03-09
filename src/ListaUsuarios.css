@@ -1,0 +1,68 @@
+.ListaUsuariosPainelGeral {
+    padding: 30px;
+    background-color: #f8fafc;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.ListaUsuariosTituloGaleria {
+    text-align: center;
+    color: #1e293b;
+    margin-bottom: 40px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.8rem;
+}
+
+.ListaUsuariosGradeCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px; 
+    width: 100%;
+    margin: 0 auto;
+}
+
+.ListaUsuariosCardItem {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ListaUsuariosCardItem:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.ListaUsuariosCardItem h3 {
+    margin-bottom: 12px;
+    color: #334155;
+    font-size: 16px;
+}
+
+.ListaUsuariosCardItem p {
+    margin-bottom: 10px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.ListaUsuarioStatusBadge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.ativo {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.inativo {
+    background-color: #fee2e2;
+    color: #991b1b;
+}

@@ -1,0 +1,527 @@
+
+/* 📋 CARD-CADASTRAR: O envelope principal da página */
+.Card-Cadastrar {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    width: 100%;  
+    margin: 15px;
+
+}
+
+
+.CadUsuarioTudo {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    width: 100%;
+    max-width: 650px;
+
+}
+
+/* 🏢 CAD-USUARIO-FORM */
+.CadUsuarioForm {
+
+    /* background: #2c3e50; */
+    background: #306396;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+
+    display: flex;
+    flex-direction: row; 
+    flex-wrap: wrap; 
+
+    gap: 15px;       
+    /* justify-content: center;  */
+    margin: 0 auto;
+
+}
+
+
+
+
+/* Estilização do Título do Card */
+.CadUsuarioForm h3 {
+   
+    color: white;
+    font-size: 24px;
+    text-align: center;
+
+    padding-top: 10px;
+    border-top: 2px solid #f4f7f6;
+    border-bottom: 2px solid #f4f7f6;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+/* 📝 ESTRUTURA DOS CAMPOS DE ENTRADA (Inputs) */
+
+.CadUsuarioLargNome, 
+.CadUsuarioLargCpef, 
+.CadUsuarioLargMail, 
+.CadUsuarioLargFone, 
+.CadUsuarioLargFunc, 
+.CadUsuarioLargSenh, 
+.CadUsuarioLargDatC {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+
+
+.CadUsuarioLargNome { 
+    min-width: 250px; 
+    flex: 10;
+}
+
+.CadUsuarioLargCpef { 
+    min-width: 150px; 
+    flex: 1; 
+}
+
+
+.CadUsuarioLargMail { 
+    min-width: 250px; 
+    flex: 10; 
+}
+
+.CadUsuarioLargFone { 
+    min-width: 150px; 
+    flex: 1; 
+}
+
+
+
+
+.CadUsuarioLargFunc { 
+    /* max-width: 250px;  */
+    min-width: 250px; 
+    flex: 1; 
+}
+
+.CadUsuarioLargSenh { 
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 250px;
+}
+
+
+.CadUsuarioLargDatC { 
+    min-width: 110px; 
+    /* max-width: 250px;  */
+    flex: 1; 
+}
+
+
+
+
+
+
+
+
+.CadUsuarioForm label {
+
+    font-weight: 600;
+    color: white;
+    font-size: 14px;
+    text-align: left;
+    width: 100%;
+    margin-left: 2px;
+
+}
+
+
+
+
+
+
+
+
+
+.CadUsuarioForm input, 
+.CadUsuarioForm select {
+    padding: 8px;
+    border: 2px solid #eceff1;
+    border-radius: 8px;
+    font-size: 16px; 
+    transition: border-color 0.3s ease;
+}
+
+.CadUsuarioForm input:focus, 
+.CadUsuarioForm select:focus {
+    outline: none;
+    border-color: red; 
+}
+
+
+
+/* ⚪ INPUTS DISABLED: Ajuste exclusivo para o campo de Data */
+.CadUsuarioForm input:disabled {
+    color: white ; 
+}
+
+
+
+
+
+
+.InputWrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.InputWrapper input {
+    width: 100%; 
+    padding-right: 40px;
+}
+
+/* 👁️ ÍCONE DE MOSTRAR SENHA */
+.CLargImg {
+    width: 30px; 
+    height: auto;
+    position: absolute;
+    right: 4px; 
+    
+    /* 🖼️ A BORDA */
+    border: 1px solid #95a5a6; 
+    border-radius: 4px;       
+    padding: 1px;          
+    background-color: #f8f9fa; 
+    
+    /* Centralização Vertical */
+    top: 50%;
+    transform: translateY(-50%);
+    
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+}
+
+.CLargImg:hover {
+    border-color: #2c3e50;
+    background-color: #ffffff;
+    transform: translateY(-50%) scale(1.1); 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 📝 CAMPO DE BOTÕES DO FORMULÁRIO */
+
+.CampoBotoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+    
+}
+
+.CampoBotoes button {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+/* Botão Cadastrar (Ação Principal) */
+.CampoBotoes button[type="submit"] {
+    background-color: rgb(79, 170, 128);
+    color: white;
+}
+
+/* Botão Voltar (Ação Secundária) */
+.CampoBotoes button[type="button"] {
+    background-color: #eceff1;
+    color: #546e7a;
+}
+
+.CampoBotoes button:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+
+/* 📋 CPEF-TEXTES: Estilização para o container dos botões de teste */
+.CpefTextes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    width: 100%;
+    /* 🚨 IMPORTANTE: Garante que ele não fique escondido sob outros elementos */
+    min-height: 50px; 
+    background: rgba(255, 255, 255, 0.05); /* Um fundo sutil para teste */
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+/* 🔘 ESTILO DOS BOTÕES DE TESTE (bot4 até bot10) */
+.bot4, .bot5, .bot6, .bot7, .bot8, .bot9, .bot10 {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #34495e;
+    color: white;
+    border: 1px solid #95a5a6;
+    border-radius: 5px;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.bot4:hover, .bot5:hover, .bot6:hover {
+    background-color: #7f8c8d;
+    transform: scale(1.05);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🧱 Estilo para mensagens de sucesso */
+.MsgForm.sucesso {
+    background-color: #28a745 !important;
+    border-color: #1e7e34;
+    color: white;
+}
+
+/* 🧱 Estilo para mensagens de erro (seu padrão atual) */
+.MsgForm.erro {
+    background-color: #dc3545 !important; 
+    border-color: #bd2130;
+    color: white;
+}
+
+/* 🧱 Estilo para a segunda linha da mensagem de sucesso */
+.texto-destaque-login {
+    display: block; /* Garante que fique em uma nova linha */
+    font-size: 1.4rem; /* Aumenta o tamanho da fonte */
+    margin-top: 5px; /* Espaço entre as linhas */
+    text-transform: uppercase; /* Opcional: deixa mais imponente */
+    letter-spacing: 1px;
+}
+
+/* // 🧱 Ajuste no container para caber o texto maior */
+.MsgForm.ativo {
+    max-height: 180px; /* Aumentado para acomodar as 2 linhas */
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* 🧱 Estilo da linha de cima */
+.linha-topo {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* 🧱 Estilo da linha de baixo (Fonte Maior) */
+.linha-foco {
+    font-size: 20px; /* 👈 Aumenta bem o destaque */
+    font-weight: 900;
+    margin-top: 5px;
+    letter-spacing: 1px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.Overlay-Modal-Sucesso {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    /* align-items: center; */
+    align-items: flex-start;
+    padding-top: 10vh;
+
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+}
+
+.Card-Modal-Redirecionamento {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    animation: surgimentoCard 0.4s ease-out;
+}
+
+.Icone-Sucesso-Animado {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.Aviso-Destaque {
+    background: #f0f9ff;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    /* border-left: 5px solid #007bff; */
+}
+
+.Barra-Progresso-Container {
+    width: 100%;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.Barra-Progresso-Ativa {
+    height: 100%;
+    background: #28a745;
+    width: 0%;
+    transition: width 1s linear;
+
+    /* animation: progressoCincoSegundos 5s linear forwards; */
+}
+
+@keyframes surgimentoCard {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* @keyframes progressoCincoSegundos {
+    from { width: 0%; }
+    to { width: 100%; }
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+
+
+
+    .CadUsuarioForm label {
+
+        font-size: 16px;
+    
+    }
+
+    .CadUsuarioForm input, 
+    .CadUsuarioForm select {
+
+        padding: 10px;
+        font-size: 16px; 
+   
+    }
+    
+
+
+
+    .CampoBotoes button {
+       
+        padding: 18px;
+        font-size: 20px;
+       
+    }
+
+}

@@ -1,0 +1,35 @@
+
+
+Sempre que criar ou editar botões que tenham dica dessa forma, siga rigorosamente este modelo estrutural, incluindo os comentários de INÍCIO/FIM e o padrão de logs:
+
+ 
+ {/* INICIO - BOTAO CRIAR CONTA */}
+
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+
+        <button 
+
+            className={`Botao-Acao-Visitante-Perfil ${exibirBalaoDicaCriarConta ? 'pulsar-ativo' : ''}`} 
+            
+            onClick={(e) => {
+
+                console.log("");
+                console.log("📐 ----------------------------------");
+                console.log("📐 🚀 EVENTO: Clique no botao 'Criar Conta'");
+                console.log("📐 🔵 Estado 'Dica Visível' = ", exibirBalaoDicaCriarConta);
+                
+                navegarERecolher('/Cadastrar');
+
+            }}
+
+        >
+            <span>Criar Conta</span>
+        </button>
+
+        <BalaoDicaCriarConta 
+            exibirBalaoDicaCriarConta={exibirBalaoDicaCriarConta} 
+        />
+    </div>
+
+{/* FIM - BOTAO CRIAR CONTA */}
+

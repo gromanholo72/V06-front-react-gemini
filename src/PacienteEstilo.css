@@ -1,0 +1,367 @@
+
+/* 🏠 1. COMPONENTE-PRINCIPAL (PALCO DO SETOR) */
+.componente-principal-padrao-paciente {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* margin: 20px; */
+
+}
+
+/* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */
+.componente-suporte-padrao-paciente {
+    width: 100%;
+    max-width: 600px;
+    display: grid;
+    gap: 20px;
+    
+}
+
+
+
+.componente-suporte-padrao-administrador {
+   
+    width: 100%;
+    max-width: 600px;
+    display: grid;
+    gap: 20px;
+    
+}
+
+.componente-suporte-padrao-administrador h2{
+    margin-top: 20px;
+    color: black;
+    font-size: 20px;
+}
+
+
+
+
+
+
+
+
+
+/* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */
+.card-padrao-paciente {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+    margin: 20px;
+}
+
+/* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */
+.card-padrao-titulo {
+    
+    background-color: rgb(145, 215, 185);
+    padding: 15px 20px;
+    font-weight: bold;
+    color: #333333;
+    font-size: 20px;
+    text-align: left;
+}
+
+
+
+
+
+
+
+
+
+
+/* 📄 5. CARD-BODY (ÁREA DE CONTEÚDO) */
+.card-padrao-corpo {
+    padding-top: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+
+
+.flex-paciente-nome {
+    flex: 10 1 350px;
+}
+
+.flex-paciente-idade {
+    flex: 1 1 70px;
+}
+
+
+
+
+
+
+
+
+
+
+
+.flex-paciente-cafe {
+    flex: 1 1 350px;
+}
+
+.flex-paciente-almoco {
+    flex: 1 1 350px;
+}
+
+.flex-paciente-jantar {
+    flex: 1 1 350px;
+}
+
+
+
+
+
+
+
+
+
+
+
+.flex-paciente-banho-1 {
+    flex: 1 1 100px;
+}
+
+.flex-paciente-banho-2 {
+    flex: 1 1 100px;
+}
+
+.flex-paciente-banho-obs {
+    flex: 1 1 350px;
+}
+
+
+
+
+
+.flex-paciente-emergencia-nome {
+    flex: 5 1 300px;
+}
+
+.flex-paciente-emergencia-fone {
+    flex: 1 1 140px;
+}
+
+.flex-paciente-emergencia-parentesco {
+    flex: 1 1 250px;
+}
+
+.flex-paciente-emergencia-obs {
+    flex: 1 1 350px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🔍 6. CAMPOS (AGRUPADORES DE DADOS) */
+.card-padrao-corpo div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.card-padrao-corpo label {
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+    text-align: left;
+    margin-left: 4px;
+}
+
+/* 🎫 7. INPUTS (ACABAMENTO DOS DADOS) */
+.card-padrao-corpo input, 
+.card-padrao-corpo select {
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: rgb(250, 250, 250);
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: text;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* 🚫 8. INPUT-DISABLED (BLOQUEIO TÉCNICO) */
+.card-padrao-corpo input:disabled, 
+.card-padrao-corpo select:disabled{
+    background-color: rgb(240, 240, 240);
+    color: #333 !important;
+    opacity: 1;
+    cursor: not-allowed;
+}
+
+
+
+
+
+/* 🕹️ 9. ÁREA DE BOTÕES (COMANDO DOS CARDS) */
+.AreaBotoes {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.AreaBotoes button {
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: filter 0.2s;
+}
+
+.BotaoEditar { background-color: #007bff; color: white; width: 100%; }
+.BotaoSalvar { background-color: #28a745; color: white; flex: 2; }
+.BotaoCancelar { background-color: #dc3545; color: white; flex: 1; }
+
+.AreaBotoes button:hover {
+    filter: brightness(0.9);
+}
+
+/* ✨ 10. ANIMAÇÃO (ZERO MOVIMENTO) */
+@keyframes fadeInSecoTotal {
+    from { 
+        opacity: 0;
+    }
+    to { 
+        opacity: 1;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+
+    .AreaBotoes { flex-direction: column; }
+ 
+    .card-padrao-corpo label {
+
+        font-size: 14px !important;
+    
+    }
+
+    .card-padrao-corpo input {
+
+        font-size: 16px !important;
+    
+    }
+
+    .AreaBotoes button {
+        padding: 20px !important;
+        font-size: 18px !important;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ClienteSolicitacao */
+
+.flex-cliente-solicitacao-inicio {
+    flex: 1 1 150px;
+}
+
+.flex-cliente-solicitacao-fim {
+    flex: 1 1 150px;
+}
+
+.flex-cliente-solicitacao-hora {
+    flex: 5 1 240px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🧱 Container principal que deve ocupar 100% da largura do form */
+.info-solicitacao-periodo {
+  
+    display: flex !important;
+    flex-direction: row !important;
+    /* 🧱 Garante que ocupe toda a largura disponível do card */
+    width: 100% !important; 
+    /* 🧱 Distribui os itens ocupando todo o espaço horizontal */
+    justify-content: space-between !important; 
+    align-items: center;
+    /* 🧱 Remove paddings excessivos que podem "apertar" o conteúdo */
+    padding: 20px 0 !important; 
+    /* margin: 10px 0; */
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+
+.item-solicitacao {
+    padding: 5px;
+    background-color: rgb(215, 214, 223);
+}
+
+
+/* 
+.info-solicitacao-periodo span{
+    font-weight: bold;
+} */
+
+
+
+
+

@@ -1,0 +1,114 @@
+.PaginaUsuariosTokenGeral {
+    padding: 30px;
+    background-color: #f8fafc;
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.CabecalhoCards {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.CabecalhoCards h2 {
+    color: #1e293b;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.CabecalhoCards p {
+    color: #64748b;
+}
+
+.GradeDosCardsAutorizados {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px; 
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.CardIndividualMorador {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.CardIndividualMorador:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.AvatarCard {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.CardIndividualMorador h3 {
+    margin-bottom: 12px;
+    color: #334155;
+    font-size: 1.2rem;
+}
+
+.InfoMorador {
+    width: 100%;
+    margin-top: 10px;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 15px;
+}
+
+.InfoMorador p {
+    margin-bottom: 8px;
+    color: #475569;
+    font-size: 0.95rem;
+}
+
+.TagSituacao {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.ativo {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.inativo {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.AvisoCarregamento, .AvisoErro {
+    text-align: center;
+    padding: 50px;
+    font-weight: bold;
+    color: #64748b;
+}
+
+
+
+
+.AvisoErro {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 0px 20px;
+    font-weight: bold;
+    color: #64748b;
+    font-size: 1.1rem;
+    width: 100%;
+}

@@ -1,0 +1,155 @@
+
+/* -------------------------------------------------------------------- */
+/* 🧱 ESTRUTURA DE ANCORAGEM (CONTAINER PAI)                             */
+/* -------------------------------------------------------------------- */
+/* .container-externo-blindado-sincronizado {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    display: inline-block;
+    z-index: 2000; 
+} */
+
+/* -------------------------------------------------------------------- */
+/* 🍔 BOTÃO HAMBURGUER (ESTILO BASE)                                     */
+/* -------------------------------------------------------------------- */
+.btn-menu-base {
+
+    display: none;
+    
+    /* Reset de Fábrica */
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+
+    padding: 2px 2px;
+    border-radius: 4px;
+    
+    /* Tipografia e Cores */
+    font-size: 45px;
+    line-height: 0.9;
+    color: #ffffff;
+    
+   
+    align-items: center;
+    justify-content: center;
+    
+    /* Camada e Transição */
+    position: relative;
+    z-index: 10;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+
+    transform: scaleX(1.1);
+}
+
+/* 🖱️ Interação do Operário */
+.btn-menu-base:hover {
+    transform: scale(1.1);
+    /* background-color: rgba(255, 255, 255, 0.1); */
+}
+
+.btn-menu-base:active {
+    transform: scale(0.95);
+}
+
+/* -------------------------------------------------------------------- */
+/* ✨ EFEITO DE PULSAÇÃO (ATIVADO VIA ESTADO)                           */
+/* -------------------------------------------------------------------- */
+/* .btn-menu-base.pulsar-ativo { */
+    
+    /* 🚫 Sem energia no pulso no desktop */
+    /* animation: none;  */
+    /* box-shadow: none; */
+
+
+    /* animation: pulsoMestreSincronizado 2s infinite ease-in-out; */
+/* } */
+
+/* -------------------------------------------------------------------- */
+/* 🎈 BALÃO DE DICA (O CARD FLUTUANTE)                                  */
+/* -------------------------------------------------------------------- */
+.BalaoDicaCorpo {
+
+    /* comeca invisivel para ver se é PC ou celular */
+    display: none;
+
+    position: absolute;
+    top: 72px;        
+    left: 7px;     
+    
+    /* Visual Premium */
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+
+    background: linear-gradient(135deg, #25d366, #25d366);
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 16px;
+    font-size: 22px;
+    font-weight: 700;
+    white-space: nowrap;
+    
+    /* Sombra e Efeito */
+    box-shadow: 0 10px 25px rgba(255, 75, 43, 0.5);
+    pointer-events: none; /* O clique atravessa para o botão se necessário */
+    
+    /* Pulsação do Balão */
+    animation: pulsoMestreSincronizado 2s infinite ease-in-out;
+}
+
+/* 📐 SETA (TRIÂNGULO) DO BALÃO */
+.BalaoDicaCorpo::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;       /* Grudado no topo do balão */
+    left: 20px;         /* Alinhado com o ícone */
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 12px solid #25d366; /* Cor do início do gradiente */
+}
+
+/* -------------------------------------------------------------------- */
+/* 🔄 KEYFRAMES: O BATIMENTO CARDÍACO DA UI                             */
+/* -------------------------------------------------------------------- */
+@keyframes pulsoMestreSincronizado {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.8);
+    }
+    70% {
+        /* Aumenta a aura e some gradualmente */
+        box-shadow: 0 0 0 18px rgba(255, 75, 43, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 75, 43, 0);
+    }
+}
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* 📱 @MEDIA QUERY - ATIVAÇÃO APENAS PARA CELULAR (< 768px)             */
+/* -------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    .btn-menu-base {
+
+        /* display: block; */
+        display: flex;
+    }
+
+    /* 🎈 Ativa o Balão na Obra Mobile */
+    .BalaoDicaCorpo {
+        display: block; 
+    }
+
+    /* ✨ Liga a Pulsação apenas no Celular */
+    .btn-menu-base.pulsar-ativo {
+        animation: pulsoMestreSincronizado 2s infinite ease-in-out;
+    }
+
+}
