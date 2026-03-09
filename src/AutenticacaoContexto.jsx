@@ -4,7 +4,6 @@ import { createContext, useState, useContext, useEffect, useMemo, useRef } from 
 
 import io from 'socket.io-client';
 
-
 /* 1. Materiais de Base (Bibliotecas Externas) */
 
 /* 1.1 - 🚀 Ferramentas de Autenticação (Ações do Vigia) */
@@ -16,14 +15,6 @@ import { ref, get } from "firebase/database";
 /* 2. A Fundação Energizada (O que você mesmo construiu) */
 import { auth, db_realtime } from './firebaseConfig.js';
 
-/* 3. Logística e Rotas (As coordenadas da obra) */
-// import { BASE_URL_SERVIDOR } from './config/api.js';
-
-
-
-
-
-
 /* 🧱 2. Molde padrão (Antes do Provider) */
 const valores_padrao_dadosToken = { 
 
@@ -33,10 +24,13 @@ const valores_padrao_dadosToken = {
     
 };
 
-
+/* 🧱 Injeção Direta: Conectando ao servidor do Railway */
+export const URL_SERVIDOR = "https://v06-back-node-gemini-production.up.railway.app";
 
 /* 🔌 Definição dos Canais de Comunicação */
 const AutenticacaoContexto = createContext();
+
+
 
 
 export const AutenticacaoProvider = ({ children }) => {
@@ -66,15 +60,8 @@ export const AutenticacaoProvider = ({ children }) => {
         console.log("");
         console.log("🔍 -----------------------------------------------------------");
         console.log("🔍 INSPEÇÃO DE AMBIENTE (Vite + AutenticacaoContexto)");
-        console.log("🔍 Servidor de Dados  :", import.meta.env.VITE_URL_SERVIDOR_DADOS || "❌ Não Definido");
-        console.log("🔍 Servidor de Socket :", import.meta.env.VITE_URL_SERVIDOR_SOCKET || "❌ Não Definido");
-        
-        if (!import.meta.env.VITE_URL_SERVIDOR_DADOS) {
-            console.error("⚠️  ALERTA: A URL do servidor não foi carregada. Verifique o arquivo .env!");
-        } else {
-            console.log("✅ LOGÍSTICA: Rotas de API configuradas com sucesso.");
-        }
-        
+        console.log("🔍 Servidor de Dados e socket :", URL_SERVIDOR || "❌ Não Definido");
+      
         console.log("🔍 -----------------------------------------------------------");
 
     }, []);
@@ -235,26 +222,39 @@ export const AutenticacaoProvider = ({ children }) => {
 // INICIO - CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)
 // ----------------------------------------------------
 
+//  useMemo(() guarda a variavel na memoria
+
 const socket = useMemo(() => {
     
+    /* 🧱 Configurações de Conexão */
+    const reconectaTentativas = Number(import.meta.env.VITE_SOCKET_RECONECT_ATTEMPTS) || 5;
+    const tempoLimite = Number(import.meta.env.VITE_SOCKET_TIMEOUT) || 20000;
 
-    /* 🧱 Conectando usando as configurações de Elite do .env */
-    const novaConexao = io(import.meta.env.VITE_URL_SERVIDOR_SOCKET, {
+    /* 🚀 Iniciando a Ferramenta de Trabalho (Socket) */
+    const novaConexao = io(URL_SERVIDOR, {
         transports: ["websocket", "polling"],
         autoConnect: true,
         withCredentials: true,
-        reconnectionAttempts: Number(import.meta.env.VITE_SOCKET_RECONECT_ATTEMPTS) || 5,
-        timeout: Number(import.meta.env.VITE_SOCKET_TIMEOUT) || 20000
+        reconnectionAttempts: reconectaTentativas,
+        timeout: tempoLimite
     });
 
-    // console.log("");
-    // console.log("📐 🏛️ ----------------------------------");
-    // console.log("📐 🏛️ componente - 🏛️ AutenticacaoContexto.jsx");
-    // console.log("📐 🏛️ CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)");
-    // console.log("📐 🏛️ const socket = useMemo(() => {");
-    // console.log("📐 🏛️ NOME DO SISTEMA:", import.meta.env.VITE_NOME_SISTEMA);
-    // console.log("📐 🏛️ VERSÃO DO SISTEMA:", import.meta.env.VITE_VERSAO_SISTEMA);
-    // console.log("📐 🏛️ ----------------------------------");
+    /* 🚀 CONSOLE DE INSPEÇÃO MAESTRO */
+    console.log("");
+    console.log("🔍 -----------------------------------------------------------");
+    console.log("🔍 INSPEÇÃO DE SUPRIMENTOS (Socket Connection)");
+    console.log("🔍 Servidor Destino (URL_SERVIDOR) :", URL_SERVIDOR);
+    console.log("🔍 Tentativas de Reconexão (env/5) :", reconectaTentativas);
+    console.log("🔍 Tempo Limite de Resposta (env/20k):", tempoLimite + "ms");
+    console.log("🔍 Transmimento (Transports)       :", "Websocket & Polling");
+    console.log("🔍 Status de Inicialização         :", "🚀 Conexão Disparada");
+    console.log("🔍 -----------------------------------------------------------");
+
+    /* 📐 Log de Identificação do Contexto */
+    console.log("📐 🏛️ Componente: AutenticacaoContexto.jsx");
+    console.log("📐 🏛️ Nome do Sistema:", import.meta.env.VITE_NOME_SISTEMA || "Assistência Sênior");
+    console.log("📐 🏛️ Versão:", import.meta.env.VITE_VERSAO_SISTEMA || "V06-PROD");
+    console.log("🔍 -----------------------------------------------------------");
 
     return novaConexao;
 

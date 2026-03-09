@@ -3,13 +3,9 @@ import { useState, useEffect, useRef } from 'react';
 
 import { useNavigate, useLocation} from 'react-router-dom';
 
-import { useAuth } from './AutenticacaoContexto.jsx';
-
-// import { BASE_URL_SERVIDOR } from './config/api.js';
+import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto.jsx';
 
 import './Logar.css';
-
-
 
 
 
@@ -309,12 +305,12 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
         console.log("");
         console.log("📡 ----------------------------------");
         console.log("📡 ENVIANDO DADOS PARA O SERVIDOR...");
-        console.log("📡 URL:", import.meta.env.VITE_URL_SERVIDOR_DADOS);
+        console.log("📡 URL:", URL_SERVIDOR);
         console.log("📡 ----------------------------------");
 
         try {
 
-            const resposta = await fetch(`${import.meta.env.VITE_URL_SERVIDOR_DADOS}/login`, {
+            const resposta = await fetch(`${URL_SERVIDOR}/login`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(credenciais),

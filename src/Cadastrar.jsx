@@ -5,19 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 // 🏗️ 🚕 useNavigate (O Motorista): O Hook que contrata o piloto para a viagem entre páginas da 🏠 Casa (react).
 import { useNavigate } from 'react-router-dom'; 
 
-import { useAuth } from './AutenticacaoContexto.jsx';
-
-
-// import { BASE_URL_SERVIDOR } from './config/api.js';
-
-
-
-// import { doc, setDoc, getDoc } from "firebase/firestore";
-// import { db_firestore } from "./firebaseConfig";
-
-
-
-
+import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto.jsx';
 
 import './Cadastrar.css';
 
@@ -480,10 +468,13 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
         console.log("📡 PROTOCOLO DE CADASTRO INICIADO");
         console.log("📡 Alvo:", novoUsuario.nome);
         console.log("📡 CPF:", novoUsuario.cpef);
+        console.log("📡 URL:", URL_SERVIDOR);
 
         try {
 
-            const resposta = await fetch(`${import.meta.env.VITE_URL_SERVIDOR_DADOS}/cadastrar`, {
+
+
+            const resposta = await fetch(`${URL_SERVIDOR}/cadastrar`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',},
                 body: JSON.stringify(novoUsuario),
