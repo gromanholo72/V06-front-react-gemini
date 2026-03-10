@@ -25,7 +25,17 @@ const valores_padrao_dadosToken = {
 };
 
 /* 🧱 Injeção Direta: Conectando ao servidor do Railway */
-export const URL_SERVIDOR = "https://v06-back-node-gemini-production.up.railway.app";
+// export const URL_SERVIDOR = "https://v06-back-node-gemini-production.up.railway.app";
+
+
+
+/* 🤖 Inteligência de Ambiente: Detecta se é local ou produção */
+export const URL_SERVIDOR = window.location.hostname === "localhost" 
+    ? "http://localhost:3001"                         // Se estiver no PC
+    : "https://v06-back-node-gemini-production.up.railway.app"; // Se estiver no Railway
+
+
+
 
 /* 🔌 Definição dos Canais de Comunicação */
 const AutenticacaoContexto = createContext();
