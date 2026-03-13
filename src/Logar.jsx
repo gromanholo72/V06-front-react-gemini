@@ -26,6 +26,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
     // 🧭 Sensor de localização
     const location = useLocation(); 
+
     /*  🧱 Verifica se o usuário veio redirecionado do cadastro com sucesso */
     const veioDoCadastro = location.state?.cadastroSucesso;
 
@@ -75,16 +76,14 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
             clearTimeout(timerGavetaRef.current);
         }
 
-
-       
         // Segura 500 ms para ficar aparecendo o modalCarregando
         setTimeout(() => {
 
-            console.log("🔫 ✅ 500ms passados. Desligando Modal e subindo Gaveta.");
-            console.log("📐 ⚪ [ACTION] -> setCarregandoModal(false)"); setCarregandoModal(false); 
-            console.log(`📐 🎨 [ACTION] -> setTipoMsg("${tipo}")`);     setTipoMsg(tipo);
-            console.log(`📐 📝 [ACTION] -> setMsgErro("${texto}")`);   setMsgErro(texto);
-            console.log("📐 👁️ [ACTION] -> setMsgVisivel(true)");       setMsgVisivel(true);
+            // console.log("🔫 ✅ 500ms passados. Desligando Modal e subindo Gaveta.");
+            // console.log("📐 ⚪ [ACTION] -> setCarregandoModal(false)"); setCarregandoModal(false); 
+            // console.log(`📐 🎨 [ACTION] -> setTipoMsg("${tipo}")`);     setTipoMsg(tipo);
+            // console.log(`📐 📝 [ACTION] -> setMsgErro("${texto}")`);   setMsgErro(texto);
+            // console.log("📐 👁️ [ACTION] -> setMsgVisivel(true)");       setMsgVisivel(true);
 
             // 🔓 Desliga o modal de carregamento
             setCarregandoModal(false);
@@ -94,7 +93,6 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
             setMsgErro(texto);
             setMsgVisivel(true);
 
-            // console.log("🔫 📝 precisaAtivarDica =", precisaAtivarDica);
 
             // 🚀 Rolar para o topo para garantir que o usuário veja a mensagem
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -104,14 +102,18 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                 
                 setMsgVisivel(false);
 
-
-
                 // Espera a animação de descida da gaveta terminar (1s) para limpar e navegar
                 setTimeout(() => {
 
                     setMsgErro("");
 
-                    setExibirBalaoDicaCriarConta(true);
+
+
+                    if (texto === "Usuário não cadastrado no sistema.") {
+                        setExibirBalaoDicaCriarConta(true);
+                    }
+
+
 
                     // ✈️ Se houver ordem de redirecionamento (Sucesso)
                     if (deveRedirecionar) {
@@ -124,16 +126,13 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                         });
                     }
 
+                    
 
                 }, 1000);
 
             }, 3000);
 
         }, 500);
-
-
-        
-
 
     };
 
@@ -298,15 +297,23 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         if (e) e.preventDefault(); 
 
+        if (!validarCPF(credenciais.cpef)) {
+
+            console.log("");
+            console.log("🔍 -----------------------------------------------------------");
+            console.log("🔍 ALERTA DE SEGURANÇA - CPF INVÁLIDO");
+            console.log("🔍 componente -  Logar.jsx");
+            console.log("🔍 Valor Digitado:", credenciais.cpef);
+            console.log("🔍 Status:", "❌ Bloqueado antes do envio");
+            console.log("🔍 -----------------------------------------------------------");
+    
+            dispararMensagem("O CPF informado é inválido. Por favor, confira os números.");
+            return; // ✋ Para a execução aqui mesmo!
+        }
+
         setCarregandoModal(true);
 
         setMsgVisivel(false);
-
-        console.log("");
-        console.log("📡 ----------------------------------");
-        console.log("📡 ENVIANDO DADOS PARA O SERVIDOR...");
-        console.log("📡 URL:", URL_SERVIDOR);
-        console.log("📡 ----------------------------------");
 
         try {
 
@@ -318,8 +325,14 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
             const resultado = await resposta.json();
 
+
+
+
             console.log("");
-            console.log("📦 ----------------------------------");
+            console.log("📡 ----------------------------------");
+            console.log("📡 ENVIANDO DADOS PARA O SERVIDOR...");
+            console.log("📡 componente -  Logar.jsx");
+            console.log("📡 URL:", URL_SERVIDOR);
             console.log("📦 CONTEÚDO:", resultado);
             console.log("📦 ----------------------------------");
 
@@ -448,7 +461,29 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
-
+    const validarCPF = (cpf) => {
+        // 🧱 Passo 1: Limpeza total
+        const cpfLimpo = cpf.replace(/\D/g, '');
+    
+        // 🧱 Passo 2: Bloqueio de sequências óbvias (111.111.111-11, etc.)
+        if (cpfLimpo.length !== 11 || !!cpfLimpo.match(/(\d)\1{10}/)) return false;
+    
+        // 🧱 Passo 3: Cálculo do 1º Dígito Verificador
+        let soma = 0;
+        for (let i = 1; i <= 9; i++) soma = soma + parseInt(cpfLimpo.substring(i - 1, i)) * (11 - i);
+        let resto = (soma * 10) % 11;
+        if ((resto === 10) || (resto === 11)) resto = 0;
+        if (resto !== parseInt(cpfLimpo.substring(9, 10))) return false;
+    
+        // 🧱 Passo 4: Cálculo do 2º Dígito Verificador
+        soma = 0;
+        for (let i = 1; i <= 10; i++) soma = soma + parseInt(cpfLimpo.substring(i - 1, i)) * (12 - i);
+        resto = (soma * 10) % 11;
+        if ((resto === 10) || (resto === 11)) resto = 0;
+        if (resto !== parseInt(cpfLimpo.substring(10, 11))) return false;
+    
+        return true; // 🏆 CPF Válido!
+    };
 
 
 

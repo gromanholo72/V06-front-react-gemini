@@ -10,7 +10,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    background-color: #b0bdb9;
+  
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
 } 
@@ -198,28 +198,32 @@
 }
 
 .submenu-container-geral button {
+
     border-top: 2px solid #306396;
     border-bottom: 2px solid #306396;
     border-left: none;
     border-right: none;
 
-    padding-top: 10px;
-    padding-bottom: 10px;
+    /* padding-top: 10px;
+    padding-bottom: 10px; */
 
     color: #000000;
+    background: rgb(185, 184, 184);
     font-weight: bold;
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     /* width: 100px; */
-    text-align: center;
+   
     position: relative;
     overflow: hidden;
 }
 
 .submenu-container-geral button:hover {
+
     color: white; 
     background: gray;
+
     border-top: 2px solid white; 
     border-bottom: 2px solid white; 
 }
@@ -231,7 +235,7 @@
     /* left: -100%; */
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    /* background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); */
     transition: 0.6s;
 }
 
@@ -256,29 +260,504 @@
 
 
 
-/* MENU - programador */
 
-.Btn-geral-programador {
-    width: 90px;
+
+
+
+/* -------------------------------- */
+/* INICIO - MENU - programador prof */
+/* -------------------------------- */
+
+.submenu-tudo-cadastrar-prof {
+    position: relative;
+    display: inline-block;
 }
 
-.submenu-tudo-cadastrar button{
-    width: 90px;
-}
-
-.submenu-flutuante-cadastrar {
-    position: absolute;
-    top: 55px; 
-    z-index: 999;
+/* 🚀 Botão Principal */
+.Btn-geral-programador-prof {
+    width: 110px; 
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border-top: 2px solid #306396;
+    border-bottom: 2px solid #306396;
+    border-left: none;
+    border-right: none;
+    /* background-color: transparent; */
+    color: #000000;
+    font-weight: bold;
+    cursor: pointer;
     border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+/* .btn-centralizado {
+    justify-content: center !important;
+} */
+
+/* 📦 Submenu Flutuante (Transição Suave) */
+.submenu-flutuante-cadastrar-prof {
+    position: absolute;
+    top: 38px; 
+    left: 0;
+    z-index: 999;
     display: flex;
     flex-direction: column;
     gap: 5px;
-   
+    padding: 5px 0;
+    /* background-color: white; */
+    border-radius: 8px;
+    
+    /* 🛠️ Configuração da Animação */
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    pointer-events: none;
 }
-.submenu-flutuante-cadastrar button{
-    font-size: 10px;
+
+/* ✨ Estado Aberto */
+.submenu-flutuante-cadastrar-prof.aberto {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: all;
 }
+
+/* 🌙 Estado Fechado */
+.submenu-flutuante-cadastrar-prof.fechado {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    pointer-events: none;
+}
+
+/* 🔘 Botões internos do Submenu */
+.submenu-flutuante-cadastrar-prof button {
+    width: 110px;
+    height: 35px;
+    border-top: 2px solid #306396;
+    border-bottom: 2px solid #306396;
+    border-left: none;
+    border-right: none;
+    border-radius: 8px;
+    /* background: white; */
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Texto centralizado no submenu */
+}
+
+/* ✨ Hover Maestro */
+.Btn-geral-programador-prof:hover,
+.submenu-flutuante-cadastrar-prof button:hover {
+    color: white; 
+    background: gray;
+    border-top: 2px solid white; 
+    border-bottom: 2px solid white; 
+}
+
+/* 🌊 Efeito de Brilho Dinâmico */
+.Btn-geral-programador-prof::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: 0.6s;
+}
+
+.Btn-geral-programador-prof:hover::after {
+    left: 100%;
+}
+
+/* -------------------------------- */
+/* INICIO - MENU - programador prof */
+/* -------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------------------------- */
+/* INICIO - MENU - ADMINISTRADOR PROF  */
+/* ----------------------------------- */
+
+.submenu-tudo-gerenciar-prof {
+    position: relative;
+    display: inline-block;
+}
+
+/* 🚀 Botão Principal Administrador */
+.Btn-geral-administrador-prof {
+    width: 110px; 
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 0 10px;
+    border-top: 2px solid #306396;
+    border-bottom: 2px solid #306396;
+    border-left: none;
+    border-right: none;
+    color: #000000;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* background-color: transparent; */
+}
+
+/* 📦 Submenu Flutuante Administrador */
+.submenu-flutuante-gerenciar-prof {
+    position: absolute;
+    top: 38px; 
+    left: 0;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px 0;
+    border-radius: 8px;
+    
+    /* Configuração da Animação de Entrada/Saída */
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    pointer-events: none;
+}
+
+/* ✨ Estado Aberto */
+.submenu-flutuante-gerenciar-prof.aberto {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+/* 🌙 Estado Fechado */
+.submenu-flutuante-gerenciar-prof.fechado {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    pointer-events: none;
+}
+
+/* 🔘 Botões internos do Submenu Admin */
+.submenu-flutuante-gerenciar-prof button {
+    width: 110px;
+    height: 35px;
+    border-top: 2px solid #306396;
+    border-bottom: 2px solid #306396;
+    border-left: none;
+    border-right: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ✨ Hover Maestro Admin */
+.Btn-geral-administrador-prof:hover,
+.submenu-flutuante-gerenciar-prof button:hover {
+    color: white; 
+    background: gray;
+    border-top: 2px solid white; 
+    border-bottom: 2px solid white; 
+}
+
+/* 🌊 Efeito de Brilho Dinâmico Admin */
+.Btn-geral-administrador-prof::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: 0.6s;
+}
+
+.Btn-geral-administrador-prof:hover::after {
+    left: 100%;
+}
+
+/* 📱 Ajuste Mobile Admin */
+@media (max-width: 768px) {
+    .submenu-flutuante-gerenciar-prof {
+        top: 0;
+        left: 115px;
+        transform: translateX(-15px);
+    }
+    .submenu-flutuante-gerenciar-prof.aberto {
+        transform: translateX(0);
+    }
+    .submenu-flutuante-gerenciar-prof.fechado {
+        transform: translateX(-15px);
+    }
+}
+
+/* ----------------------------------- */
+/* FIM - MENU - ADMINISTRADOR PROF     */
+/* ----------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------------------------- */
+/* INICIO - MENU - CUIDADORA PROF      */
+/* ----------------------------------- */
+
+/* 🚀 Botão Principal Cuidadora */
+.Btn-geral-cuidadora-prof {
+    width: 90px; 
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centralizado por padrão já que não tem seta */
+    padding: 0 10px;
+    border-top: 2px solid #306396;
+    border-bottom: 2px solid #306396;
+    border-left: none;
+    border-right: none;
+    color: #000000;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ✨ Hover Maestro Cuidadora */
+.Btn-geral-cuidadora-prof:hover {
+    color: white; 
+    background: gray;
+    border-top: 2px solid white; 
+    border-bottom: 2px solid white; 
+}
+
+/* 🌊 Efeito de Brilho Dinâmico Cuidadora */
+.Btn-geral-cuidadora-prof::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: 0.6s;
+}
+
+.Btn-geral-cuidadora-prof:hover::after {
+    left: 100%;
+}
+
+/* ----------------------------------- */
+/* FIM - MENU - CUIDADORA PROF         */
+/* ----------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------------------------- */
+/* INICIO - MENU - CLIENTE PROF        */
+/* ----------------------------------- */
+
+.submenu-tudo-solicitacao-prof,
+.submenu-tudo-paciente-prof {
+    position: relative;
+    display: inline-block;
+}
+
+/* 🚀 Botão Principal Cliente */
+.Btn-geral-cliente-prof {
+    width: 120px; 
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 0 10px;
+    border-top: 2px solid #306396;
+    border-bottom: 2px solid #306396;
+    border-left: none;
+    border-right: none;
+    color: #000000;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    /* background-color: transparent; */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 📦 Submenu Flutuante Cliente (Padrão para Solicitação e Paciente) */
+.submenu-flutuante-cliente-prof {
+    position: absolute;
+    top: 35px; 
+    left: 0;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px 0;
+    border-radius: 8px;
+    /* background-color: white;  */
+    
+    /* Animação Mestra */
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    pointer-events: none;
+}
+
+/* ✨ Estados de Transição */
+.submenu-flutuante-cliente-prof.aberto {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.submenu-flutuante-cliente-prof.fechado {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    pointer-events: none;
+}
+
+/* 🔘 Botões internos dos Submenus */
+.submenu-flutuante-cliente-prof button {
+    width: 120px;
+    height: 35px;
+    border-top: 2px solid #306396;
+    border-bottom: 2px solid #306396;
+    border-left: none;
+    border-right: none;
+    border-radius: 8px;
+    /* background-color: white; */
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+/* ✨ Hover e Brilho */
+.Btn-geral-cliente-prof:hover,
+.submenu-flutuante-cliente-prof button:hover {
+    color: white; 
+    background-color: rgb(143, 142, 142);
+    border-top: 2px solid white; 
+    border-bottom: 2px solid white; 
+}
+
+.Btn-geral-cliente-prof::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: 0.6s;
+}
+
+.Btn-geral-cliente-prof:hover::after {
+    left: 100%;
+}
+
+/* 📱 Ajuste Mobile */
+@media (max-width: 768px) {
+    .submenu-flutuante-cliente-prof {
+        top: 0;
+        left: 115px;
+        transform: translateX(-15px);
+    }
+    .submenu-flutuante-cliente-prof.aberto { transform: translateX(0); }
+    .submenu-flutuante-cliente-prof.fechado { transform: translateX(-15px); }
+}
+
+/* ----------------------------------- */
+/* FIM - MENU - CLIENTE PROF           */
+/* ----------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -302,7 +781,18 @@
 
 .Btn-geral-visitante {
     width: 70px;
+    height: 35px;
+    text-align: center;
+
+    padding-left: 8px;
+    padding-right: 8px;
+
+    /* display: flex;             */
+    /* align-items: center;       */
+    /* justify-content: space-between; */
+
 }
+
 
 .Lista-Publica {
     background-color: rgb(212, 175, 55);
@@ -321,81 +811,134 @@
 
 
 
+
+
+
+
+
+
+
+
+
+/* MENU - cuidadora */
+
 .Btn-geral-cuidadora {
     width: 90px;
 }
 
 
-/* .Btn-geral-cliente {
-    width: 110px;
-} */
 
 
 
 
 
 
-/* .btn-menu-geral {
-    width: 120px !important;
-} */
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+/* -------------- */
+/* MENU - cliente */
+/* -------------- */
 .Btn-geral-cliente {
     width: 110px;
+    height: 35px;
+    text-align: left;
+
+    padding-left: 8px;
+    padding-right: 8px;
+
+    display: flex;             /* Transforma o botão em um container flexível */
+    align-items: center;       /* Alinha o texto e a seta verticalmente no centro */
+    justify-content: space-between;
+
 }
 
-.submenu-tudo-paciente button{
-    width: 110px;
+.Btn-geral-cliente-solicitacao {
+    font-size: 11px;
 }
 
 
-
-.submenu-flutuante-paciente {
+/* submenu - cliente - solicitacao*/
+.submenu-flutuante-solicitacao {
     position: absolute;
     top: 55px; 
-    /* left: 30px; */
     z-index: 999;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     gap: 5px;
-    /* background: transparent; */
-   
-    /* background: red; */
-
-  
-  
-
+}
+.submenu-flutuante-solicitacao button{ 
+    width: 110px;
+    height: 35px;
 }
 
 
 
 
-
-
-
-
-
-.Btn-paciente {
+/* submenu - cliente - paciente */
+.submenu-flutuante-paciente {
+    position: absolute;
+    top: 55px; 
+    z-index: 999;
+    border-radius: 8px;
     display: flex;
-    align-items: center;
-    width: 100%;
+    flex-direction: column;
+    gap: 5px;
+}
+.submenu-flutuante-paciente button{ 
+    width: 110px;
+    height: 35px;
 }
 
-/* .texto-btn {
-    font-size: 24px; 
-} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .icone-seta {
     font-size: 14px; 
     color: #888; 
-    margin-left: 10px;
-    /* line-height: 1;  */
+    /* margin-left: 10px; */
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1794,8 +2337,8 @@
        
         font-size: 18px;
         /* width: 160px; */
-        padding-top: 15px;
-        padding-bottom: 15px;
+        /* padding-top: 15px;
+        padding-bottom: 15px; */
         width: 100%;
         
     } 
@@ -1830,9 +2373,138 @@
 
     .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-cadastrar{
         left: 135px;
-        top: 0px;
+        top: 55px;
         width: 155px;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* -------------------------------- */
+/* INICIO - MENU - programador prof */
+/* -------------------------------- */
+
+/* Garante que o container do submenu não limite o posicionamento */
+.submenu-tudo-cadastrar-prof {
+    position: relative; 
+    display: block; /* Ocupa a linha toda no menu hambúrguer */
+    width: 130px;
+    
+}
+
+/* 📦 Submenu Flutuante PROF - Ajustado para a DIREITA no Mobile */
+.submenu-flutuante-cadastrar-prof {
+    position: absolute;
+    top: 0;          
+    left: 135px;      
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0;
+    z-index: 1001;   
+    border-radius: 8px;
+    background-color: transparent;
+    width: 120px;
+}
+
+.submenu-flutuante-cadastrar-prof button{
+    height: 45px;
+    font-size: 14px !important;
+}
+
+/* Ajuste para que a seta mude de direção se desejar (opcional) */
+.Btn-geral-programador-prof[aria-expanded="true"] .icone-seta {
+    transform: rotate(-90deg); /* Aponta para o submenu na direita */
+    transition: transform 0.3s;
+}
+
+/* Previne que o brilho do hover cause scroll horizontal indesejado no mobile */
+.Btn-geral-programador-prof {
+    overflow: hidden;
+    height: 45px;
+}
+
+.submenu-flutuante-cadastrar-prof {
+    top: 0;
+    left: 135px;
+    transform: translateX(-10px);
+}
+.submenu-flutuante-cadastrar-prof.aberto {
+    transform: translateX(0);
+}
+.submenu-flutuante-cadastrar-prof.fechado {
+    transform: translateX(-10px);
+}
+
+/* -------------------------------- */
+/* FIM - MENU - programador prof */
+/* -------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------------------------- */
+/* INICIO - MENU - CLIENTE PROF        */
+/* ----------------------------------- */
+
+/* 🚀 Botão Principal Cliente */
+.Btn-geral-cliente-prof {
+    font-size: 16px !important; 
+    width: 130px !important;
+    height: 45px;
+}
+
+
+
+.submenu-flutuante-cliente-prof {
+
+    top: -5px; 
+    left: 135px;
+    /* height: 45px; */
+    width: 120px;
+}
+
+
+.submenu-flutuante-cliente-prof button {
+    /* width: 150px; */
+    height: 45px;
+    font-size: 16px !important; 
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1853,6 +2525,7 @@
 
     .submenu-container-geral.menu-mobile-ativo .Btn-geral-visitante {
         width: 100px;
+        height: 45px;
     }
     .submenu-container-geral.menu-mobile-ativo .Lista-Publica {
         font-size: 12px;
@@ -1863,41 +2536,79 @@
 
 
 
-    
 
-    .submenu-container-geral.menu-mobile-ativo .Btn-geral-cuidadora {
+
+
+/* ----------------------------------- */
+/* INICIO - MENU - CUIDADORA PROF      */
+/* ----------------------------------- */
+
+/* 🚀 Botão Principal Cuidadora */
+.Btn-geral-cuidadora-prof {
+    width: 90px; 
+    height: 45px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* -------------- */
+    /* MENU - cliente */
+    /* -------------- */
+    .submenu-container-geral.menu-mobile-ativo .Btn-geral-cliente {
         width: 120px;
+        height: 45px;
+        font-size: 16px;
     }
 
+    .submenu-container-geral.menu-mobile-ativo .Btn-geral-cliente-solicitacao {
+        font-size: 15px;
+    }
 
+    /* submenu - cliente - solicitacao*/
+    .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-solicitacao{
+        left: 125px;
+        width: 135px;
+        top: 110px; 
+    }
+    .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-solicitacao button{ 
+        width: 100px;
+        height: 45px;
+        font-size: 14px;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /* submenu - cliente - paciente */
+    .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-paciente{
+        left: 125px;
+        width: 135px;
+        top: 165px; 
+    }
+    .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-paciente button{ 
+        width: 110px;
+        height: 45px;
+        font-size: 14px;
+    }
 
     
-    .submenu-container-geral.menu-mobile-ativo .Btn-geral-cliente{
-        width: 130px;
-    }
-    .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-paciente{
-        left: 135px;
-        width: 135px;
-        top: 195px; 
-    }
+
+
+
+
 
 
     .submenu-container-geral.menu-mobile-ativo .Btn-geral-cliente-apresentacao{
-        font-size: 15px;
+        font-size: 14px;
     }
     
 

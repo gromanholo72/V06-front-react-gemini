@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'; 
 import { ref, update, get } from "firebase/database"; 
-// import { db_realtime } from './firebaseConfig.js';
+import { db_realtime } from './firebaseConfig.js';
 
 import { useAuth } from './AutenticacaoContexto';
 
@@ -12,6 +12,8 @@ import './UsuarioContato.css';
 
 export function UsuarioContato () {
 
+
+    const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
 
     const { dadosToken, dadosUsuarioCompleto } = useAuth();
     
@@ -93,19 +95,23 @@ const distribuirDadosGerais = async () => {
                 /* Se achou no banco, mas os campos estão vazios, habilita edição */
                 if (!dados.mail && !dados.fone) {
                     console.warn("✨ 📋 Banco existe mas campos vazios. Liberando edição.");
+                    setEhNovoCadastro(true);
                     setPodeEditar(true);
                 } else {
                     console.warn("✨ ✅ Dados base encontrados no Realtime.");
                     popularCamposGerais(dados);
+                    setEhNovoCadastro(false);
                     setPodeEditar(false);
                 }
             } else {
                 /* Se nem o registro do usuário existe no banco */
                 console.warn("✨ 📋 Usuário não encontrado no banco. Liberando edição.");
+                setEhNovoCadastro(true);
                 setPodeEditar(true);
             }
         } catch (error) {
             console.error("❌ Erro ao buscar na Antena Central:", error);
+            setEhNovoCadastro(true);
             setPodeEditar(true); // Na dúvida, libera para o usuário preencher
         }
 
@@ -113,6 +119,7 @@ const distribuirDadosGerais = async () => {
         /* Se já tem os dados na memória (Contexto) */
         console.warn("✨ 🛰️ 📋 Populando cards com dados existentes na memória.");
         popularCamposGerais({ mail: emailMemoria, fone: foneMemoria });
+        setEhNovoCadastro(false);
         setPodeEditar(false);
     }
 };
@@ -167,6 +174,7 @@ const salvarPerfilCompleto = async () => {
            O AutenticacaoContexto deve cuidar disso ao detectar a mudança no Firebase. */
         
         alert("✅ Perfil atualizado com sucesso!");
+        setEhNovoCadastro(false);
         setPodeEditar(false);
 
     } catch (error) {
@@ -193,75 +201,77 @@ const salvarPerfilCompleto = async () => {
 
 
 
+return (
+    <div className="perfil-contato-componente-principal">
+        <div className="perfil-contato-componente-suporte">
+            {!ehProgramador && (
+                <div className="perfil-contato-usuario-card">
+                    <div className="perfil-contato-card-titulo">📞 CONTATO</div>
+                    <div className="perfil-contato-card-corpo">
+                        <div className="flex-contato-mail">
+                            <label>E-mail</label>
+                            <input type="email" disabled={!podeEditar} value={email} onChange={(e) => setEmail(e.target.value)} />
+                        </div>
+
+                        <div className="flex-contato-fone">
+                            <label>Telefone / WhatsApp</label>
+                            <input type="text" disabled={!podeEditar} value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+                        </div>
 
 
-    return (
-
-
-        <div className="perfil-contato-componente-principal">
-
-            
-            <div className="perfil-contato-componente-suporte">
-                
 
 
 
 
 
+                        <div className="AreaBotoes">
 
-
-
-                {!ehProgramador && (
-
-                    <div className="perfil-contato-usuario-card">
-
-                        <div className="perfil-contato-card-titulo">📞 CONTATO</div>
-
-                        <div className="perfil-contato-card-corpo">
-
-                            <div className="flex-contato-mail">
-                                <label>E-mail</label>
-                                <input type="email" disabled={!podeEditar} value={email} onChange={(e) => setEmail(e.target.value)} />
-                            </div>
-
-                            <div className="flex-contato-fone">
-                                <label>Telefone / WhatsApp</label>
-                                <input type="text" disabled={!podeEditar} value={telefone} onChange={(e) => setTelefone(e.target.value)} />
-                            </div>
-
-
-                            <div className="AreaBotoes">
-                                {!podeEditar ? (
-                                    <button type="button" className="BotaoEditar" onClick={() => setPodeEditar(true)}>
-                                        🔓 Completar/Editar Cadastro
+                            {!podeEditar ? (
+                                <button 
+                                    type="button" 
+                                    className="BotaoEditar" 
+                                    onClick={() => setPodeEditar(true)}
+                                >
+                                    🔓 Completar/Editar Cadastro
+                                </button>
+                            ) : (
+                                <>
+                                    <button 
+                                        type="button" 
+                                        className="BotaoSalvar" 
+                                        onClick={salvarPerfilCompleto}
+                                    >
+                                        💾 Salvar
                                     </button>
-                                ) : (
-                                    <>
-                                        <button type="button" className="BotaoSalvar" onClick={salvarPerfilCompleto}>
-                                            💾 Salvar
-                                        </button>
-                                        <button type="button" className="BotaoCancelar" onClick={() => { distribuirDadosGerais(); setPodeEditar(false); }}>
+
+                                    {/* 🎯 Lógica Final: Só exibe cancelar se NÃO for cadastro novo */}
+                                    {!ehNovoCadastro && (
+                                        <button 
+                                            type="button" 
+                                            className="BotaoCancelar" 
+                                            onClick={() => { distribuirDadosGerais(); setPodeEditar(false); }}
+                                        >
                                             ✖️ Cancelar
                                         </button>
-                                    </>
-                                )}
-                            </div>
+                                    )}
+                                </>
+                            )}
                         </div>
+
+
+
+
+
+
+
                     </div>
-
-                )}
-
-
-
-
-
-
-
-
-
-
-
-            </div>
+                </div>
+            )}
         </div>
-    );
+    </div>
+);
+
+
+
+
 }

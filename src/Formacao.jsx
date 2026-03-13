@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ref, update, get } from "firebase/database"; 
-// import { db_realtime } from './firebaseConfig.js';
+import { db_realtime } from './firebaseConfig.js';
 
 import { useAuth } from './AutenticacaoContexto';
 
@@ -47,25 +47,19 @@ export function Formacao() {
 
     
     useEffect(() => {
-    
+        // 🚀 CONSOLE DE INSPEÇÃO MAESTRO
         console.log("");
-        console.log("✨ ----------------------------------");
-        console.log("✨ useEffect() - componente - 🎓 Formacao.jsx");
-        console.log("✨ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
+        console.log("🔍 -----------------------------------------------------------");
+        console.log("🔍 INSPEÇÃO DE GATILHO - 🎓 Formacao.jsx");
+        console.log("🔍 dadosUsuarioCompleto está:", dadosUsuarioCompleto);
+        console.log("🔍 Possui CPEF?:", dadosUsuarioCompleto?.cpef ? "✅ Sim" : "❌ Não");
+        console.log("🔍 -----------------------------------------------------------");
     
         if (dadosUsuarioCompleto?.cpef) {
-    
-            console.log("✨ 🧖‍♂️ dadosUsuarioCompleto (CPEF) identificado = ", dadosUsuarioCompleto.cpef);
             distribuirDadosEspecialidades();
-    
         } else {
-    
             console.warn("✨ ⏳ Aguardando sinal da Antena Central para carregar Formação...");
-    
         }
-    
-        console.log("✨ ----------------------------------");
-    
     }, [dadosUsuarioCompleto]);
     
     
@@ -101,7 +95,7 @@ export function Formacao() {
             console.log("✨ 🎓 dadosUsuarioCompleto?.formacao_dados", temConteudoReal);
             console.log("✨ 🎓 ------------------------------------------------------");
 
-            popularCamposFormacao(temConteudoReal);
+            popularCamposFormacao(info);
             setPodeEditar(false);
             setTemDadosGravados(true);
     
@@ -128,12 +122,11 @@ export function Formacao() {
 
     /* 🧱 Função Auxiliar para popular os estados dos cards */
     const popularCamposFormacao = (dados) => {
-
-        setFormacao(dados.nivel || '');
-        setEspecificacao(dados.espec || '');
-        setRegistroProfissional(dados.reg || '');
-        setInstituicao(dados.inst || '');
-
+        // Se 'dados' for nulo ou vazio, o '||' garante que o campo fique limpo
+        setFormacao(dados?.nivel || '');
+        setEspecificacao(dados?.espec || '');
+        setRegistroProfissional(dados?.reg || '');
+        setInstituicao(dados?.inst || '');
     };
 
 

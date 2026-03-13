@@ -24,8 +24,7 @@ const valores_padrao_dadosToken = {
     
 };
 
-/* 🧱 Injeção Direta: Conectando ao servidor do Railway */
-// export const URL_SERVIDOR = "https://v06-back-node-gemini-production.up.railway.app";
+
 
 
 
@@ -36,11 +35,13 @@ export const URL_SERVIDOR = window.location.hostname === "localhost"
     ? "http://localhost:3001"                         // Se estiver no PC
     : "https://v06-back-node-gemini-production.up.railway.app"; // Se estiver no Railway
 
-    console.log("");
-    console.log("🔍 -----------------------------------------------------------");
-    console.log("🔍 INSPEÇÃO DE DOMÍNIO");
-    console.log("🔍 Hostname atual:", window.location.hostname);
-    console.log("🔍 -----------------------------------------------------------");
+    // console.log("");
+    // console.log("🔍 -----------------------------------------------------------");
+    // console.log("🔍 INSPEÇÃO DE DOMÍNIO");
+    // console.log("🔍 componente - 🏛️ AutenticacaoProvider.jsx");
+    // console.log("🔍 Hostname atual:", window.location.hostname);
+    // console.log("🔍 -----------------------------------------------------------");
+
 
 
 
@@ -49,6 +50,7 @@ export const URL_SERVIDOR = window.location.hostname === "localhost"
 
 /* 🔌 Definição dos Canais de Comunicação */
 const AutenticacaoContexto = createContext();
+
 
 
 
@@ -66,23 +68,18 @@ export const AutenticacaoProvider = ({ children }) => {
 
 
 
-
-    
-
-
-
     // ----------------------------------------------------
     // INICIO - Inspeção das URL do servidor socket e dados
     // ----------------------------------------------------
 
     useEffect(() => {
        
-        console.log("");
-        console.log("🔍 -----------------------------------------------------------");
-        console.log("🔍 INSPEÇÃO DE AMBIENTE (Vite + AutenticacaoContexto)");
-        console.log("🔍 Servidor de Dados e socket :", URL_SERVIDOR || "❌ Não Definido");
-      
-        console.log("🔍 -----------------------------------------------------------");
+        // console.log("");
+        // console.log("🔍 -----------------------------------------------------------");
+        // console.log("🔍 INSPEÇÃO DE AMBIENTE (Vite + AutenticacaoContexto)");
+        // console.log("🔍 componente - 🏛️ AutenticacaoProvider.jsx");
+        // console.log("🔍 Servidor de Dados e socket :", URL_SERVIDOR || "❌ Não Definido");
+        // console.log("🔍 -----------------------------------------------------------");
 
     }, []);
 
@@ -108,12 +105,12 @@ export const AutenticacaoProvider = ({ children }) => {
 
         const valorInicial = false;
 
-        console.log("");
-        console.log("📐 ----------------------------------");
-        console.log("📐 useState() - componente - 🏛️ AutenticacaoContexto.jsx");
-        console.log("📐 Lazy Initialization - 🔵 carregandoModal");
-        console.log("📐 🏛️ 🔵 carregandoModal nasceu como = ", valorInicial);
-        console.log("📐 🏛️ ----------------------------------");
+        // console.log("");
+        // console.log("📐 ----------------------------------");
+        // console.log("📐 useState() - componente - 🏛️ AutenticacaoContexto.jsx");
+        // console.log("📐 Lazy Initialization - 🔵 carregandoModal");
+        // console.log("📐 🏛️ 🔵 carregandoModal nasceu como = ", valorInicial);
+        // console.log("📐 🏛️ ----------------------------------");
     
         return valorInicial;
 
@@ -122,12 +119,12 @@ export const AutenticacaoProvider = ({ children }) => {
     /* // 🕵️ Monitora o carregandoModal */
     useEffect(() => {
 
-        console.log("");
-        console.log("✨ ----------------------------------");
-        console.log("✨ useEffect() - Componente - 🏛️ AutenticacaoContexto.jsx");
-        console.log("✨ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
-        console.log("✨ 🔵 carregandoModal = ", carregandoModal);
-        console.log("✨ ----------------------------------");
+        // console.log("");
+        // console.log("✨ ----------------------------------");
+        // console.log("✨ useEffect() - Componente - 🏛️ AutenticacaoContexto.jsx");
+        // console.log("✨ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
+        // console.log("✨ 🔵 carregandoModal = ", carregandoModal);
+        // console.log("✨ ----------------------------------");
     
     }, [carregandoModal]); 
 
@@ -238,59 +235,53 @@ export const AutenticacaoProvider = ({ children }) => {
 
 
 
-// ----------------------------------------------------
-// INICIO - CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)
-// ----------------------------------------------------
 
-//  useMemo(() guarda a variavel na memoria
 
-const socket = useMemo(() => {
+
+
+
+    // ----------------------------------------------------
+    // INICIO - CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)
+    // ----------------------------------------------------
+
+    //  useMemo(() guarda a variavel na memoria
+
+    const socket = useMemo(() => {
+        
+        /* 🧱 Configurações de Conexão */
+        const reconectaTentativas = Number(import.meta.env.VITE_SOCKET_RECONECT_ATTEMPTS) || 5;
+        const tempoLimite = Number(import.meta.env.VITE_SOCKET_TIMEOUT) || 20000;
+
+        /* 🚀 Iniciando a Ferramenta de Trabalho (Socket) */
+        const novaConexao = io(URL_SERVIDOR, {
+            transports: ["websocket", "polling"],
+            autoConnect: true,
+            withCredentials: true,
+            reconnectionAttempts: reconectaTentativas,
+            timeout: tempoLimite
+        });
+
+        // console.log("");
+        // console.log("🔍 -----------------------------------------------------------");
+        // console.log("🔍 INSPEÇÃO DE SUPRIMENTOS (Socket Connection)");
+        // console.log("🔍 Servidor Destino (URL_SERVIDOR) :", URL_SERVIDOR);
+        // console.log("🔍 Tentativas de Reconexão (env/5) :", reconectaTentativas);
+        // console.log("🔍 Tempo Limite de Resposta (env/20k):", tempoLimite + "ms");
+        // console.log("🔍 Transmimento (Transports)       :", "Websocket & Polling");
+        // console.log("🔍 Status de Inicialização         :", "🚀 Conexão Disparada");
     
-    /* 🧱 Configurações de Conexão */
-    const reconectaTentativas = Number(import.meta.env.VITE_SOCKET_RECONECT_ATTEMPTS) || 5;
-    const tempoLimite = Number(import.meta.env.VITE_SOCKET_TIMEOUT) || 20000;
+        // console.log("🔍 🏛️ Componente: AutenticacaoContexto.jsx");
+        // console.log("🔍 🏛️ VITE_NOME_SISTEMA:", import.meta.env.VITE_NOME_SISTEMA || "Sistema do Giuliano - externo");
+        // console.log("🔍 🏛️ VITE_VERSAO_SISTEMA:", import.meta.env.VITE_VERSAO_SISTEMA || "front V07 - producao");
+        // console.log("🔍 -----------------------------------------------------------");
 
-    /* 🚀 Iniciando a Ferramenta de Trabalho (Socket) */
-    const novaConexao = io(URL_SERVIDOR, {
-        transports: ["websocket", "polling"],
-        autoConnect: true,
-        withCredentials: true,
-        reconnectionAttempts: reconectaTentativas,
-        timeout: tempoLimite
-    });
+        return novaConexao;
 
-    /* 🚀 CONSOLE DE INSPEÇÃO MAESTRO */
-    console.log("");
-    console.log("🔍 -----------------------------------------------------------");
-    console.log("🔍 INSPEÇÃO DE SUPRIMENTOS (Socket Connection)");
-    console.log("🔍 Servidor Destino (URL_SERVIDOR) :", URL_SERVIDOR);
-    console.log("🔍 Tentativas de Reconexão (env/5) :", reconectaTentativas);
-    console.log("🔍 Tempo Limite de Resposta (env/20k):", tempoLimite + "ms");
-    console.log("🔍 Transmimento (Transports)       :", "Websocket & Polling");
-    console.log("🔍 Status de Inicialização         :", "🚀 Conexão Disparada");
-    console.log("🔍 -----------------------------------------------------------");
+    }, []); /* 📐 Trava a conexão para não repetir o aperto de mão */
 
-    /* 📐 Log de Identificação do Contexto */
-    console.log("📐 🏛️ Componente: AutenticacaoContexto.jsx");
-    console.log("📐 🏛️ Nome do Sistema:", import.meta.env.VITE_NOME_SISTEMA || "Assistência Sênior");
-    console.log("📐 🏛️ Versão:", import.meta.env.VITE_VERSAO_SISTEMA || "V06-PROD");
-    console.log("🔍 -----------------------------------------------------------");
-
-    return novaConexao;
-
-}, []); /* 📐 Trava a conexão para não repetir o aperto de mão */
-
-// ----------------------------------------------------
-// FIM - CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)
-// ----------------------------------------------------
-
-
-
-
-
-
-
-
+    // ----------------------------------------------------
+    // FIM - CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)
+    // ----------------------------------------------------
 
 
 
@@ -648,6 +639,8 @@ const socket = useMemo(() => {
 
 
 
+
+
     // -------------------------------------------------------------------------
     /* INICIO - 🕵️ const monitorarVigia = onAuthStateChanged(auth, async (user) => { */
     // -------------------------------------------------------------------------
@@ -821,6 +814,9 @@ const socket = useMemo(() => {
 
 
 
+
+
+
     /*  ---------------------------------------------- */
     /*  INICIO - 🧹 ROTINA DE SAÍDA (LOGOUT) - BLINDAGEM TOTAL */
     /*  ---------------------------------------------- */
@@ -880,6 +876,9 @@ const socket = useMemo(() => {
     /*  FIM - 🧹 ROTINA DE SAÍDA (LOGOUT) - BLINDAGEM TOTAL */
     /*  ---------------------------------------------- */
     
+
+
+
 
 
 

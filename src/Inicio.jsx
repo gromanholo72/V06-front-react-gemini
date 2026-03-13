@@ -176,12 +176,6 @@ export function Inicio() {
 
 
 
-
-
-
-
-
-
     return (
 
         <div className="componente-de-pagina">

@@ -1,35 +1,136 @@
 
 
+.geminirules
+
+# DIRETRIZES GERAIS
+1. RESPONDER SEMPRE EM PORTUGUÊS BRASIL (PT-BR). Mesmo que o código contenha termos em inglês, toda a explicação e comentários devem ser em português.
+2. Só inclua minhas regras quando eu pedir
+3. Essas sao as regras oficiais depois que instalei o gemini no vscode
+4. as regras que tem no x-regras.txt sao secundarias
+
 Sempre que criar ou editar botões que tenham dica dessa forma, siga rigorosamente este modelo estrutural, incluindo os comentários de INÍCIO/FIM e o padrão de logs:
 
- 
- {/* INICIO - BOTAO CRIAR CONTA */}
+{/* INICIO - BOTAO [NOME_DO_BOTAO] */}
+<div style={{ position: 'relative', display: 'inline-block' }}>
 
-    <div style={{ position: 'relative', display: 'inline-block' }}>
+    <button 
+        className={`Botao-Acao-Visitante-Perfil ${exibirBalaoDicaCriarConta ? 'pulsar-ativo' : ''}`} 
+        
+        onClick={(e) => {
+            console.log("");
+            console.log("📐 ----------------------------------");
+            console.log("📐 🚀 EVENTO: Clique no botão '[NOME_DO_BOTAO]'");
+            console.log("📐 componente - 🧿 [NOME_DO_ARQUIVO]");
+            console.log("📐 📍 [ACAO_OU_ROTA]");
+            console.log("📐 ----------------------------------");
 
-        <button 
+            // Função aqui (Ex: navegarERecolher('/Cadastro'))
+        }}
+    >
+        <span>[NOME_DO_BOTAO]</span>
+    </button>
 
-            className={`Botao-Acao-Visitante-Perfil ${exibirBalaoDicaCriarConta ? 'pulsar-ativo' : ''}`} 
-            
-            onClick={(e) => {
+    <BalaoDicaCriarConta 
+        exibirBalaoDicaCriarConta={exibirBalaoDicaCriarConta} 
+    />
+</div>
+{/* FIM - BOTAO [NOME_DO_BOTAO] */}
 
-                console.log("");
-                console.log("📐 ----------------------------------");
-                console.log("📐 🚀 EVENTO: Clique no botao 'Criar Conta'");
-                console.log("📐 🔵 Estado 'Dica Visível' = ", exibirBalaoDicaCriarConta);
-                
-                navegarERecolher('/Cadastrar');
 
-            }}
 
-        >
-            <span>Criar Conta</span>
-        </button>
 
-        <BalaoDicaCriarConta 
-            exibirBalaoDicaCriarConta={exibirBalaoDicaCriarConta} 
-        />
+
+
+
+
+
+
+
+
+
+
+# PROTOCOLO DE LOGS DE NAVEGAÇÃO (MAESTRO)
+Sempre que for solicitado a criação ou edição de um evento de clique (onClick) em botões de navegação, utilize obrigatoriamente o seguinte padrão de console.log antes da execução da função:
+
+onClick={(e) => {
+    console.log("");
+    console.log("📐 ----------------------------------");
+    console.log("📐 🚀 EVENTO: Clique no botão '[NOME_DO_BOTAO]'");
+    console.log("📐 componente - 🧿 [NOME_DO_ARQUIVO]");
+    console.log("📐 📍 [ACAO_OU_ROTA]");
+    console.log("📐 ----------------------------------");
+
+    // Execução da função/navegação aqui
+}}
+
+# REGRAS DE PREENCHIMENTO:
+1. [NOME_DO_BOTAO]: Substituir pelo texto visível do botão.
+2. [NOME_DO_ARQUIVO]: Identificar o nome do componente atual (ex: App.jsx, Logar.jsx).
+3. [ACAO_OU_ROTA]: Descrever a rota (ex: navegarERecolher('/Logar')) ou a função disparada.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 1. [NOME_DO_ARQUIVO]: Endereco.jsx */
+/* 2. [ACAO_OU_ROTA]: Gerenciamento de Endereço Residencial (Realtime Database) */
+
+// Hooks de Estado com Inteligência de Cadastro
+const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
+const [podeEditar, setPodeEditar] = useState(false);
+const [cep, setCep] = useState('');
+// ... demais estados (rua, bairro, cidade, estado, numero)
+
+// 🕵️‍♂️ FUNÇÃO: Distribui o endereço (Contexto ou Banco)
+const distribuirDadosContexto = async () => {
+    // 1. [ACAO_OU_ROTA]: popularCamposEndereco()
+    // 2. Se vazio no contexto, busca na Antena Central (Firebase)
+    // 3. Se não existir no banco: setEhNovoCadastro(true) e setPodeEditar(true)
+};
+
+// 💾 SALVAR: salvarEnderecoNoBanco
+const salvarEnderecoNoBanco = async () => {
+    // 1. [NOME_DO_BOTAO]: "💾 Salvar Alterações"
+    // 2. [ACAO_OU_ROTA]: update(ref(db_realtime, `usuarios/${cpfLimpo}`))
+};
+
+// 🏛️ ARQUITETURA DE CLASSES (CSS)
+<div className="perfil-endereco-componente-principal">
+    <div className="perfil-endereco-componente-suporte">
+        <div className="perfil-endereco-usuario-card">
+            <div className="perfil-endereco-card-titulo">📍 ENDEREÇO RESIDENCIAL</div>
+            <div className="perfil-endereco-card-corpo">
+                {/* Inputs com as classes: flex-cep, flex-rua, flex-numero, etc */}
+            </div>
+        </div>
     </div>
+</div>
 
-{/* FIM - BOTAO CRIAR CONTA */}
+🏷️ 2. REGRAS DE PREENCHIMENTO:
+[NOME_DO_BOTAO]: Substituir pelo texto visível do botão (ex: "🔓 Editar Endereço").
 
+[NOME_DO_ARQUIVO]: Identificar o nome do componente atual (ex: Endereco.jsx).
+
+[ACAO_OU_ROTA]: Descrever a função disparada ou lógica aplicada (ex: realizarBuscaCep).
+
+🛠️ 3. PADRÃO DE INTERAÇÃO (BOTÕES)
+Todos os botões devem seguir a lógica de bloqueio:
+
+Botão Editar: Abre o portão (setPodeEditar(true)).
+
+Botão Salvar: Grava e trava o portão.
+
+Botão Cancelar: Só existe se {!ehNovoCadastro} e restaura os dados originais.

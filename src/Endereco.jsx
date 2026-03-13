@@ -1,10 +1,9 @@
 
-import { useState, useEffect } from 'react';
-
-// import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
 
 import { ref, update, get } from "firebase/database"; 
-// import { db_realtime } from './firebaseConfig.js';
+
+import { db_realtime } from './firebaseConfig.js';
 
 import { useAuth } from './AutenticacaoContexto';
 
@@ -15,17 +14,15 @@ import './Endereco.css';
 export function Endereco() {
 
 
-    // const navigate = useNavigate();
+    const cepInputRef = useRef(null);
 
-
-    // 📡 Sinal da antena
-    const { dadosToken, dadosUsuarioCompleto } = useAuth();
     
-    // 📦 Buscando o crachá no Armário (localStorage)
-    // const dadosArmario = JSON.parse(localStorage.getItem('dadosPublicos')) || {};
+    const { dadosUsuarioCompleto } = useAuth();
+    
 
-
-
+    // No início do componente, junto aos outros hooks:
+    const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
+   
 
     // 🧰 Ferramentas de Trabalho (Hooks)
     const [cep, setCep] = useState('');
@@ -34,7 +31,7 @@ export function Endereco() {
     const [cidade, setCidade] = useState('');
     const [estado, setEstado] = useState('');
     const [numero, setNumero] = useState('');
-    // 🔒 Controle de Edição
+    
 
     const [podeEditar, setPodeEditar] = useState(false);
 
@@ -42,19 +39,11 @@ export function Endereco() {
 
 
     useEffect(() => {
-
-        console.log("");
-        console.log("✨ ----------------------------------");
-        console.log("✨ useEffect() - componente - 📍 Endereco.jsx");
-        console.log("✨ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
-        console.log("✨ 🎫 dadosToken = ", dadosToken);
-        console.log("✨ ----------------------------------");
-
-    }, [dadosToken]);
-
-
-    
-
+        // Se o portão de edição abrir, foca no CEP
+        if (podeEditar) {
+            cepInputRef.current?.focus();
+        }
+    }, [podeEditar]);
 
 
 
@@ -92,6 +81,7 @@ useEffect(() => {
 }, [dadosUsuarioCompleto]);
 
 
+
 /* 🕵️‍♂️ FUNÇÃO: Distribui o endereço para os cards (Memória ou Banco) */
 const distribuirDadosContexto = async () => {
 
@@ -110,57 +100,66 @@ const distribuirDadosContexto = async () => {
             const snapshot = await get(caminhoNoBanco);
             
             if (snapshot.exists()) {
+
                 const dadosEnde = snapshot.val();
                 console.warn("✨ ✅ Endereço encontrado no Realtime.");
+
                 popularCamposEndereco(dadosEnde);
+                setEhNovoCadastro(false); // 🎯 Existe no banco, não é novo
                 setPodeEditar(false);
+
             } else {
+
                 console.warn("✨ 📍 Nenhum endereço no banco. Liberando edição.");
-                setPodeEditar(true);
+                
+                limparCampos();  
+                         // 🧹 Garante campos vazios
+                setEhNovoCadastro(true);  // 🎯 MARCA COMO NOVO (Isso vai sumir com o botão Cancelar)
+                setPodeEditar(true);      // Libera edição automática
+
             }
         } catch (error) {
+
             console.error("❌ Erro ao buscar endereço na Antena Central:", error);
             setPodeEditar(true); 
+
         }
 
     } else {
+
         /* Se já tem o endereço na memória (Contexto) */
         console.warn("✨ 🛰️ 🏠 Populando cards com endereço da memória.");
+
         popularCamposEndereco(infoEndereco);
+        setEhNovoCadastro(false); // 🎯 Se veio do contexto, já existe
         setPodeEditar(false);
+
     }
 };
 
 
+
 /* 🧱 Função Auxiliar para popular os estados dos cards de Endereço */
 const popularCamposEndereco = (dados) => {
+
     setCep(String(dados.cepe || '').trim());
     setRua(String(dados.ruaa || '').trim());
     setBairro(String(dados.bair || '').trim());
     setCidade(String(dados.cida || '').trim());
     setEstado(String(dados.esta || '').trim());
     setNumero(String(dados.nume || '').trim());
+
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const limparCampos = () => {
+    setCep('');
+    setRua('');
+    setBairro('');
+    setCidade('');
+    setEstado('');
+    setNumero('');
+};
 
 
 
@@ -174,43 +173,42 @@ const popularCamposEndereco = (dados) => {
 
 
     // 🔍 BUSCA ViaCEP (Só se estiver em modo edição) - Versão Moderna 2026
-
     const realizarBuscaCep = async () => {
 
         if (!podeEditar) return;
 
         const apenasNumeros = cep.replace(/\D/g, '');
 
-        if (apenasNumeros.length === 8) {
 
+        // Se o usuário apagar o CEP ou o tamanho for menor que 8, limpa os campos dependentes
+        if (apenasNumeros.length < 8) {
+            setRua('');
+            setBairro('');
+            setCidade('');
+            setEstado('');
+            return;
+        }
+
+
+        if (apenasNumeros.length === 8) {
             try {
-                
-                /* 📡 Conexão com a antena do ViaCEP */
                 const resposta = await fetch(`https://viacep.com.br/ws/${apenasNumeros}/json/`);
                 const dados = await resposta.json();
-
                 if (!dados.erro) {
-
                     setRua(dados.logradouro || '');
                     setBairro(dados.bairro || '');
                     setCidade(dados.localidade || '');
                     setEstado(dados.uf || '');
-
                 }
-
             } catch (error) {
-
                 console.error("❌ Falha na comunicação com o serviço de CEP:", error);
-
             }
-
         }
     };
 
+    
     useEffect(() => {
-       
         realizarBuscaCep();
-
     }, [cep, podeEditar]);
 
 
@@ -294,6 +292,13 @@ const popularCamposEndereco = (dados) => {
     // 💾 SALVAR NO BANCO DE DADOS
     const salvarEnderecoNoBanco = async () => {
 
+        console.log("");
+        console.log("📐 ----------------------------------");
+        console.log("📐 🚀 EVENTO: Clique no botão '💾 Salvar Alterações'");
+        console.log("📐 componente - 🧿 Endereco.jsx");
+        console.log("📐 📍 update(ref(db_realtime, `usuarios/...`))");
+        console.log("📐 ----------------------------------");
+
         try {
 
             const cpfLimpo = dadosUsuarioCompleto.cpef.replace(/\D/g, "");
@@ -322,6 +327,8 @@ const popularCamposEndereco = (dados) => {
 
             alert("✅ Dados salvos no banco de dados");
 
+            setEhNovoCadastro(false);
+
             // Trava após salvar
             setPodeEditar(false); 
             
@@ -336,10 +343,23 @@ const popularCamposEndereco = (dados) => {
 
 
 
+
+
+
+
+
+    
     
 
     // ✖️ CANCELAR EDIÇÃO: Descarta as mudanças locais e restaura o que está no Contexto
     const cancelarEdicao = () => {
+
+        console.log("");
+        console.log("📐 ----------------------------------");
+        console.log("📐 🚀 EVENTO: Clique no botão '✖️ Cancelar Edição'");
+        console.log("📐 componente - 🧿 Endereco.jsx");
+        console.log("📐 📍 distribuirDadosContexto() & setPodeEditar(false)");
+        console.log("📐 ----------------------------------");
 
         console.log("✨ 🔄 Cancelando edição. Restaurando dados do Contexto...");
 
@@ -382,6 +402,7 @@ const popularCamposEndereco = (dados) => {
                         <div className="Campo flex-cep">
                             <label>CEP</label>
                             <input 
+                                ref={cepInputRef} // ✨ Conexão da antena de foco
                                 type="text" 
                                 name="cepe"
                                 placeholder="00.000-000"
@@ -429,22 +450,53 @@ const popularCamposEndereco = (dados) => {
                         
 
 
+
+
+
+
+
                         <div className="AreaBotoes">
+
                             {!podeEditar ? (
-                                <button type="button" className="BotaoEditar" onClick={() => setPodeEditar(true)}>
+                                <button 
+                                    type="button" 
+                                    className="BotaoEditar" 
+                                    onClick={() => {
+                                        console.log("");
+                                        console.log("📐 ----------------------------------");
+                                        console.log("📐 🚀 EVENTO: Clique no botão '🔓 Editar Endereço'");
+                                        console.log("📐 componente - 🧿 Endereco.jsx");
+                                        console.log("📐 📍 setPodeEditar(true)");
+                                        console.log("📐 ----------------------------------");
+                                        setPodeEditar(true)}}
+                                >
                                     🔓 Editar Endereço
                                 </button>
                             ) : (
                                 <>
-                                    <button type="button" className="BotaoSalvar" onClick={salvarEnderecoNoBanco}>
+                                    <button 
+                                        type="button" 
+                                        className="BotaoSalvar" 
+                                        onClick={salvarEnderecoNoBanco}
+                                    >
                                         💾 Salvar Alterações
                                     </button>
-                                    <button type="button" className="BotaoCancelar" onClick={cancelarEdicao}>
-                                        ✖️ Cancelar Edição
-                                    </button>
+
+                                    {/* O botão cancelar só aparece se não for um cadastro novo */}
+                                    {!ehNovoCadastro && (
+                                        <button 
+                                            type="button" 
+                                            className="BotaoCancelar" 
+                                            onClick={cancelarEdicao}
+                                        >
+                                            ✖️ Cancelar Edição
+                                        </button>
+                                    )}
                                 </>
                             )}
                         </div>
+
+
 
 
 
@@ -460,4 +512,9 @@ const popularCamposEndereco = (dados) => {
         </div>
 
     );
+
+
+
+
+
 }

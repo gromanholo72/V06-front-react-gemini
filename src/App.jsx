@@ -105,7 +105,7 @@ export default function App() {
     const { 
 
         carregandoModal, 
-        setCarregandoModal,
+        // setCarregandoModal,
 
 
         carregandoModalRapido, 
@@ -243,24 +243,24 @@ export default function App() {
         
         const valorInicial = false;
 
-        console.log("");
-        console.log("📐 🧿 ----------------------------------");
-        console.log("📐 🧿 useState() - componente - 🧿 App.jsx");
-        console.log("📐 🧿 Lazy Initialization - 🎫 exibirBalaoDicaCriarConta");
-        console.log("📐 🧿 🎫 exibirBalaoDicaCriarConta nasceu como = ", valorInicial);
-        console.log("📐 🧿 ----------------------------------");
+        // console.log("");
+        // console.log("📐 🧿 ----------------------------------");
+        // console.log("📐 🧿 useState() - componente - 🧿 App.jsx");
+        // console.log("📐 🧿 Lazy Initialization - 🎫 exibirBalaoDicaCriarConta");
+        // console.log("📐 🧿 🎫 exibirBalaoDicaCriarConta nasceu como = ", valorInicial);
+        // console.log("📐 🧿 ----------------------------------");
 
         return valorInicial;
     });
 
     useEffect(() => {
 
-        console.log("");
-        console.log("✨ 🧿 ----------------------------------");
-        console.log("✨ 🧿 useEffect() - Componente - 🧿 App.jsx");
-        console.log("✨ 🧿 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
-        console.log("✨ 🧿 🎫 exibirBalaoDicaCriarConta = ", exibirBalaoDicaCriarConta);
-        console.log("✨ 🧿 ----------------------------------");
+        // console.log("");
+        // console.log("✨ 🧿 ----------------------------------");
+        // console.log("✨ 🧿 useEffect() - Componente - 🧿 App.jsx");
+        // console.log("✨ 🧿 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
+        // console.log("✨ 🧿 🎫 exibirBalaoDicaCriarConta = ", exibirBalaoDicaCriarConta);
+        // console.log("✨ 🧿 ----------------------------------");
 
     }, [exibirBalaoDicaCriarConta]);
 
@@ -269,21 +269,20 @@ export default function App() {
 
         if (!exibirBalaoDicaCriarConta) return;
 
-        console.log("");
-        console.log("👂 ----------------------------------");
-        console.log("👂 ATIVANDO SENSOR DE CLIQUE (Lacre)");
-        console.log("👂 Componente - 🧿 App.jsx");
-        console.log("👂 Status: Aguardando clique para fechar Balão Criar Conta.");
-        console.log("👂 ----------------------------------");
+        // console.log("");
+        // console.log("👂 ----------------------------------");
+        // console.log("👂 ATIVANDO SENSOR DE CLIQUE (Lacre)");
+        // console.log("👂 Componente - 🧿 App.jsx");
+        // console.log("👂 Status: Aguardando clique para fechar Balão Criar Conta.");
+        // console.log("👂 ----------------------------------");
 
         const fecharExibirBalaoDicaCriarConta = () => {
 
-            console.log("");
-            console.log("🔇 ----------------------------------");
-            console.log("🔇 AÇÃO: fecharExibirBalaoDicaCriarConta()");
-            console.log("📐 🔵 Motivo: Clique detectado na Window.");
-            // console.log("📐 📍 Alvo do clique: ", event.target); 
-            console.log("🔇 ----------------------------------");
+            // console.log("");
+            // console.log("🔇 ----------------------------------");
+            // console.log("🔇 AÇÃO: fecharExibirBalaoDicaCriarConta()");
+            // console.log("📐 🔵 Motivo: Clique detectado na Window.");
+            // console.log("🔇 ----------------------------------");
 
             setExibirBalaoDicaCriarConta(false);
 
@@ -293,9 +292,9 @@ export default function App() {
 
         return () => {
 
-            console.log("🧹 ----------------------------------");
-            console.log("🧹 Sensor de clique Removido (Cleanup)");
-            console.log("🧹 ----------------------------------");
+            // console.log("🧹 ----------------------------------");
+            // console.log("🧹 Sensor de clique Removido (Cleanup)");
+            // console.log("🧹 ----------------------------------");
 
             window.removeEventListener('click', fecharExibirBalaoDicaCriarConta);
 
@@ -340,24 +339,24 @@ export default function App() {
         
         const valorInicial = false;
 
-        console.log("");
-        console.log("📐 🧿 ----------------------------------");
-        console.log("📐 🧿 useState() - componente - 🧿 App.jsx");
-        console.log("📐 🧿 Lazy Initialization - 🎫 exibirBalaoDicaEntrar");
-        console.log("📐 🧿 🎫 exibirBalaoDicaEntrar nasceu como = ", valorInicial);
-        console.log("📐 🧿 ----------------------------------");
+        // console.log("");
+        // console.log("📐 🧿 ----------------------------------");
+        // console.log("📐 🧿 useState() - componente - 🧿 App.jsx");
+        // console.log("📐 🧿 Lazy Initialization - 🎫 exibirBalaoDicaEntrar");
+        // console.log("📐 🧿 🎫 exibirBalaoDicaEntrar nasceu como = ", valorInicial);
+        // console.log("📐 🧿 ----------------------------------");
 
         return valorInicial;
     });
 
     useEffect(() => {
 
-        console.log("");
-        console.log("✨ 🧿 ----------------------------------");
-        console.log("✨ 🧿 useEffect() - Componente - 🧿 App.jsx");
-        console.log("✨ 🧿 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
-        console.log("✨ 🧿 🎫 exibirBalaoDicaEntrar = ", exibirBalaoDicaEntrar);
-        console.log("✨ 🧿 ----------------------------------");
+        // console.log("");
+        // console.log("✨ 🧿 ----------------------------------");
+        // console.log("✨ 🧿 useEffect() - Componente - 🧿 App.jsx");
+        // console.log("✨ 🧿 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
+        // console.log("✨ 🧿 🎫 exibirBalaoDicaEntrar = ", exibirBalaoDicaEntrar);
+        // console.log("✨ 🧿 ----------------------------------");
 
     }, [exibirBalaoDicaEntrar]);
 
@@ -366,21 +365,20 @@ export default function App() {
 
         if (!exibirBalaoDicaEntrar) return;
 
-        console.log("");
-        console.log("👂 ----------------------------------");
-        console.log("👂 ATIVANDO SENSOR DE CLIQUE (Lacre)");
-        console.log("👂 Componente - 🧿 App.jsx");
-        console.log("👂 Status: Aguardando clique para fechar Balão Entrar.");
-        console.log("👂 ----------------------------------");
+        // console.log("");
+        // console.log("👂 ----------------------------------");
+        // console.log("👂 ATIVANDO SENSOR DE CLIQUE (Lacre)");
+        // console.log("👂 Componente - 🧿 App.jsx");
+        // console.log("👂 Status: Aguardando clique para fechar Balão Entrar.");
+        // console.log("👂 ----------------------------------");
 
         const fecharExibirBalaoDicaEntrar = () => {
 
-            console.log("");
-            console.log("🔇 ----------------------------------");
-            console.log("🔇 AÇÃO: fecharExibirBalaoDicaEntrar()");
-            console.log("📐 🔵 Motivo: Clique detectado na Window.");
-            // console.log("📐 📍 Alvo do clique: ", event.target); 
-            console.log("🔇 ----------------------------------");
+            // console.log("");
+            // console.log("🔇 ----------------------------------");
+            // console.log("🔇 AÇÃO: fecharExibirBalaoDicaEntrar()");
+            // console.log("📐 🔵 Motivo: Clique detectado na Window.");
+            // console.log("🔇 ----------------------------------");
 
             setExibirBalaoDicaEntrar(false);
 
@@ -390,9 +388,9 @@ export default function App() {
 
         return () => {
 
-            console.log("🧹 ----------------------------------");
-            console.log("🧹 Sensor de clique Removido (Cleanup)");
-            console.log("🧹 ----------------------------------");
+            // console.log("🧹 ----------------------------------");
+            // console.log("🧹 Sensor de clique Removido (Cleanup)");
+            // console.log("🧹 ----------------------------------");
 
             window.removeEventListener('click', fecharExibirBalaoDicaEntrar);
 
@@ -465,6 +463,14 @@ export default function App() {
 
 
 
+
+
+
+
+
+
+
+
     // ------------------------------------
     // INICIO DO - SUBMENU (Sanfona Profissional)
     // ------------------------------------
@@ -478,8 +484,11 @@ export default function App() {
     // 🛠️ Função Mestra de Navegação - BLINDADA
     const navegarERecolher = (rota) => {
         
-        // 🔍 LOG DE PARTIDA
-        console.log(`✈️ 🆙 [NAV] -> Rota: ${rota}`);
+        // console.log("");
+        // console.log("✈️ 🆗 ----------------------------------");
+        // console.log("✈️ 🆗 const navegarERecolher = (rota) => {");
+        // console.log("✈️ 🆗 componente - 🧿 App.jsx");
+        // console.log(`✈️ 🆗 Rota: ${rota}`);
         
         // 🧱 1. Bloqueio de Interface (Prevenção de cliques duplos)
         setCarregandoModalRapido(true);
@@ -495,70 +504,85 @@ export default function App() {
 
         // 🕒 4. Delay de Cortesia (Para a animação do modal ser fluida)
         setTimeout(() => {
-            console.log("✈️ 🆗 [NAV] -> Interface Liberada.");
-            setCarregandoModalRapido(false);
-        }, 500);
-    };
 
-    // 🛠️ Alternador de Seções (Accordion Logic Profissional)
-    const abrirSecao = (nomeSecao) => {
-        console.log(`📂 [MENU] -> Abrindo Seção: ${nomeSecao}`);
-        setMenuAberto(true); 
-        setSecaoAberta(nomeSecao);
+            // console.log("✈️ 🆗 Interface Liberada.");
+            // console.log("✈️ 🆗 ----------------------------------");
+
+            setCarregandoModalRapido(false);
+
+        }, 500);
     };
 
     // 🧱 Função de Toggle (Abre se fechado / Fecha se aberto)
     const lidarComClique = (e, secao) => {
+   
         if (e && e.stopPropagation) e.stopPropagation();
     
         setSecaoAberta((valorAnterior) => {
+
             const novoValor = valorAnterior === secao ? null : secao;
             
             // ✨ Segurança: Se abrir um submenu, garante que o menu lateral continue ativo
             if (novoValor !== null) {
+
                 setMenuAberto(true); 
+
             }
             
             return novoValor;
+
         });
+
     };
 
     // 🛡️ SENSOR GLOBAL: FECHAR MENU AO CLICAR EM QUALQUER LUGAR
+    useEffect(() => {
+        
+        if (!menuAberto) return;
     
+        // console.log("");
+        // console.log("👂 ----------------------------------");
+        // console.log("👂 MONITORANDO CLIQUE FORA (Menu)");
+        // console.log("👂 useEffect() - componente - 🧿 App.jsx");
+        // console.log("👂 Status: Menu Aberto. Aguardando clique externo.");
+        // console.log("👂 ----------------------------------");
     
-
-
-    const fecharMenuGlobal = (event) => {
-        // 🛡️ 1. VERIFICAÇÃO DE SEGURANÇA (O ESCUDO)
-        // Se o clique foi no botão hambúrguer, saímos da função IMEDIATAMENTE.
-        if (event.target.closest('.btn-menu-base')) {
-            console.log("🛡️ [SENSOR] Clique no Hambúrguer detectado. Ignorando para evitar conflito.");
-            return; 
-        }
+        const fecharAoClicarFora = (event) => {
+           
+            const clicouNoMenu = event.target.closest('.submenu-container-geral');
+            const clicouNoBotaoAbrir = event.target.closest('.btn-abrir-menu'); 
     
-        // 🔍 2. VERIFICAÇÃO DE CLIQUE FORA
-        const clicouDentroDoMenu = menuRef.current && menuRef.current.contains(event.target);
+            if (!clicouNoMenu && !clicouNoBotaoAbrir) {
+
+                // console.log("");
+                // console.log("🔇 ----------------------------------");
+                // console.log("🔇 AÇÃO: Fechando Submenu");
+                // console.log("🔇 useEffect() - componente - 🧿 App.jsx");
+                // console.log("🔇 Motivo: Clique fora do container detectado.");
+                // console.log("🔇 ----------------------------------");
+                
+                setMenuAberto(false);
+                setSecaoAberta(null);
+            }
+        };
     
-        if (!clicouDentroDoMenu) {
-            console.log("");
-            console.log("🔇 ----------------------------------");
-            console.log("🔇 AÇÃO: fecharMenuGlobal() disparada");
-            console.log("📐 🔵 Motivo: Clique fora da Ref detectado.");
-            console.log("📐 📍 Elemento clicado:", event.target.tagName, event.target.className);
-            console.log("🔇 ----------------------------------");
+        const timer = setTimeout(() => {
+            window.addEventListener('click', fecharAoClicarFora);
+        }, 0);
     
-            setMenuAberto(false);
-            setSecaoAberta(null); 
-        } else {
-            console.log("🟢 Clique Interno: Mantendo menu aberto.");
-        }
-    };
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('click', fecharAoClicarFora);
 
+            // console.log("");
+            // console.log("🧹 ----------------------------------");
+            // console.log("🧹 AÇÃO: Fechando Submenu");
+            // console.log("🧹 useEffect() - componente - 🧿 App.jsx");
+            // console.log("🧹 Sensor de clique fora removido.");
 
-
-
-
-
+        };
+    }, [menuAberto]);
+    
     // ------------------------------------
     // FIM DO - SUBMENU (Sanfona Profissional)
     // ------------------------------------
@@ -569,27 +593,6 @@ export default function App() {
 
 
 
-    // useEffect(() => {
-    //     if (!menuAberto) return;
-    
-    //     const clicarFora = (event) => {
-    //         // 🛡️ TRAVA DE SEGURANÇA: Se o clique foi no botão hambúrguer, SAIA DAQUI!
-    //         // Usamos .closest para pegar o botão mesmo se clicar no ícone ☰ dentro dele
-    //         if (event.target.closest('.btn-menu-base')) {
-    //             console.log("🛡️ [SENSOR] -> Clique no botão hambúrguer detectado. Ignorando sensor para evitar conflito.");
-    //             return; 
-    //         }
-    
-    //         if (menuAberto && menuRef.current && !menuRef.current.contains(event.target)) {
-    //             console.log("🔇 [SENSOR] -> Clique fora detectado. Fechando...");
-    //             setMenuAberto(false);
-    //             setSecaoAberta(null); 
-    //         }
-    //     };
-    
-    //     window.addEventListener("mousedown", clicarFora);
-    //     return () => window.removeEventListener("mousedown", clicarFora);
-    // }, [menuAberto]);
 
 
 
@@ -598,6 +601,116 @@ export default function App() {
 
 
 
+
+
+
+
+
+
+
+
+
+    // -------------------------------------------------------------
+    /* INICIO - 🛠️ VIGILÂNCIA DE INTEGRIDADE DOS CARDS - CLIENTE */
+    // -------------------------------------------------------------
+
+    /* // 🛠️ Ferramenta de Trabalho para o status de integridade dos cards de paciente */
+    const [statusCliente, setStatusCliente] = useState({
+        contato: false,
+        endereco: false,
+        cnpj: false
+    });
+
+
+    // const statusClienteCompleto = Object.values(statusCliente).every(status => status === true);
+
+
+    useEffect(() => {
+
+        console.log("");
+        console.log("🔍 -----------------------------------------------------------");
+        console.log("🔍 VIGILÂNCIA FIREBASE: Iniciando monitoramento...");
+        console.log("🔍 useEffect() - componente - 🧿 App.jsx");
+        console.log("🔍 CPF no Token:", dadosToken?.cpef);
+        console.log("🔍 DB Conectado:", !!db_realtime);
+
+        if (!dadosToken?.cpef || !db_realtime) {
+            
+            console.log("🔍 ⚠️ VIGILÂNCIA ABORTADA: Falta CPF ou conexão com banco.");
+            console.log("🔍 -----------------------------------------------------------");
+
+            return;
+
+        }
+
+        const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
+        const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}`);
+
+        const desativarVigilancia = onValue(caminhoNoBanco, (snapshot) => {
+
+            if (snapshot.exists()) {
+
+                const dados = snapshot.val();
+
+                console.log("");
+                console.log("🔍 -----------------------------------------------------------");
+                console.log("🔍 INSPEÇÃO DE SUPRIMENTOS (FirebaseSnapshot)");
+                console.log("🔍 useEffect() - componente - 🧿 App.jsx");
+                console.log("🔍 Dados Recebidos:", dados);
+                console.log("🔍 -----------------------------------------------------------");
+
+                const contatoNoBanco = dados; 
+                const temContato = !!(
+                    contatoNoBanco?.mail?.trim() &&
+                    contatoNoBanco?.fone?.trim()
+                );
+
+                const enderecoNoBanco = dados.ende;
+                const temEndereco = !!(
+                    enderecoNoBanco?.cepe?.trim() &&
+                    enderecoNoBanco?.nume?.trim() 
+                );
+
+                const cnpjNoBanco = dados.cnpj_dados;
+                const temCnpj = !!(
+                    cnpjNoBanco?.num_cnpj?.trim()
+                );
+
+
+
+                console.log("");
+                console.log("🔍 -----------------");
+                console.log("🔍 STATUS DO CLIENTE");
+                console.log("🔍 contato  :", temContato);
+                console.log("🔍 endereco :", temEndereco);
+                console.log("🔍 cnpj     :", temCnpj);
+                console.log("🔍 ------------------");
+
+                setStatusCliente({
+                    contato: temContato,
+                    endereco: temEndereco,
+                    cnpj: temCnpj
+                });
+
+            } else {
+                
+                setStatusCliente({
+                    contato: false,
+                    endereco: false,
+                    cnpj: false
+                });
+
+            }
+        });
+
+        return () => desativarVigilancia();
+
+    }, [dadosToken?.cpef, db_realtime]);
+
+
+    // -------------------------------------------------------------
+    /* FIM - 🛠️ VIGILÂNCIA DE INTEGRIDADE DOS CARDS - CLIENTE */
+    // -------------------------------------------------------------
 
 
 
@@ -645,34 +758,6 @@ export default function App() {
     // -------------------------------------------------------------
     /* FIM DO - MODAL 🔥 FIREBASE */
     // -------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -821,118 +906,110 @@ export default function App() {
 
 
 
-
+                
+       
                     {dadosToken?.func === 'programador' && (
                         <>
-
-
-
-
-
-
-
-
-                            <div 
-                                className="submenu-tudo-cadastrar"
-                                onMouseEnter={() => setSecaoAberta('cadastrar')}
-                            >
-
-                                <button  
-                                    className="Btn-geral-programador"
-                                >
-                                    Cadastrar
-                                </button>
-                                
-
-                                {secaoAberta === 'cadastrar' && (
-
-                                    <div className="submenu-flutuante-cadastrar">
-
-
-
-                                        <button 
-                                            onClick={() => navegarERecolher('/interno/CadAdministrador')}
-                                        >
-                                            Administrador
-                                        </button>
-
-
-
-                                    </div>
-
-                                )}
-
-
-                            </div>
-
-
-
-
-
-
-
-
                             <button 
-                                className="Btn-geral-programador"
-                                onClick={() => navegarERecolher('/ListaUsuarios')}
+                                className="Btn-geral-programador-prof btn-centralizado"
+                                onClick={() => navegarERecolher('/interno/Relatorios')}
                             >
-                                Usuarios
+                                Relatório
                             </button>
 
-
-
-
-
-
+                            {/* --- SUBMENU: CADASTRAR --- */}
+                            <div className="submenu-tudo-cadastrar-prof">
+                                <button  
+                                    className="Btn-geral-programador-prof"
+                                    onClick={(e) => lidarComClique(e, 'cadastrar')}
+                                    aria-expanded={secaoAberta === 'cadastrar'}
+                                >
+                                    Cadastrar
+                                    <span className="icone-seta">
+                                        {secaoAberta === 'cadastrar' ? "🔼" : "🔽"}
+                                    </span>
+                                </button>
+                                
+                                {/* 🚀 O Submenu não tem mais o && para permitir a animação de saída */}
+                                <div className={`submenu-flutuante-cadastrar-prof ${secaoAberta === 'cadastrar' ? 'aberto' : 'fechado'}`}>
+                                    <button onClick={() => navegarERecolher('/interno/CadAdministrador')}>
+                                        Administrador
+                                    </button>
+                                    <button onClick={() => navegarERecolher('/interno/CadAtendente')}>
+                                        Atendente
+                                    </button>
+                                </div>
+                            </div>
 
                             <button 
-                                className="Btn-geral-programador"
+                                className="Btn-geral-programador-prof btn-centralizado"
+                                onClick={() => navegarERecolher('/ListaUsuarios')}
+                            >
+                                Usuários
+                            </button>
+
+                            <button 
+                                className="Btn-geral-programador-prof btn-centralizado"
                                 onClick={() => navegarERecolher('/ListaUsuariosToken')}
                             >
                                 Token
                             </button>
-
-
-
-
-
                         </>
                     )}
+
 
 
 
 
                     {dadosToken?.func === 'administrador' && (
                         <>
-                            <div 
-                                className="submenu-tudo"
-                                onMouseEnter={() => setSecaoAberta('relatorio')}
+                            <button 
+                                className="Btn-geral-administrador-prof btn-centralizado"
+                                onClick={() => navegarERecolher('/interno/RelatoriosAdmin')}
                             >
-                                
-                                <button 
-                                    onClick={() => lidarComClique('relatorio')}
-                                    //// sabled={!perfilEstaCompleto}
-                                    //// assName={perfilEstaCompleto ? "BotaoAtivo" : "BotaoBloqueado"}
+                                Painel Geral
+                            </button>
+
+                            {/* --- SUBMENU: GERENCIAR --- */}
+                            <div className="submenu-tudo-gerenciar-prof">
+                                <button  
+                                    className="Btn-geral-administrador-prof"
+                                    onClick={(e) => lidarComClique(e, 'gerenciar')}
+                                    aria-expanded={secaoAberta === 'gerenciar'}
                                 >
-                                    Relatorio
+                                    Gerenciar
+                                    <span className="icone-seta">
+                                        {secaoAberta === 'gerenciar' ? "🔼" : "🔽"}
+                                    </span>
                                 </button>
                                 
-                                {secaoAberta === 'relatorio' && (
-
-                                    <div className="submenu-flutuante">
-
-                                        <button onClick={() => navegarERecolher('/interno/RelCuidadoras')}>Cuidadoras</button>
-                                        <button onClick={() => navegarERecolher('/interno/RelClientes')}>Clientes</button>
-                                        <button onClick={() => navegarERecolher('/interno/RelSolicitacoes')}>Solicitações</button>
-
-                                    </div>
-
-                                )}
-
+                                <div className={`submenu-flutuante-gerenciar-prof ${secaoAberta === 'gerenciar' ? 'aberto' : 'fechado'}`}>
+                                    <button onClick={() => navegarERecolher('/interno/ListaColaboradores')}>
+                                        Colaboradores
+                                    </button>
+                                    <button onClick={() => navegarERecolher('/interno/Configuracoes')}>
+                                        Configurações
+                                    </button>
+                                </div>
                             </div>
-                        
+
+                            <button 
+                                className="Btn-geral-administrador-prof btn-centralizado"
+                                onClick={() => navegarERecolher('/ListaLogs')}
+                            >
+                                Logs
+                            </button>
+
+                            <button 
+                                className="Btn-geral-administrador-prof btn-centralizado"
+                                onClick={() => navegarERecolher('/SuporteAdmin')}
+                            >
+                                Suporte
+                            </button>
                         </>
                     )}
+
+
 
 
                     
@@ -975,159 +1052,92 @@ export default function App() {
 
 
                     
+
                     {dadosToken?.func === 'cuidadora' && (
                         <>
-
-
                             <button 
-                                className="Btn-geral-cuidadora"
+                                className="Btn-geral-cuidadora-prof btn-centralizado"
                                 onClick={() => navegarERecolher('/interno/Diretrizes')}
                             >
                                 Diretrizes
                             </button>
 
-
                             <button 
-                                className="Btn-geral-cuidadora"
+                                className="Btn-geral-cuidadora-prof btn-centralizado"
                                 onClick={() => navegarERecolher('/interno/Chamados')}
                             >
                                 Chamados
                             </button>
-
-
                         </>
                     )}
 
-    
+
+
+
 
                     {dadosToken?.func === 'cliente' && (
                         <>
-
-
-
-
-
                             <button 
-                                className="Btn-geral-cliente" 
+                                className="Btn-geral-cliente-prof btn-centralizado" 
                                 onClick={() => navegarERecolher('/interno/PacienteApresentacaoEmpresa')}
                             >
                                 Apresentação
                             </button>
 
-
-
-
-
-
-
                             <button 
-                                className="Btn-geral-cliente" 
+                                className="Btn-geral-cliente-prof btn-centralizado" 
                                 onClick={() => navegarERecolher('/interno/Diretrizes')}
                             >
                                 Diretrizes
                             </button>
 
-
-
-
-
-
-
-                            <button 
-                                className="Btn-geral-cliente" 
-                                // onClick={() => navegarERecolher('/interno/ClienteSolicitacao')}
-                               
-                            >
-                                Solicitação
-                            </button>
-
-
-
-
-
-
-
-
-                            <div 
-                                className="submenu-tudo-paciente"
-                            >
-
-
+                            {/* --- SUBMENU: SOLICITAÇÃO --- */}
+                            <div className="submenu-tudo-solicitacao-prof">
                                 <button 
-                                    className="Btn-geral-cliente" 
-                                    onClick={(e) => lidarComClique(e, 'paciente')}
+                                    className="Btn-geral-cliente-prof" 
+                                    onClick={(e) => lidarComClique(e, 'solicitacao')}
+                                    aria-expanded={secaoAberta === 'solicitacao'}
                                 >
-                                    <span className="texto-btn">Paciente</span>
+                                    Solicitação
                                     <span className="icone-seta">
-                                        {secaoAberta === 'cadastro-paciente' ? "🔼" : "🔽"}
+                                        {secaoAberta === 'solicitacao' ? "🔼" : "🔽"}
+                                    </span>
+                                </button>
+
+                                <div className={`submenu-flutuante-cliente-prof ${secaoAberta === 'solicitacao' ? 'aberto' : 'fechado'}`}>
+                                    <button onClick={() => navegarERecolher('/interno/ClienteSolicitacaoNova')}>Serviços</button>
+                                    <button onClick={() => navegarERecolher('/interno/ClienteMinhasSolicitacoes')}>Orçamento</button>
+                                    <button onClick={() => navegarERecolher('/interno/HistoricoSolicitacoes')}>Extrato</button>
+                                </div>
+                            </div>
+
+                            {/* --- SUBMENU: PACIENTE --- */}
+                            <div className="submenu-tudo-paciente-prof">
+                                <button 
+                                    className="Btn-geral-cliente-prof" 
+                                    onClick={(e) => lidarComClique(e, 'paciente')}
+                                    aria-expanded={secaoAberta === 'paciente'}
+                                >
+                                    Paciente
+                                    <span className="icone-seta">
+                                        {secaoAberta === 'paciente' ? "🔼" : "🔽"}
                                     </span>
                                 </button>
                                 
-
-                                {secaoAberta === 'paciente' && (
-
-
-                                    <div className="submenu-flutuante-paciente">
-
-
-
-                                        <button 
-                                            onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}
-                                        >
-                                            Identificação
-                                            {/* {statusPaciente.identificacao ? " ✔️" : " ❌"} */}
-                                        </button>
-
-
-
-                                        <button 
-                                            onClick={() => navegarERecolher('/interno/PacienteEndereco')}
-                                        >
-                                            Endereço
-                                            {/* {statusPaciente.endereco ? " ✔️" : " ❌"} */}
-                                        </button>
-
-
-
-                                        <button 
-                                            onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}
-                                        >
-                                            Alimentação
-                                            {/* {statusPaciente.alimentacao ? " ✔️" : " ❌"} */}
-                                        </button>
-
-
-
-                                        <button 
-                                            onClick={() => navegarERecolher('/interno/PacienteBanho')}
-                                        >
-                                            Banho
-                                            {/* {statusPaciente.banho ? " ✔️" : " ❌"} */}
-                                        </button>
-
-
-
-                                        <button 
-                                            onClick={() => navegarERecolher('/interno/PacienteEmergencia')}
-                                        >
-                                            Emergência
-                                            {/* {statusPaciente.emergencia ? " ✔️" : " ❌"} */}
-                                        </button>
-
-
-
-                                    </div>
-
-
-                                )}
-
-
-
-                                
+                                <div className={`submenu-flutuante-cliente-prof ${secaoAberta === 'paciente' ? 'aberto' : 'fechado'}`}>
+                                    <button onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}>Identificação</button>
+                                    <button onClick={() => navegarERecolher('/interno/PacienteEndereco')}>Endereço</button>
+                                    <button onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}>Alimentação</button>
+                                    <button onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}>Remédios</button>
+                                    <button onClick={() => navegarERecolher('/interno/PacienteBanho')}>Banho</button>
+                                    <button onClick={() => navegarERecolher('/interno/PacienteBanho')}>Acordado</button>
+                                    <button onClick={() => navegarERecolher('/interno/PacienteBanho')}>Recreação</button>
+                                    <button onClick={() => navegarERecolher('/interno/PacienteEmergencia')}>Emergência</button>
+                                </div>
                             </div>
-
                         </>
                     )}
+
 
 
 
@@ -1189,7 +1199,6 @@ export default function App() {
 
 
 
-
                         
                         {/* INICIO - BOTAO MEU PERFIL */}
                         <button 
@@ -1212,7 +1221,6 @@ export default function App() {
 
 
                         {/* INICIO DO - SUB MENU - DADOS DO USUARIO */}
-
                         <div className={`SubmenuFlutuante-Estilizado ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}>
                             
                             <div className="Header-Menu-Perfil">
@@ -1234,7 +1242,11 @@ export default function App() {
 
 
 
+
+
                                     <div className="Divisor-Menu" />
+
+
 
 
                                     {/* ADMINISTRADOR - PRECISA PREENCHER NOME E SENHA */}
@@ -1250,15 +1262,24 @@ export default function App() {
                                     )}
 
 
+
+
+
                                    
                                     <button onClick={() => navegarERecolher('/interno/UsuarioContato')}>
-                                    Contato
-                                        {/* Contato {statusCards.contato ? "✔️" : "❌"} */}
+
+                                        Contato {statusCliente.contato ? "✔️" : "❌"}
+
                                     </button>
+
+
+
                                     <button onClick={() => navegarERecolher('/interno/Endereco')}>
-                                    Endereço
-                                        {/* Endereço {statusCards.endereco ? "✔️" : "❌"} */}
+
+                                        Endereço {statusCliente.endereco ? "✔️" : "❌"}
+
                                     </button>
+
 
 
 
@@ -1268,10 +1289,11 @@ export default function App() {
 
                                     {dadosToken?.func !== 'cliente' && (
                                         <>
+
                                             <button onClick={() => navegarERecolher('/interno/Cnpj')}>
-                                            CNPJ
-                                                {/* CNPJ {statusCards.cnpj ? "✔️" : "❌"} */}
+                                                CNPJ {statusCliente.cnpj ? "✔️" : "❌"}
                                             </button>
+                                            
                                             <button onClick={() => navegarERecolher('/interno/Formacao')}>
                                             Formação
                                                 {/* Formação {statusCards.formacao ? "✔️" : "❌"} */}
@@ -1362,19 +1384,13 @@ export default function App() {
 
                 ) : (
                     
+
+
                     // ------------------------------------
                     // INICIO - PARA VISITANTES - ENTRAR OU CADASTRAR
                     // ------------------------------------
 
                     <div className="submenu-container-visitante">
-
-
-
-
-
-
-
-
 
 
 
@@ -1410,14 +1426,6 @@ export default function App() {
 
 
 
-
-
-
-
-
-
-
-
                         {/* INICIO - BOTAO ENTRAR */}
 
                            <div style={{ position: 'relative', display: 'inline-block' }}>
@@ -1425,12 +1433,16 @@ export default function App() {
                                 className={`Botao-Acao-Visitante-Perfil ${exibirBalaoDicaEntrar ? 'pulsar-ativo' : ''}`} 
                                 style={{ width: '90px' }} 
                                 onClick={(e) => {
-                                    console.log("");
-                                    console.log("📐 ----------------------------------");
-                                    console.log("📐 🚀 EVENTO: Clique no botão 'Entrar'");
-                                    console.log("📐 📍 navegarERecolher('/Logar');");
-                                    console.log("📐 ----------------------------------");
+
+                                    // console.log("");
+                                    // console.log("📐 ----------------------------------");
+                                    // console.log("📐 🚀 EVENTO: Clique no botão 'Entrar'");
+                                    // console.log("📐 componente - 🧿 App.jsx");
+                                    // console.log("📐 📍 navegarERecolher('/Logar');");
+                                    // console.log("📐 ----------------------------------");
+
                                     navegarERecolher('/Logar');
+
                                 }}
                             >
                                 <span>Entrar</span>
@@ -1442,10 +1454,6 @@ export default function App() {
                         </div>     
                                
                         {/* FIM - BOTAO ENTRAR */}
-
-
-
-
 
 
 
@@ -1465,6 +1473,21 @@ export default function App() {
 
 
             </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

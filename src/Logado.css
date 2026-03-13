@@ -230,7 +230,7 @@
 /* 🎭 O corpo principal onde as páginas deslizam */
 .logado-palco-principal {
     flex: 1;
-    background-color: #f0f2f5;
+    /* background-color: #f0f2f5; */
     /* background-color: #73ca94; */
    
     

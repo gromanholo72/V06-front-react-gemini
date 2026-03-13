@@ -17,9 +17,13 @@ html, body {
 
 body {
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
   /* Fundo profissional padrão para destacar os cards */
-  background-color: #f4f7f6; 
-  color: #333;
+
+  /* background-color: #f4f7f6;  */
+  background-color: #b0bdb9;
+  /* color: #333; */
+  
   
   /* 🛡️ BLINDAGEM DE MOVIMENTO (PADRÃO GIULIANO) */
   /* Barra sempre presente para evitar pulos laterais de layout */
