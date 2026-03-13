@@ -35,12 +35,12 @@ export const URL_SERVIDOR = window.location.hostname === "localhost"
     ? "http://localhost:3001"                         // Se estiver no PC
     : "https://v06-back-node-gemini-production.up.railway.app"; // Se estiver no Railway
 
-    // console.log("");
-    // console.log("🔍 -----------------------------------------------------------");
-    // console.log("🔍 INSPEÇÃO DE DOMÍNIO");
-    // console.log("🔍 componente - 🏛️ AutenticacaoProvider.jsx");
-    // console.log("🔍 Hostname atual:", window.location.hostname);
-    // console.log("🔍 -----------------------------------------------------------");
+    console.log("");
+    console.log("🔍 -----------------------------------------------------------");
+    console.log("🔍 INSPEÇÃO DE DOMÍNIO");
+    console.log("🔍 componente - 🏛️ AutenticacaoProvider.jsx");
+    console.log("🔍 Hostname atual:", window.location.hostname);
+    console.log("🔍 -----------------------------------------------------------");
 
 
 
