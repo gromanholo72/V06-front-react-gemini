@@ -1,3 +1,0 @@
-git add .
-git commit -m "🚀 Protegendo a obra com .gitignore"
-git push

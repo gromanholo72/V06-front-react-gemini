@@ -798,25 +798,25 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
                         </div>
                         
                         {/* --- E-MAIL --- */}
-                        <div className="CadUsuarioLargMail">                  
+                        {/* <div className="CadUsuarioLargMail">                  
                             <label>E-mail:</label>                                                                                      
                             <input 
                                 type="email" 
-                                name="mail" // 🔑 Etiqueta para o Escriturário
+                                name="mail"
                                 placeholder="exemplo@email.com"
                                 value={novoUsuario.mail} 
                                 autoComplete="email"
                                 onChange={handleChange} 
                                 required
                             />   
-                        </div> 
+                        </div>  */}
 
                         {/* --- WHATSAPP --- */}
-                        <div className="CadUsuarioLargFone">                  
+                        {/* <div className="CadUsuarioLargFone">                  
                             <label>WhatsApp:</label>                                                                                    
                             <input 
                                 type="text" 
-                                name="fone" // 🔑 Etiqueta para o Escriturário
+                                name="fone"
                                 placeholder="(00) 00000-0000"
                                 value={novoUsuario.fone} 
                                 onChange={mascaraTelefone}
@@ -824,7 +824,7 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
                                 maxLength="15"
                                 required
                             />   
-                        </div> 
+                        </div>  */}
 
                         {/* --- FUNÇÃO / INTERESSE --- */}
                         <div className="CadUsuarioLargFunc">                  
@@ -914,8 +914,8 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
                             nome: "JOANA DE CASSIA MEDEIROS", 
                             cpef: "103.646.340-06",
-                            mail: "gromanholo722@gmail.com",
-                            fone: "(16) 9-8185-0365",
+                            // mail: "gromanholo722@gmail.com",
+                            // fone: "(16) 9-8185-0365",
 
                             func: "cuidadora", 
 
@@ -929,8 +929,8 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
                             nome: "PAULA TOLER DO PASSADO", 
                             cpef: "663.745.531-87",
-                            mail: "aromanholo7724@gmail.com", 
-                            fone: "(16) 9-7777-6666",
+                            // mail: "aromanholo7724@gmail.com", 
+                            // fone: "(16) 9-7777-6666",
 
                             func: "cuidadora", 
 
@@ -944,8 +944,8 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
                             nome: "MARIA DAS GRAÇAS MENEGUEL", 
                             cpef: "519.310.058-93",
-                            mail: "gromanholoere44@gmail.com", 
-                            fone: "(16) 9-7777-6666",
+                            // mail: "gromanholoere44@gmail.com", 
+                            // fone: "(16) 9-7777-6666",
 
                             func: "cuidadora", 
 
@@ -959,8 +959,8 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
                             nome: "ISABEL PILANTRA PRA SEMPRE", 
                             cpef: "200.335.920-63",
-                            mail: "gromanholoere44@gmail.com", 
-                            fone: "(16) 9-7777-6666",
+                            // mail: "gromanholoere44@gmail.com", 
+                            // fone: "(16) 9-7777-6666",
 
                             func: "cuidadora", 
                             
@@ -974,8 +974,8 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
                             nome: "BEATRIZ QUE GOSTA DO PAI", 
                             cpef: "060.915.660-83",
-                            mail: "aromanholo7745@gmail.com", 
-                            fone: "(16) 9-4545-4545",
+                            // mail: "aromanholo7745@gmail.com", 
+                            // fone: "(16) 9-4545-4545",
 
                             func: "cliente", 
                             // datc: dataHoje,
@@ -989,8 +989,8 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
                             nome: "LUCIANA AMARAL MATADO MATARAIA", 
                             cpef: "763.626.770-56",
-                            mail: "aromanholo7745@gmail.com", 
-                            fone: "(16) 9-4545-4545",
+                            // mail: "aromanholo7745@gmail.com", 
+                            // fone: "(16) 9-4545-4545",
 
                             func: "cliente", 
                             // datc: dataHoje,
@@ -1003,8 +1003,8 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
                             nome: "MARCO ANTONIO CASALE", 
                             cpef: "844.450.750-43",
-                            mail: "aromanholo7745@gmail.com", 
-                            fone: "(16) 9-4545-4545",
+                            // mail: "aromanholo7745@gmail.com", 
+                            // fone: "(16) 9-4545-4545",
 
                             func: "cliente", 
                             // datc: dataHoje,

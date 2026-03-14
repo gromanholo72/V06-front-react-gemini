@@ -1,18 +1,20 @@
 
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ref, update, get } from "firebase/database"; 
 import { db_realtime } from './firebaseConfig.js';
 
 import { useAuth } from './AutenticacaoContexto';
 
-import './EstiloForm.css';
+import './Formacao.css';
 
 
 
 export function Formacao() {
 
     const { dadosToken, dadosUsuarioCompleto } = useAuth();
+
+    const formacaoInputRef = useRef(null);
 
     // 📦 Buscando o crachá no Armário (localStorage)
     // const dadosArmario = JSON.parse(localStorage.getItem('dadosPublicos')) || {};
@@ -28,10 +30,17 @@ export function Formacao() {
     const [instituicao, setInstituicao] = useState('');
 
     // 🔒 Controle de Edição
+    const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
     const [podeEditar, setPodeEditar] = useState(false);
 
 
-
+    useEffect(() => {
+        // Se o portão de edição abrir, foca no primeiro campo
+        if (podeEditar) {
+            formacaoInputRef.current?.focus();
+        }
+    }, [podeEditar]);
+    
 
 
 
@@ -65,56 +74,55 @@ export function Formacao() {
     
 
 
-
-    const [temDadosGravados, setTemDadosGravados] = useState(false);
-    
-    
     /* 🕵️‍♂️ FUNÇÃO: Distribui os dados da Antena Central para os cards de Formação */
     const distribuirDadosEspecialidades = async () => {
-    
-
-
-        /* 🧱 Verificamos se o objeto de usuário já existe */
-        if (!dadosUsuarioCompleto) {
-            console.warn("✨ ⏳ Usuário ainda não carregado na memória.");
+        if (!dadosUsuarioCompleto?.cpef) {
+            console.warn("✨ ⏳ CPF não encontrado, aguardando sinal da Antena Central...");
             return;
         }
-
-
-
-        const info = dadosUsuarioCompleto?.formacao_dados;
-
-        /* 🧱 REGRA: Verifica se o objeto existe e se pelo menos um campo tem valor */
-        const temConteudoReal = info && Object.values(info).some(valor => valor !== '' && valor !== null);
     
-        if (temConteudoReal) {
+        const infoFormacaoMemoria = dadosUsuarioCompleto?.formacao_dados;
     
-            console.log("");
-            console.log("✨ 🎓 ------------------------------------------------------");
-            console.log("✨ 🎓 Populando cards com dados existentes na memória.");
-            console.log("✨ 🎓 dadosUsuarioCompleto?.formacao_dados", temConteudoReal);
-            console.log("✨ 🎓 ------------------------------------------------------");
-
-            popularCamposFormacao(info);
-            setPodeEditar(false);
-            setTemDadosGravados(true);
+        // Verifica se o objeto de formação na memória está vazio ou não existe
+        if (!infoFormacaoMemoria || Object.values(infoFormacaoMemoria).every(v => !v)) {
+            console.warn("✨ 🎓 Formação vazia na memória. Buscando na Antena Central...");
+            
+            const cpfLimpo = dadosUsuarioCompleto.cpef.replace(/\D/g, "");
+            const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/formacao_dados`);
     
+            try {
+                const snapshot = await get(caminhoNoBanco);
+                
+                if (snapshot.exists() && Object.values(snapshot.val()).some(v => v)) {
+                    const dadosFormacao = snapshot.val();
+                    console.warn("✨ ✅ Formação encontrada no Realtime.");
+                    popularCamposFormacao(dadosFormacao);
+                    setEhNovoCadastro(false);
+                    setPodeEditar(false);
+                } else {
+                    console.warn("✨ 🎓 Nenhuma formação no banco. Liberando edição para novo cadastro.");
+                    limparCampos();
+                    setEhNovoCadastro(true);
+                    setPodeEditar(true);
+                }
+            } catch (error) {
+                console.error("❌ Erro ao buscar formação na Antena Central:", error);
+                setPodeEditar(true); // Libera edição em caso de erro
+            }
         } else {
-    
-            console.log("");
-            console.log("✨ 🎓 ------------------------------------------------------");
-            console.warn("✨ 🎓 Nenhuma formação detectada na memória. Liberando para novo cadastro.");
-            console.log("✨ 🎓 ------------------------------------------------------");
-
-            popularCamposFormacao({}); 
-            setPodeEditar(true);
-            setTemDadosGravados(false);
-
-
+            console.warn("✨ 🛰️ 🎓 Populando cards com formação da memória.");
+            popularCamposFormacao(infoFormacaoMemoria);
+            setEhNovoCadastro(false);
+            setPodeEditar(false);
         }
     };
     
-
+    const limparCampos = () => {
+        setFormacao('');
+        setEspecificacao('');
+        setRegistroProfissional('');
+        setInstituicao('');
+    };
 
 
 
@@ -140,6 +148,21 @@ export function Formacao() {
 
     // 💾 SALVAR NO FIREBASE
     const salvarEspecialidadeNoBanco = async () => {
+
+        // 🧱 VALIDAÇÃO DE SEGURANÇA
+        if (!formacao.trim()) {
+            alert("⚠️ Por favor, selecione o Nível de Formação antes de salvar.");
+            formacaoInputRef.current?.focus();
+            return;
+        }
+
+        console.log("");
+        console.log("📐 ----------------------------------");
+        console.log("📐 🚀 EVENTO: Clique no botão '💾 Salvar Formação'");
+        console.log("📐 componente - 🧿 Formacao.jsx");
+        console.log("📐 📍 update(ref(db_realtime, `usuarios/...`))");
+        console.log("📐 ----------------------------------");
+
         try {
 
             const cpfLimpo = dadosUsuarioCompleto.cpef.replace(/\D/g, "");
@@ -155,6 +178,7 @@ export function Formacao() {
             await update(caminhoNoBanco, { formacao_dados: dadosFormacao });
 
             alert("✅ Formação atualizada com sucesso!");
+            setEhNovoCadastro(false);
 
             setPodeEditar(false);
 
@@ -180,22 +204,23 @@ export function Formacao() {
 
 
     return (
-        <div className="componente-principal-padrao">
+        <div className="perfil-formacao-componente-principal">
             {/* ❌ Cabeçalho antigo removido para manter a limpeza da planta */}
 
-            <div className="componente-suporte-padrao">
+            <div className="perfil-formacao-componente-suporte">
 
                 {/* 🏗️ Início do Card de Formação */}
-                <div className="card-padrao">
-                    <div className="card-padrao-titulo">🎓 FORMAÇÃO PROFISSIONAL</div>
-                    
-                    <div className="card-padrao-corpo">
+                <div className="perfil-formacao-usuario-card">
+                    <div className="perfil-formacao-card-titulo">🎓 FORMAÇÃO PROFISSIONAL</div>
+                                        
+                    <div className="perfil-formacao-card-corpo">
                       
                       
                             
                             <div className="flex-nivel">
-                                <label>Nível de Formação</label>
-                                <select 
+                                <label>Nível de Formação <span className="asterisco-obrigatorio">*</span></label>
+                                <select
+                                    ref={formacaoInputRef} 
                                     disabled={!podeEditar} 
                                     value={formacao} 
                                     onChange={(e) => setFormacao(e.target.value)}
@@ -241,7 +266,11 @@ export function Formacao() {
                                     onChange={(e) => setInstituicao(e.target.value)} 
                                 />
                             </div>
-                           
+
+
+                            <small className="observacao-obrigatorio">
+                                Apenas o campo com <span className="asterisco-obrigatorio">*</span> é de preenchimento obrigatório.
+                            </small>
 
 
 
@@ -249,16 +278,35 @@ export function Formacao() {
 
                                 {!podeEditar ? (
 
-                                    <button type="button" className="BotaoEditar" onClick={() => setPodeEditar(true)}>
+                                    <button 
+                                        type="button" 
+                                        className="BotaoEditar" 
+                                        onClick={() => {
+                                            console.log("");
+                                            console.log("📐 ----------------------------------");
+                                            console.log("📐 🚀 EVENTO: Clique no botão '🔓 Editar Formação'");
+                                            console.log("📐 componente - 🧿 Formacao.jsx");
+                                            console.log("📐 📍 setPodeEditar(true)");
+                                            console.log("📐 ----------------------------------");
+                                            setPodeEditar(true)
+                                        }}>
                                         🔓 Editar Formação
                                     </button>
 
                                 ) : (
                                     <>
                                         <button type="button" className="BotaoSalvar" onClick={salvarEspecialidadeNoBanco}>💾 Salvar Formação</button>
-                                 
-                                        {temDadosGravados && (
-                                            <button type="button" className="BotaoCancelar" onClick={() => { distribuirDadosEspecialidades(); setPodeEditar(false); }}>✖️ Cancelar</button>
+                                        
+                                        {!ehNovoCadastro && (
+                                            <button type="button" className="BotaoCancelar" onClick={() => { 
+                                                console.log("");
+                                                console.log("📐 ----------------------------------");
+                                                console.log("📐 🚀 EVENTO: Clique no botão '✖️ Cancelar'");
+                                                console.log("📐 componente - 🧿 Formacao.jsx");
+                                                console.log("📐 📍 distribuirDadosEspecialidades() & setPodeEditar(false)");
+                                                console.log("📐 ----------------------------------");
+                                                distribuirDadosEspecialidades(); setPodeEditar(false); 
+                                            }}>✖️ Cancelar</button>
                                         )}
                                         
                                     </>

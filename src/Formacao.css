@@ -1,0 +1,161 @@
+/* 🎓 Estilos para o Card de Formação */
+
+/* 🏠 1. COMPONENTE-PRINCIPAL (PALCO DO SETOR) */
+.perfil-formacao-componente-principal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */
+.perfil-formacao-componente-suporte {
+    width: 100%;
+    min-width: 300px;
+    max-width: 600px;
+    display: grid;
+    gap: 20px;
+}
+
+/* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */
+.perfil-formacao-usuario-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+    margin: 20px;
+}
+
+/* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */
+.perfil-formacao-card-titulo {
+    background-color: rgb(145, 215, 185);
+    padding: 15px 20px;
+    font-weight: bold;
+    color: #333333;
+    font-size: 20px;
+    text-align: left;
+}
+
+/* 📄 5. CARD-BODY (ÁREA DE CONTEÚDO) */
+.perfil-formacao-card-corpo {
+    padding-top: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Flexbox definitions for Formacao fields */
+.flex-nivel,
+.flex-curso,
+.flex-registro,
+.flex-instituicao {
+    flex: 1 1 200px;
+}
+
+/* 🔍 6. CAMPOS (AGRUPADORES DE DADOS) */
+.perfil-formacao-card-corpo div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.perfil-formacao-card-corpo label {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    text-align: left;
+    margin-left: 4px;
+}
+
+/* 🎫 7. INPUTS (ACABAMENTO DOS DADOS) */
+.perfil-formacao-card-corpo input,
+.perfil-formacao-card-corpo select {
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: text;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* � Cursor de mãozinha para o combo de seleção */
+.perfil-formacao-card-corpo select {
+    cursor:default;
+}
+
+
+
+/* ��🚫 8. INPUT-DISABLED (BLOQUEIO TÉCNICO) */
+.perfil-formacao-card-corpo input:disabled,
+.perfil-formacao-card-corpo select:disabled {
+    background-color: rgb(240, 240, 240) !important;
+    color: #777777 !important;
+    cursor: not-allowed !important;
+    opacity: 1 !important;
+}
+
+/* 🕹️ 9. ÁREA DE BOTÕES (COMANDO DOS CARDS) */
+.AreaBotoes {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.AreaBotoes button {
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: filter 0.2s;
+}
+
+.BotaoEditar { background-color: #007bff; color: white; width: 100%; }
+.BotaoSalvar { background-color: #28a745; color: white; flex: 2; }
+.BotaoCancelar { background-color: #dc3545; color: white; flex: 1; }
+
+.AreaBotoes button:hover {
+    filter: brightness(0.9);
+}
+
+/* Observação sobre campo obrigatório */
+.observacao-obrigatorio {
+    color: #e00c0c;
+    /* margin-top: 20px;
+    margin-bottom: 15px; */
+    display: block;
+    text-align: left;
+    background-color: wheat;
+    font-size: 0.9em;
+    padding: 10px;
+    width: 100%;
+}
+
+.asterisco-obrigatorio {
+    color: red;
+    font-weight: bold;
+}
+
+/* Media Query */
+@media (max-width: 768px) {
+    .AreaBotoes { flex-direction: column; }
+    .perfil-formacao-card-corpo label { font-size: 16px !important; }
+    .perfil-formacao-card-corpo input,
+    .perfil-formacao-card-corpo select { font-size: 18px !important; }
+    .AreaBotoes button { padding: 20px !important; font-size: 18px !important; }
+}

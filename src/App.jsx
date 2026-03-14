@@ -618,12 +618,34 @@ export default function App() {
     const [statusCliente, setStatusCliente] = useState({
         contato: false,
         endereco: false,
-        cnpj: false
+        cnpj: false,
+        formacao: false
     });
 
 
-    // const statusClienteCompleto = Object.values(statusCliente).every(status => status === true);
+    // -----------------------------------------------------------------
+    /* INICIO - 🚦 SEMÁFORO GERAL: Verifica se todos os cards estão OK */
+    // -----------------------------------------------------------------
 
+    const perfilEstaCompleto = Object.values(statusCliente).every(status => status === true);
+
+    // 🧱 Regra de Ouro: Cliente só acessa Paciente se tiver Contato e Endereço preenchidos
+    const clientePodeAcessarPaciente = statusCliente.contato && statusCliente.endereco;
+
+    useEffect(() => {
+
+        console.log("");
+        console.log("🚦 ----------------------------------");
+        console.log("🚦 SEMÁFORO DE INTEGRIDADE (App.jsx)");
+        console.log(`🚦 Perfil completo? ${perfilEstaCompleto ? '✅ SIM' : '❌ NÃO'}`);
+        console.log(`🚦 Cliente (Paciente)? ${clientePodeAcessarPaciente ? '✅ LIBERADO' : '🔒 TRAVADO'}`);
+        console.log("🚦 ----------------------------------");
+
+    }, [statusCliente]);
+
+    // -----------------------------------------------------------------
+    /* FIM - 🚦 SEMÁFORO GERAL: Verifica se todos os cards estão OK */
+    // -----------------------------------------------------------------
 
     useEffect(() => {
 
@@ -676,20 +698,25 @@ export default function App() {
                     cnpjNoBanco?.num_cnpj?.trim()
                 );
 
-
+                const formacaoNoBanco = dados.formacao_dados;
+                const temFormacao = !!(
+                    formacaoNoBanco?.nivel?.trim()
+                );
 
                 console.log("");
                 console.log("🔍 -----------------");
                 console.log("🔍 STATUS DO CLIENTE");
-                console.log("🔍 contato  :", temContato);
-                console.log("🔍 endereco :", temEndereco);
-                console.log("🔍 cnpj     :", temCnpj);
+                console.log("🔍 📞 Contato  :", temContato);
+                console.log("🔍 📍 Endereco :", temEndereco);
+                console.log("🔍 🏢 CNPJ     :", temCnpj);
+                console.log("🔍 🎓 Formação :", temFormacao);
                 console.log("🔍 ------------------");
 
                 setStatusCliente({
                     contato: temContato,
                     endereco: temEndereco,
-                    cnpj: temCnpj
+                    cnpj: temCnpj,
+                    formacao: temFormacao
                 });
 
             } else {
@@ -697,7 +724,8 @@ export default function App() {
                 setStatusCliente({
                     contato: false,
                     endereco: false,
-                    cnpj: false
+                    cnpj: false,
+                    formacao: false
                 });
 
             }
@@ -1062,12 +1090,17 @@ export default function App() {
                                 Diretrizes
                             </button>
 
+
+
                             <button 
-                                className="Btn-geral-cuidadora-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/interno/Chamados')}
+                                className={`Btn-geral-cuidadora-prof btn-centralizado ${perfilEstaCompleto ? '' : 'BotaoBloqueado'}`}
+                                onClick={() => perfilEstaCompleto && navegarERecolher('/interno/Chamados')}
+                                title={!perfilEstaCompleto ? "Complete seu perfil (Contato, Endereço, CNPJ e Formação) para liberar." : "Acessar Chamados"}
                             >
-                                Chamados
+                                Chamados {!perfilEstaCompleto && "🔒"}
                             </button>
+
+
                         </>
                     )}
 
@@ -1085,7 +1118,7 @@ export default function App() {
                             </button>
 
                             <button 
-                                className="Btn-geral-cliente-prof btn-centralizado" 
+                                className="Btn-geral-cliente-prof btn-centralizado fonte-diretrizes" 
                                 onClick={() => navegarERecolher('/interno/Diretrizes')}
                             >
                                 Diretrizes
@@ -1114,13 +1147,14 @@ export default function App() {
                             {/* --- SUBMENU: PACIENTE --- */}
                             <div className="submenu-tudo-paciente-prof">
                                 <button 
-                                    className="Btn-geral-cliente-prof" 
-                                    onClick={(e) => lidarComClique(e, 'paciente')}
+                                    className={`Btn-geral-cliente-prof btn-fonte-paciente ${clientePodeAcessarPaciente ? '' : 'BotaoBloqueado'}`}
+                                    onClick={(e) => clientePodeAcessarPaciente && lidarComClique(e, 'paciente')}
                                     aria-expanded={secaoAberta === 'paciente'}
+                                    title={!clientePodeAcessarPaciente ? "Preencha Contato e Endereço para liberar." : "Gerenciar Paciente"}
                                 >
                                     Paciente
                                     <span className="icone-seta">
-                                        {secaoAberta === 'paciente' ? "🔼" : "🔽"}
+                                        {!clientePodeAcessarPaciente ? "🔒" : (secaoAberta === 'paciente' ? "🔼" : "🔽")}
                                     </span>
                                 </button>
                                 
@@ -1220,7 +1254,9 @@ export default function App() {
 
 
 
+
                         {/* INICIO DO - SUB MENU - DADOS DO USUARIO */}
+                        
                         <div className={`SubmenuFlutuante-Estilizado ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}>
                             
                             <div className="Header-Menu-Perfil">
@@ -1228,10 +1264,9 @@ export default function App() {
                                 <span>{formatarCPF(dadosToken?.cpef)}</span>
                             </div>
 
-                            <div className="Divisor-Menu" />
-
+                          
                             <div className="Header-Funcao">
-                                <span>Função/Permissão:</span>
+                                <span>Função:</span>
                                 <strong>{dadosToken?.func}</strong>   
                             </div>
 
@@ -1244,61 +1279,79 @@ export default function App() {
 
 
 
-                                    <div className="Divisor-Menu" />
+                                  
 
 
 
 
                                     {/* ADMINISTRADOR - PRECISA PREENCHER NOME E SENHA */}
-                                    {(dadosToken?.func === 'administrador' && dadosToken?.nome === '') && (
+                                    {/* {(dadosToken?.func === 'administrador' && dadosToken?.nome === '') && (
                                         <>
 
                                             <button onClick={() => navegarERecolher('/interno/UsuarioIdentificacao')}>
                                             Identificação
-                                                {/* Identificação {statusCards.identificacao ? "✔️" : "❌"} */}
+                                                Identificação {statusCards.identificacao ? "✔️" : "❌"}
                                             </button>
 
                                         </>
-                                    )}
+                                    )} */}
 
 
 
 
 
                                    
-                                    <button onClick={() => navegarERecolher('/interno/UsuarioContato')}>
+                                    <button 
+                                    
+                                        className="Perfil-Opcoes"
+                                        onClick={() => navegarERecolher('/interno/UsuarioContato')}>
 
-                                        Contato {statusCliente.contato ? "✔️" : "❌"}
-
-                                    </button>
-
-
-
-                                    <button onClick={() => navegarERecolher('/interno/Endereco')}>
-
-                                        Endereço {statusCliente.endereco ? "✔️" : "❌"}
+                                        {statusCliente.contato ? "✔️" : "❌"} Contato
 
                                     </button>
 
 
 
+                                 
 
+
+
+                                    <button 
+
+                                        className="Perfil-Opcoes"
+                                        onClick={() => navegarERecolher('/interno/Endereco')}>
+
+                                        {statusCliente.endereco ? "✔️" : "❌"} Endereço
+
+                                    </button>
+
+
+
+                                  
 
                                     
 
 
                                     {dadosToken?.func !== 'cliente' && (
-                                        <>
+                                    <>
 
-                                            <button onClick={() => navegarERecolher('/interno/Cnpj')}>
-                                                CNPJ {statusCliente.cnpj ? "✔️" : "❌"}
-                                            </button>
-                                            
-                                            <button onClick={() => navegarERecolher('/interno/Formacao')}>
-                                            Formação
-                                                {/* Formação {statusCards.formacao ? "✔️" : "❌"} */}
-                                            </button>
-                                        </>
+                                        <button 
+                                        
+                                            className="Perfil-Opcoes"
+                                            onClick={() => navegarERecolher('/interno/Cnpj')}>
+                                            {statusCliente.cnpj ? "✔️" : "❌"} CNPJ
+                                        </button>
+                                        
+                                    
+                                        <button 
+                                        
+                                            className="Perfil-Opcoes"
+                                            onClick={() => navegarERecolher('/interno/Formacao')}>
+                                            {statusCliente.formacao ? "✔️" : "❌"} Formação 
+
+                                        </button>
+                                        
+                                    </>
                                     )}
 
 
@@ -1313,7 +1366,6 @@ export default function App() {
 
 
                             {/* BOTAO SAIR - PARA TODOS O USUARIOS */}
-                            <div className="Divisor-Menu" />
 
                             <button 
                                 className="Botao-Acao-Sair" 
@@ -1336,7 +1388,7 @@ export default function App() {
                             {/* MEUS TESTES DE PERMISSAO NO FIREBASE */}
                             {/* ------------------------------------ */}
 
-                            <div className="Divisor-Menu" />
+                         
                            
                             {/* <button onClick={() => {
 

@@ -148,18 +148,31 @@
     opacity: 1;
 }
 
+
 /* 🧱 Estilo para o botão travado */
 .BotaoBloqueado {
     /* 🚫 Mostra o sinal de "proibido" ao passar o mouse */
-    cursor: not-allowed; 
+    cursor: not-allowed !important; 
     /* Deixa o botão mais claro/cinza para indicar inatividade */
-    opacity: 0.5; 
-
+    opacity: 0.6;
+    filter: grayscale(100%);
     user-select: none;
-    
-    /* Remove efeitos de clique ou hover enquanto bloqueado */
-    pointer-events: none; 
 }
+
+/* 🚫 BLOQUEIO DE HOVER: Impede que mude de cor ou borda quando travado */
+.BotaoBloqueado:hover {
+    color: #000000 !important;
+    background: rgb(185, 184, 184) !important; /* Cor base original */
+    border-top: 2px solid #306396 !important;
+    border-bottom: 2px solid #306396 !important;
+    transform: none !important;
+}
+
+/* 🚫 REMOVE O BRILHO: Tira o efeito de luz passando (::after) */
+.BotaoBloqueado::after {
+    display: none !important; 
+}
+
 
 /* 🧱 Aplicando especificamente no seletor de turno quando desabilitado */
 .seletor-turno-padrao:disabled {
@@ -208,7 +221,8 @@
     padding-bottom: 10px; */
 
     color: #000000;
-    background: rgb(185, 184, 184);
+    background: rgb(199, 197, 197);
+    /* background: rgb(212, 175, 55); */
     font-weight: bold;
     cursor: pointer;
     border-radius: 8px;
@@ -296,9 +310,20 @@
 }
 
 
-/* .btn-centralizado {
+.btn-centralizado {
     justify-content: center !important;
-} */
+}
+
+
+.btn-fonte-paciente {
+    letter-spacing: 1.7px !important;
+}
+
+
+.fonte-diretrizes{
+    letter-spacing: 1.7px !important;
+}
+
 
 /* 📦 Submenu Flutuante (Transição Suave) */
 .submenu-flutuante-cadastrar-prof {
@@ -556,7 +581,7 @@
 
 /* 🚀 Botão Principal Cuidadora */
 .Btn-geral-cuidadora-prof {
-    width: 90px; 
+    width: 110px; 
     height: 35px;
     display: flex;
     align-items: center;
@@ -1914,52 +1939,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s ease-in-out;
-    width: 30px;
-    margin-right: 5px;
-}
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
 
+
+    /* ⚓ ESTABILIZADORES DE RENDERIZAÇÃO */
+    backface-visibility: hidden;    /* Evita trepidação em motores Webkit */
+    transform: translateZ(0);       /* Força a aceleração de hardware (GPU) */
+    -webkit-font-smoothing: subpixel-antialiased;
+    
+    /* 🔦 Destaque ao passar o mouse */
+    background: rgba(255, 255, 255, 0.0);
+}
 
 .Botao-Chat:hover {
-    transform: scale(1.15);
-
-    filter: 
-    invert(1)
-    drop-shadow(0.5px 0.5px 0px rgb(255, 255, 255)) 
-    drop-shadow(-0.3px -0.3px 0px rgb(255, 255, 255));
-}
-
-/* .Botao-Chat:active {
-   
-    transform: scale(1.25);
-} */
-
-.Botao-Chat:hover .Img-Chat-Icone {
-
-    filter: brightness(1.2);
-    
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .Img-Chat-Icone {
-   
-    /* width: 100%; */
+    height: 30px;
+    width: auto;
     object-fit: contain; 
     display: block;
-    transition: transform 0.2s ease;
     
-    /* filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.15));
-    transition: all 0.2s ease; */
- 
-    filter: 
-    invert(1)
-    drop-shadow(0.5px 0.5px 0px rgb(255, 255, 255)) 
-    drop-shadow(-0.3px -0.3px 0px rgb(255, 255, 255));
-   
+    /* ⚪ Ícone Branco Puro para contraste no azul */
+    filter: brightness(0) invert(1);
+    transition: transform 0.3s ease;
 }
-
-/* .Botao-Chat:hover .Img-Chat-Icone {
-    filter: brightness(1.1) drop-shadow(0px 4px 8px rgba(0,0,0,0.2));
-} */
 
 
 
@@ -2009,93 +2019,226 @@
 
 
 
-
-
-
-.Header-Menu-Perfil {
-    padding: 5px 15px;
-    display: flex;
-    flex-direction: column;
-}
-
-.Header-Menu-Perfil strong {
-    font-size: 18px;
-}
-
-.Header-Funcao {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 15px;
-    border-radius: 8px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.Header-Funcao span {
-    font-size: 14px;
-    font-weight: bold;
-    color: black;
-    letter-spacing: 0.5px;
-}
-
-.Header-Funcao strong {
-    font-size: 14px;
-    background: #b1f1a8;
-    padding: 4px 8px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
 .Divisor-Menu {
     height: 1px;
-    background: #706f6f;
+    background: #000000 !important;
     margin: 5px 0;
 }
 
 
 
-
+/* 📋 SUBMENU FLUTUANTE - ESTILO MODERNO 2026 */
 .SubmenuFlutuante-Estilizado {
     position: absolute;
-    top: 110%;
+    top: 55px; /* 📐 Ajuste fino para afastar levemente do header */
     right: 0;
-    width: 280px;
-    background: rgb(235, 234, 234);
-    border-radius: 8px;
-    box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
-    padding: 10px 0;
+    width: 280px; /* 📐 Largura confortável para leitura */
+    
+    background: #ffffff; /* 🎨 Branco puro para limpeza visual */
+    
+    border-radius: 16px; /* 📐 Bordas bem arredondadas (Modern UI) */
+    
+    /* 🎨 Sombra de alta profundidade para destacar sobre o conteúdo */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 2px 10px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.06); /* Borda ultra sutil */
+    
+    padding: 20px; /* Espaçamento interno do card */
     z-index: 1000;
+    
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease-in-out;
+    gap: 4px; /* Espaço entre os botões */
+
+    /* 🏎️ Animação Física Suave */
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     opacity: 0;
-    transform: translateY(-40px);
+    transform: translateY(-20px) scale(0.98); /* Efeito de surgir e crescer levemente */
     pointer-events: none;
 }
 
 .SubmenuFlutuante-Estilizado.Ativo {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     pointer-events: auto;
 }
 
+
+
+
+
+/* 🧱 CABEÇALHO DO MENU (NOME E CPF) */
+.Header-Menu-Perfil {
+    /* padding: 10px 15px; */
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.Header-Menu-Perfil strong {
+    font-size: 14px;
+    color: #2c3e50;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.Header-Menu-Perfil span {
+    font-size: 14px;
+    color: #080808;
+    margin-top: 2px;
+}
+
+/* 🏷️ TAG DE FUNÇÃO (BADGE) */
+.Header-Funcao {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    /* padding: 8px 15px; */
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    margin-bottom: 5px;
+
+
+    border-top: 2px solid #306396;
+    border-bottom: 2px solid #306396;
+    border-left: none;
+    border-right: none;
+
+
+}
+
+
+.Header-Funcao span {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.Header-Funcao strong {
+    font-size: 12px;
+    text-transform: uppercase;
+    background: #eaf2f8; /* Azul bem claro */
+    color: #306396;       /* Azul da marca */
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+
+
+
+
+
+
+
+
+.Perfil-Opcoes {
+
+
+    font-size: 16px !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+
+    color: rgb(0, 0, 0) !important;
+    background-color: #c6cdd4 !important;
+
+    /* 🧱 Ativa o modo de alinhamento inteligente */
+    display: flex;
+    
+    /* ↔️ Centraliza na horizontal */
+    justify-content: center;
+    
+    /* ↕️ Centraliza na vertical */
+    align-items: center;
+
+    /* 📏 Espaçamento interno (ajuste conforme sua necessidade) */
+    /* padding: 10px 20px; */
+    
+    /* 🎨 Outros estilos que você já deve ter */
+    width: 100%; /* ou a largura que desejar */
+    cursor: pointer;
+    text-align: center; /* Backup para navegadores muito antigos */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ➖ DIVISOR SUTIL */
+.Divisor-Menu {
+    height: 3px;
+    background: #f1f2f6; /* Cinza muito claro */
+    margin: 2px 10px;
+}
+
+
+.Divisor-Botao {
+    height: 3px;
+    background: #bebebe; /* Cinza muito claro */
+    margin: 6px 10px;
+}
+
+
+
+
+/* 🔘 BOTÕES DO MENU (ITENS DE NAVEGAÇÃO) */
 .SubmenuFlutuante-Estilizado button {
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 600;
+    color: #57606f; /* Cinza médio para texto */
     background: none;
     border: none;
-    padding: 10px 20px;
+    
+    padding: 12px 15px;
     text-align: left;
     cursor: pointer;
     width: 100%;
-    transition: 0.2s;
+    border-radius: 10px; /* Botões arredondados internamente */
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Texto na esquerda, Ícone na direita */
+    
+    transition: all 0.2s ease;
 }
 
+/* ✨ HOVER NOS BOTÕES */
 .SubmenuFlutuante-Estilizado button:hover {
-    color: #e0dbdb;
-    background: #747373;
+    color: #306396; /* Azul no texto */
+    background: #f1f4f8; /* Fundo azulado muito sutil */
+    transform: translateX(4px); /* Pequeno movimento para direita */
 }
 
+/* 🚪 BOTÃO SAIR (COM DESTAQUE DE ALERTA) */
+.SubmenuFlutuante-Estilizado .Botao-Acao-Sair {
+    font-size: 18px;
+    color: rgb(0, 0, 0); 
+    background: #306396;
+    background-color: rgb(212, 175, 55);
+    font-weight: 700;
+    justify-content: left; /* Centralizado */
+    margin-top: 5px;
+}
+
+.SubmenuFlutuante-Estilizado .Botao-Acao-Sair:hover {
+    background:#c0392b;  /* Fundo avermelhado sutil */
+    color: #fceceb;
+    transform: none; /* Não move, apenas muda cor */
+}
+
+/* 🧱 CORTINA TRANSPARENTE PARA FECHAR AO CLICAR FORA */
 .Cortina-Fechar {
     position: fixed;
     top: 0;
@@ -2138,53 +2281,71 @@
 
 
 .Botao-Acao-Meu-Perfil {
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 800;
+    /* font-weight: bold; */
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 5px 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 15px;
+    
+    /* Reset de estilos antigos */
+    /* padding: 6px 10px; */
+
+    padding-right: 14px;
+    padding-left: 6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+    border: none;
+    background: rgb(160, 159, 159);
+    color: rgb(7, 7, 7); /* Texto Branco */
+    
     cursor: pointer;
-    /* transition: all 0.2s; */
-    min-width: max-content;
-    position: relative;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    position: relative; /* Para o z-index e dropdown */
     z-index: 1001;
 }
 
 
 .Botao-Acao-Meu-Perfil:hover,
 .Botao-Acao-Meu-Perfil.Ativo {
-    background-color: #aaa6a6;
+    background-color: rgba(90, 86, 86);
     color: white;
-    border-color: #aaa6a6;
 }
 
 
 .Botao-Acao-Meu-Perfil span {
     white-space: nowrap;
     display: block;
+    letter-spacing: 0.5px;
 }
 
 .Avatar-Circulo {
     flex-shrink: 0;
-    width: 30px;
+    width: 32px;
     height: 30px;
-    background-color: #007bff;
-    background: #306396;
-    color: white;
+    
+    /* 🎨 Cores Invertidas para destaque */
+    background: white; 
+    color: #306396;
+    
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    font-weight: 800;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
 .Seta-Drop {
-    font-size: 16px;
-    transition: transform 0.3s ease;
-    display: inline-block;
+    font-size: 10px;
+    opacity: 0.8;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 2px;
 }
 
 .Seta-Drop.Aberta {
@@ -2468,6 +2629,66 @@
 
 
 
+
+
+
+
+
+
+/* ----------------------------------- */
+/* INICIO - MENU - ADMINISTRADOR PROF  */
+/* ----------------------------------- */
+
+
+
+/* 🚀 Botão Principal Administrador */
+.Btn-geral-administrador-prof {
+    width: 130px !important;
+    height: 45px;
+  
+}
+
+
+.submenu-flutuante-gerenciar-prof {
+
+    top: -5px; 
+    left: 135px;
+    /* height: 45px; */
+    width: 120px;
+}
+
+.submenu-flutuante-gerenciar-prof button {
+    /* width: 150px; */
+    height: 45px;
+    font-size: 14px !important; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ----------------------------------- */
 /* INICIO - MENU - CLIENTE PROF        */
 /* ----------------------------------- */
@@ -2652,6 +2873,3 @@
 
 
 }
-
-
-
