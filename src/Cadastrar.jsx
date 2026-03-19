@@ -470,14 +470,47 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
         console.log("📡 CPF:", novoUsuario.cpef);
         console.log("📡 URL:", URL_SERVIDOR);
 
+
+
+        // 📐 Preparando pacote para o servidor
+        const payload = {
+
+            // 👤 Dados Básicos
+            dadosBasico: {
+                cpef: novoUsuario.cpef,
+                nome: novoUsuario.nome,
+                func: novoUsuario.func
+            },
+
+            // 🔐 Dados Segurança
+            dadosSeguranca: {
+                senh: novoUsuario.senh
+            },
+
+            // ⚙️ Dados Internos
+            dadosInterno: {
+                perm: "basica",
+                situ: "ativo",
+                datc: new Date().toLocaleDateString('pt-BR'),
+                timestamp: Date.now()
+            }
+
+        };
+
+        console.log("");
+        console.log("📐 ----------------------------------");
+        console.log("📐 📦 DADOS PREPARADOS PARA ENVIO:");
+        console.log("📐 componente - Cadastrar.jsx");
+        console.log("📐 dadosUsuario:", payload);
+        console.log("📐 ----------------------------------");
+
+
         try {
 
-
-
-            const resposta = await fetch(`${URL_SERVIDOR}/cadastrar`, {
+            const resposta = await fetch(`${URL_SERVIDOR}/usuario/cadastrar/dados-bas-seg-int`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',},
-                body: JSON.stringify(novoUsuario),
+                body: JSON.stringify(payload),
             });
 
             const resultado = await resposta.json();
@@ -928,7 +961,7 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
                         onClick={() => preencherCampos({
 
                             nome: "PAULA TOLER DO PASSADO", 
-                            cpef: "663.745.531-87",
+                            cpef: "293.348.470-69",
                             // mail: "aromanholo7724@gmail.com", 
                             // fone: "(16) 9-7777-6666",
 

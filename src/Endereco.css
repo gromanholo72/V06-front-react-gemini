@@ -27,6 +27,9 @@
 
 /* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */
 .perfil-endereco-usuario-card {
+
+    position: relative; 
+    
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -40,14 +43,50 @@
 
 /* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */
 .perfil-endereco-card-titulo {
-    /* IMPLEMENTAÇÃO: Tom verde suave aprovado pelo senhor */
-    background-color: rgb(145, 215, 185);
-    /* border-bottom: 4px solid #e0e0e0; */
+    
+    
+    background-color: #ebf2f7; 
+    border-bottom: 3px solid #306396;
+
+
     padding: 15px 20px;
     font-weight: bold;
     color: #333333;
     font-size: 20px;
     text-align: left;
+}
+
+
+/* 📐 FEEDBACK FLUTUANTE (SALTADO) - Estilo Padronizado */
+.cad-admin-feedback-endereco {
+
+    position: absolute;
+
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    width: 90%;
+    z-index: 100; /* Garante que fique acima dos inputs */
+    
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    
+    /* ✨ O efeito "Saltado" */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    
+    animation: pularNaTela 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cad-admin-feedback-endereco.erro { 
+    background: #fff5f5; color: #c0392b; border: 1px solid #ffcece; 
+}
+
+.cad-admin-feedback-endereco.sucesso { 
+    background: #f0fdf4; color: #27ae60; border: 1px solid #bbf7d0; 
 }
 
 
@@ -106,12 +145,14 @@
     flex: 1 1 80px; 
 }
 
+
+
 .flex-bairro {
-    flex: 4 1 210px;
+    flex: 4 1 270px;
 }
 
 .flex-cidade {
-    flex: 4 1 210px;
+    flex: 4 1 270px;
 }
 
 .flex-estado {
@@ -289,9 +330,10 @@
     transition: filter 0.2s;
 }
 
-.BotaoEditar { background-color: #007bff; color: white; width: 100%; }
-.BotaoSalvar { background-color: #28a745; color: white; flex: 2; }
-.BotaoCancelar { background-color: #dc3545; color: white; flex: 1; }
+/* 🧱 Blindagem de Escopo: Adicionamos a classe pai para garantir a prioridade das cores */
+.perfil-endereco-usuario-card .BotaoEditar { background-color: #306396; color: white; width: 100%; }
+.perfil-endereco-usuario-card .BotaoSalvar { background-color: rgb(212, 175, 55); color: white; flex: 2; }
+.perfil-endereco-usuario-card .BotaoCancelar { background-color: #c0392b; color: white; flex: 1; }
 
 .AreaBotoes button:hover {
     /* IMPLEMENTAÇÃO: Efeito visual ao passar o mouse nas ferramentas */
@@ -310,6 +352,16 @@
     }
 }
 
+@keyframes pularNaTela {
+    from { 
+        opacity: 0;
+        transform: translate(-50%, -20px) scale(0.9);
+    }
+    to { 
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+}
 
 
     
@@ -336,20 +388,3 @@
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

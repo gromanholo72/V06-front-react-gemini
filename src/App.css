@@ -3,11 +3,15 @@
 
 .container-externo-blindado {
     
-  
+    background-color: #b0bdb9;
+    min-height: 100vh;
+   
+    border: 2px solid rgb(128, 126, 126);
 
     min-width: 320px;
-    /* min-height: 100vh; */
     width: 100%;
+    max-width: 1200px; /* 🧱 Limite Máximo da Janela do Projeto */
+    margin: 0 auto;    /* 🧱 Centraliza o projeto horizontalmente */
     display: flex;
     flex-direction: column;
   
@@ -41,8 +45,10 @@
     z-index: 1000;
     position: fixed; 
     top: 0;
-    left: 0;
+    left: 50%; /* 🧱 Centralização para elemento FIXO */
+    transform: translateX(-50%); /* 🧱 Garante o centro exato */
     width: 100%;
+    max-width: 1200px; /* 🧱 Respeita o mesmo limite do container */
     box-sizing: border-box;
 
     height: 70px;
@@ -310,9 +316,69 @@
 }
 
 
+
+
+
+
+
 .btn-centralizado {
     justify-content: center !important;
 }
+
+
+
+
+
+.fonte10px {
+    font-size: 10px !important;
+}
+
+.fonte12px {
+    font-size: 12px !important;
+}
+
+.fonte14px {
+    font-size: 14px !important;
+}
+
+
+
+
+
+.largura40px {
+    width: 40px !important;
+}
+
+.largura50px {
+    width: 50px !important;
+}
+
+.largura60px {
+    width: 60px !important;
+}
+
+.largura70px {
+    width: 70px !important;
+}
+
+.largura80px {
+    width: 80px !important;
+}
+
+.largura90px {
+    width: 90px !important;
+}
+
+.largura100px {
+    width: 100px !important;
+}
+
+.largura110px {
+    width: 110px !important;
+}
+
+
+
 
 
 .btn-fonte-paciente {
@@ -439,8 +505,10 @@
 
 /* 🚀 Botão Principal Administrador */
 .Btn-geral-administrador-prof {
-    width: 110px; 
+    width: 100px; 
     height: 35px;
+    font-size: 12px;
+
     display: flex;
     align-items: center;
     justify-content: space-between; 
@@ -2135,8 +2203,15 @@
 
 
 
+
+
+
+
+
+
 .Perfil-Opcoes {
 
+    border-bottom: 2px solid #306396 !important;
 
     font-size: 16px !important;
     padding-top: 15px !important;

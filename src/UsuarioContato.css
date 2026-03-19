@@ -29,10 +29,11 @@
 /* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */
 .perfil-contato-usuario-card {
 
+    position: relative; /* 🧱 Referência para o feedback flutuante */
     background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e1e1;
+    border-radius: 12px; /* 📐 Padrão CadAdmin (Mais arredondado) */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* 📐 Sombra mais suave do padrão */
     overflow: hidden;
     transition: box-shadow 0.3s ease;
     
@@ -42,15 +43,17 @@
 
 /* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */
 .perfil-contato-card-titulo {
+    /* 📐 Padrão CadAdmin (Identidade Visual) */
+    background-color: #ebf2f7; 
+    border-bottom: 3px solid #306396;
     
-    background-color: rgb(145, 215, 185);
-    border-bottom: 1px solid #e0e0e0;
     padding: 15px 20px;
-    font-weight: bold;
-    color: #333333;
-    font-size: 20px;
+    font-weight: 900;
+    color: #2c3e50;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     text-align: left;
-
 }
 
 /* 📄 5. CARD-BODY (ÁREA DE CONTEÚDO) */
@@ -83,7 +86,7 @@
 }
 
 .flex-contato-fone {
-    flex: 1 1 155px;
+    flex: 1 1 165px;
     width: 100px;
 }
 
@@ -157,13 +160,13 @@
 /* ✨ ESTADO DE FOCO (QUANDO O USUÁRIO CLICA PARA DIGITAR) */
 .perfil-contato-card-corpo input:focus {
     outline: none !important;
-    border-color: #007bff !important;
+    border-color: rgb(32,122,84) !important; /* 📐 Verde oficial do padrão */
     
     /* 🎨 VOLTANDO PARA O CINZA LEVE QUE O SENHOR PREFERE */
     background-color: #e9e4e4 !important; 
 
     /* 🛡️ PROTEÇÃO: Aplicando a sombra interna com a cor de foco para o Autofill não vencer */
-    box-shadow: 0 0 0px 1000px #a1a1a1 inset, 0 0 5px rgba(0, 123, 255, 0.2) !important;
+    box-shadow: 0 0 0px 1000px #a1a1a1 inset, 0 0 5px rgba(32,122,84, 0.2) !important;
     
     transition: background-color 0s; /* Resposta imediata ao clique */
 }
@@ -194,7 +197,62 @@
     box-shadow: 0 0 0px 1000px rgb(240, 240, 240) inset !important;
     transition: background-color 5000s ease-in-out 0s;
 }
-/* 🕹️ 9. ÁREA DE BOTÕES (COMANDO DOS CARDS) */
+
+/* --- FEEDBACK (MENSAGENS) --- */
+.perfil-contato-feedback {
+    /* display: block; */
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-weight: 600;
+    animation: fadeInSecoTotal 0.3s ease-in;
+}
+
+/* 📐 FEEDBACK FLUTUANTE (SALTADO) - Refatorado */
+.cad-admin-feedback {
+    position: absolute;
+    top: 65px; /* 📐 Logo abaixo do título do card */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza perfeitamente */
+    
+    width: 90%;
+    z-index: 100; /* Garante que fique acima dos inputs */
+    
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    text-align: center;
+    
+    /* ✨ O efeito "Saltado" */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    
+    animation: pularNaTela 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cad-admin-feedback.erro { 
+    background: #fff5f5; color: #c0392b; border: 1px solid #ffcece; 
+}
+
+.cad-admin-feedback.sucesso { 
+    background: #f0fdf4; color: #27ae60; border: 1px solid #bbf7d0; 
+}
+
+.perfil-contato-feedback.erro { background: #fdeded; color: #c0392b; border: 1px solid #fadbd8; }
+.perfil-contato-feedback.sucesso { background: #e9f7ef; color: #27ae60; border: 1px solid #d4efdf; }
+
+/* 📐 Padrão de Alerta Interno (Logar.jsx) */
+.perfil-contato-feedback .alerta-erro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ️ 9. ÁREA DE BOTÕES (COMANDO DOS CARDS) */
 .AreaBotoes {
     display: flex;
     gap: 15px;
@@ -204,7 +262,7 @@
 .AreaBotoes button {
     font-size: 14px;
     padding: 14px;
-    border-radius: 6px;
+    border-radius: 8px; /* 📐 Ajustado para 8px (Padrão) */
     font-weight: bold;
     cursor: pointer;
     border: none;
@@ -215,9 +273,10 @@
     transition: filter 0.2s;
 }
 
-.BotaoEditar { background-color: #007bff; color: white; width: 100%; }
-.BotaoSalvar { background-color: #28a745; color: white; flex: 2; }
-.BotaoCancelar { background-color: #dc3545; color: white; flex: 1; }
+/* 🧱 Blindagem de Escopo: Adicionamos a classe pai para garantir a prioridade das cores */
+.perfil-contato-usuario-card .BotaoEditar { background-color: #306396; color: white; width: 100%; }
+.perfil-contato-usuario-card .BotaoSalvar { background-color: rgb(212, 175, 55);  color: white; flex: 2; }
+.perfil-contato-usuario-card .BotaoCancelar { background-color: #c0392b; color: white; flex: 1; }
 
 .AreaBotoes button:hover {
     /* IMPLEMENTAÇÃO: Efeito visual ao passar o mouse nas ferramentas */
@@ -231,6 +290,17 @@
     }
     to { 
         opacity: 1;
+    }
+}
+
+@keyframes pularNaTela {
+    from { 
+        opacity: 0;
+        transform: translate(-50%, -20px) scale(0.9);
+    }
+    to { 
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
     }
 }
 

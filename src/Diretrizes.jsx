@@ -13,22 +13,24 @@ const [dicaDiretrizes, setDicaDiretrizes] = useState(() => {
     const jaLeu = localStorage.getItem('dicaDiretrizesLida');
     const valorInicial = jaLeu !== "true";
 
-    console.log("");
-    console.log("📐 ----------------------------------");
-    console.log("📐 useState() - componente - ⚖️ Diretrizes.jsx");
-    console.log("📐 Lazy Initialization - 🔵 dicaDiretrizes");
-    console.log("📐 🔵 dicaDiretrizes nasceu como = ", valorInicial);
-    console.log("📐 ----------------------------------");
+    // console.log("");
+    // console.log("📐 ----------------------------------");
+    // console.log("📐 useState() - componente - ⚖️ Diretrizes.jsx");
+    // console.log("📐 Lazy Initialization - 🔵 dicaDiretrizes");
+    // console.log("📐 🔵 dicaDiretrizes nasceu como = ", valorInicial);
+    // console.log("📐 ----------------------------------");
     
     return valorInicial;
 });
 
 // 🧱 Função para selar a leitura da dica
 const fecharDicaDiretrizes = () => {
+
     setDicaDiretrizes(false);
     localStorage.setItem('dicaDiretrizesLida', 'true');
     
-    console.log("📐 🔵 dicaDiretrizes = false (Leitura Confirmada)");
+    // console.log("📐 🔵 dicaDiretrizes = false (Leitura Confirmada)");
+
 };
 
 

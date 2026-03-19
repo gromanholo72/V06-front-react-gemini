@@ -18,8 +18,8 @@ import { auth, db_realtime } from './firebaseConfig.js';
 /* 🧱 2. Molde padrão (Antes do Provider) */
 const valores_padrao_dadosToken = { 
 
-    nome: 'Visitante', 
     cpef: null,
+    nome: 'Visitante',
     func: 'visitante'
     
 };
@@ -31,17 +31,40 @@ const valores_padrao_dadosToken = {
 
 
 /* 🤖 Inteligência de Ambiente: Detecta se é local ou produção */
-export const URL_SERVIDOR = window.location.hostname === "localhost" 
-    ? "http://localhost:3001"                         // Se estiver no PC
-    : "https://v06-back-node-gemini-production.up.railway.app"; // Se estiver no Railway
+// export const URL_SERVIDOR = window.location.hostname === "192.168.15.4" 
+//     ? "http://192.168.15.4:3001"                         // Se estiver no PC
+//     : "https://v06-back-node-gemini-production.up.railway.app"; // Se estiver no Railway
 
-    // console.log("");
-    // console.log("🔍 -----------------------------------------------------------");
-    // console.log("🔍 INSPEÇÃO DE DOMÍNIO");
-    // console.log("🔍 componente - 🏛️ AutenticacaoProvider.jsx");
-    // console.log("🔍 Hostname atual:", window.location.hostname);
-    // console.log("🔍 URL_SERVIDOR atribuida:", URL_SERVIDOR);
-    // console.log("🔍 -----------------------------------------------------------");
+//     console.log("");
+//     console.log("🔍 -----------------------------------------------------------");
+//     console.log("🔍 INSPEÇÃO DE DOMÍNIO");
+//     console.log("🔍 componente - 🏛️ AutenticacaoProvider.jsx");
+//     console.log("🔍 Hostname atual:", window.location.hostname);
+//     console.log("🔍 URL_SERVIDOR atribuida:", URL_SERVIDOR);
+//     console.log("🔍 -----------------------------------------------------------");
+
+
+
+
+/* 🤖 Inteligência de Ambiente: Detecta se é local ou produção */
+export const URL_SERVIDOR = 
+    (window.location.hostname === "localhost" || window.location.hostname.startsWith("192.168.")) 
+    ? `http://${window.location.hostname}:3001`
+    : "https://v06-back-node-gemini-production.up.railway.app";
+
+// console.log("");
+// console.log("🔍 -----------------------------------------------------------");
+// console.log("🔍 INSPEÇÃO DE DOMÍNIO (Maestro Dynamic)");
+// console.log("🔍 Hostname atual:", window.location.hostname);
+// console.log("🔍 URL_SERVIDOR atribuida:", URL_SERVIDOR);
+// console.log("🔍 -----------------------------------------------------------");
+
+
+
+
+
+
+
 
 
 
@@ -239,6 +262,53 @@ export const AutenticacaoProvider = ({ children }) => {
 
 
 
+    
+
+    // ------------------------------------------------------
+    /* INICIO - 📇 Dossiê do Usuário: Inicialização Estratégica */
+    // ------------------------------------------------------
+
+    const [dadosUsuarioCompleto, setDadosUsuarioCompleto] = useState(() => {
+        
+        const valorInicial = null;
+
+        // console.log("");
+        // console.log("📐 🏛️ ----------------------------------");
+        // console.log("📐 🏛️ useState() - componente - 🏛️ AutenticacaoProvider.jsx");
+        // console.log("📐 🏛️ Lazy Initialization - 🧖‍♂️ dadosUsuarioCompleto");
+        // console.log("📐 🏛️ 🧖‍♂️ dadosUsuarioCompleto nasceu como = ", valorInicial);
+        // console.log("📐 🏛️ ----------------------------------");
+
+        return valorInicial;
+
+    });
+
+    /* // 🕵️ Monitora o dadosUsuarioCompleto */
+    useEffect(() => {
+
+        // console.log("");
+        // console.log("✨ 🏛️ ----------------------------------");
+        // console.log("✨ 🏛️ useEffect() - Componente - 🏛️ AutenticacaoProvider.jsx");
+        // console.log("✨ 🏛️ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
+        // console.log("✨ 🏛️ 🧖‍♂️ dadosUsuarioCompleto = ", dadosUsuarioCompleto);
+        // console.log("✨ 🏛️ ----------------------------------");
+
+    }, [dadosUsuarioCompleto]);
+
+    // ------------------------------------------------------
+    /* FIM - 📇 Dossiê do Usuário: Inicialização Estratégica */
+    // ------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 
     // ----------------------------------------------------
@@ -424,6 +494,11 @@ export const AutenticacaoProvider = ({ children }) => {
 
 
 
+
+
+
+
+
     // -------------------------
     // INICIO - TOTAL CONECTADOS
     // -------------------------
@@ -489,6 +564,10 @@ export const AutenticacaoProvider = ({ children }) => {
 
 
 
+    
+
+
+
 
 
 
@@ -540,43 +619,6 @@ export const AutenticacaoProvider = ({ children }) => {
 
 
 
-    // ------------------------------------------------------
-    /* INICIO - 📇 Dossiê do Usuário: Inicialização Estratégica */
-    // ------------------------------------------------------
-
-    const [dadosUsuarioCompleto, setDadosUsuarioCompleto] = useState(() => {
-        
-        const valorInicial = null;
-
-        // console.log("");
-        // console.log("📐 🏛️ ----------------------------------");
-        // console.log("📐 🏛️ useState() - componente - 🏛️ AutenticacaoProvider.jsx");
-        // console.log("📐 🏛️ Lazy Initialization - 🧖‍♂️ dadosUsuarioCompleto");
-        // console.log("📐 🏛️ 🧖‍♂️ dadosUsuarioCompleto nasceu como = ", valorInicial);
-        // console.log("📐 🏛️ ----------------------------------");
-
-        return valorInicial;
-
-    });
-
-    /* // 🕵️ Monitora o dadosUsuarioCompleto */
-    useEffect(() => {
-
-        // console.log("");
-        // console.log("✨ 🏛️ ----------------------------------");
-        // console.log("✨ 🏛️ useEffect() - Componente - 🏛️ AutenticacaoProvider.jsx");
-        // console.log("✨ 🏛️ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
-        // console.log("✨ 🏛️ 🧖‍♂️ dadosUsuarioCompleto = ", dadosUsuarioCompleto);
-        // console.log("✨ 🏛️ ----------------------------------");
-
-    }, [dadosUsuarioCompleto]);
-
-    // ------------------------------------------------------
-    /* FIM - 📇 Dossiê do Usuário: Inicialização Estratégica */
-    // ------------------------------------------------------
-
-
-
 
 
 
@@ -594,10 +636,12 @@ export const AutenticacaoProvider = ({ children }) => {
 
         try {
 
-            // console.log("🏛️ ----------------------------------");
-            // console.log("🏛️ Componente - 🏛️ AutenticacaoProvider.jsx");
-            // console.log("🏛️ logarNoFirebase = async (token) => {");
-            // console.log("🏛️ 👔 Iniciando validação no Firebase...");
+            console.log("");
+            console.log("🔥 ----------------------------------");
+            console.log("🔥 Componente: 🏛️ AutenticacaoProvider.jsx");
+            console.log("🔥 Funcao: logarNoFirebase = async (token) => {");
+            console.log("🔥 👔 Iniciando validação a pedido do login");
+            console.log("🔥 ----------------------------------");
             
             /* 1. O await trava aqui até o Firebase validar o material (Token) */
             const userCredential = await signInWithCustomToken(auth, token);
@@ -639,9 +683,6 @@ export const AutenticacaoProvider = ({ children }) => {
 
 
 
-
-
-
     // -------------------------------------------------------------------------
     /* INICIO - 🕵️ const monitorarVigia = onAuthStateChanged(auth, async (user) => { */
     // -------------------------------------------------------------------------
@@ -651,21 +692,17 @@ export const AutenticacaoProvider = ({ children }) => {
         const monitorarVigia = onAuthStateChanged(auth, async (user) => {
 
         console.log("");
-        console.warn("✨ 🏛️ 🕵️‍♂️ 📢 🟢 ----------------------------------");
-        console.warn("✨ 🏛️ 🕵️‍♂️ 📢 🟢 Componente - 🏛️ AutenticacaoContexto.jsx");
-        console.warn("✨ 🏛️ 🕵️‍♂️ 📢 🟢 useEffect() - const monitorarVigia firebase");
-        console.warn("✨ 🏛️ 🕵️‍♂️ 📢 🟢 VIGIA ACORDOU!");
-        console.warn("✨ 🏛️ 🕵️‍♂️ 📢 🟢 user:", user );
-    
+        console.warn("✨ 📢 🟢 ----------------------------------");
+        console.warn("✨ 📢 🟢 Componente - 🏛️ AutenticacaoContexto.jsx");
+        console.warn("✨ 📢 🟢 useEffect() - const monitorarVigia firebase");
+        console.warn("✨ 📢 🟢 VIGIA ACORDOU!");
+        console.warn("✨ 📢 🟢 user:", user );
+       
             try {
 
                 if (user) {
 
-                    // 🎟️ USUÁRIO LOGADO: Extraímos as permissões do Token oficial
                     const idTokenResult = await user.getIdTokenResult();
-                    const cpefNoToken = idTokenResult.claims.cpef;
-                    const nomeNoToken = idTokenResult.claims.nome;
-                    const funcNoToken = idTokenResult.claims.func;
 
                     setDadosToken({
                         cpef: idTokenResult.claims.cpef,
@@ -673,121 +710,23 @@ export const AutenticacaoProvider = ({ children }) => {
                         func: idTokenResult.claims.func
                     });
 
-                    // console.warn("✨ 🏛️ 👤 📢 🔵 Usuario possui token no Firebase Auth.");
-                    // console.warn("✨ 🏛️ 👤 📢 🔵 🔑 user.uid:", user.uid);
-                    // console.warn("✨ 🏛️ 👤 📢 🔵 cpef: idTokenResult.claims.cpef:", cpefNoToken);
-                    // console.warn("✨ 🏛️ 👤 📢 🔵 nome: idTokenResult.claims.nome:", nomeNoToken);
-                    // console.warn("✨ 🏛️ 👤 📢 🔵 func: idTokenResult.claims.func:", funcNoToken);
-                    // console.warn("✨ 🏛️ 👤 📢 🔵 user.emailVerified = ", user.emailVerified);
-                    // console.warn("✨ 🏛️ 👤 📢 🔵 user.isAnonymous = ", user.isAnonymous);
-                    // console.warn("✨ 🏛️ 👤 📢 🔵 🏠 Nome do App =", auth?.app?.options?.projectId);
-                    // console.warn("✨ 🏛️ 👤 📢 🔵 ----------------------------------");
-            
-                    if (user.uid) {
-
-                        // ⏱️ Iniciando cronômetro para medir a performance da obra
-                        const inicioBusca = performance.now();
-
-                        const snap = await get(ref(db_realtime, `usuarios/${user.uid}`));
-
-                        const fimBusca = performance.now();
-
-                        const tempoGasto = (fimBusca - inicioBusca).toFixed(2);
-
-                        if (snap.exists()) {
-
-                            const dadosRecuperados = snap.val();
-
-                            setDadosToken(prev => ({
-                                ...prev,
-                                // Só usa o dado do banco se o do Token (prev) estiver vazio
-                                func: prev.func || dadosRecuperados?.func, 
-                                nome: prev.nome || dadosRecuperados?.nome,
-                                cpef: prev.cpef || dadosRecuperados?.cpef
-                            }));
-
-                            setDadosUsuarioCompleto(dadosRecuperados);
-
-                            // console.log("");
-                            // console.warn("✨ 🏛️ Componente - 🏛️ AutenticacaoContexto.jsx");
-                            // console.warn("✨ 🏛️ 🎚️ COMANDO EXECUTADO");
-                            // console.warn("✨ 🏛️ 🎚️ 🧖‍♂️ setDadosUsuarioCompleto(snap.val());");
-                            // console.warn("✨ 🏛️ 🎚️  snap.val():", snap.val());
-                            // console.warn("✨ 🏛️ 🎚️  dadosRecuperados?.func no banco de dados:", dadosRecuperados?.func);
-                            // console.warn("✨ 🏛️ 🎚️  dadosRecuperados?.nome no banco de dados:", dadosRecuperados?.nome);
-                            // console.warn("✨ 🏛️ 🎚️  dadosRecuperados?.cpef no banco de dados:", dadosRecuperados?.cpef);
-                            // console.warn(`✨ 🏛️ 🎚️ ⏱️ Tempo de resposta da obra: ${tempoGasto}ms`);
-                            // console.warn("✨ ----------------------------------");
-
-                        } else {
-
-                            setDadosToken({ 
-                                func: 'visitante', 
-                                nome: 'Visitante', 
-                                cpef: null 
-                            });
-
-                            setDadosUsuarioCompleto(null);
-
-                            console.log("");
-                            console.error("✨ 🏛️ ----------------------------------");
-                            console.error("✨ 🏛️ Componente - 🏛️ AutenticacaoContexto.jsx");
-                            console.error("✨ 🏛️ 🔎 useEffect() - get(ref(db_realtime, ...))");
-                            console.error("✨ 🏛️ ⚠️ AVISO: Usuário identificado, mas sem ficha no Database.");
-                            console.error("✨ 🏛️ 📍 Local verificado: /usuarios/" + user.uid);
-                            console.error(`✨ 🏛️ ⏱️ Busca concluída em: ${tempoGasto}ms`);
-                            console.error("✨ 🏛️ ----------------------------------");
-
-                        }
-
-                    } else {
-
-                        /* 🧱 Caso o UID (CPF) venha nulo ou indefinido do Auth */
-                        console.error("");
-                        console.error("✨ 🏛️ ----------------------------------");
-                        console.error("✨ 🏛️ Componente - 🏛️ AutenticacaoContexto.jsx");
-                        console.error("✨ 🏛️ 🚨 ERRO CRÍTICO: Identificador (UID/CPF) não encontrado no crachá.");
-                        console.error("✨ 🏛️ 🕵️‍♂️ O Vigia não tem um alvo para buscar no banco.");
-                        console.error("✨ 🏛️ ----------------------------------");
-                        
-                        setDadosToken({ 
-                            func: 'visitante', 
-                            nome: 'Visitante', 
-                            cpef: null 
-                        });
-
-                        setDadosUsuarioCompleto(null);
-
-                    }
-
                 } else {
 
-                    // console.warn("✨ 🏛️ 👤 📢 🛑 Nenhum usuário ativo. Definindo como visitante.");
-                    // console.warn("✨ 🏛️ 👤 📢 🛑 ----------------------------------");
-                    // console.warn("✨ 🏛️ 👤 📢 🛑 COMANDOS EXECUTADOS AQUI");
-                    // console.warn("✨ 🏛️ 👤 📢 🛑 setDadosToken({ func: 'visitante', nome: 'Visitante', cpef: null });");
-                    // console.warn("✨ 🏛️ 👤 📢 🛑 setDadosUsuarioCompleto(null)");
-                    // console.warn("✨ 🏛️ 👤 📢 🛑 ----------------------------------");
+                    console.warn("✨ 📢 🛑 Nenhum usuário ativo. Definindo como visitante.");
 
-                    setDadosToken({ 
-                        func: 'visitante', 
-                        nome: 'Visitante', 
-                        cpef: null 
-                    });
-
-                    setDadosUsuarioCompleto(null);
+                    setDadosToken({ ...valores_padrao_dadosToken });
 
                 }
 
             } catch (error) {
 
-                console.log("");
-                console.error("✨ 🏛️ ----------------------------------");
-                console.error("✨ 🏛️ Componente - 🏛️ AutenticacaoContexto.jsx");
-                console.error("✨ 🏛️ 🚨 Falha na vistoria do Vigia:", error.message);
-                console.error("✨ 🏛️ ----------------------------------");
+                console.warn("✨ 📢 🛑 Falha na vistoria do Vigia:", error.message);
+
+                setDadosToken({ ...valores_padrao_dadosToken });
 
             } finally {
+
+                console.warn("✨ 📢 🟢 ----------------------------------");
 
                 setCarregandoPermissoesFireBase(false); 
                 
@@ -795,7 +734,6 @@ export const AutenticacaoProvider = ({ children }) => {
 
         });
 
-        // Desliga o vigia ao sair da obra
         return () => monitorarVigia(); 
 
     }, []); 
@@ -830,8 +768,6 @@ export const AutenticacaoProvider = ({ children }) => {
             await signOut(auth);
 
             setDadosToken(valores_padrao_dadosToken);
-
-            setDadosUsuarioCompleto(null);
 
             // console.log("");
             // console.log("📴 🏛️ ✅ ----------------------------------");
@@ -912,9 +848,6 @@ export const AutenticacaoProvider = ({ children }) => {
 
             dadosToken,
             setDadosToken,
-
-            dadosUsuarioCompleto, 
-            setDadosUsuarioCompleto,
 
             logarNoFirebase,
             

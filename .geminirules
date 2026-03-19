@@ -1,21 +1,179 @@
 
-# DIRETRIZES GERAIS (GEMINI CODE ASSIST)
+.geminirules
 
+# DIRETRIZES GERAIS (GEMINI CODE ASSIST)
 1. IDIOMA:
    - Responda SEMPRE em Português do Brasil (PT-BR), inclusive nos comentários do código.
-
 2. LOGS E DEPURAÇÃO (SAGRADO 📐):
    - JAMAIS remova os `console.log` ativos existentes.
    - Mantenha o padrão visual com emojis (📐, ✨, 🚀, etc.).
-
 3. ESTILO DE CÓDIGO E ESPAÇAMENTO:
    - Mantenha o espaçamento vertical generoso (linhas em branco) entre blocos de código para facilitar a leitura.
-
-
 4. Essas sao as regras oficiais depois que instalei o gemini no vscode
 5. As regras principais esta no arquivo da raiz .geminirules
 6. Sempre mostre nos componente as alteracoes para escolher acept ou reject
 
 
-# REFERÊNCIA DE OURO (GOLDEN REFERENCE)
-Sempre use o arquivo `src/Endereco.jsx` como a estrutura mestre para logs, funções de distribuição e lógica de estados (podeEditar/ehNovoCadastro).
+
+
+
+
+
+1. Sempre verifique o arquivo .geminirules na raiz do projeto antes de responder.
+2. Siga o padrão de logs estruturados com emojis (🔍, 📥, ✅, ❌) conforme definido no projeto.
+4. Ao dar sugestões de código, sempre use o contexto do @workspace (Front e Back).
+
+
+
+
+
+
+
+# Regras do Projeto Maestro
+1. Sempre priorize o contexto do @workspace antes de sugerir novos códigos.
+2. Se uma variável ou componente não estiver no arquivo atual, busque a definição nos arquivos indexados.
+3. Mantenha a consistência com o padrão de "Cards de Dados" (dadosBasicos, dadosSeguranca, dadosInternos) definido no projeto.
+4. Ao analisar erros de lógica, verifique se a causa raiz não está em um arquivo de Contexto (ex: AutenticacaoProvider.jsx) ou no Backend.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3. Considere sempre a estrutura de dados: dadosBasicos, dadosSeguranca, dadosSeguranca, dadosInterno.
+# O Vetor a seguir sera o pilar dos cards de informacoes do usuario
+
+   const dadosUsuario = {
+
+      // 1 - 👤 Dados Básico
+      dadosBasico: {
+         nome: valorDoForm.nome, 
+         cpef: valorDoForm.cpef,
+         func: valorDoForm.funcao
+      },
+
+      // 2 - 🔐 Dados Segurança
+      dadosSeguranca: {
+         senh: ""
+      },
+
+      // 3 - ⚙️ Dados Interno
+      dadosInterno: {
+            perm: "total",
+            situ: "ativo",
+            datc: new Date().toLocaleString('pt-BR'),
+            timestamp: Date.now()
+      }
+
+      // 4 - 📱 Dados de Contato
+      dadosContato: {
+         mail: "",
+         fone: "" 
+      },
+
+      // 5 - 📍 Dados do Endereço
+      dadosEndereco: {
+         cep: "",
+         rua: "",
+         num: "",
+         bair: "",
+         cida: "",
+         uf: "",
+         comp: ""
+      },
+
+      // 6 - 🏢 Dados da Empresa
+      dadosEmpresa: {
+         cnpj: "",
+         razaoSocial: "",
+         nomeFantasia: "",
+         situacao: "",
+         atividades: "",
+         socios: ""
+      },
+
+      // 7 - 🏢 Dados da Formacao profissional
+      dadosFormacao: {
+         nivel: "",
+         espec: "",
+         registro: "",
+         instituicao: ""
+      };
+   
+         
+   
+   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# lista numerada dos arquivos de lógica (.js e .jsx) 
+organizados pela ordem de execução e dependência, 
+sem os arquivos de estilo:
+
+FRONT-END
+
+Configuração
+1.1 - c:\React\V09-front-react\src\vite.config.js (O Construtor)
+1.2 - c:\React\V09-front-react\eslint.config.js (O Inspetor)
+1.3 - c:\React\V09-front-react\firebaseConfig.js (A Chave do Cofre)
+
+Porteiro (Nível 2 na lista)
+2 - c:\React\V09-front-react\src\AutenticacaoContexto.jsx
+
+Predio
+3 - c:\React\V09-front-react\src\App.jsx
+
+   Apartamentos (Componentes Filhos)
+   3.1 - c:\React\V09-front-react\src\Logar.jsx
+   3.2 - c:\React\V09-front-react\src\Endereco.jsx
+   3.3 - c:\React\V09-front-react\src\Cnpj.jsx
+   3.4 - c:\React\V09-front-react\src\CadAdministrador.jsx
+   3.5 - c:\React\V09-front-react\src\ListaUsuariosToken.jsx
+   3.6 - c:\React\V09-front-react\src\Chat.jsx
+
+   BACK-END
+
+   server.js (O Motor Principal)
+
+   dotenv_Info.js
+   FirebaseConfig.js
+   moduloInfraestrutura.js
+   moduloSocketIo.js
+
+
+
+
+   CORES
+   1 - botao salvar/Logar
+   background-color: rgb(212, 175, 55);
+
+   2 - botao editar/fundo do menu app e formulaios
+   background: #306396;
+
+   3 - botao Cancelar/sair
+   background: #c0392b;
+

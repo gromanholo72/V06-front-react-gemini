@@ -1,12 +1,9 @@
 
-import { useState, useEffect, useRef } from 'react'; 
+import { useState, useEffect, useRef, useCallback } from 'react'; 
 import { Routes, Route, useNavigate, Navigate} from 'react-router-dom';
-
-//  🏛️ Cofre Central (AutenticacaoContexto)
+import { ref, onValue } from 'firebase/database'; // Importe do Firebase RTDB
+import { db_realtime } from './firebaseConfig';
 import { useAuth } from './AutenticacaoContexto';
-
-import { ref, onValue } from "firebase/database";
-import { db_realtime } from './firebaseConfig.js';
 
 
 import './App.css';
@@ -22,6 +19,7 @@ import { Cadastrar } from './Cadastrar';
 
 import { Logado } from './Logado';
 import { Diretrizes } from './Diretrizes';
+import { Funcoes } from './Funcoes';
 
 
 import { UsuarioIdentificacao } from './UsuarioIdentificacao'; 
@@ -113,6 +111,7 @@ export default function App() {
 
 
         dadosToken, 
+        dadosUsuarioCompleto, // 📐 Recuperando o Dossiê já carregado na memória
         carregandoPermissoesFireBase, 
         onClickSair, 
         socket 
@@ -604,141 +603,162 @@ export default function App() {
 
 
 
+// -------------------------------------------------------------
+/* INICIO - 🛠️ VIGILÂNCIA DE INTEGRIDADE DOS CARDS - CLIENTE */
+// -------------------------------------------------------------
+
+/* // 🛠️ Ferramenta de Trabalho para o status de integridade dos cards do cliente */
+const [statusCliente, setStatusCliente] = useState({
+    contato: false,
+    endereco: false,
+    cnpj: false,
+    formacao: false
+});
 
 
+/* 📐 Regra de Ouro: Cliente só acessa Paciente se tiver Contato e Endereço preenchidos */
+const clientePodeAcessarPaciente = statusCliente.contato && statusCliente.endereco;
+
+/* 🔍 Monitor de Status (Logs estruturados com emojis - Regra #2) */
+useEffect(() => {
+
+    console.log("");
+    console.log("🔍 -------------------------------------");
+    console.log("🔍 INSPEÇÃO DE STATUS DO CLIENTE");
+    console.log("🔍 contato  :", statusCliente.contato);  
+    console.log("🔍 endereco :", statusCliente.endereco); 
+    console.log("🔍 cnpj     :", statusCliente.cnpj);    
+    console.log("🔍 formacao :", statusCliente.formacao); 
+    console.log("🔍 PERMISSÃO PACIENTE:", clientePodeAcessarPaciente ? "✅ AUTORIZADO" : "❌ BLOQUEADO");
+    // console.log("🔍 -------------------------------------");
+
+}, [statusCliente, clientePodeAcessarPaciente]);
 
 
+/* // 🧱 Nova Lógica: Busca direta no RTDB baseada no CPF do Token (Tempo Real) */
+useEffect(() => {
 
+    // 3️⃣ Verificação de Segurança usando o CPF do Token
+    // 🛡️ A trava de segurança agora vive dentro da função que é chamada
+    if (!dadosToken?.cpef) {
 
-    // -------------------------------------------------------------
-    /* INICIO - 🛠️ VIGILÂNCIA DE INTEGRIDADE DOS CARDS - CLIENTE */
-    // -------------------------------------------------------------
+        // console.log("🔍 🚨 -----------------------------------------------------------");
+        // console.log("🔍 🚨 VIGILÂNCIA DE BANCO DE DADOS:");
+        // console.log("🔍 🚨 useEffect() - componente - 🧿 App.jsx");
+        // console.log("🔍 🚨 Vigilância de integridade: Nenhum CPF detectado no token. Resetando status.");
 
-    /* // 🛠️ Ferramenta de Trabalho para o status de integridade dos cards de paciente */
-    const [statusCliente, setStatusCliente] = useState({
-        contato: false,
-        endereco: false,
-        cnpj: false,
-        formacao: false
-    });
+        setStatusCliente({
+            contato: false,
+            endereco: false,
+            cnpj: false,
+            formacao: false
+        });
 
+        return;
 
-    // -----------------------------------------------------------------
-    /* INICIO - 🚦 SEMÁFORO GERAL: Verifica se todos os cards estão OK */
-    // -----------------------------------------------------------------
+    }
 
-    const perfilEstaCompleto = Object.values(statusCliente).every(status => status === true);
+    // 4️⃣ Preparação da Rota usando o CPF limpo
+    const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
+    // 📐 Ajuste: Busca a raiz do usuário para analisar todos os nós internos
+    const usuarioRef = ref(db_realtime, `usuarios/${cpfLimpo}`);
 
-    // 🧱 Regra de Ouro: Cliente só acessa Paciente se tiver Contato e Endereço preenchidos
-    const clientePodeAcessarPaciente = statusCliente.contato && statusCliente.endereco;
-
-    useEffect(() => {
-
-        console.log("");
-        console.log("🚦 ----------------------------------");
-        console.log("🚦 SEMÁFORO DE INTEGRIDADE (App.jsx)");
-        console.log(`🚦 Perfil completo? ${perfilEstaCompleto ? '✅ SIM' : '❌ NÃO'}`);
-        console.log(`🚦 Cliente (Paciente)? ${clientePodeAcessarPaciente ? '✅ LIBERADO' : '🔒 TRAVADO'}`);
-        console.log("🚦 ----------------------------------");
-
-    }, [statusCliente]);
-
-    // -----------------------------------------------------------------
-    /* FIM - 🚦 SEMÁFORO GERAL: Verifica se todos os cards estão OK */
-    // -----------------------------------------------------------------
-
-    useEffect(() => {
-
-        console.log("");
-        console.log("🔍 -----------------------------------------------------------");
-        console.log("🔍 VIGILÂNCIA FIREBASE: Iniciando monitoramento...");
-        console.log("🔍 useEffect() - componente - 🧿 App.jsx");
-        console.log("🔍 CPF no Token:", dadosToken?.cpef);
-        console.log("🔍 DB Conectado:", !!db_realtime);
-
-        if (!dadosToken?.cpef || !db_realtime) {
+    // console.log("");
+    // console.log("🔍 🚨 -----------------------------------------------------------");
+    // console.log("🔍 🚨 VIGILÂNCIA DE BANCO DE DADOS:");
+    // console.log("🔍 🚨 useEffect() - componente - 🧿 App.jsx");
+    // console.log("🔍 🚨 Caminho (CPF):", dadosToken.cpef);
+    
+    // 5️⃣ Conexão em Tempo Real (Ouvinte - Listener)
+    const unsubscribe = onValue(usuarioRef, (snapshot) => {
+        
+        // 📐 Lógica: Mapeado conforme as diretrizes do .geminirules e componentes específicos
+        if (snapshot.exists()) {
             
-            console.log("🔍 ⚠️ VIGILÂNCIA ABORTADA: Falta CPF ou conexão com banco.");
-            console.log("🔍 -----------------------------------------------------------");
+            const dadosUsuario = snapshot.val();
 
-            return;
+            // console.log("🔍 🚨 dadosUsuario:", dadosUsuario);
+
+            // --- INICIO DA ANÁLISE DE INTEGRIDADE (Validações) ---
+
+            // A - 🔐 Dados de Contato
+            // Padrão: { mail, fone } (Obrigatórios)
+            const contato = dadosUsuario?.dadosContato;
+            const temContato = !!(contato?.mail?.trim() && contato?.fone?.trim());
+
+            // B - ⚙️ Dados de Endereço (conforme Endereco.jsx)
+            // Padrão: dadosEndereco: { cep, num } (Obrigatórios)
+            const endereco = dadosUsuario?.dadosEndereco;
+            const temEndereco = !!(endereco?.cep?.trim() && endereco?.num?.trim());
+
+            // C - 🏢 Dados da Empresa (conforme Cnpj.jsx)
+            // Padrão: cnpj_dados: { num_cnpj, razao } (Obrigatórios)
+            const empresa = dadosUsuario?.cnpj_dados;
+            const temEmpresa = !!(empresa?.num_cnpj?.trim() && empresa?.razao?.trim());
+
+            // D - 🎓 Dados de Formação (conforme Formacao.jsx)
+            // Padrão: formacao_dados: { nivel } (Obrigatório)
+            const formacao = dadosUsuario?.formacao_dados;
+            const temFormacao = !!(formacao?.nivel?.trim());
+
+            // --- FIM DA ANÁLISE DE INTEGRIDADE ---
+
+            // 6️⃣ Atualização de Memória (Estado Local)
+            setStatusCliente({
+                contato: temContato,
+                endereco: temEndereco,
+                cnpj: temEmpresa,
+                formacao: temFormacao
+            });
+
+            // console.log("🔍 🚨 Vigilância de integridade concluída com sucesso!");
+
+        } else {
+            
+            console.warn("❌ ✨ Alerta: Usuário logado (CPF) mas sem dados cadastrados no Realtime.");
+
+            setStatusCliente({
+                contato: false,
+                endereco: false,
+                cnpj: false,
+                formacao: false
+            });
 
         }
 
-        const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
-        const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}`);
+    }, (error) => {
+        
+        console.error("❌ 🔴 Erro fatal na escuta do Realtime Database (CPF):", error.message);
 
-        const desativarVigilancia = onValue(caminhoNoBanco, (snapshot) => {
-
-            if (snapshot.exists()) {
-
-                const dados = snapshot.val();
-
-                console.log("");
-                console.log("🔍 -----------------------------------------------------------");
-                console.log("🔍 INSPEÇÃO DE SUPRIMENTOS (FirebaseSnapshot)");
-                console.log("🔍 useEffect() - componente - 🧿 App.jsx");
-                console.log("🔍 Dados Recebidos:", dados);
-                console.log("🔍 -----------------------------------------------------------");
-
-                const contatoNoBanco = dados; 
-                const temContato = !!(
-                    contatoNoBanco?.mail?.trim() &&
-                    contatoNoBanco?.fone?.trim()
-                );
-
-                const enderecoNoBanco = dados.ende;
-                const temEndereco = !!(
-                    enderecoNoBanco?.cepe?.trim() &&
-                    enderecoNoBanco?.nume?.trim() 
-                );
-
-                const cnpjNoBanco = dados.cnpj_dados;
-                const temCnpj = !!(
-                    cnpjNoBanco?.num_cnpj?.trim()
-                );
-
-                const formacaoNoBanco = dados.formacao_dados;
-                const temFormacao = !!(
-                    formacaoNoBanco?.nivel?.trim()
-                );
-
-                console.log("");
-                console.log("🔍 -----------------");
-                console.log("🔍 STATUS DO CLIENTE");
-                console.log("🔍 📞 Contato  :", temContato);
-                console.log("🔍 📍 Endereco :", temEndereco);
-                console.log("🔍 🏢 CNPJ     :", temCnpj);
-                console.log("🔍 🎓 Formação :", temFormacao);
-                console.log("🔍 ------------------");
-
-                setStatusCliente({
-                    contato: temContato,
-                    endereco: temEndereco,
-                    cnpj: temCnpj,
-                    formacao: temFormacao
-                });
-
-            } else {
-                
-                setStatusCliente({
-                    contato: false,
-                    endereco: false,
-                    cnpj: false,
-                    formacao: false
-                });
-
-            }
-        });
-
-        return () => desativarVigilancia();
-
-    }, [dadosToken?.cpef, db_realtime]);
+    });
 
 
-    // -------------------------------------------------------------
-    /* FIM - 🛠️ VIGILÂNCIA DE INTEGRIDADE DOS CARDS - CLIENTE */
-    // -------------------------------------------------------------
+
+    return () => {
+
+        console.log("🔍 🔴 ✨ Encerrando escuta do Realtime Database (Clean-up).");
+        unsubscribe();
+
+    };
+
+
+
+}, [dadosToken?.cpef]); 
+
+
+const perfilEstaCompleto = Object.values(statusCliente).every(status => status === true);
+
+
+// -------------------------------------------------------------
+/* FIM - 🛠️ VIGILÂNCIA DE INTEGRIDADE DOS CARDS - CLIENTE */
+// -------------------------------------------------------------
+
+
+
+
+
+
+
 
 
 
@@ -767,7 +787,9 @@ export default function App() {
     // -------------------------------------------------------------
     /* INICIO DO - MODAL 🔥 FIREBASE */
     // -------------------------------------------------------------
-    // SEMPRE MANTER O ULTIMO ANTES DO RETURN
+
+    // SEMPRE MANTER ESSE COMO SENDO O ULTIMO ANTES DO RETURN
+
     if (carregandoPermissoesFireBase) {
         return (
             <div className="modal-overlay-projeto">
@@ -786,6 +808,14 @@ export default function App() {
     // -------------------------------------------------------------
     /* FIM DO - MODAL 🔥 FIREBASE */
     // -------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 
 
@@ -876,22 +906,25 @@ export default function App() {
 
                         // 🍔 Verificamos se o menu já está aberto
                         if (menuAberto) {
-                            console.log("");
-                            console.log("📐 ----------------------------------");
-                            console.log("📐 🚀 EVENTO: Clique no botão 'Menu Hambúrguer'");
-                            console.log("📐 🔵 Ação: FECHANDO menu (Toggle Off).");
-                            console.log("📐 ----------------------------------");
+
+                            // console.log("");
+                            // console.log("📐 ----------------------------------");
+                            // console.log("📐 🚀 EVENTO: Clique no botão 'Menu Hambúrguer'");
+                            // console.log("📐 🔵 Ação: FECHANDO menu (Toggle Off).");
+                            // console.log("📐 ----------------------------------");
                             
                             setMenuAberto(false); // Fecha o container principal
                             setSecaoAberta(null); // Limpa qualquer submenu aberto
+
                         } else {
-                            console.log("");
-                            console.log("📐 ----------------------------------");
-                            console.log("📐 🚀 EVENTO: Clique no botão 'Menu Hambúrguer'");
-                            console.log("📐 🟢 Ação: ABRINDO menu (Toggle On).");
-                            console.log("📐 ----------------------------------");
+
+                            // console.log("");
+                            // console.log("📐 ----------------------------------");
+                            // console.log("📐 🚀 EVENTO: Clique no botão 'Menu Hambúrguer'");
+                            // console.log("📐 🟢 Ação: ABRINDO menu (Toggle On).");
+                            // console.log("📐 ----------------------------------");
                             
-                            setMenuAberto(true); // Abre o container principal
+                            setMenuAberto(true);
                             // Se você usa a função abrirSecao para logs extras, chame-a aqui:
                             // abrirSecao('menu-aberto'); 
                         }
@@ -927,14 +960,12 @@ export default function App() {
                 {/* INICIO do - 🔩 Conteiner geral individualizado*/}
                 {/* ---------------------------------- */}
 
-                <div 
-                    ref={menuRef}
-                    className={`submenu-container-geral ${menuAberto ? 'menu-mobile-ativo' : ''}`}
+                <div className={`submenu-container-geral ${menuAberto ? 'menu-mobile-ativo' : ''}`}
+                    ref={menuRef}  
                 >
 
 
 
-                
        
                     {dadosToken?.func === 'programador' && (
                         <>
@@ -991,12 +1022,41 @@ export default function App() {
 
                     {dadosToken?.func === 'administrador' && (
                         <>
+
+
+
+
+
                             <button 
-                                className="Btn-geral-administrador-prof btn-centralizado"
+                                className="Btn-geral-administrador-prof btn-centralizado largura50px"
+                                onClick={() => navegarERecolher('/interno')}
+                            >
+                                Inicio
+                            </button>
+
+
+
+                            <button 
+                                className="Btn-geral-administrador-prof btn-centralizado largura70px"
+                                onClick={() => navegarERecolher('/interno/Funcoes')}
+                            >
+                                Funcoes
+                            </button>
+
+
+
+
+
+
+
+
+                            {/* <button 
+                                className="Btn-geral-administrador-prof btn-centralizado largura100px"
                                 onClick={() => navegarERecolher('/interno/RelatoriosAdmin')}
                             >
                                 Painel Geral
-                            </button>
+                            </button> */}
+
 
                             {/* --- SUBMENU: GERENCIAR --- */}
                             <div className="submenu-tudo-gerenciar-prof">
@@ -1022,14 +1082,14 @@ export default function App() {
                             </div>
 
                             <button 
-                                className="Btn-geral-administrador-prof btn-centralizado"
+                                className="Btn-geral-administrador-prof btn-centralizado largura50px"
                                 onClick={() => navegarERecolher('/ListaLogs')}
                             >
                                 Logs
                             </button>
 
                             <button 
-                                className="Btn-geral-administrador-prof btn-centralizado"
+                                className="Btn-geral-administrador-prof btn-centralizado largura70px"
                                 onClick={() => navegarERecolher('/SuporteAdmin')}
                             >
                                 Suporte
@@ -1083,6 +1143,27 @@ export default function App() {
 
                     {dadosToken?.func === 'cuidadora' && (
                         <>
+
+
+                            <button 
+                                className="Btn-geral-cuidadora-prof btn-centralizado"
+                                onClick={() => navegarERecolher('/interno')}
+                            >
+                                Inicio
+                            </button>
+
+
+
+                            <button 
+                                className="Btn-geral-cuidadora-prof btn-centralizado"
+                                onClick={() => navegarERecolher('/interno/Funcoes')}
+                            >
+                                Funcoes
+                            </button>
+
+
+
+                        
                             <button 
                                 className="Btn-geral-cuidadora-prof btn-centralizado"
                                 onClick={() => navegarERecolher('/interno/Diretrizes')}
@@ -1099,6 +1180,10 @@ export default function App() {
                             >
                                 Chamados {!perfilEstaCompleto && "🔒"}
                             </button>
+
+
+
+
 
 
                         </>
@@ -1209,8 +1294,6 @@ export default function App() {
 
 
 
-
-
                         {/* BOTAO CHAT */}
                         <div 
                             className="Botao-Chat" 
@@ -1233,6 +1316,11 @@ export default function App() {
 
 
 
+
+
+
+
+
                         
                         {/* INICIO - BOTAO MEU PERFIL */}
                         <button 
@@ -1248,11 +1336,6 @@ export default function App() {
                         {secaoAberta === 'perfil' && (
                             <div className="Cortina-Fechar" onClick={() => setSecaoAberta(null)} />
                         )}
-
-
-
-
-
 
 
                         {/* INICIO DO - SUB MENU - DADOS DO USUARIO */}
@@ -1271,72 +1354,67 @@ export default function App() {
                             </div>
 
 
-                            {/* PROGRAMADOR - NAO PRECISA PREENCHER DADOS PESSOAIS */}
-                            {dadosToken?.func !== 'programador' && (
-                                <>
 
 
 
 
 
-                                  
 
+                            {/* ----------------------- */}
+                            {/* INICIO - DADOS PESSOAIS */}
+                            {/* ----------------------- */}
 
+                            <div className="dados-pessoais">
 
-
-                                    {/* ADMINISTRADOR - PRECISA PREENCHER NOME E SENHA */}
-                                    {/* {(dadosToken?.func === 'administrador' && dadosToken?.nome === '') && (
-                                        <>
-
-                                            <button onClick={() => navegarERecolher('/interno/UsuarioIdentificacao')}>
-                                            Identificação
-                                                Identificação {statusCards.identificacao ? "✔️" : "❌"}
-                                            </button>
-
-                                        </>
-                                    )} */}
-
-
-
-
-
-                                   
-                                    <button 
-                                    
-                                        className="Perfil-Opcoes"
-                                        onClick={() => navegarERecolher('/interno/UsuarioContato')}>
-
-                                        {statusCliente.contato ? "✔️" : "❌"} Contato
-
-                                    </button>
-
-
-
-                                 
-
-
-
-                                    <button 
-
-                                        className="Perfil-Opcoes"
-                                        onClick={() => navegarERecolher('/interno/Endereco')}>
-
-                                        {statusCliente.endereco ? "✔️" : "❌"} Endereço
-
-                                    </button>
-
-
-
-                                  
-
-                                    
-
-
-                                    {dadosToken?.func !== 'cliente' && (
+                                {dadosToken?.func === 'administrador' && (
                                     <>
 
                                         <button 
-                                        
+                                            
+                                            className="Perfil-Opcoes"
+                                            onClick={() => navegarERecolher('/interno/UsuarioContato')}>
+
+                                            {statusCliente.contato ? "✔️" : "❌"} Contato
+
+                                        </button>
+
+                                        <button 
+
+                                            className="Perfil-Opcoes"
+                                            onClick={() => navegarERecolher('/interno/Endereco')}>
+
+                                            {statusCliente.endereco ? "✔️" : "❌"} Endereço
+
+                                        </button>
+
+                                    </>
+                                )}
+
+
+                                {dadosToken?.func === 'cuidadora' && (
+                                    <>
+
+                                        <button 
+                                            
+                                            className="Perfil-Opcoes"
+                                            onClick={() => navegarERecolher('/interno/UsuarioContato')}>
+
+                                            {statusCliente.contato ? "✔️" : "❌"} Contato
+
+                                        </button>
+
+                                        <button 
+
+                                            className="Perfil-Opcoes"
+                                            onClick={() => navegarERecolher('/interno/Endereco')}>
+
+                                            {statusCliente.endereco ? "✔️" : "❌"} Endereço
+
+                                        </button>
+
+
+                                        <button 
+                                            
                                             className="Perfil-Opcoes"
                                             onClick={() => navegarERecolher('/interno/Cnpj')}>
                                             {statusCliente.cnpj ? "✔️" : "❌"} CNPJ
@@ -1350,25 +1428,53 @@ export default function App() {
                                             {statusCliente.formacao ? "✔️" : "❌"} Formação 
 
                                         </button>
-                                        
+
                                     </>
-                                    )}
+                                )}
 
 
-                                </>
-                            )}
+                                {dadosToken?.func === 'cliente' && (
+                                    <>
+
+                                        <button 
+                                            
+                                            className="Perfil-Opcoes"
+                                            onClick={() => navegarERecolher('/interno/UsuarioContato')}>
+
+                                            {statusCliente.contato ? "✔️" : "❌"} Contato
+
+                                        </button>
+
+                                        <button 
+
+                                            className="Perfil-Opcoes"
+                                            onClick={() => navegarERecolher('/interno/Endereco')}>
+
+                                            {statusCliente.endereco ? "✔️" : "❌"} Endereço
+
+                                        </button>
+
+                                    </>
+                                )}
+
+                            </div>
+
+                            {/* ----------------------- */}
+                            {/* INICIO - DADOS PESSOAIS */}
+                            {/* ----------------------- */}
 
 
 
+                                  
 
 
+            
 
+                            {/* ------------------------------------------- */}
+                            {/* INICIO - BOTAO SAIR - PARA TODOS O USUARIOS */}
+                            {/* ------------------------------------------- */}
 
-
-                            {/* BOTAO SAIR - PARA TODOS O USUARIOS */}
-
-                            <button 
-                                className="Botao-Acao-Sair" 
+                            <button className="Botao-Acao-Sair" 
                                 onClick={() => { 
                                     onClickSair(); 
                                     navegarERecolher('/'); 
@@ -1377,35 +1483,21 @@ export default function App() {
                                 Sair
                             </button>
 
-                           
+                            {/* ------------------------------------------- */}
+                            {/* FIM - BOTAO SAIR - PARA TODOS O USUARIOS */}
+                            {/* ------------------------------------------- */}
 
 
 
 
 
 
-                            {/* ------------------------------------ */}
-                            {/* MEUS TESTES DE PERMISSAO NO FIREBASE */}
-                            {/* ------------------------------------ */}
 
-                         
-                           
+                            {/* ------------------------------------------------------ */}
+                            {/* INICIO - TESTE PERMISSAO - PROVISORIO - DESENVOLVIMENTO*/}
+                            {/* ------------------------------------------------------ */}
+
                             {/* <button onClick={() => {
-
-                                console.log("");
-                                console.error(" --------------------------------------------------");
-                                console.error(" Botão (Teste Permissao) clicado! Indo para componente");
-                                console.error(" --------------------------------------------------");
-
-                                navegarERecolher('/interno/TestePermissao');
-                                }}>
-                                Teste Permissao
-                            </button> */}
-
-
-
-
-                            <button onClick={() => {
                                 console.log("");
                                 console.log("📐 ----------------------------------");
                                 console.log("📐 🚀 EVENTO: Clique no botão 'Teste Permissao'");
@@ -1414,7 +1506,13 @@ export default function App() {
                                 navegarERecolher('/interno/TestePermissaoMelhor');
                                 }}>
                                 Teste Permissao
-                            </button>
+                            </button> */}
+
+                            {/* ------------------------------------------------------ */}
+                            {/* FIM - TESTE PERMISSAO - PROVISORIO - DESENVOLVIMENTO*/}
+                            {/* ------------------------------------------------------ */}
+
+
 
 
 
@@ -1422,7 +1520,9 @@ export default function App() {
 
                         </div>
 
+                        {/* ------------------------------------ */}
                         {/* FIM DO - SUB MENU - DADOS DO USUARIO */}
+                        {/* ------------------------------------ */}
 
 
 
@@ -1432,6 +1532,7 @@ export default function App() {
                     // ---------------------------------------------------
                     // FIM - AREA PRIVADA - MENU PARA LOGADOS - BOTAO MEU PERFIL
                     // ---------------------------------------------------
+
 
 
                 ) : (
@@ -1509,7 +1610,7 @@ export default function App() {
 
 
 
-                   </div>
+                    </div>
 
                     // ------------------------------------
                     // FIM - PARA VISITANTES - ENTRAR OU CADASTRAR
@@ -1706,6 +1807,7 @@ export default function App() {
                         <Route path="Endereco" element={<Endereco />} />
                         <Route path="Cnpj" element={<Cnpj />} />
                         <Route path="Formacao" element={<Formacao />} />
+                        <Route path="Funcoes" element={<Funcoes />} />
                         <Route path="UsuarioReferencias" element={<UsuarioReferencias />} />
 
                         <Route path="CadAdministrador" element={<CadAdministrador />} />
@@ -1803,6 +1905,12 @@ export default function App() {
 
 
 
+                        <Route
+                            
+                            path="Logado" 
+                            element={<Logado />} 
+                        
+                        />
 
 
 

@@ -299,16 +299,16 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         if (!validarCPF(credenciais.cpef)) {
 
-            console.log("");
-            console.log("🔍 -----------------------------------------------------------");
-            console.log("🔍 ALERTA DE SEGURANÇA - CPF INVÁLIDO");
-            console.log("🔍 componente -  Logar.jsx");
-            console.log("🔍 Valor Digitado:", credenciais.cpef);
-            console.log("🔍 Status:", "❌ Bloqueado antes do envio");
-            console.log("🔍 -----------------------------------------------------------");
+            // console.log("");
+            // console.log("🔍 -----------------------------------------------------------");
+            // console.log("🔍 ALERTA DE SEGURANÇA - CPF INVÁLIDO");
+            // console.log("🔍 componente -  Logar.jsx");
+            // console.log("🔍 Valor Digitado:", credenciais.cpef);
+            // console.log("🔍 Status:", "❌ Bloqueado antes do envio");
+            // console.log("🔍 -----------------------------------------------------------");
     
             dispararMensagem("O CPF informado é inválido. Por favor, confira os números.");
-            return; // ✋ Para a execução aqui mesmo!
+            return;
         }
 
         setCarregandoModal(true);
@@ -317,57 +317,54 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         try {
 
+            console.log("");
+            console.log("🔄 📡 ----------------------------------");
+            console.log("🔄 📡 ENVIANDO DADOS PARA O SERVIDOR...");
+            console.log("🔄 📡 componente: Logar.jsx");
+            console.log("🔄 📡 funcao: enviarDadosLoginParaServidor");
+            console.log("🔄 📡 dados:", credenciais);
+            console.log("🔄 📡 URL:", URL_SERVIDOR);
+            
+            // 📐 Preparando pacote estruturado para o servidor (Padrão Golden Reference)
+            const payload = {
+                dadosBasico: {
+                    cpef: credenciais.cpef
+                },
+                dadosSeguranca: {
+                    senh: credenciais.senh
+                }
+            };
+
             const resposta = await fetch(`${URL_SERVIDOR}/login`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(credenciais),
+                body: JSON.stringify(payload),
             });
 
             const resultado = await resposta.json();
 
-
-
-
-            console.log("");
-            console.log("📡 ----------------------------------");
-            console.log("📡 ENVIANDO DADOS PARA O SERVIDOR...");
-            console.log("📡 componente -  Logar.jsx");
-            console.log("📡 URL:", URL_SERVIDOR);
-            console.log("📦 CONTEÚDO:", resultado);
-            console.log("📦 ----------------------------------");
+            console.log("🔄 📡 📦 CONTEÚDO:");
+            console.log(resultado);
 
             if (resposta.ok) {
 
-                if (resultado.firebaseToken) {
+                // 📐 Verificação Dupla: Checa o status da API e a presença do crachá (Token)
+                if (resultado.status === 'logado' && resultado.firebaseToken) {
+
+                    console.log("🔄 📡 ✅ Verificação de Login: Status 'logado' e Token recebidos.");
+                    console.log("🔄 📡 ----------------------------------");
 
                     try {
 
-                        console.log("");
-                        console.warn("🔄 ----------------------------------");
-                        console.warn("🔄 Componente - Logar.jsx");
-                        console.warn("🔄 onSubmit={enviarDadosLoginParaServidor}");
-                        console.warn("🔄 const enviarDadosLoginParaServidor = async (e) => {");
-                        console.warn("🔄 📦 Retorno do servidor = ", resultado);
-                        console.warn("🔄 ----------------------------------");
-                        console.warn("🔄 🔥 signInWithCustomToken(auth, resultado.firebaseToken);");
-                        console.warn("🔄 🔥 ✅ PASSO 1: Firebase autenticado!");
-                        console.warn("🔄 🔥 ----------------------------------");
-
+                        // 🚀 Entrega o crachá para o Porteiro do Contexto validar no Firebase
                         await logarNoFirebase(resultado.firebaseToken);
 
+                        // 🚪 Desliga o modal e abre a porta para a área interna
                         setCarregandoModal(false);
-
                         navigate('/interno');
 
                     } catch (fbError) {
 
-                        console.log("");
-                        console.error("🔄 ----------------------------------");
-                        console.error("🔄 Componente - Logar.jsx");
-                        console.error("🔄 onSubmit={enviarDadosLoginParaServidor}");
-                        console.error("🔄 const enviarDadosLoginParaServidor = async (e) => {");
-                        console.error("🔄 📦 resultado (retorno) = ", resultado);
-                        console.error("🔄 ----------------------------------");
                         console.error("🔄 🔥 📡 Ação: signInWithCustomToken()");
                         console.error("🔄 🔥 🆔 Código do Erro: ", fbError.code);
                         console.error("🔄 🔥 📝 Mensagem: ", fbError.message);
@@ -381,6 +378,17 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                         }, 500)
 
                     }
+
+
+                } else {
+
+
+                    // 🚨 Cenário de erro inesperado: A API respondeu OK, mas não enviou o crachá.
+                    console.error("🚨 Falha de Lógica: Resposta OK do servidor, mas sem firebaseToken.");
+                    setTimeout(() => {
+                        dispararMensagem("Resposta inesperada do servidor de login.");
+                    }, 500);
+
 
                 }
 
@@ -396,21 +404,16 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         } catch (error) {
 
+
+
+
             setTimeout(() => {
         
                 dispararMensagem("Erro de conexão com o servidor.");
 
             }, 500);
 
-        } finally {
-
-            console.log("🏁 ----------------------------------");
-            console.log("🏁 FIM DA OPERAÇÃO: Desligando Modal.");
-            console.log("🏁 ----------------------------------");
-            
-            // setCarregandoModal(false);
-         
-        }
+        } 
 
     };
 
@@ -614,10 +617,12 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
                 <input type="button" className="bot2" value="ANDRESSA (ADMINISTRADORA)" 
                     onClick={() => preencherCampos({
-                        cpef: "233.606.620-32",
+                        cpef: "663.745.531-87",
                         senh: "123"
                     })}/>
   
+
+
                 <input type="button" className="bot4" value="JOANA (CUIDADORA)" 
                     onClick={() => preencherCampos({
                         cpef: "103.646.340-06",
@@ -626,7 +631,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
                 <input type="button" className="bot5" value="PAULA (CUIDADORA)" 
                     onClick={() => preencherCampos({ 
-                        cpef: "663.745.531-87",
+                        cpef: "293.348.470-69",
                         senh: "12"
                     })}/>
 

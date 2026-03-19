@@ -19,10 +19,13 @@
 
 /* Card Esquerdo: Largura curta para o CPF */
 .cad-admin-card-compacto {
+
+  width: 400px; 
+
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  width: 280px; /* Largura focada apenas no CPF */
+  width: 400px; /* Largura focada apenas no CPF */
   border: 1px solid #e1e1e1;
   /* overflow: hidden; */
 }
@@ -47,7 +50,7 @@
 .cad-admin-header-card h3 {
   margin: 0;
   color: #2c3e50;
-  font-size: 0.7rem;
+  font-size: 1rem; /* 📐 Ajustado para tamanho compacto, mas legível (era inline 1.05rem) */
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 900; 
@@ -71,6 +74,7 @@
   font-size: 0.9rem;
   font-weight: 600;
   color: #666;
+  text-align: left; /* ⬅️ Garante que o texto do label esteja alinhado à esquerda */
 }
 
 .cad-admin-input-estilizado {
@@ -88,6 +92,21 @@
   border-color: rgb(32,122,84);
 }
 
+/* 🧱 Ajuste Moderno para o Select de Função */
+select.cad-admin-input-estilizado {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  /* Seta SVG embutida para visual limpo */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 0.65em auto;
+  padding-right: 2.5rem;
+}
+
 .cad-admin-botao-registrar {
   background-color: #27ae60;
   color: white;
@@ -96,7 +115,7 @@
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: background 0.3s;
 }
 
@@ -108,7 +127,7 @@
 
 .cad-admin-tabela-responsiva {
   width: 100%;
-  /* overflow-x: auto; */
+  overflow-x: auto; /* 📐 Garante que a tabela possa rolar horizontalmente em telas pequenas */
 }
 
 .cad-admin-tabela-dados {
@@ -119,7 +138,7 @@
 .cad-admin-tabela-dados th {
   background-color: #f9f9f9;
   color: #7f8c8d;
-  font-size: 0.8rem; /* Fonte do cabeçalho levemente maior */
+  font-size: 14px; /* 📐 Reduzido para cabeçalho compacto */
   text-transform: uppercase;
   padding: 12px;
   text-align: left;
@@ -130,7 +149,7 @@
   padding: 8px 12px;        /* Padding reduzido para achatar a linha */
   text-align: left;
   border-bottom: 1px solid #f0f0f0;
-  font-size: 0.8rem;       /* 🔍 Fonte pequena conforme solicitado */
+  font-size: 12px;       /* 🔍 Fonte reduzida de 1rem para 0.85rem */
   font-weight: 700;         /* ⚖️ Peso equilibrado para leitura nítida */
   color: #555;
   text-transform: uppercase;
@@ -154,10 +173,13 @@
 /* --- FEEDBACK --- */
 
 .cad-admin-feedback {
+  /* margin-top: 20px;
+  margin-left: 20px;
+  margin-right:20px; */
   padding: 10px;
   border-radius: 6px;
   font-size: 0.85rem;
-  text-align: center;
+  text-align: left;
 }
 
 .cad-admin-feedback.erro { background: #fdeded; color: #c0392b; border: 1px solid #fadbd8; }

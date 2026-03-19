@@ -5,7 +5,7 @@ import { ref, update, get } from "firebase/database";
 
 import { db_realtime } from './firebaseConfig.js';
 
-import { useAuth } from './AutenticacaoContexto';
+import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto';
 
 import './Endereco.css'; 
 
@@ -17,7 +17,7 @@ export function Endereco() {
     const cepInputRef = useRef(null);
 
     
-    const { dadosUsuarioCompleto } = useAuth();
+    const { dadosToken } = useAuth();
     
 
     // No início do componente, junto aos outros hooks:
@@ -41,7 +41,9 @@ export function Endereco() {
     useEffect(() => {
         // Se o portão de edição abrir, foca no CEP
         if (podeEditar) {
+
             cepInputRef.current?.focus();
+
         }
     }, [podeEditar]);
 
@@ -57,114 +59,125 @@ export function Endereco() {
 
     
 
-/* 🧱 FERRAMENTAS DE TRABALHO (useEffect) - MONITORAMENTO */
-useEffect(() => {
+    /* 🧱 FERRAMENTAS DE TRABALHO (useEffect) - MONITORAMENTO */
+    useEffect(() => {
 
-    console.log("");
-    console.warn("✨ 🛰️ ----------------------------------");
-    console.warn("✨ 🛰️ useEffect() - componente - 📍 Endereco.jsx");
-    console.warn("✨ 🛰️ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
+        // console.log("");
+        // console.warn("✨ 🛰️ ----------------------------------");
+        // console.warn("✨ 🛰️ useEffect() - componente - 📍 Endereco.jsx");
+        // console.warn("✨ 🛰️ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
 
-    if (dadosUsuarioCompleto?.cpef) {
+        if (dadosToken?.cpef) {
 
-        console.warn("✨ 🛰️ 🧖‍♂️ dadosUsuarioCompleto.cpef = ", dadosUsuarioCompleto.cpef);
-        distribuirDadosContexto();
+            // console.warn("✨ 🛰️ 🧖‍♂️ dadosToken.cpef = ", dadosToken.cpef);
 
-    } else {
+            carregarDadosDoBanco();
 
-        console.warn("✨ 🛰️ ⏳ Aguardando sinal da Antena Central para carregar Endereço...");
+        } else {
 
-    }
-
-    console.warn("✨ 🛰️ ----------------------------------");
-
-}, [dadosUsuarioCompleto]);
-
-
-
-/* 🕵️‍♂️ FUNÇÃO: Distribui o endereço para os cards (Memória ou Banco) */
-const distribuirDadosContexto = async () => {
-
-    /* 🧱 Primeiro, verificamos se o endereço já está na memória (Contexto) */
-    const infoEndereco = dadosUsuarioCompleto?.ende;
-
-    /* 🚀 Se o cpef existe mas NÃO tem endereço na memória, busca na Antena Central */
-    if (!infoEndereco || Object.keys(infoEndereco).length === 0) {
-        
-        console.warn("✨ 🛰️ Endereço vazio na memória. Buscando na Antena Central...");
-        
-        const cpfLimpo = dadosUsuarioCompleto.cpef.replace(/\D/g, "");
-        const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/ende`);
-
-        try {
-            const snapshot = await get(caminhoNoBanco);
-            
-            if (snapshot.exists()) {
-
-                const dadosEnde = snapshot.val();
-                console.warn("✨ ✅ Endereço encontrado no Realtime.");
-
-                popularCamposEndereco(dadosEnde);
-                setEhNovoCadastro(false); // 🎯 Existe no banco, não é novo
-                setPodeEditar(false);
-
-            } else {
-
-                console.warn("✨ 📍 Nenhum endereço no banco. Liberando edição.");
-                
-                limparCampos();  
-                         // 🧹 Garante campos vazios
-                setEhNovoCadastro(true);  // 🎯 MARCA COMO NOVO (Isso vai sumir com o botão Cancelar)
-                setPodeEditar(true);      // Libera edição automática
-
-            }
-        } catch (error) {
-
-            console.error("❌ Erro ao buscar endereço na Antena Central:", error);
-            setPodeEditar(true); 
+            // console.warn("✨ 🛰️ ⏳ Aguardando sinal da Antena Central para carregar Endereço...");
 
         }
 
-    } else {
+        // console.warn("✨ 🛰️ ----------------------------------");
 
-        /* Se já tem o endereço na memória (Contexto) */
-        console.warn("✨ 🛰️ 🏠 Populando cards com endereço da memória.");
-
-        popularCamposEndereco(infoEndereco);
-        setEhNovoCadastro(false); // 🎯 Se veio do contexto, já existe
-        setPodeEditar(false);
-
-    }
-};
+    }, [dadosToken]);
 
 
 
-/* 🧱 Função Auxiliar para popular os estados dos cards de Endereço */
-const popularCamposEndereco = (dados) => {
+    /* 🕵️‍♂️ FUNÇÃO: Distribui o endereço para os cards (Memória ou Banco) */
+    const carregarDadosDoBanco = async () => {
 
-    setCep(String(dados.cepe || '').trim());
-    setRua(String(dados.ruaa || '').trim());
-    setBairro(String(dados.bair || '').trim());
-    setCidade(String(dados.cida || '').trim());
-    setEstado(String(dados.esta || '').trim());
-    setNumero(String(dados.nume || '').trim());
+        /* 🧱 Primeiro, verificamos se o endereço já está na memória (Contexto) */
+        const infoEndereco = dadosToken?.ende;
 
-};
+        /* 🚀 Se o cpef existe mas NÃO tem endereço na memória, busca na Antena Central */
+        if (!infoEndereco || Object.keys(infoEndereco).length === 0) {
+            
+            // console.warn("✨ 🛰️ Endereço vazio na memória. Buscando na Antena Central...");
+            
+            const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
+            const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/dadosEndereco`);
 
+            try {
 
-const limparCampos = () => {
-    setCep('');
-    setRua('');
-    setBairro('');
-    setCidade('');
-    setEstado('');
-    setNumero('');
-};
+                const snapshot = await get(caminhoNoBanco);
+                
+                if (snapshot.exists()) {
 
-
+                    const dadosEnde = snapshot.val();
 
 
 
+                    console.log("");
+                    console.log("✨ --------------------------------------------------");
+                    console.log("✨ CARREGANDO DADOS DO ENDERECO DIRETO DO FIREBASE");
+                    console.log("✨ useEffect() - Componente - 📍 Endereco.jsx");
+                    console.log("✨ ✅ Endereço encontrado no Realtime.");
+                    console.log("✨ --------------------------------------------------");
+
+                    popularCamposEndereco(dadosEnde);
+                    setEhNovoCadastro(false); // 🎯 Existe no banco, não é novo
+                    setPodeEditar(false);
+
+                } else {
+
+                    console.log("");
+                    console.log("✨ 🛰️ ----------------------------------");
+                    console.log("✨ 🛰️ useEffect() - componente - 📍 Endereco.jsx");
+                    console.log("✨ 🛰️ funcao: carregarDadosDoBanco()");
+                    console.log("✨ 📍 Nenhum endereço no banco. Liberando edição.");
+                    console.log("✨ --------------------------------------------------");
+                    
+                    limparCampos();  
+                    setEhNovoCadastro(true); 
+                    setPodeEditar(true);
+
+                }
+            } catch (error) {
+
+                console.error("❌ Erro ao buscar endereço na Antena Central:", error);
+                setPodeEditar(true); 
+
+            }
+
+        } else {
+
+            console.log("");
+            console.log("✨ 🛰️ ----------------------------------");
+            console.log("✨ 🛰️ useEffect() - componente - 📍 Endereco.jsx");
+            console.log("✨ 🛰️ funcao: carregarDadosDoBanco()");
+            console.log("✨ 🛰️ 🏠 Populando cards com endereço da memória.");
+
+            popularCamposEndereco(infoEndereco);
+            setEhNovoCadastro(false); 
+            setPodeEditar(false);
+
+        }
+    };
+
+
+    /* 🧱 Função Auxiliar para popular os estados dos cards de Endereço */
+    const popularCamposEndereco = (dados) => {
+
+        setCep(String(dados.cepe || '').trim());
+        setRua(String(dados.ruaa || '').trim());
+        setBairro(String(dados.bair || '').trim());
+        setCidade(String(dados.cida || '').trim());
+        setEstado(String(dados.esta || '').trim());
+        setNumero(String(dados.nume || '').trim());
+
+    };
+
+
+    const limparCampos = () => {
+        setCep('');
+        setRua('');
+        setBairro('');
+        setCidade('');
+        setEstado('');
+        setNumero('');
+    };
 
 
 
@@ -172,7 +185,22 @@ const limparCampos = () => {
 
 
 
-    // 🔍 BUSCA ViaCEP (Só se estiver em modo edição) - Versão Moderna 2026
+
+
+
+
+
+
+
+
+
+
+
+
+    // --------------------------------------------------------------------
+    // INICIO - 🔍 BUSCA ViaCEP (Só se estiver em modo edição) - Versão Moderna 2026
+    // --------------------------------------------------------------------
+
     const realizarBuscaCep = async () => {
 
         if (!podeEditar) return;
@@ -206,11 +234,13 @@ const limparCampos = () => {
         }
     };
 
-    
     useEffect(() => {
         realizarBuscaCep();
     }, [cep, podeEditar]);
 
+    // --------------------------------------------------------------------
+    // FIM - 🔍 BUSCA ViaCEP (Só se estiver em modo edição) - Versão Moderna 2026
+    // --------------------------------------------------------------------
 
 
 
@@ -227,7 +257,10 @@ const limparCampos = () => {
 
 
 
-    // 🛠️ MÁSCARA DE CEP
+    // ------------------
+    // INICIO - 🛠️ MÁSCARA DE CEP
+    // ------------------
+
     const mascaraCep = (e) => {
         // 🧱 Se a obra estiver travada (podeEditar = false), não faz nada
         if (!podeEditar) return;
@@ -250,8 +283,22 @@ const limparCampos = () => {
         setCep(v);
     };
 
+    // ------------------
+    // FIM - 🛠️ MÁSCARA DE CEP
+    // ------------------
 
 
+
+
+
+
+
+
+
+
+    // ------------------------------
+    // INICIO - 🛠️ MÁSCARA DE NUMERO
+    // ------------------------------
 
     const mascaraNume = (e) => {
         // 🧱 Trava de segurança da obra
@@ -266,6 +313,9 @@ const limparCampos = () => {
         setNumero(v);
     };
 
+    // ------------------------------
+    // INICIO - 🛠️ MÁSCARA DE NUMERO
+    // ------------------------------
 
 
 
@@ -284,24 +334,36 @@ const limparCampos = () => {
 
 
 
+     /* -------------------------------------------------------- */
+    /* INICIO - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
+    /* -------------------------------------------------------- */
+
+    const [msg, setMsg] = useState({ tipo: '', texto: '' });
+    
+    // ⏳ Função centralizada para limpar mensagens após um tempo
+    const temporizadorMSG = () => {
+        setTimeout(() => {
+            setMsg({ tipo: '', texto: '' });
+        }, 3000);
+    };
 
 
+    const salvardadosEndereco = async () => {
 
 
-
-    // 💾 SALVAR NO BANCO DE DADOS
-    const salvarEnderecoNoBanco = async () => {
-
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         console.log("");
-        console.log("📐 ----------------------------------");
-        console.log("📐 🚀 EVENTO: Clique no botão '💾 Salvar Alterações'");
-        console.log("📐 componente - 🧿 Endereco.jsx");
-        console.log("📐 📍 update(ref(db_realtime, `usuarios/...`))");
-        console.log("📐 ----------------------------------");
+        console.log("💾 📍 ------------------------------");
+        console.log("💾 📍 INICIANDO SALVAMENTO:");
+        console.log("💾 📍 Componente - 📍 Endereco.jsx");
+        console.log("💾 📍 Funcao: salvardadosContato()");
+        console.log("💾 📍 -------------------------------");
+
+        setMsg({ tipo: '', texto: '' });
 
         try {
 
-            const cpfLimpo = dadosUsuarioCompleto.cpef.replace(/\D/g, "");
+            const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
 
             if (!cpfLimpo) {
 
@@ -310,36 +372,85 @@ const limparCampos = () => {
 
             }
 
-            const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}`);
+            console.log("");
+            console.log("💾 📍 -------------------------------");
+            console.log("💾 📍 🔍 EXTRAÇÃO DE IDENTIDADE:");
+            console.log("💾 📍 🛰️ Componente - 📍 Endereco.jsx");
+            console.log("💾 📍 🆔 cpfLimpo (para URL):", cpfLimpo);
+            console.log("💾 📍 🌐 URL_SERVIDOR:", URL_SERVIDOR);
+            console.log("💾 📍 -------------------------------");
 
-            const dadosEndereco = {
-                cepe: cep,
-                ruaa: rua,
-                nume: numero,
-                bair: bairro,
-                cida: cidade,
-                esta: estado
+       
+
+            const payload = {
+                cpef: cpfLimpo,
+                dadosEndereco: {
+                    cepe: cep,
+                    ruaa: rua,
+                    nume: numero,
+                    bair: bairro,
+                    cida: cidade,
+                    esta: estado
+                }
             };
-
-            await update(caminhoNoBanco, { ende: dadosEndereco });
-
-            console.log("📡🗼 ✅ Almoxarifado: Endereço atualizado com sucesso!");
-
-            alert("✅ Dados salvos no banco de dados");
-
-            setEhNovoCadastro(false);
-
-            // Trava após salvar
-            setPodeEditar(false); 
             
+
+
+            console.log("");
+            console.log("📐 ----------------------------------");
+            console.log("📐 📦 DADOS PREPARADOS PARA ENVIO (CONTATO):");
+            console.log("📐 componente - UsuarioContato.jsx");
+            console.log("📐 payload:", payload);
+            console.log("📐 ----------------------------------");
+
+            // �📡 Transmissão para a VPS
+            const resposta = await fetch(`${URL_SERVIDOR}/atualizar-endereco`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            const resultado = await resposta.json();
+
+            if (resposta.ok) {
+
+                console.log("");
+                console.log("💾 📡 -----------------------------------------------------------");
+                console.log("💾 📡 Resposta do Servidor OK");
+                console.log("💾 🛰️ Componente - 📞 UsuarioContato.jsx");
+                console.log("💾 📡 Status : ✅ Sincronizado");
+                console.log("💾 📡 -----------------------------------------------------------");
+
+                setMsg({ tipo: 'sucesso', texto: '✅ Endereco atualizado com sucesso!' });
+
+                carregarDadosDoBanco();
+
+            } else {
+
+                console.log("💾 ⚠️ SERVIDOR REJEITOU:", resultado.erro);
+                setMsg({ tipo: 'erro', texto: resultado.erro });
+
+            }
+
         } catch (error) {
 
-            console.error("❌ Erro ao salvar:", error);
+            console.log("💾 🚨 FALHA CRÍTICA NO PROCESSO:");
+            console.error("💾 🚨 Detalhes:", error);
+            alert("❌ Erro de conexão com o servidor VPS.");
 
-            alert("Erro ao conectar com o banco de dados");
+        } finally {
+
+            temporizadorMSG();
 
         }
     };
+
+    /* -------------------------------------------------------- */
+    /* FIM - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
+    /* -------------------------------------------------------- */
+
+
+
 
 
 
@@ -358,13 +469,13 @@ const limparCampos = () => {
         console.log("📐 ----------------------------------");
         console.log("📐 🚀 EVENTO: Clique no botão '✖️ Cancelar Edição'");
         console.log("📐 componente - 🧿 Endereco.jsx");
-        console.log("📐 📍 distribuirDadosContexto() & setPodeEditar(false)");
+        console.log("📐 📍 carregarDadosDoBanco() & setPodeEditar(false)");
         console.log("📐 ----------------------------------");
 
         console.log("✨ 🔄 Cancelando edição. Restaurando dados do Contexto...");
 
         // Chamamos a função que já sabe ler o Contexto e preencher os inputs
-        distribuirDadosContexto(); 
+        carregarDadosDoBanco(); 
 
         // Trava os inputs novamente (Fecha o portão de edição)
         setPodeEditar(false); 
@@ -392,7 +503,14 @@ const limparCampos = () => {
                 <div className="perfil-endereco-usuario-card">
 
 
-                    <div className="perfil-endereco-card-titulo">📍 ENDEREÇO RESIDENCIAL</div>
+                    <div className="perfil-endereco-card-titulo">
+                        📍 ENDEREÇO RESIDENCIAL
+                    </div>
+
+
+
+                    {msg.texto && <div className={`cad-admin-feedback-endereco ${msg.tipo}`}>{msg.texto}</div>}
+
 
 
                     <div className="perfil-endereco-card-corpo">
@@ -461,25 +579,21 @@ const limparCampos = () => {
                                 <button 
                                     type="button" 
                                     className="BotaoEditar" 
-                                    onClick={() => {
-                                        console.log("");
-                                        console.log("📐 ----------------------------------");
-                                        console.log("📐 🚀 EVENTO: Clique no botão '🔓 Editar Endereço'");
-                                        console.log("📐 componente - 🧿 Endereco.jsx");
-                                        console.log("📐 📍 setPodeEditar(true)");
-                                        console.log("📐 ----------------------------------");
-                                        setPodeEditar(true)}}
+                                    onClick={() => { 
+                                        setPodeEditar(true);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
                                 >
-                                    🔓 Editar Endereço
+                                    🔓 Editar
                                 </button>
                             ) : (
                                 <>
                                     <button 
                                         type="button" 
                                         className="BotaoSalvar" 
-                                        onClick={salvarEnderecoNoBanco}
+                                        onClick={salvardadosEndereco}
                                     >
-                                        💾 Salvar Alterações
+                                        💾 Salvar
                                     </button>
 
                                     {/* O botão cancelar só aparece se não for um cadastro novo */}
@@ -487,9 +601,12 @@ const limparCampos = () => {
                                         <button 
                                             type="button" 
                                             className="BotaoCancelar" 
-                                            onClick={cancelarEdicao}
+                                            onClick={() => { 
+                                                carregarDadosDoBanco(); 
+                                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                            }}
                                         >
-                                            ✖️ Cancelar Edição
+                                            ✖️ Cancelar
                                         </button>
                                     )}
                                 </>

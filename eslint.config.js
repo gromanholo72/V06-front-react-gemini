@@ -1,65 +1,63 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import { defineConfig, globalIgnores } from 'eslint/config'
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 
-export default defineConfig([
-  // 🚫 Ignora pastas de build e dependências para não perder performance
-  globalIgnores(['dist', 'node_modules', '.vite']),
-
+export default [
+  // 1. 🚫 Configuração Global: Ignorar pastas de build e dependências
   {
-    // 📂 Alvo: Todos os seus arquivos de lógica e componentes
-    files: ['**/*.{js,jsx}'],
-    
-    // 📚 Extensões de regras recomendadas pela comunidade
-    extends: [
-      js.configs.recommended,
-      reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite,
-    ],
+    ignores: ['dist/', 'node_modules/', '.vite/'],
+  },
 
+  // 2. 📚 Configuração Base: Regras recomendadas do ESLint
+  js.configs.recommended,
+
+  // 3. ⚛️ Configuração Específica para React (arquivos .js e .jsx)
+  {
+    files: ['**/*.{js,jsx}'],
+
+    // 🌍 Configurações de ambiente e linguagem
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       globals: {
         ...globals.browser,
         ...globals.es2020,
-        ...globals.node, // Adicionado para ele entender o 'process' se necessário
+        ...globals.node,
       },
       parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
 
-    // 🏎️ Plugins ativos para o ecossistema React/Vite
+    // 🔌 Plugins que serão usados neste bloco de configuração
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
 
-    // 🧱 Regras de Ouro do Maestro (Personalizadas)
+    // 📐 Regras específicas
     rules: {
+      // ... Importa as regras recomendadas do plugin de hooks
       ...reactHooks.configs.recommended.rules,
 
-      // 🟡 Variáveis não usadas: Avisa (amarelo), mas não trava o Build.
-      // Permite que variáveis que começam com Maiúscula ou _ passem batido.
-      'no-unused-vars': ['warn', { 
-        varsIgnorePattern: '^[A-Z_]',
-        argsIgnorePattern: '^_' 
-      }],
-
-      // 🟡 React Refresh: Garante que o HMR (Hot Module Replacement) funcione.
-      // Ele vai te avisar se você tentar exportar algo que não seja um componente no mesmo arquivo.
+      // Regra do plugin de refresh para Vite/HMR
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
 
-      // 🟢 Outras regras de boa vizinhança:
+      // 🟡 Variáveis não usadas: Avisa (amarelo), mas não trava o Build
+      'no-unused-vars': ['warn', { 
+        varsIgnorePattern: '^[A-Z_]',
+        argsIgnorePattern: '^_' 
+      }],
+
+      // 🟢 Regras de Ouro do Maestro (Personalizadas)
       'no-console': 'off', // Mestre, nós AMAMOS logs, então deixamos liberado!
-      'react/prop-types': 'off', // Se não estiver usando TypeScript, isso evita avisos chatos
+      'react/prop-types': 'off', // Evita avisos em projetos sem prop-types
     },
   },
-])
+];
