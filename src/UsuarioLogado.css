@@ -1,0 +1,175 @@
+/* CSS para UsuarioLogado.jsx - Padrão Funcoes.jsx */
+
+/* 🏠 Container Principal - Layout de Coluna Centralizada */
+.Grid-Status-Informativo-logado {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    
+    padding: 20px;
+    width: 100%;
+    max-width: 700px; /* 📐 Largura de leitura confortável (Padrão Funcoes) */
+    margin: 0 auto;   /* 🧱 Centraliza o bloco na tela */
+
+    /* 🚀 IMPLEMENTAÇÃO: Entrada suave por opacidade (Esconde o deslizamento do menu) */
+    animation: fadeInSecoTotal 1.2s ease-out backwards;
+}
+
+/* 📋 Cards Padrão */
+.Card-Status-Informativo-logado,
+.Card-Alerta-Cadastro-logado,
+.Card-Status-Seguranca-logado {
+    background-color: #ffffff;
+    border-radius: 12px; /* 📐 Bordas mais suaves */
+    padding: 25px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 📐 Centraliza conteúdo interno */
+    text-align: center;
+    
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* 📐 Sombra mais difusa */
+    /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+
+    /* 🎨 Identidade Visual (Viga Superior) */
+    border-top: 5px solid #306396;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border: 1px solid #f0f0f0; /* Borda sutil apenas para contraste */
+    border-top: 5px solid #306396; /* Reforço da viga */
+}
+
+/* 🧱 RESET: Remove animação individual para o Grid controlar tudo */
+.Card-Status-Informativo-logado {
+    /* Animação delegada para o grid pai */
+}
+
+/* ✨ Efeito Hover */
+.Card-Status-Informativo-logado:hover,
+.Card-Alerta-Cadastro-logado:hover,
+.Card-Status-Seguranca-logado:hover {
+    /* transform: translateY(-3px); */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* 🎯 Títulos */
+.Card-Status-Informativo-logado h2 {
+    font-size: 1.8rem;
+    color: #1a237e; /* Azul Profundo */
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+/* 📝 Subtítulos */
+.Card-Status-Informativo-logado h3 {
+    font-size: 1.2rem;
+    color: #306396;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    width: 100%; /* Divisor total */
+}
+
+.Card-Status-Informativo-logado p,
+.Card-Status-Informativo-logado span {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* 🛠️ Variação para Card de Programador */
+.Card-Status-Informativo-logado.🛠️ {
+    background-color: #f8f9fa; /* Fundo levemente cinza */
+    border-top-color: #2c3e50; /* Viga escura */
+}
+
+.botao-master-programador-logado {
+    background-color: #306396;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+.botao-master-programador-logado:hover {
+    background-color: #244b73;
+}
+
+/* ⚠️ Variação para Alerta */
+.Card-Alerta-Cadastro-logado {
+    background-color: #fffbe6;
+    border-top-color: #f59e0b; /* Viga Laranja */
+    color: #92400e;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.Card-Alerta-Cadastro-logado h3 {
+    color: #b45309;
+    border-top: none;
+    padding-top: 0;
+}
+
+.Card-Alerta-Cadastro-logado strong {
+    background-color: rgba(245, 158, 11, 0.1);
+    padding: 10px;
+    border-radius: 6px;
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* 🔒 Variação para Segurança */
+.Card-Status-Seguranca-logado {
+    display: flex;
+    align-items: center;
+    flex-direction: row; /* Ícone ao lado */
+    gap: 20px;
+    background-color: #f0fdf4; /* Verde bem claro */
+    border-top-color: #22c55e; /* Viga Verde */
+    text-align: left;
+}
+
+/* 📡 Ícone Pulsante */
+.Icone-Status-logado {
+    width: 15px;
+    height: 15px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(34, 197, 94, 0.4);
+    animation: pulse-green 2s infinite;
+    flex-shrink: 0;
+}
+
+@keyframes pulse-green {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.Card-Status-Seguranca-logado h3 {
+    margin: 0;
+    border: none;
+    padding: 0;
+    color: #15803d;
+}
+
+.Card-Status-Seguranca-logado span {
+    color: #166534;
+}
+
+/* ✨ 10. ANIMAÇÃO (ZERO MOVIMENTO) */
+@keyframes fadeInSecoTotal {
+    from { 
+        opacity: 0;
+    }
+    to { 
+        opacity: 1;
+    }
+}

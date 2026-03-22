@@ -93,11 +93,12 @@
       // 6 - 🏢 Dados da Empresa
       dadosEmpresa: {
          cnpj: "",
-         razaoSocial: "",
-         nomeFantasia: "",
-         situacao: "",
-         atividades: "",
-         socios: ""
+         raza: "", // razao social
+         Fant: "", //nome fantasia
+         insc: "", // inscricao estadual
+         situ: "",  //situacao
+         ativ: "",
+         soci: ""
       },
 
       // 7 - 🏢 Dados da Formacao profissional
@@ -177,3 +178,858 @@ Predio
    3 - botao Cancelar/sair
    background: #c0392b;
 
+
+
+
+
+
+
+
+
+
+# -------------------------------------------------------------
+# 🛠️ ESTILO DE CÓDIGO E DELIMITAÇÃO DE BLOCOS (SAGRADO 📐)
+# -------------------------------------------------------------
+
+1. DELIMITADORES DE BLOCO:
+   - SEMPRE utilize comentários delimitadores para blocos de lógica importantes (useEffect, funções complexas, grupos de useState, etc.).
+   - O padrão DEVE ser exatamente este, com linhas de traços duplas (// ---) e emojis:
+
+   // ---------------------------------
+   // INICIO - [Emoji] [Descrição Clara do Bloco]
+   // ---------------------------------
+   
+   [O Código Aqui]
+   
+   // ---------------------------------
+   // FIM - [Emoji] [Descrição Clara do Bloco]
+   // ---------------------------------
+
+   - Exemplo Obrigatório:
+   
+   // ---------------------------------
+   // INICIO - 🧭 Sensor de localização
+   // ---------------------------------
+
+   useEffect(() => { ... }, [...]);
+   
+   // ---------------------------------
+   // FIM - 🧭 Sensor de localização
+   // ---------------------------------
+
+2. ESPAÇAMENTO VERTICAL:
+   - Mantenha uma linha em branco entre os delimitadores e o código interno para facilitar a leitura.
+
+
+
+
+
+
+console.log("");
+console.log(" 💊 -----------------------------------------------------------");
+console.log(" 💊 componente: PacienteCadastroRemedio.jsx");
+console.log(" 💊 Funcao: const carregarDadosDoBanco");
+console.log(" 💊 Buscando dados de Remédio direto no Firebase");
+console.log(" 💊 -----------------------------------------------------------");
+
+
+
+
+
+
+
+# -------------------------------------------------------------
+# 🔄 PADRÃO SINCRETISTA FRONT/BACK (SALVAMENTO VPS) - SAGRADO 📐
+# -------------------------------------------------------------
+
+Este padrão define como o Front-end e o Back-end (VPS) devem colaborar para salvar dados de cards. O Front-end usa `Cnpj.jsx` como referência e o Back-end usa a rota `/atualizar-empresa`. Quando o usuário fornecer apenas o `payload` (mapeamento de dados), todo o restante do fluxo deve ser gerado automaticamente seguindo estas estruturas.
+
+## 1️⃣ FRONT-END: Estrutura Obrigatória da Função `async`
+
+- Toda função de salvamento via POST para a VPS DEVE seguir exatamente este fluxo lógico e visual, usando os Emojis específicos do bloco de dados (ex: 🏢 para Empresa, 📍 para Endereço, etc.).
+
+```javascript
+const salvarDados[NomeDoBloco] = async () => {
+
+    // A - Logs de Início (Estruturados com Emojis do Bloco)
+    console.log("");
+    console.log("💾 [Emoji] ------------------------------");
+    console.log("💾 [Emoji] INICIANDO SALVAMENTO:");
+    console.log(`💾 [Emoji] Componente - [NomeDoComponente].jsx`);
+    console.log(`💾 [Emoji] Funcao: salvarDados[NomeDoBloco]()`);
+    console.log("💾 [Emoji] -------------------------------");
+
+    // B - Trava de Concorrência e UX Inicial
+    if (carregandoOperacao) return; 
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setMsg({ tipo: '', texto: '' });
+    setCarregandoOperacao(true); 
+
+    try {
+        // C - Extração e Validação do CPF (dadosToken)
+        const cpfLimpo = dadosToken?.cpef ? dadosToken.cpef.replace(/\D/g, "") : "";
+        
+        if (!cpfLimpo) {
+            console.error("✨ [Emoji] 🛑 Falha crítica: CPF não encontrado para salvar nos cards.");
+            //setMsg({ tipo: 'erro', texto: '🛑 CPF não identificado.' }); // Opcional
+            return; // Aborta
+        }
+
+        // D - Logs de Identidade
+        console.log("");
+        console.log("💾 [Emoji] -------------------------------");
+        console.log("💾 [Emoji] 🔍 EXTRAÇÃO DE IDENTIDADE:");
+        console.log(`💾 [Emoji] 🛰️ Componente - [NomeDoComponente].jsx`);
+        console.log("💾 [Emoji] 🆔 cpfLimpo (para URL):", cpfLimpo);
+        console.log("💾 [Emoji] 🌐 URL_SERVIDOR:", URL_SERVIDOR);
+        console.log("💾 [Emoji] -------------------------------");
+
+        // E - Preparação do Payload (FORNECIDO PELO USUÁRIO)
+        // O usuário fornece apenas este bloco abaixo.
+        /* const payload = {
+            cpef: cpfLimpo,
+            [NomeDoNoNoBanco]: { 
+                campo1Banco: estado1Front,
+                campo2Banco: estado2Front,
+                // ...
+            }
+        };
+        */
+        // [O Gemini insere o payload fornecido aqui]
+
+        // F - Logs do Payload (Preparação)
+        console.log("");
+        console.log("📐 ----------------------------------");
+        console.log(`📐 📦 DADOS PREPARADOS PARA ENVIO ([NomeDoBloco]):`);
+        console.log(`📐 componente - [NomeDoComponente].jsx`);
+        console.log("📐 payload:", payload);
+        console.log("📐 ----------------------------------");
+
+        // G - UX: Tempo Mínimo de Loading (500ms a 1s) para feedback visual
+        const tempoMinimo = new Promise(resolve => setTimeout(resolve, 800));
+
+        // H - Transmissão Assíncrona (fetch POST)
+        const requisicao = fetch(`${URL_SERVIDOR}/atualizar-[rota-vps]`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        });
+
+        // I - Espera Paralela (Resposta + Tempo Mínimo)
+        const [resposta] = await Promise.all([requisicao, tempoMinimo]);
+        const resultado = await resposta.json();
+
+        // J - Tratamento do Resultado (Sucesso/Rejeição VPS)
+        if (resposta.ok) {
+            // Logs de Sucesso
+            console.log("");
+            console.log("💾 📡 -----------------------------------------------------------");
+            console.log("💾 📡 Resposta do Servidor OK");
+            console.log(`💾 [Emoji] Componente - [NomeDoComponente].jsx`);
+            console.log("💾 📡 Status : ✅ Sincronizado");
+            console.log("💾 📡 -----------------------------------------------------------");
+
+            setMsg({ tipo: 'sucesso', texto: '✅ Dados atualizados com sucesso!' });
+
+            // Recarrega dados para travar edição
+            carregarDadosDoBanco();
+
+        } else {
+            // Logs de Rejeição do Servidor
+            console.warn("💾 ⚠️ SERVIDOR REJEITOU:", resultado.erro);
+            setMsg({ tipo: 'erro', texto: resultado.erro });
+        }
+
+    } catch (error) {
+        // K - Tratamento de Falha Crítica (Conexão)
+        console.error("💾 🚨 FALHA CRÍTICA NO PROCESSO:");
+        console.error("💾 🚨 Detalhes:", error);
+        setMsg({ tipo: 'erro', texto: '❌ Erro de conexão com o servidor VPS.' });
+
+    } finally {
+        // L - Finalização Obrigatória
+        setCarregandoOperacao(false);
+        temporizadorMSG();
+    }
+};
+
+
+
+
+
+
+
+
+
+// [Emoji] ROTA NA VPS PARA ATUALIZAR [NomeDoBloco]
+// Recebe POST do componente [NomeDoComponente].jsx
+app.post('/atualizar-[rota-vps]', async (req, res) => {
+    
+    // A - Desestruturação do Pacote (Payload) recebido
+    const { cpef, [NomeDoNoNoBanco] } = req.body;
+
+    console.log("");
+    console.log("📥 [Emoji] -----------------------------------------------------------");
+    console.log(`📥 [Emoji] REQUISIÇÃO RECEBIDA NA VPS: POST /atualizar-[rota-vps]`);
+    console.log(`📥 [Emoji] Origem: Componente [Emoji] [NomeDoComponente].jsx`);
+   
+
+    // B - 🛡️ Validação de Segurança Básica: CPF é obrigatório
+    if (!cpef) {
+        console.warn("📥 🛑 ⚠️ ALERTA VPS: Tentativa de atualização sem CPF barrada.");
+        return res.status(400).json({ erro: "CPF não identificado na requisição." });
+    }
+
+    // C - 🛡️ Validação de Integridade (Padrão Maestro): Verificar campo obrigatório do bloco
+    // O Gemini deve inferir o campo obrigatório principal (ex: cnpj, cep, nivel)
+    if (![NomeDoNoNoBanco] || ![NomeDoNoNoBanco].[CampoObrigatório]) {
+        console.warn(`📥 🛑 ⚠️ ALERTA VPS [CPF: ${cpef}]: Dados obrigatórios de [NomeDoBloco] ausentes.`);
+        return res.status(400).json({ erro: "⚠️ Dados obrigatórios ausentes!" });
+    }
+
+    try {
+        // D - Log de Processamento
+        console.log(`📥 [Emoji] VPS: Processando atualização de dados de [NomeDoBloco] do CPF [${cpef}]`);
+    
+        // E - Conexão Admin SDK (Poder Total)
+        const usuarioRef = db_admin.ref(`usuarios/${cpef}`);
+        
+        // F - Gravação com update() (Preserva nós vizinhos)
+        await usuarioRef.update({
+            [NomeDoNoNoBanco]: [NomeDoNoNoBanco] 
+        });
+
+        // G - Logs de Sucesso na VPS
+        console.log(`📥 [Emoji] ✅ Gravação de Dados de [NomeDoBloco] concluída com sucesso na Antena Central.`);
+        console.log(`📥 [Emoji] ✅ Dados gravados:`, [NomeDoNoNoBanco]);
+        console.log("📥 [Emoji] -----------------------------------------------------------");
+        
+        // H - Resposta de Sucesso (Padrão Maestro)
+        return res.status(200).json({ 
+            status: "sucesso",
+            mensagem: "✅ Dados sincronizados na Antena Central."
+        });
+
+    } catch (error) {
+        // I - 🔥 TRATAMENTO DE ERRO CRÍTICO NA VPS
+        console.log("📥 🔥 -----------------------------------------------------------");
+        console.error(`📥 🔥 ERRO CRÍTICO NA VPS (Processamento de [NomeDoBloco]):`);
+        console.error(`📥 🔥 CPF Alvo: ${cpef}`);
+        console.error("📥 🔥 Detalhes:", error.message);
+        console.log("📥 🔥 -----------------------------------------------------------");
+
+        // Retorna erro 500 padronizado para o front-end
+        return res.status(500).json({ 
+            erro: "Erro interno no servidor VPS ao processar a atualização." 
+        });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+Gere no @UsuarioFormacao o código completo do front-end e a rota completa do back-end seguindo os modelos do .geminirules."
+
+const payload = {
+    cpef: cpfLimpo,
+    dadosFormacao: {
+        nivel: [formacao].trim(),
+        espec: [especificacao].trim(),
+        regis: [registroProfissional].trim(),
+        insti: [instituicao].trim()
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -------------------------------------------------------------
+# 🏆 MODELO GOLDEN: FORMULÁRIO DE CARD (SÊNIOR) - SAGRADO 📐
+# -------------------------------------------------------------
+
+Este padrão define a arquitetura sênior obrigatória para todos os componentes de formulário (cards de dados do usuário). O componente `Endereco.jsx` (📍) é a referência absoluta. Todo novo card DEVE seguir esta estrutura para garantir performance, estabilidade (sem loops infinitos) e UX perfeita.
+
+## 1. ESTRUTURA LÓGICA OBRIGATÓRIA (Cadeia de Estabilidade)
+
+1.  **ESTADOS SEPARADOS**: Use `useState` separados para cada campo (ou um objeto único bem gerenciado) e para `carregandoOperacao`, `podeEditar` e `ehNovoCadastro`.
+2.  **FOCO AUTOMÁTICO**: Use `useRef` e `useEffect` para focar no primeiro campo ao clicar em "🔓 Editar".
+3.  **TRAVA DE FLUXO (SÊNIOR)**: Use `useRef` para espelhar `podeEditar`. Isso é CRUCIAL para bloquear efeitos colaterais (como buscas ViaCEP) quando os dados estão apenas sendo lidos do banco.
+    ```javascript
+    const podeEditarRef = useRef(podeEditar);
+    useEffect(() => { podeEditarRef.current = podeEditar; }, [podeEditar]);
+    ```
+4.  **FUNÇÕES APOIO ESTÁVEIS**: Envolva `popularCampos...` e `limparCampos` com `useCallback(..., [])` (dependência vazia).
+5.  **FUNÇÃO CARREGAMENTO ESTÁVEL**: Envolva `carregarDadosDoBanco` com `useCallback`. Ela deve depender apenas do CPF e das funções de apoio estáveis (v1).
+6.  **GATILHO SEGURO**: O `useEffect` inicial vigia apenas `[dadosToken, carregarDadosDoBanco]`.
+
+## 2. EXEMPLO DE REFERÊNCIA (📍 Endereco.jsx)
+
+```javascript
+import { useState, useEffect, useRef, useCallback } from 'react';
+// Imports Firebase, Contexto e CSS...
+
+export function Endereco() {
+    // A - Refs e Contexto
+    const cepInputRef = useRef(null);
+    const { dadosToken } = useAuth();
+    
+    // B - Estados de Controle
+    const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
+    const [carregandoOperacao, setCarregandoOperacao] = useState(false);
+    const [podeEditar, setPodeEditar] = useState(false);
+
+    // C - Estados de Dados (Múltiplos useState)
+    const [cep, setCep] = useState('');
+    const [rua, setRua] = useState('');
+    // ...bairro, cidade, estado, numero...
+
+    // 🏆 PONTO SÊNIOR 1: Trava de fluxo com Ref
+    const podeEditarRef = useRef(podeEditar);
+    useEffect(() => { podeEditarRef.current = podeEditar; }, [podeEditar]);
+
+    // D - Foco Automático (useEffect)
+    // ---------------------------------
+    // INICIO - 🧭 Sensor de localização
+    // ---------------------------------
+    useEffect(() => {
+        if (podeEditar) { cepInputRef.current?.focus(); }
+    }, [podeEditar]);
+    // FIM - ...
+
+    // E - Funções de Apoio Estáveis (useCallback v1)
+    const popularCamposEndereco = useCallback((dados) => {
+        setCep(String(dados.cepe || '').trim());
+        // ...setRua, setBairro, etc...
+    }, []);
+
+    const limparCampos = useCallback(() => {
+        setCep(''); setRua(''); // ...etc...
+    }, []);
+
+    // F - Função Carregamento Estável (useCallback v1 dependente)
+    const carregarDadosDoBanco = useCallback(async () => {
+        const cpfAtivo = dadosToken?.cpef;
+        if (!cpfAtivo) return;
+        const cpfLimpo = cpfAtivo.replace(/\D/g, "");
+        // 📐 Ajuste Ouro: Usar nó curto 'ende' conforme App.jsx
+        const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/ende`);
+
+        try {
+            const snapshot = await get(caminhoNoBanco);
+            if (snapshot.exists()) {
+                const dadosEnde = snapshot.val();
+                console.log("✨ ... logs Padrão Maestro ... ✅ Endereço encontrado.");
+                popularCamposEndereco(dadosEnde); // Usa v1 estável
+                setEhNovoCadastro(false);
+                setPodeEditar(false);
+            } else {
+                console.log("✨ ... logs Padrão Maestro ... 📍 Nenhum endereço.");
+                limparCampos(); // Usa v1 estável
+                setEhNovoCadastro(true); 
+                setPodeEditar(true);
+            }
+        } catch (error) { console.error("❌ Erro...", error); setPodeEditar(true); }
+    }, [dadosToken?.cpef, popularCamposEndereco, limparCampos]);
+
+    // G - Gatilho Seguro (useEffect)
+    useEffect(() => {
+        if (dadosToken?.cpef) { carregarDadosDoBanco(); } // Chama v1 estável
+    }, [dadosToken, carregarDadosDoBanco]);
+
+    // H - Efeitos Colaterais Controlados (ex: ViaCEP Moderno 2026)
+    const realizarBuscaCep = useCallback(async () => {
+        // 🏆 PONTO SÊNIOR 2: Bloqueio Via Ref Estável
+        if (!podeEditarRef.current) return; // 🛑 Só roda se for edição ATIVA
+
+        const apenasNumeros = cep.replace(/\D/g, '');
+        if (apenasNumeros.length < 8) { /* limpa campos rua,bairro... */ return; }
+
+        if (apenasNumeros.length === 8) {
+            try {
+                setCarregandoOperacao(true); 
+                const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500)); // UX
+                const requisicao = fetch(`https://viacep.com.br/ws/${apenasNumeros}/json/`);
+                const [resposta] = await Promise.all([requisicao, tempoMinimo]);
+                const dados = await resposta.json();
+                if (!dados.erro) {
+                    // ...setRua, setBairro, setCidade, setEstado...
+                } else { alert("⚠️ CEP não encontrado..."); limparCampos(); }
+            } catch (error) { console.error("❌ Falha...", error); } finally { setCarregandoOperacao(false); }
+        }
+    }, [cep, limparCampos]);
+
+    useEffect(() => { realizarBuscaCep(); }, [realizarBuscaCep]); // Vigia referência estável
+
+    // I - MáscarasRegex, salvardados...(), cancelarEdicao(), return JSX...
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -------------------------------------------------------------
+# 🏆 MODELO GOLDEN: ESTILIZAÇÃO DO CARD (VISUAL 2026) - SAGRADO 📐
+# -------------------------------------------------------------
+# Esta regra define o design system imutável para os cards de dados.
+# O CSS abaixo DEVE ser o ponto de partida para qualquer novo arquivo .css de card (ex: UsuarioFormacao.css), adaptando apenas as classes pai.
+
+## 1. DIRETRIZES VISUAIS OBRIGATÓRIAS (CSS)
+
+1.  **ESTRUTURA PALCO/VIGA**: Use `.componente-principal` (Flex/Column) e `.componente-suporte` (Grid/Gap) para o layout base.
+2.  **CARD & HEADER**: O card deve ter fundo branco, sombra acentuada (`box-shadow`), e o título (`.card-titulo`) deve ter o fundo azul claro (`#ebf2f7`) com a borda inferior azul Maestro (`306396`).
+3.  **FEEDBACK FLUTUANTE**: Use a classe `.feedback-[setor]` (ex: `.feedback-endereco`) para mensagens flutuantes no topo do card, com o estilo pular na tela.
+4.  **LAYOUT FLEXÍVEL DO CORPO**: Use `.card-corpo` com `Flex-wrap: wrap` e as classes `.flex-[campo]` (ex: `.flex-cep`, `.flex-rua`) para criar o layout flexível.
+5.  **INPUTS & AUTOFILL (O SEGREDO 2026)**:
+    - **Padrão**: Fundo branco, texto preto, negrito.
+    - **Habilitado (not:disabled)**: Fundo cinza (`#c5c0c0`) com blindagem de Autofill (`box-shadow: ...inset`).
+    - **Foco**: Fundo cinza leve (`#e9e4e4`), borda azul.
+    - **Desabilitado**: Fundo cinza claro (`rgb(240, 240, 240)`), texto cinza, cursor `not-allowed`.
+6.  **ÁREA DE BOTÕES**: Use `.AreaBotoes` (Flex) e blindagem de escopo para `.BotaoEditar` (Azul/100%), `.BotaoSalvar` (Dourado/flex 2) e `.BotaoCancelar` (Vermelho/flex 1).
+7.  **LOADING OVERLAY**: Use `.loading-overlay-card` com `position: fixed` (Tela Inteira) para bloquear a UX durante o salvamento na VPS.
+
+## 2. EXEMPLO DE REFERÊNCIA CSS (📍 Endereco.css)
+
+```css
+/* 🏠 1. COMPONENTE-PRINCIPAL (PALCO DO SETOR) */
+.perfil-endereco-componente-principal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */
+.perfil-endereco-componente-suporte {
+    width: 100%;
+    min-width: 300px;
+    max-width: 600px;
+    display: grid;
+    gap: 20px;
+}
+
+/* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */
+.perfil-endereco-usuario-card {
+    position: relative; 
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    /* ✨ Sombra acentuada para profundidade */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+    margin: 20px;
+}
+
+/* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */
+.perfil-endereco-card-titulo {
+    background-color: #ebf2f7; 
+    border-bottom: 3px solid #306396;
+    padding: 15px 20px;
+    font-weight: bold;
+    color: #333333;
+    font-size: 20px;
+    text-align: left;
+}
+
+/* 📐 FEEDBACK FLUTUANTE (SALTADO) */
+.cad-admin-feedback-endereco {
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    z-index: 100;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    animation: pularNaTela 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cad-admin-feedback-endereco.erro { background: #fff5f5; color: #c0392b; border: 1px solid #ffcece; }
+.cad-admin-feedback-endereco.sucesso { background: #f0fdf4; color: #27ae60; border: 1px solid #bbf7d0; }
+
+/* 📄 5. CARD-BODY (ÁREA DE CONTEÚDO FLEX) */
+.perfil-endereco-card-corpo {
+    padding: 15px 30px 30px 30px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.Campo { display: flex; flex-direction: column; gap: 5px; }
+
+/* 🏆 PONTO GOLDEN: CLASSES FLEXÍVEIS DO CORPO (Manter padrão) */
+.flex-cep { flex: 1 1 110px; }
+.flex-rua { flex: 6 1 320px; }
+.flex-numero { flex: 1 1 80px; }
+.flex-bairro { flex: 4 1 270px; }
+.flex-cidade { flex: 4 1 270px; }
+.flex-estado { flex: 1 1 70px; }
+.flex-complemento { flex: 4 1 270px; }
+
+/* 🔍 6. CAMPOS & LABELS */
+.perfil-endereco-card-corpo .Campo { display: flex; flex-direction: column; gap: 5px; }
+.perfil-endereco-card-corpo label { font-size: 14px; font-weight: bold; color: black; text-align: left; margin-left: 4px; }
+
+/* 🎫 7. INPUTS & AUTOFILL BLINDAGEM (O SEGREDO 2026) */
+.perfil-endereco-card-corpo input {
+    padding: 10px; border: 1px solid #cccccc; border-radius: 8px; font-size: 14px;
+    color: black !important; background-color: #ffffff !important; font-weight: bold;
+    width: 100%; box-sizing: border-box; cursor: text; transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* 🎫 HABILITADO / AUTOFILL (Fundo cinza #c5c0c0) */
+.perfil-endereco-card-corpo input:not(:disabled),
+.perfil-endereco-card-corpo input:-webkit-autofill {
+    background-color: #c5c0c0 !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    padding: 10px; border: 1px solid #cccccc !important; border-radius: 8px; font-weight: bold;
+    box-shadow: 0 0 0px 1000px #c5c0c0 inset !important; /* Blindagem */
+}
+
+/* ✨ ESTADO DE FOCO (Cinza leve #e9e4e4) */
+.perfil-endereco-card-corpo input:focus {
+    outline: none !important; border-color: #007bff !important;
+    background-color: #e9e4e4 !important; 
+    box-shadow: 0 0 0px 1000px #e9e4e4 inset, 0 0 5px rgba(0, 123, 255, 0.2) !important;
+    transition: background-color 0s;
+}
+
+/* 🚫 8. INPUT-DISABLED (PADRONIZAÇÃO TOTAL) */
+.perfil-endereco-card-corpo input:disabled,
+.perfil-endereco-card-corpo input:disabled:-webkit-autofill {
+    background-color: rgb(240, 240, 240) !important;
+    color: #777777 !important;
+    -webkit-text-fill-color: #777777 !important;
+    border: 1px solid #cccccc !important; cursor: not-allowed !important; opacity: 1 !important;
+    box-shadow: 0 0 0px 1000px rgb(240, 240, 240) inset !important; /* Blindagem */
+}
+
+/* 🕹️ 9. ÁREA DE BOTÕES (COMANDO DOS CARDS) */
+.AreaBotoes { display: flex; gap: 15px; margin-top: 10px; width: 100%; }
+.AreaBotoes button {
+    padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; border: none;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: filter 0.2s;
+}
+
+/* 🧱 Blindagem de Escopo */
+.perfil-endereco-usuario-card .BotaoEditar { background-color: #306396; color: white; width: 100%; }
+.perfil-endereco-usuario-card .BotaoSalvar { background-color: rgb(212, 175, 55); color: white; flex: 2; }
+.perfil-endereco-usuario-card .BotaoCancelar { background-color: #c0392b; color: white; flex: 1; }
+.AreaBotoes button:hover { filter: brightness(0.9); }
+
+/* ✨ 10. ANIMAÇÕES & OVERLAY */
+@keyframes pularNaTela {
+    from { opacity: 0; transform: translate(-50%, -20px) scale(0.9); }
+    to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+.loading-overlay-card {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(4px); z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: bold; color: #306396;
+    animation: fadeInOverlay 0.3s ease;
+}
+
+@keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+
+/* 🔄 11. MEDIA QUERIES (TABLET/MOBILE 2026) */
+@media (max-width: 768px) {
+    .AreaBotoes { flex-direction: column; }
+    .perfil-endereco-card-corpo label { font-size: 16px !important; }
+    .perfil-endereco-card-corpo input { font-size: 18px !important; }
+    .AreaBotoes button { padding: 20px !important; font-size: 18px !important; }
+}
+
+
+
+
+
+
+
+
+
+
+
+## 1.1 CLASSES DE LAYOUT FLEXÍVEL (SAGRADAS)
+
+As seguintes classes DEVEM ser mantidas exatamente com estes valores de `flex` em todos os formulários para garantir a consistência da grade de campos. Elas são imutáveis.
+
+### A - Padrão Desktop/Tablet
+
+```css
+/* 🧱 CLASSES DE LAYOUT SAGRADAS - MANTER EM TODOS OS FORMULÁRIOS */
+
+.flex-cep {
+    flex: 1 1 110px;
+}
+
+.flex-rua {
+    flex: 6 1 320px;
+}
+
+.flex-numero {
+    flex: 1 1 80px; 
+}
+
+.flex-bairro {
+    flex: 4 1 270px;
+}
+
+.flex-cidade {
+    flex: 4 1 270px;
+}
+
+.flex-estado {
+    flex: 1 1 70px;
+}
+
+/* Adicione outras classes de layout fixo conforme necessário, ex: */
+/* .flex-complemento { flex: 4 1 270px; } */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -------------------------------------------------------------
+# 🏆 MODELO GOLDEN: UI DO CARD (JSX RETORNO) - SAGRADO 📐
+# -------------------------------------------------------------
+# Esta regra define a estrutura HTML/JSX imutável que todo card de usuário deve retornar.
+# O trecho abaixo DEVE ser usado como base para o 'return' de qualquer novo componente de card.
+
+## 1. DIRETRIZES DE UI OBRIGATÓRIAS (JSX)
+
+1.  **ESTRUTURA HIERÁRQUICA**: O retorno deve seguir exatamente esta ordem de classes:
+    - `.componente-principal` (Container Pai)
+    - `.componente-suporte` (Container Grid)
+    - `.perfil-[setor]-usuario-card` (O Card)
+    - `.card-titulo` (Header)
+    - `{msg.texto && <div className="feedback"...>}` (Feedback flutuante)
+    - `.card-corpo` (Corpo Flex)
+    - `.loading-overlay-card` (Overlay de bloqueio)
+    - `.AreaBotoes` (Container de botões)
+2.  **CONEXÃO DE REF (FOCO)**: O primeiro input do formulário (ex: CEP) DEVE receber a prop `ref={primeiroInputRef}` (ex: `ref={cepInputRef}`) para o foco automático.
+3.  **CONEXÃO DE MÁSCARAS**: Use `onChange={mascara[Campo]}` (ex: `mascaraCep`) para inputs mascarados.
+4.  **ESTADO DE EDIÇÃO (DISPONIBILIDADE)**: Use `disabled={!podeEditar || carregandoOperacao}` em todos os inputs.
+5.  **BOTÃO CANCELAR**: O botão cancelar (`BotaoCancelar`) só deve aparecer se `ehNovoCadastro` for `false` e não estiver carregando.
+
+## 2. EXEMPLO DE REFERÊNCIA JSX (📍 Return de Endereco.jsx)
+
+```javascript
+return (
+    // 🏠 1. COMPONENTE-PRINCIPAL (PALCO DO SETOR)
+    <div className="perfil-endereco-componente-principal">
+    
+        {/* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */}
+        <div className="perfil-endereco-componente-suporte">
+
+            {/* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */}
+            <div className="perfil-endereco-usuario-card">
+
+                {/* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */}
+                <div className="perfil-endereco-card-titulo">📍 ENDEREÇO RESIDENCIAL</div>
+
+                {/* 📐 FEEDBACK FLUTUANTE (SALTADO) - Condicional */}
+                {msg.texto && <div className={`cad-admin-feedback-endereco ${msg.tipo}`}>{msg.texto}</div>}
+
+                {/* 📄 5. CARD-BODY (ÁREA DE CONTEÚDO FLEX) */}
+                <div className="perfil-endereco-card-corpo">
+
+                    {/* ⏳ OVERLAY DE CARREGAMENTO NO CARD (Bloqueio Visual) */}
+                    {carregandoOperacao && <div className="loading-overlay-card">⏳ Processando...</div>}
+
+                    {/* 🔍 6. CAMPOS & INPUTS */}
+                    {/* Campo CEP (Conexão de Foco e Máscara) */}
+                    <div className="Campo flex-cep">
+                        <label>CEP</label>
+                        <input 
+                            ref={cepInputRef} // ✨ Conexão da antena de foco
+                            type="text" 
+                            name="cepe"
+                            placeholder="00.000-000"
+                            disabled={!podeEditar || carregandoOperacao} // Estado de Edição
+                            value={cep} 
+                            onChange={mascaraCep} // Conexão da MáscaraRegex
+                            autoComplete="postal-code"
+                            maxLength="10" 
+                            required
+                        />
+                    </div>
+
+                    {/* Outros campos (Exemplos) */}
+                    <div className="Campo flex-rua">
+                        <label>Rua/Avenida</label>
+                        <input type="text" disabled={!podeEditar || carregandoOperacao} value={rua} onChange={(e) => setRua(e.target.value)} />
+                    </div>
+
+                    <div className="Campo flex-numero">    
+                        <label>Nº</label>
+                        <input type="text" name="nume" disabled={!podeEditar || carregandoOperacao} value={numero} onChange={mascaraNume} />  
+                    </div>
+                    {/* ...bairro, cidade, estado... */}
+
+                    {/* 🕹️ 7. ÁREA DE BOTÕES (COMANDO DOS CARDS) */}
+                    <div className="AreaBotoes">
+
+                        {!podeEditar ? (
+                            // Modo Leitura: Botão Editar
+                            <button 
+                                type="button" 
+                                className="BotaoEditar" 
+                                onClick={() => { 
+                                    setPodeEditar(true);
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                            >
+                                🔓 Editar
+                            </button>
+                        ) : (
+                            // Modo Edição: Botões Salvar e Cancelar
+                            <>
+                                <button 
+                                    type="button" 
+                                    className="BotaoSalvar" 
+                                    disabled={carregandoOperacao}
+                                    onClick={salvardadosEndereco} // Função de salvamento (Padrão Maestro VPS)
+                                >
+                                    {carregandoOperacao ? '⏳ Salvando...' : '💾 Salvar'}
+                                </button>
+
+                                {/* 🏆 PONTO GOLDEN: O botão cancelar só aparece se NÃO for um cadastro novo */}
+                                {!ehNovoCadastro && !carregandoOperacao && (
+                                    <button 
+                                        type="button" 
+                                        className="BotaoCancelar" 
+                                        onClick={() => { 
+                                            carregarDadosDoBanco(); // Função de recarregamento
+                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        }}
+                                    >
+                                        ✖️ Cancelar
+                                    </button>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
+
+
+
+
+
+## 1. Nomenclatura e Semântica
+- **Ferramentas de Trabalho**: É o nome oficial para React Hooks (useState, useEffect, etc.).
+- **Variáveis de Segurança**: Use sempre `cpef` (para CPF) e `senh` (para Senha) em estados e payloads.
+- **Porteiro**: O Contexto de Autenticação é o "Porteiro" que valida crachás (Tokens).
+- **Cards**: Termo usado para componentes de interface ou contextos de negócios.
+
+## 2. Estrutura do Componente (Ordem de Construção)
+Siga sempre esta hierarquia visual nos arquivos .jsx:
+1. **Ferramentas de Trabalho (Hooks)**: Com emojis indicativos (ex: 🚕 para useNavigate).
+2. **Sensores**: Blocos de `useLocation` e monitoramento de redirecionamento.
+3. **Gaveta de Alerta**: Função `dispararMensagem` com `useRef` para controle de timers e scroll automático.
+4. **Estados e Efeitos**: Monitoramento de `credenciais` com logs estruturados.
+5. **Comunicação com Servidor**: Funções `async` (ex: `enviarDadosLoginParaServidor`) usando blocos `try/catch`.
+6. **Máscaras e Validações**: Funções de limpeza e assentamento de dados (ex: `mascaraCpef`).
+
+## 3. Padrão de Logs (Console de Inspeção) 📐
+Sempre que sugerir ou editar código, inclua logs de depuração usando:
+- Emoji 📐 para ações de estado e inicialização.
+- Emoji 🔫 para disparo de mensagens e alertas.
+- Emoji ✨ para efeitos (useEffect).
+- Emoji 🔄 📡 para comunicações com o servidor/API.
+- Use réguas de separação: `console.log("----------------------------------")`.
+
+## 4. Padrão de UI (CSS/JSX)
+- **Labels Maestro**: Todos os labels de formulário devem ter `padding-top: 25px` e `padding-bottom: 5px`.
+- **Inputs**: Devem possuir classes semânticas (ex: `input-maestro`) e suporte a estados visuais (ex: `input-pulsar`).
+- **Cards de Teste**: Manter o bloco `CpefTextes` para agilizar o desenvolvimento, separando por categorias (Programador, Administrador, Cuidadoras, Clientes).
+
+## 5. Exemplo de Payload de Ouro
+Ao enviar dados, estruture o objeto de forma atômica:
+const payload = {
+    dadosBasico: { cpef: ... },
+    dadosSeguranca: { senh: ... }
+};
+
+
+
+
+
+
+
+
+## 6. Layout Flexível Maestro (Golden Flex)
+Sempre que criar listas de itens com múltiplos campos (ex: Nome, Dose, Horário), utilize a estrutura de quebra inteligente:
+
+- **Contêiner Principal**: `display: flex; flex-wrap: wrap; gap: 15px;`.
+- **Item de Nome (Longo)**: Classe `.flex-paciente-remedio-nome` com `flex: 10 1 270px;`.
+- **Grupo de Dados Curtos**: Criar uma `div` com classe `.grupo-dose-horario` para garantir que campos pequenos (Dose/Horário) quebrem juntos.
+- **Campos Curtos**: Classes `.flex-paciente-remedio-dose` e `.flex-paciente-remedio-horario` com `flex: 1 1 110px;`.
+
+> 📐 **Nota de Engenharia**: Este layout garante que em telas mobile o "Nome" ocupe a linha superior e a "Dose/Horário" fiquem lado a lado logo abaixo, antes de empilharem totalmente.

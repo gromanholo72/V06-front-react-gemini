@@ -1,0 +1,294 @@
+/* 🏠 1. COMPONENTE-PRINCIPAL (PALCO DO SETOR) */
+.perfil-paciente-remedio-componente-principal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */
+.perfil-paciente-remedio-componente-suporte {
+    width: 100%;
+    min-width: 300px;
+    max-width: 800px;
+    display: grid;
+    gap: 20px;
+}
+
+
+
+
+
+/* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */
+.perfil-paciente-remedio-usuario-card {
+    position: relative; 
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+    margin: 20px;
+}
+
+/* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */
+.perfil-paciente-remedio-card-titulo {
+    background-color: #ebf2f7; 
+    border-bottom: 3px solid #306396;
+    padding: 15px 20px;
+    font-weight: bold;
+    color: #333333;
+    font-size: 20px;
+    text-align: left;
+}
+
+/* 📐 FEEDBACK FLUTUANTE (SALTADO) */
+.cad-admin-feedback-paciente-remedio {
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    z-index: 100;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    animation: pularNaTelaRemedio 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cad-admin-feedback-paciente-remedio.erro { background: #fff5f5; color: #c0392b; border: 1px solid #ffcece; }
+.cad-admin-feedback-paciente-remedio.sucesso { background: #f0fdf4; color: #27ae60; border: 1px solid #bbf7d0; }
+
+@keyframes pularNaTelaRemedio {
+    from { opacity: 0; transform: translate(-50%, -20px) scale(0.9); }
+    to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+/* 📄 5. CARD-BODY (ÁREA DE CONTEÚDO FLEX) */
+.perfil-paciente-remedio-card-corpo {
+    padding: 15px 30px 30px 30px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+/* ----------------------------------------------------------------- */
+/* INICIO - 🏆 LAYOUT FLEXÍVEL ESPECÍFICO (GOLDEN) */
+/* ----------------------------------------------------------------- */
+
+.flex-paciente-remedio-nome { 
+    flex: 10 1 270px; 
+    /* 🧱 Largura mínima antes de quebrar */
+    min-width: 270px; 
+}
+
+/* Grupo que segura os dois menores para quebrarem juntos */
+.grupo-dose-horario {
+    display: flex;
+    gap: 15px;
+    flex: 1 1 270px;
+    /* 🧱 Largura mínima antes de quebrar */
+    min-width: 270px; 
+    /* 🧱 Permite que Dose e Horário caiam de linha se necessário */
+    flex-wrap: wrap; 
+}
+
+.flex-paciente-remedio-dose { 
+    flex: 1 1 110px; 
+    /* 🧱 Padrão solicitado */
+    min-width: 110px; 
+}
+
+.flex-paciente-remedio-horario { 
+    flex: 1 1 110px; 
+    /* 🧱 Padrão solicitado */
+    min-width: 110px; 
+}
+
+/* ----------------------------------------------------------------- */
+/* FIM - 🏆 LAYOUT FLEXÍVEL ESPECÍFICO (GOLDEN) */
+/* ----------------------------------------------------------------- */
+
+
+
+
+
+
+
+/* 🔍 6. CAMPOS & LABELS */
+.perfil-paciente-remedio-card-corpo .Campo { display: flex; flex-direction: column; gap: 5px; }
+
+.perfil-paciente-remedio-card-corpo label {
+    font-size: 14px; font-weight: bold; color: black; text-align: left; margin-left: 4px;
+}
+
+/* 🎫 7. INPUTS & AUTOFILL BLINDAGEM (O SEGREDO 2026) */
+.perfil-paciente-remedio-card-corpo input,
+.perfil-paciente-remedio-card-corpo select {
+    padding: 10px; border: 1px solid #cccccc; border-radius: 8px; font-size: 14px;
+    color: black !important; background-color: #ffffff !important; font-weight: bold;
+    width: 100%; box-sizing: border-box; cursor: text; transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* 🧱 AJUSTE ESPECÍFICO PARA O SELECT (GARANTIR TRIÂNGULO) */
+.perfil-paciente-remedio-card-corpo select {
+    cursor: pointer !important;
+    
+    /* 1. Remove o estilo nativo (que as vezes falha ou é feio) */
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    
+    /* 2. Adiciona a seta via SVG (Garante visual igual em todo navegador) */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 0.65em auto !important;
+    
+    /* 3. Espaço para não escrever em cima da seta */
+    padding-right: 2.5rem !important;
+}
+
+/* 🎫 HABILITADO / AUTOFILL (Fundo cinza #c5c0c0) */
+.perfil-paciente-remedio-card-corpo input:not(:disabled),
+.perfil-paciente-remedio-card-corpo input:-webkit-autofill {
+    background-color: #c5c0c0 !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    padding: 10px; border: 1px solid #cccccc !important; border-radius: 8px; font-weight: bold;
+    box-shadow: 0 0 0px 1000px #c5c0c0 inset !important; /* Blindagem */
+}
+
+/* 🧱 CORREÇÃO PARA SELECT (Permitir que a seta apareça sem a sombra do autofill cobrindo) */
+.perfil-paciente-remedio-card-corpo select:not(:disabled) {
+    background-color: #c5c0c0 !important;
+    color: #000000 !important;
+    box-shadow: none !important; /* Remove a sombra que cobria a seta */
+}
+
+/* ✨ ESTADO DE FOCO (Cinza leve #e9e4e4) */
+.perfil-paciente-remedio-card-corpo input:focus {
+    outline: none !important; border-color: #007bff !important;
+    background-color: #e9e4e4 !important; 
+    box-shadow: 0 0 0px 1000px #e9e4e4 inset, 0 0 5px rgba(0, 123, 255, 0.2) !important;
+    transition: background-color 0s;
+}
+
+/* ✨ ESTADO DE FOCO PARA SELECT (Sem sombra interna) */
+.perfil-paciente-remedio-card-corpo select:focus {
+    outline: none !important;
+    border-color: #007bff !important;
+    background-color: #e9e4e4 !important;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2) !important; /* Apenas brilho externo */
+}
+
+/* 🚫 8. INPUT-DISABLED (PADRONIZAÇÃO TOTAL) */
+.perfil-paciente-remedio-card-corpo input:disabled,
+.perfil-paciente-remedio-card-corpo input:disabled:-webkit-autofill {
+    background-color: rgb(240, 240, 240) !important;
+    color: #777777 !important;
+    -webkit-text-fill-color: #777777 !important;
+    border: 1px solid #cccccc !important; cursor: not-allowed !important; opacity: 1 !important;
+    box-shadow: 0 0 0px 1000px rgb(240, 240, 240) inset !important; /* Blindagem */
+}
+
+/* 🚫 8.1 SELECT DISABLED (Sem sombra interna) */
+.perfil-paciente-remedio-card-corpo select:disabled {
+    background-color: rgb(240, 240, 240) !important;
+    color: #777777 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+/* 🕹️ 9. ÁREA DE BOTÕES (COMANDO DOS CARDS) */
+.AreaBotoes { display: flex; gap: 15px; margin-top: 10px; width: 100%; }
+.AreaBotoes button {
+    padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; border: none;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: filter 0.2s;
+}
+
+/* 🧱 Blindagem de Escopo */
+.perfil-paciente-remedio-usuario-card .BotaoEditar { background-color: #306396; color: white; width: 100%; }
+.perfil-paciente-remedio-usuario-card .BotaoSalvar { background-color: rgb(212, 175, 55); color: white; flex: 2; }
+.perfil-paciente-remedio-usuario-card .BotaoCancelar { background-color: #c0392b; color: white; flex: 1; }
+.AreaBotoes button:hover { filter: brightness(0.9); }
+
+/* ✨ 10. ANIMAÇÕES & OVERLAY */
+.loading-overlay-card {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(4px); z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: bold; color: #306396;
+    animation: fadeInOverlay 0.3s ease;
+}
+
+@keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+
+/* 🧱 ESTILO DA TABELA DE REMÉDIOS (Padrão CadAdmin) */
+.tabela-remedios {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.tabela-remedios th {
+    background-color: #f1f1f1;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+    color: #333;
+}
+
+.tabela-remedios td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+}
+
+.botao-excluir-tabela {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.botao-excluir-tabela:hover {
+    transform: scale(1.2);
+}
+
+/* 🔄 11. MEDIA QUERIES (TABLET/MOBILE 2026) */
+@media (max-width: 768px) {
+    .AreaBotoes { flex-direction: column; }
+    .perfil-paciente-remedio-card-corpo label { font-size: 16px !important; }
+    .perfil-paciente-remedio-card-corpo input,
+    .perfil-paciente-remedio-card-corpo select { font-size: 18px !important; }
+    .AreaBotoes button { padding: 20px !important; font-size: 18px !important; }
+
+    /* 📱 Ajuste Mobile: Garante largura total nos blocos principais */
+    .flex-paciente-remedio-nome,
+    .grupo-dose-horario {
+        min-width: 100% !important;
+    }
+    /* 📱 Garante que os filhos do grupo também ocupem 100% no celular */
+    .flex-paciente-remedio-dose,
+    .flex-paciente-remedio-horario {
+        min-width: 100% !important;
+    }
+}

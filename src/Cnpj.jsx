@@ -1,10 +1,7 @@
-
-
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react'; // 🏆 Importado useCallback
 import { ref, update, get } from "firebase/database"; 
 import { db_realtime } from './firebaseConfig.js';
-
-import { useAuth } from './AutenticacaoContexto';
+import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto';
 
 import './Cnpj.css';
 
@@ -12,13 +9,13 @@ import './Cnpj.css';
 
 export function Cnpj() {
 
-     const { dadosUsuarioCompleto } = useAuth();
+    const cnpjInputRef = useRef(null);
 
-     const cnpjInputRef = useRef(null);
+    const { dadosToken } = useAuth();
 
-     const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
+    const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
 
-    // 🧰 Ferramentas de Trabalho (Hooks)
+    // Estados de Dados
     const [cnpj, setCnpj] = useState('');
     const [razaoSocial, setRazaoSocial] = useState('');
     const [nomeFantasia, setNomeFantasia] = useState('');
@@ -26,20 +23,48 @@ export function Cnpj() {
     const [atividades, setAtividades] = useState('');
     const [socios, setSocios] = useState('');
 
-    // 🔒 Controle de Edição
+    // Estados de Controle
+    const [carregandoOperacao, setCarregandoOperacao] = useState(false);
     const [podeEditar, setPodeEditar] = useState(false);
 
+    // 🏆 PONTO SÊNIOR 1: Trava de fluxo com Ref (Bloqueia buscas desnecessárias da BrasilAPI)
+    const podeEditarRef = useRef(podeEditar);
+    useEffect(() => {
+        podeEditarRef.current = podeEditar;
+    }, [podeEditar]);
+
+    /* -------------------------------------------------------- */
+    /* INICIO - 📨 SISTEMA DE MENSAGENS E FEEDBACK VISUAL */
+    /* -------------------------------------------------------- */
+    const [msg, setMsg] = useState({ tipo: '', texto: '' });
+
+    // ⏳ Função centralizada para limpar mensagens após um tempo
+    // 🏆 Envolvida em useCallback (v1 estável)
+    const temporizadorMSG = useCallback(() => {
+        setTimeout(() => {
+            setMsg({ tipo: '', texto: '' });
+        }, 4000);
+    }, []);
+    /* -------------------------------------------------------- */
+    /* FIM - 📨 SISTEMA DE MENSAGENS E FEEDBACK VISUAL */
+    /* -------------------------------------------------------- */
 
 
 
 
+    // ---------------------------------
+    // INICIO - ✏️ Foco Automático ao Editar
+    // ---------------------------------
 
     useEffect(() => {
-        // Se o portão de edição abrir, foca no CNPJ
         if (podeEditar) {
             cnpjInputRef.current?.focus();
         }
     }, [podeEditar]);
+
+    // ---------------------------------
+    // FIM - ✏️ Foco Automático ao Editar
+    // ---------------------------------
 
 
 
@@ -51,156 +76,176 @@ export function Cnpj() {
 
     
 
-    /* 🧱 FERRAMENTAS DE TRABALHO (useEffect) - MONITORAMENTO */
-useEffect(() => {
 
-    console.log("");
-    console.warn("✨ 🛰️ ----------------------------------");
-    console.warn("✨ 🛰️ useEffect() - componente - 🏢 Cnpj.jsx");
-    console.warn("✨ 🛰️ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
+    // ---------------------------------
+    // INICIO - 🕵️‍♂️ Distribui os dados para os cards
+    // ---------------------------------
 
-    if (dadosUsuarioCompleto?.cpef) {
+    // 🏆 Envolvida em useCallback (v1 estável)
+    const popularCamposCnpj = useCallback((dados) => {
+        setCnpj(String(dados.num_cnpj || dados.cnpj || '').trim());
+        setRazaoSocial(String(dados.raza || dados.razao || '').trim());
+        setNomeFantasia(String(dados.Fant || dados.fantasia || 'NÃO INFORMADO').trim());
+        setSituacao(String(dados.situ || '').trim());
+        setAtividades(String(dados.ativ || '').trim());
+        setSocios(String(dados.soci || 'NÃO INFORMADO').trim());
+    }, []);
 
-        console.warn("✨ 🛰️ 🧖‍♂️ dadosUsuarioCompleto.cpef = ", dadosUsuarioCompleto.cpef);
-        distribuirDadosContexto();
-
-    } else {
-
-        console.warn("✨ 🛰️ ⏳ Aguardando sinal da Antena Central para carregar CNPJ...");
-
-    }
-
-    console.warn("✨ 🛰️ ----------------------------------");
-
-}, [dadosUsuarioCompleto]);
-
-
-
-/* 🕵️‍♂️ FUNÇÃO: Distribui os dados de CNPJ para os cards (Memória ou Banco) */
-const distribuirDadosContexto = async () => {
-
-    /* 🧱 Primeiro, verificamos se o dado já está na memória (Contexto) */
-    const infoCnpjMemoria = dadosUsuarioCompleto?.cnpj_dados;
-
-    /* 🚀 Se o cpef existe mas NÃO tem CNPJ na memória, busca na Antena Central */
-    if (!infoCnpjMemoria || Object.keys(infoCnpjMemoria).length === 0) {
+    // 🏆 Envolvida em useCallback (v1 estável)
+    const limparCampos = useCallback(() => {
+        setCnpj('');
+        setRazaoSocial('');
+        setNomeFantasia('');
+        setSituacao('');
+        setAtividades('');
+        setSocios('');
+    }, []);
         
-        console.warn("✨ 🛰️ CNPJ vazio na memória. Buscando na Antena Central...");
-        
-        const cpfLimpo = dadosUsuarioCompleto.cpef.replace(/\D/g, "");
-        const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/cnpj_dados`);
+    // 🏆 Envolvida em useCallback (dependente de popular... e limpar...)
+    const carregarDadosDoBanco = useCallback(async () => {
 
-        try {
-            const snapshot = await get(caminhoNoBanco);
+        const cpfAtivo = dadosToken?.cpef;
+
+        if (cpfAtivo) {
             
-            if (snapshot.exists()) {
+            console.warn("✨ 🛰️ CNPJ vazio na memória. Buscando na Antena Central...");
+            
+            const cpfLimpo = cpfAtivo.replace(/\D/g, "");
+            // 📐 Ajuste Ouro: Usar nó sagrado 'dadosEmpresa' (conforme payload VPS)
+            const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/dadosEmpresa`);
 
-                const dadosCnpj = snapshot.val();
-                console.warn("✨ ✅ Dados de CNPJ encontrados no Realtime.");
+            try {
+                setCarregandoOperacao(true); // Ativa loading
 
-                popularCamposCnpj(dadosCnpj);
-                setEhNovoCadastro(false); // 🎯 Existe no banco, não é novo
-                setPodeEditar(false);
-
-            } else {
-
-                console.warn("✨ 📍 Nenhum CNPJ no banco. Liberando edição.");
+                const snapshot = await get(caminhoNoBanco);
                 
-                limparCampos();  
-                                 // 🧹 Garante campos vazios
-                setEhNovoCadastro(true);  // 🎯 MARCA COMO NOVO (Sumiço do botão Cancelar)
-                setPodeEditar(true);      // Libera edição automática
+                if (snapshot.exists()) {
 
+                    const dadosCnpj = snapshot.val();
+
+                    console.log("");
+                    console.log("✨ --------------------------------------------------");
+                    console.log("✨ CARREGANDO DADOS DO CNPJ DIRETO DO FIREBASE");
+                    console.log("✨ useEffect() - Componente - 🏢 Cnpj.jsx");
+                    console.log("✨ ✅ CNPJ encontrado no Realtime - dadosEmpresa.");
+                    console.log("✨ --------------------------------------------------");
+
+                    popularCamposCnpj(dadosCnpj); // Usa referência v1 estável
+                    setEhNovoCadastro(false);
+                    setPodeEditar(false);
+
+                } else {
+
+                    console.log("");
+                    console.log("✨ 🛰️ ----------------------------------");
+                    console.log("✨ 🛰️ useEffect() - componente - 🏢 Cnpj.jsx");
+                    console.log("✨ 🛰️ funcao: carregarDadosDoBanco()");
+                    console.log("✨ 📍 Nenhum CNPJ no banco. Liberando edição.");
+                    console.log("✨ --------------------------------------------------");
+                    
+                    limparCampos();  // Usa referência v1 estável
+                    setEhNovoCadastro(true); 
+                    setPodeEditar(true);
+
+                }
+            } catch (error) {
+
+                console.error("❌ Erro ao buscar CNPJ na Antena Central:", error);
+                setPodeEditar(true); 
+
+            } finally {
+                setCarregandoOperacao(false); // Desativa loading
             }
-        } catch (error) {
-
-            console.error("❌ Erro ao buscar CNPJ na Antena Central:", error);
-            setPodeEditar(true); 
 
         }
 
-    } else {
+    }, [dadosToken?.cpef, popularCamposCnpj, limparCampos]); // 📐 Dependências sagradas
 
-        /* Se já tem o CNPJ na memória (Contexto) */
-        console.warn("✨ 🛰️ 🏢 Populando cards com dados de CNPJ da memória.");
-
-        popularCamposCnpj(infoCnpjMemoria);
-        setEhNovoCadastro(false); // 🎯 Se veio do contexto, já existe
-        setPodeEditar(false);
-
-    }
-};
-
-
-
-/* 🧱 Função Auxiliar para popular os estados dos cards de CNPJ */
-const popularCamposCnpj = (dados) => {
-
-    setCnpj(String(dados.num_cnpj || '').trim());
-    setRazaoSocial(String(dados.razao || '').trim());
-    setNomeFantasia(String(dados.fantasia || '').trim());
-    setSituacao(String(dados.situ || '').trim());
-    setAtividades(String(dados.ativ || '').trim());
-    setSocios(String(dados.soci || '').trim());
-
-};
-
-
-const limparCampos = () => {
-    setCnpj('');
-    setRazaoSocial('');
-    setNomeFantasia('');
-    setSituacao('');
-    setAtividades('');
-    setSocios('');
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // 🔍 BUSCA CNPJ (BrasilAPI)
+    // 🏆 Gatilho Seguro do useEffect (v1 estável)
     useEffect(() => {
+        if (dadosToken?.cpef) {
+            carregarDadosDoBanco();
+        } else {
+            console.warn("✨ 🛰️ ⏳ Aguardando sinal da Antena Central para carregar CNPJ...");
+        }
+    }, [dadosToken, carregarDadosDoBanco]); // 📐 Vigia apenas o token e a função v1 estável
 
-        if (!podeEditar) return;
+    // ---------------------------------
+    // FIM - 🕵️‍♂️ Distribui os dados para os cards
+    // ---------------------------------
 
-        const apenasNumeros = cnpj.replace(/\D/g, '');
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // --------------------------------------------------------------------
+    // INICIO - 🔍 BUSCA CNPJ (BrasilAPI) - Versão Moderna Controlada
+    // --------------------------------------------------------------------
+
+    // 🏆 Envolvida em useCallback (v1 estável, dependente de limpar...)
+    const realizarBuscaCnpj = useCallback(async () => {
+
+        // 🏆 PONTO SÊNIOR 2: Bloqueio via Ref Estável (Só roda se for edição ATIVA)
+        if (!podeEditarRef.current) return;
+
+        const cnpjLimpo = cnpj.replace(/\D/g, '');
 
         // Se o usuário apagar o CNPJ ou o tamanho for menor que 14, limpa os campos dependentes
-        if (apenasNumeros.length < 14) {
-            setRazaoSocial('');
-            setNomeFantasia('');
-            setSituacao('');
-            setAtividades('');
-            setSocios('');
+        if (cnpjLimpo.length < 14) {
+            limparCampos(); // Usa referência estável
             return;
         }
 
-        if (apenasNumeros.length === 14) {
-            fetch(`https://brasilapi.com.br/api/cnpj/v1/${apenasNumeros}`)
-                .then(res => res.json())
-                .then(dados => {
-                    if (dados.cnpj) {
-                        setRazaoSocial(dados.razao_social || '');
-                        setNomeFantasia(dados.nome_fantasia || 'NÃO INFORMADO');
-                        setSituacao(dados.descricao_situacao_cadastral || '');
-                        const principal = dados.cnae_fiscal_descricao || '';
-                        setAtividades(principal);
-                        const listaSocios = dados.qsa?.map(s => s.nome_socio).join(', ') || 'NÃO INFORMADO';
-                        setSocios(listaSocios);
-                    }
-                }).catch(() => console.log("Erro na busca do CNPJ"));
+        if (cnpjLimpo.length === 14) {
+            try {
+                setCarregandoOperacao(true); // UX: Ativa loading
+
+                // Tempo mínimo para UX
+                const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
+
+                const requisicao = fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpjLimpo}`);
+
+                const [resposta] = await Promise.all([requisicao, tempoMinimo]);
+                const dados = await resposta.json();
+
+                if (dados.cnpj) {
+                    setRazaoSocial(dados.razao_social || '');
+                    setNomeFantasia(dados.nome_fantasia || 'NÃO INFORMADO');
+                    setSituacao(dados.descricao_situacao_cadastral || '');
+                    setAtividades(dados.cnae_fiscal_descricao || '');
+                    const listaSocios = dados.qsa?.map(s => s.nome_socio).join(', ') || 'NÃO INFORMADO';
+                    setSocios(listaSocios);
+                } else {
+                    alert("⚠️ CNPJ não encontrado na base de dados (BrasilAPI).");
+                    limparCampos();
+                }
+
+            } catch (error) {
+                console.error("❌ Falha na comunicação com a BrasilAPI:", error);
+                alert("❌ Erro ao buscar CNPJ. Verifique sua conexão.");
+            } finally {
+                setCarregandoOperacao(false); // UX: Finaliza loading
+            }
         }
+    }, [cnpj, limparCampos]); // 📐 Dependências sagradas
 
-    }, [cnpj, podeEditar]);
+    // 🏆 useEffect vigilante da BrasilAPI (v1 estável)
+    useEffect(() => {
+        realizarBuscaCnpj();
+    }, [realizarBuscaCnpj]); // Vigia a referência estável
+
+    // ----------------------------------
+    // FIM - 🔍 BUSCA CNPJ (BrasilAPI) - Versão Moderna Controlada
+    // ----------------------------------
 
 
 
@@ -209,12 +254,12 @@ const limparCampos = () => {
 
 
 
+    // ------------------
+    // INICIO - 🛠️ MÁSCARA DE CNPJ
+    // ------------------
 
-
-
-    // 🛠️ MÁSCARA DE CNPJ
     const mascaraCnpj = (e) => {
-        // 🧱 Se a obra estiver travada (não pode editar), não faz nada
+       
         if (!podeEditar) return;
         
         // 🧱 Passo 1: Limpeza (Remove tudo o que não é número)
@@ -229,12 +274,13 @@ const limparCampos = () => {
         v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');           // 00.000.000/
         v = v.replace(/(\d{4})(\d)/, '$1-$2');              // 00.000.000/0000-00
 
-        // 📐 👔 console.log("📐 🏢 CNPJ Formatado = ", v);
-        
         // 🧱 Passo 4: Atualiza a Planta (Estado)
         setCnpj(v);
     };
 
+    // ------------------
+    // INICIO - 🛠️ MÁSCARA DE CNPJ
+    // ------------------
 
 
 
@@ -246,60 +292,124 @@ const limparCampos = () => {
 
 
 
+    // /* -------------------------------------------------------- */
+    // /* INICIO - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
+    // /* -------------------------------------------------------- */
 
-    
-        // 💾 SALVAR NO BANCO DE DADOS
-        const salvarCnpjNoBanco = async () => {
-    
+    const salvardadosEmpresa = async () => {
+
+        if (carregandoOperacao) return; 
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        console.log("");
+        console.log("💾 🏢 ------------------------------");
+        console.log("💾 🏢 INICIANDO SALVAMENTO:");
+        console.log("💾 🏢 Componente - 🏢 Cnpj.jsx");
+        console.log("💾 🏢 Funcao: salvardadosEmpresa()");
+        console.log("💾 🏢 -------------------------------");
+
+        setMsg({ tipo: '', texto: '' });
+        setCarregandoOperacao(true); 
+
+        try {
+
+            // 🛡️ VALIDAÇÃO DE SEGURANÇA: Bloqueia salvamento de campos vazios (Sênior)
+            if (!cnpj.trim() || !razaoSocial.trim() || !atividades.trim()) {
+                console.log("💾 ⚠️ ALERTA: Tentativa de salvar com campos vazios (CNPJ barrada.");
+                setMsg({ tipo: 'erro', texto: '⚠️ CNPJ, Razão Social e Atividade Principal são obrigatórios!' });
+                if (!cnpj.trim()) cnpjInputRef.current?.focus();
+                return; 
+            }
+
+            const cpfLimpo = dadosToken?.cpef ? dadosToken.cpef.replace(/\D/g, "") : "";
+            
+            if (!cpfLimpo) {
+                console.error("✨ 🏢 🛑 Falha crítica: CPF não encontrado para salvar nos cards.");
+                return;
+            }
+
+
             console.log("");
-            console.log("📐 ----------------------------------");
-            console.log("📐 🚀 EVENTO: Clique no botão '💾 Salvar Empresa'");
-            console.log("📐 componente - 🧿 Cnpj.jsx");
-            console.log("📐 📍 update(ref(db_realtime, `usuarios/...`))");
-            console.log("📐 ----------------------------------");
+            console.log("💾 🏢 -------------------------------");
+            console.log("💾 🏢 🔍 EXTRAÇÃO DE IDENTIDADE:");
+            console.log("💾 🏢 🛰️ Componente - 🏢 Cnpj.jsx");
+            console.log("💾 🏢 🆔 cpfLimpo (para URL):", cpfLimpo);
+            console.log("💾 🏢 🌐 URL_SERVIDOR:", URL_SERVIDOR);
+            console.log("💾 🏢 -------------------------------");
 
-            try {
-    
-                const cpfLimpo = dadosUsuarioCompleto.cpef.replace(/\D/g, "");
-    
-                if (!cpfLimpo) {
-    
-                    console.error("✨ 🛑 Falha crítica: CPF não encontrado para salvar nos cards de CNPJ.");
-                    return;
-    
-                }
-    
-                const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}`);
-    
-                const dadosCnpj = {
-                    num_cnpj: cnpj,
-                    razao: razaoSocial,
-                    fantasia: nomeFantasia,
+       
+            // Payload Sagrado (Conforme rota VPS)
+            const payload = {
+                cpef: cpfLimpo,
+                dadosEmpresa: {
+                    cnpj: cnpj,
+                    raza: razaoSocial,
+                    Fant: nomeFantasia,
                     situ: situacao,
                     ativ: atividades,
                     soci: socios
-                };
-    
-                // 📡 Atualiza o nó cnpj_dados dentro do usuário
-                await update(caminhoNoBanco, { cnpj_dados: dadosCnpj });
-    
-                console.log("📡🗼 ✅ Almoxarifado: Dados de CNPJ atualizados com sucesso!");
-    
-                alert("✅ CNPJ registrado com sucesso!");
-    
-                setEhNovoCadastro(false);
-    
-                // Trava o portão após salvar
-                setPodeEditar(false); 
-                
-            } catch (error) {
-    
-                console.error("❌ Erro ao salvar CNPJ na Antena Central:", error);
-    
-                alert("Erro ao conectar com a Antena Central.");
-    
+                }
+            };
+
+
+            console.log("");
+            console.log("📐 ----------------------------------");
+            console.log("📐 📦 DADOS PREPARADOS PARA ENVIO (CNPJ):");
+            console.log("📐 componente - Cnpj.jsx");
+            console.log("📐 payload:", payload);
+            console.log("📐 ----------------------------------");
+
+            // ⏳ UX: Tempo mínimo de loading
+            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
+
+            // �📡 Transmissão para a VPS (Rota sagrada /atualizar-empresa)
+            const requisicao = fetch(`${URL_SERVIDOR}/atualizar-empresa`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            const [resposta] = await Promise.all([requisicao, tempoMinimo]);
+            
+            const resultado = await resposta.json();
+
+            if (resposta.ok) {
+
+                console.log("");
+                console.log("💾 📡 -----------------------------------------------------------");
+                console.log("💾 📡 Resposta do Servidor OK");
+                console.log("💾 🏢 Componente - 🏢 Cnpj.jsx");
+                console.log("💾 📡 Status : ✅ Sincronizado");
+                console.log("💾 📡 -----------------------------------------------------------");
+
+                setMsg({ tipo: 'sucesso', texto: '✅ Dados da Empresa atualizados com sucesso!' });
+
+                carregarDadosDoBanco(); // Recarrega os dados do RTDB
+
+            } else {
+
+                console.warn("💾 ⚠️ SERVIDOR REJEITOU:", resultado.erro);
+                setMsg({ tipo: 'erro', texto: resultado.erro });
+
             }
-        };
+
+        } catch (error) {
+
+            console.error("💾 🚨 FALHA CRÍTICA NO PROCESSO:");
+            console.error("💾 🚨 Detalhes:", error);
+            setMsg({ tipo: 'erro', texto: '❌ Erro de conexão com o servidor VPS.' });
+
+        } finally {
+
+            setCarregandoOperacao(false); // UX: Finaliza loading
+            temporizadorMSG();
+
+        }
+    };
+    // /* -------------------------------------------------------- */
+    // /* FIM - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
+    // /* -------------------------------------------------------- */
 
 
 
@@ -307,93 +417,74 @@ const limparCampos = () => {
 
 
 
-
-
-
-
-// ✖️ CANCELAR EDIÇÃO: Descarta as mudanças locais e restaura o que está no Contexto
-const cancelarEdicao = () => {
-
-    console.log("");
-    console.log("📐 ----------------------------------");
-    console.log("📐 🚀 EVENTO: Clique no botão '✖️ Cancelar Edição'");
-    console.log("📐 componente - 🧿 Cnpj.jsx");
-    console.log("📐 📍 distribuirDadosContexto() & setPodeEditar(false)");
-    console.log("📐 ----------------------------------");
-
-    console.log("✨ 🔄 Cancelando edição. Restaurando dados do Contexto...");
-
-    // Chamamos a função que já sabe ler o Contexto e preencher os inputs
-    distribuirDadosContexto(); 
-
-    // Trava os inputs novamente (Fecha o portão de edição)
-    setPodeEditar(false); 
     
-    console.log("✨ ✅ Edição cancelada e cards restaurados com sucesso!");
-    
-};
-
-
-
-
-
-
-
-
-
-
     
     return (
-        <div className="perfil-cnpj-componente-principal">
-        
 
+        
+        <div className="componente-de-pagina">
+        
+            {/* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */}
             <div className="perfil-cnpj-componente-suporte">
 
 
+                {/* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */}
                 <div className="perfil-cnpj-usuario-card">
                     
+                    {/* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */}
                     <div className="perfil-cnpj-card-titulo">🏢 DADOS EMPRESARIAIS</div>
 
+                    {/* 📨 Feedback Visual Sagrado */}
+                    {msg.texto && <div className={`cad-admin-feedback-cnpj ${msg.tipo}`}>{msg.texto}</div>}
+
+                    {/* 📄 5. CARD-BODY (ÁREA DE CONTEÚDO FLEX) */}
                     <div className="perfil-cnpj-card-corpo">
+
+                        {/* ⏳ OVERLAY DE CARREGAMENTO NO CARD (Bloqueio Visual) */}
+                        {carregandoOperacao && <div className="loading-overlay-card">⏳ Processando...</div>}
+
 
                      
 
-                        <div className="flex-cnpj">
+                        {/* 🔍 6. CAMPOS & INPUTS */}
+                        {/* 🧱 CLASSES DE LAYOUT SAGRADAS: flex-cnpj */}
+                        <div className="Campo flex-cnpj">
                             <label>CNPJ (via BrasilAPI)</label>
                             <input 
-                                ref={cnpjInputRef}
+                                ref={cnpjInputRef} // ✨ Conexão da antena de foco
                                 type="text" 
                                 name="cnpj"
                                 placeholder="00.000.000/0000-00"
-                                disabled={!podeEditar} 
+                                disabled={!podeEditar || carregandoOperacao} // Estado de Edição
                                 value={cnpj} 
-                                onChange={mascaraCnpj} 
-                                autoComplete="organization" /* ✨ Sinal para o celular sugerir dados de empresas */
+                                onChange={mascaraCnpj} // Máscara de CNPJ
+                                autoComplete="organization" 
                                 required
                             />
                         </div>
 
-                        <div className="flex-razao">
+                        {/* Campos Desabilitados (Modo Leitura via BrasilAPI) */}
+                        <div className="Campo flex-razao">
                             <label>Razão Social</label>
                             <input type="text" disabled={true} value={razaoSocial} className="input-travado" />
                         </div>
 
-                        <div className="flex-fantasia">
+                        <div className="Campo flex-fantasia">
                             <label>Nome Fantasia</label>
                             <input type="text" disabled={true} value={nomeFantasia} />
                         </div>
 
-                        <div className="flex-situacao">
+                        <div className="Campo flex-situacao">
                             <label>Situação</label>
                             <input type="text" disabled={true} value={situacao} />
                         </div>
                         
-                        <div className="flex-atividade">
+                        <div className="Campo flex-atividade">
                             <label>Atividade Principal</label>
                             <input type="text" disabled={true} value={atividades} />
                         </div>
 
-                        <div className="flex-socio">
+                        <div className="Campo flex-socio">
                             <label>Sócios / Proprietários</label>
                             <input type="text" disabled={true} value={socios} />
                         </div>
@@ -403,42 +494,41 @@ const cancelarEdicao = () => {
 
 
 
+                        {/* 🕹️ 7. ÁREA DE BOTÕES (COMANDO DOS CARDS) */}
                         <div className="AreaBotoes">
 
                             {!podeEditar ? (
+                                // Modo Leitura: Botão Editar
                                 <button 
                                     type="button" 
                                     className="BotaoEditar" 
-                                    onClick={() => {
-                                        console.log("");
-                                        console.log("📐 ----------------------------------");
-                                        console.log("📐 🚀 EVENTO: Clique no botão '🔓 Editar CNPJ'");
-                                        console.log("📐 componente - 🧿 Cnpj.jsx");
-                                        console.log("📐 📍 setPodeEditar(true)");
-                                        console.log("📐 ----------------------------------");
-                                        setPodeEditar(true);
-                                    }}
+                                    onClick={() => { setPodeEditar(true); }}
                                 >
-                                    🔓 Editar CNPJ
+                                    🔓 Editar
                                 </button>
                             ) : (
+                                // Modo Edição: Botões Salvar e Cancelar
                                 <>
                                     <button 
                                         type="button" 
                                         className="BotaoSalvar" 
-                                        onClick={salvarCnpjNoBanco}
+                                        disabled={carregandoOperacao}
+                                        onClick={salvardadosEmpresa} // Função VPS
                                     >
-                                        💾 Salvar Empresa
+                                        💾 Salvar
                                     </button>
-
-                                    {/* O botão cancelar só aparece se não for um cadastro novo */}
-                                    {!ehNovoCadastro && (
+                                    
+                                    {/* O botão cancelar só aparece se NÃO for um cadastro novo */}
+                                    {!ehNovoCadastro && !carregandoOperacao && (
                                         <button 
                                             type="button" 
                                             className="BotaoCancelar" 
-                                            onClick={cancelarEdicao}
+                                            onClick={() => { 
+                                                carregarDadosDoBanco(); // Função RTDB
+                                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                            }}
                                         >
-                                            ✖️ Cancelar Edição
+                                            ✖️ Cancelar
                                         </button>
                                     )}
                                 </>
@@ -449,12 +539,10 @@ const cancelarEdicao = () => {
                      
 
 
-
-
-                     
-
                     </div>
                 </div>
+
+
 
             </div>
         </div>

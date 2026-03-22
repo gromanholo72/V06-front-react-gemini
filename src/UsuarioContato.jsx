@@ -24,29 +24,51 @@ export function UsuarioContato () {
 
     });
 
-    useEffect(() => {
 
-        console.log("");
-        console.log("✨ --------------------------------------------------");
-        console.log("✨ useEffect() - Componente - 📞 UsuarioContato.jsx");
-        console.log("✨ 🏷️ VARIÁVEL MONITORADA QUANTO A MUDANÇA");
-        console.log("✨ 📞 formContato = ", formContato);
-        console.log("✨ --------------------------------------------------");
+
+
+    
+
+    
+    // ---------------------------------
+    // INICIO - 🏷️ Monitoramento de formContato
+    // ---------------------------------
+
+    // useEffect(() => {
+
+    //     console.log("");
+    //     console.log("✨ --------------------------------------------------");
+    //     console.log("✨ useEffect() - Componente - 📞 UsuarioContato.jsx");
+    //     console.log("✨ 🏷️ VARIÁVEL MONITORADA QUANTO A MUDANÇA");
+    //     console.log("✨ OBS: Passa a primeira vez independente de mudancas");
+    //     console.log("✨ 📞 formContato = ", formContato);
+    //     console.log("✨ --------------------------------------------------");
    
-    }, [formContato]); 
-
+    // }, [formContato]); 
+    
+    // ---------------------------------
+    // FIM - 🏷️ Monitoramento de formContato
+    // ---------------------------------
 
 
     const [podeEditar, setPodeEditar] = useState(false);
 
+    // ---------------------------------
+    // INICIO - ✏️ Foco Automático ao Editar
+    // ---------------------------------
+
     useEffect(() => {
-
         if (podeEditar) {
-
             emailInputRef.current?.focus();
-
         }
     }, [podeEditar]);
+
+    // ---------------------------------
+    // FIM - ✏️ Foco Automático ao Editar
+    // ---------------------------------
+
+
+
 
 
 
@@ -61,6 +83,10 @@ export function UsuarioContato () {
         
         setFormContato(prev => ({ ...prev, email: v }));
     };
+
+
+
+
 
 
     // 🛠️ MÁSCARA DE TELEFONE (Padrão solicitado)
@@ -130,8 +156,10 @@ export function UsuarioContato () {
         const foneFinal = dados?.fone || '';
 
         setFormContato({
+
             email: String(mailFinal).trim(),
             telefone: String(foneFinal).trim()
+
         });
 
     }, []);
@@ -239,21 +267,14 @@ export function UsuarioContato () {
         }, 3000);
     };
 
-
-
-
-
-
-
-
     const salvardadosContato = async () => {
         
-        console.log("");
-        console.log("💾 📞 -----------------------------------");
-        console.log("💾 📞 INICIANDO SALVAMENTO:");
-        console.log("💾 📞 Componente - 📞 UsuarioContato.jsx");
-        console.log("💾 📞 Funcao: salvardadosContato()");
-        console.log("💾 📞 -----------------------------------");
+        // console.log("");
+        // console.log("💾 📞 -----------------------------------");
+        // console.log("💾 📞 INICIANDO SALVAMENTO:");
+        // console.log("💾 📞 Componente - 📞 UsuarioContato.jsx");
+        // console.log("💾 📞 Funcao: salvardadosContato()");
+        // console.log("💾 📞 -----------------------------------");
     
         setMsg({ tipo: '', texto: '' });
 
@@ -272,14 +293,14 @@ export function UsuarioContato () {
             const cpefOriginal = dadosToken?.cpef;
             const cpfLimpo = cpefOriginal?.replace(/\D/g, "");
 
-            console.log("");
-            console.log("💾 📞 --------------------------------------");
-            console.log("💾 📞 🔍 EXTRAÇÃO DE IDENTIDADE:");
-            console.log("💾 📞 🛰️ Componente - 📞 UsuarioContato.jsx");
-            console.log("💾 📞 🆔 cpefOriginal:", cpefOriginal);
-            console.log("💾 📞 🆔 cpfLimpo (para URL):", cpfLimpo);
-            console.log("💾 📞 🌐 URL_SERVIDOR:", URL_SERVIDOR);
-            console.log("💾 📞 --------------------------------------");
+            // console.log("");
+            // console.log("💾 📞 --------------------------------------");
+            // console.log("💾 📞 🔍 EXTRAÇÃO DE IDENTIDADE:");
+            // console.log("💾 📞 🛰️ Componente - 📞 UsuarioContato.jsx");
+            // console.log("💾 📞 🆔 cpefOriginal:", cpefOriginal);
+            // console.log("💾 📞 🆔 cpfLimpo (para URL):", cpfLimpo);
+            // console.log("💾 📞 🌐 URL_SERVIDOR:", URL_SERVIDOR);
+            // console.log("💾 📞 --------------------------------------");
 
             if (!cpfLimpo) {
 
@@ -300,12 +321,12 @@ export function UsuarioContato () {
 
 
 
-            console.log("");
-            console.log("📐 ----------------------------------");
-            console.log("📐 📦 DADOS PREPARADOS PARA ENVIO (CONTATO):");
-            console.log("📐 componente - UsuarioContato.jsx");
-            console.log("📐 payload:", payload);
-            console.log("📐 ----------------------------------");
+            // console.log("");
+            // console.log("📐 ----------------------------------");
+            // console.log("📐 📦 DADOS PREPARADOS PARA ENVIO (CONTATO):");
+            // console.log("📐 componente - UsuarioContato.jsx");
+            // console.log("📐 payload:", payload);
+            // console.log("📐 ----------------------------------");
 
             // �📡 Transmissão para a VPS
             const resposta = await fetch(`${URL_SERVIDOR}/atualizar-contato`, {
@@ -317,23 +338,23 @@ export function UsuarioContato () {
             const resultado = await resposta.json();
 
 
-            console.log("💾 --------------------------------------------------");
-            console.log("💾 📥 RESPOSTA DO SERVIDOR:", { 
-                status: resposta.status, 
-                ok: resposta.ok, 
-                resultado 
-            });
+            // console.log("💾 --------------------------------------------------");
+            // console.log("💾 📥 RESPOSTA DO SERVIDOR:", { 
+            //     status: resposta.status, 
+            //     ok: resposta.ok, 
+            //     resultado 
+            // });
 
 
 
             if (resposta.ok) {
 
-                console.log("");
-                console.log("💾 📡 -----------------------------------------------------------");
-                console.log("💾 📡 Resposta do Servidor OK");
-                console.log("💾 🛰️ Componente - 📞 UsuarioContato.jsx");
-                console.log("💾 📡 Status : ✅ Sincronizado");
-                console.log("💾 📡 -----------------------------------------------------------");
+                // console.log("");
+                // console.log("💾 📡 -----------------------------------------------------------");
+                // console.log("💾 📡 Resposta do Servidor OK");
+                // console.log("💾 🛰️ Componente - 📞 UsuarioContato.jsx");
+                // console.log("💾 📡 Status : ✅ Sincronizado");
+                // console.log("💾 📡 -----------------------------------------------------------");
 
                 setMsg({ tipo: 'sucesso', texto: '✅ Contato atualizado com sucesso!' });
 
@@ -387,7 +408,7 @@ export function UsuarioContato () {
 
 return (
 
-    <div className="perfil-contato-componente-principal">
+    <div className="componente-de-pagina">
 
         <div className="perfil-contato-componente-suporte">
 

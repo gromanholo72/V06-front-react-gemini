@@ -1,34 +1,53 @@
+
 /* 🏠 1. COMPONENTE-PRINCIPAL (PALCO DO SETOR) */
 .perfil-cnpj-componente-principal {
+
+    /* background-color: rgb(243, 243, 129); */
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+
 }
 
 /* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */
 .perfil-cnpj-componente-suporte {
+
     width: 100%;
     min-width: 300px;
     max-width: 600px;
     display: grid;
     gap: 20px;
+    
 }
+
+
+
+
 
 /* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */
 .perfil-cnpj-usuario-card {
+
+    position: relative; 
+    
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
+    /* IMPLEMENTAÇÃO: Sombra acentuada para profundidade no Palco Principal */
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: box-shadow 0.3s ease;
+
     margin: 20px;
 }
 
 /* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */
 .perfil-cnpj-card-titulo {
-    background-color: rgb(145, 215, 185);
+    
+    background-color: #ebf2f7; 
+    border-bottom: 3px solid #306396;
+
+
     padding: 15px 20px;
     font-weight: bold;
     color: #333333;
@@ -36,25 +55,73 @@
     text-align: left;
 }
 
-/* 📄 5. CARD-BODY (ÁREA DE CONTEÚDO) */
+
+/* 📐 FEEDBACK FLUTUANTE (SALTADO) - Estilo Padronizado */
+.cad-admin-feedback-cnpj {
+
+    position: absolute;
+
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    width: 90%;
+    z-index: 100; /* Garante que fique acima dos inputs */
+    
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    
+    /* ✨ O efeito "Saltado" */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    
+    animation: pularNaTela 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cad-admin-feedback-cnpj.erro { 
+    background: #fff5f5; color: #c0392b; border: 1px solid #ffcece; 
+}
+
+.cad-admin-feedback-cnpj.sucesso { 
+    background: #f0fdf4; color: #27ae60; border: 1px solid #bbf7d0; 
+}
+
+
+
+
+
+
+
+/* � 5. CARD-BODY (ÁREA DE CONTEÚDO) */
 .perfil-cnpj-card-corpo {
+    /* background-color: rgb(243, 178, 125); */
     padding-top: 15px;
     padding-left: 30px;
     padding-right: 30px;
     padding-bottom: 30px;
     display: flex;
+    /* flex-direction: column; */
     gap: 15px;
+
+
     flex-wrap: wrap; 
     width: 100%;
     box-sizing: border-box;
+
+
+
 }
 
-/* Flexbox definitions for CNPJ fields */
+
+/* Flexbox definitions for CNPJ fields (DEFINIÇÕES DO USUÁRIO MANTIDAS) */
 .flex-cnpj {
     flex: 1 1 150px;
 }
 .flex-razao {
     flex: 10 1 400px;
+    /* min-width: 270px; */
 }
 .flex-fantasia {
     flex: 15 1 310px; 
@@ -68,6 +135,7 @@
 .flex-socio {
     flex: 15 1 300px;
 }
+
 
 /* 🔍 6. CAMPOS (AGRUPADORES DE DADOS) */
 .perfil-cnpj-card-corpo div {
@@ -90,6 +158,12 @@
     border: 1px solid #cccccc;
     border-radius: 8px;
     font-size: 14px;
+    
+    /* 🎨 COR ÚNICA PARA TODOS EM EDIÇÃO */
+   
+    color: black !important;
+    background-color: #ffffff !important;
+
     font-weight: bold;
     width: 100%;
     box-sizing: border-box;
@@ -97,42 +171,109 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Input styling for enabled/autofill/focus */
+
+
+
+
+
+
+
+
+/* 🎫 7. INPUTS (PADRONIZAÇÃO TOTAL NA EDIÇÃO HABILITADA) */
 .perfil-cnpj-card-corpo input:not(:disabled),
 .perfil-cnpj-card-corpo input:-webkit-autofill,
 .perfil-cnpj-card-corpo input:-webkit-autofill:hover,
 .perfil-cnpj-card-corpo input:-webkit-autofill:focus {
-    background-color: #ffffff !important;
+    
+    /* 🎨 FORÇA O FUNDO BRANCO (Mata o azul/amarelo do navegador) */
+    background-color: #c5c0c0 !important;
+    
+    /* 🎨 FORÇA A COR DO TEXTO PRETO NÍTIDO */
     color: #000000 !important;
     -webkit-text-fill-color: #000000 !important;
-    box-shadow: 0 0 0px 1000px #ffffff inset !important;
+
+    /* 🧱 ESTRUTURA E ACABAMENTO */
+    padding: 10px;
+    border: 1px solid #cccccc !important;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: text;
+
+    /* 🛡️ O TRUQUE DE MESTRE: Sobrescreve a cor de fundo do Autofill com branco */
+    box-shadow: 0 0 0px 1000px #c4c4c3 inset !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
-.perfil-cnpj-card-corpo input:focus {
-    outline: none !important; /* Remove a borda azul padrão do navegador */
-    border-color: #007bff !important; /* Mantém a borda azul que definimos */
-    
-    background-color: #e9e4e4 !important; /* 🎨 A COR DE FUNDO CORRETA */
 
-    box-shadow: 0 0 0px 1000px #a1a1a1 inset, 0 0 5px rgba(0, 123, 255, 0.2) !important; /* 🛡️ A SOMBRA CORRETA */
+
+
+
+/* ✨ ESTADO DE FOCO (QUANDO O USUÁRIO CLICA PARA DIGITAR) */
+.perfil-cnpj-card-corpo input:focus {
+    outline: none !important;
+    border-color: #007bff !important;
+    
+    /* 🎨 VOLTANDO PARA O CINZA LEVE QUE O SENHOR PREFERE */
+    background-color: #e9e4e4 !important; 
+
+    /* 🛡️ PROTEÇÃO: Aplicando a sombra interna com a cor de foco para o Autofill não vencer */
+    box-shadow: 0 0 0px 1000px #a1a1a1 inset, 0 0 5px rgba(0, 123, 255, 0.2) !important;
     transition: background-color 0s; /* Resposta imediata ao clique */
 }
 
-/* 🚫 8. INPUT-DISABLED */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🚫 8. INPUT-DISABLED (PADRONIZAÇÃO TOTAL - VERSÃO 2026) */
 .perfil-cnpj-card-corpo input:disabled,
-.perfil-cnpj-card-corpo input:disabled:-webkit-autofill {
+.perfil-cnpj-card-corpo input:disabled:-webkit-autofill,
+.perfil-cnpj-card-corpo input:disabled:-webkit-autofill:hover,
+.perfil-cnpj-card-corpo input:disabled:-webkit-autofill:focus {
+    
+    /* 🎨 FORÇA O FUNDO CINZA (Mata o branco do navegador) */
     background-color: rgb(240, 240, 240) !important;
+    
+    /* 🎨 FORÇA A COR DO TEXTO */
     color: #777777 !important;
-    -webkit-text-fill-color: #777777 !important;
+    -webkit-text-fill-color: #777777 !important; /* Essencial para Webkit/Chrome */
+
+    /* 🧱 RESET DE ESTRUTURA */
     border: 1px solid #cccccc !important;
     cursor: not-allowed !important;
     opacity: 1 !important;
+
+    /* 🛡️ O TRUQUE DE MESTRE: Sobrescreve a cor de fundo do Autofill */
     box-shadow: 0 0 0px 1000px rgb(240, 240, 240) inset !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
-/* 🕹️ 9. ÁREA DE BOTÕES */
+
+
+
+
+
+
+
+/* 🕹️ 9. ÁREA DE BOTÕES (COMANDO DOS CARDS) */
 .AreaBotoes {
     display: flex;
     gap: 15px;
@@ -153,18 +294,89 @@
     transition: filter 0.2s;
 }
 
-.BotaoEditar { background-color: #007bff; color: white; width: 100%; }
-.BotaoSalvar { background-color: #28a745; color: white; flex: 2; }
-.BotaoCancelar { background-color: #dc3545; color: white; flex: 1; }
+/* 🧱 Blindagem de Escopo */
+.perfil-cnpj-usuario-card .BotaoEditar { background-color: #306396; color: white; width: 100%; }
+.perfil-cnpj-usuario-card .BotaoSalvar { background-color: rgb(212, 175, 55); color: white; flex: 2; }
+.perfil-cnpj-usuario-card .BotaoCancelar { background-color: #c0392b; color: white; flex: 1; }
 
 .AreaBotoes button:hover {
+    /* IMPLEMENTAÇÃO: Efeito visual ao passar o mouse nas ferramentas */
     filter: brightness(0.9);
 }
 
-/* Media Query */
+
+/* ✨ 10. ANIMAÇÃO (ZERO MOVIMENTO) */
+@keyframes fadeInSecoTotal {
+    from { 
+        opacity: 0;
+        /* transform: translate(0, 0) !important; */
+    }
+    to { 
+        opacity: 1;
+        /* transform: translate(0, 0) !important; */
+    }
+}
+
+@keyframes pularNaTela {
+    from { 
+        opacity: 0;
+        transform: translate(-50%, -20px) scale(0.9);
+    }
+    to { 
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+}
+
+/* ⏳ OVERLAY DE CARREGAMENTO NO CARD (Bloqueio Visual) */
+.loading-overlay-card {
+    position: fixed; /* 🧱 Mudança: De absolute para fixed (Tela Inteira) */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    background: rgba(255, 255, 255, 0.5);  /* 🧱 Mais translúcido */
+    backdrop-filter: blur(4px);            /* 🧱 Desfoque maior para o fundo */
+    z-index: 10000;                        /* 🧱 Acima de tudo (Header, Menu, etc) */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-size: 20px;
+    font-weight: bold;
+    color: #306396;                        /* Azul da identidade visual */
+    
+    animation: fadeInOverlay 0.3s ease;    /* Entrada suave */
+}
+
+@keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+
+
+
+
+    
+
 @media (max-width: 768px) {
+
     .AreaBotoes { flex-direction: column; }
-    .perfil-cnpj-card-corpo label { font-size: 16px !important; }
-    .perfil-cnpj-card-corpo input { font-size: 18px !important; }
-    .AreaBotoes button { padding: 20px !important; font-size: 18px !important; }
+ 
+    .perfil-cnpj-card-corpo label {
+
+        font-size: 16px !important;
+    
+    }
+
+    .perfil-cnpj-card-corpo input {
+
+        font-size: 18px !important;
+    
+    }
+
+    .AreaBotoes button {
+        padding: 20px !important;
+        font-size: 18px !important;
+    }
+
 }

@@ -40,6 +40,9 @@ export function Logado({ perfilEstaCompleto }) {
                         <div className="Card-Status-Informativo">
                             <h2>👋 Olá, {dadosToken?.nome || "Usuário"}!</h2>
                             <p> Você acessou sua area interna com sucesso.</p>
+                            <br />
+                            <h3>📜 Leia com atenção todas as instruções abaixo</h3>
+                            <span>Utilize o menu no canto superior direito para navegar pelos setores e gerenciar seus <strong>cards</strong>.</span>
                         </div>
 
 
@@ -71,10 +74,10 @@ export function Logado({ perfilEstaCompleto }) {
 
 
 
-                        <div className="Card-Status-Informativo">
+                        {/* <div className="Card-Status-Informativo">
                             <h3>📜 Leia com atenção todas as instruções abaixo</h3>
                             <span>Utilize o menu no canto superior direito para navegar pelos setores e gerenciar seus <strong>cards</strong>.</span>
-                        </div>
+                        </div> */}
 
                 
 

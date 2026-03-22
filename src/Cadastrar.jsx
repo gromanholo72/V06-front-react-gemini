@@ -16,7 +16,7 @@ import './Cadastrar.css';
 export function Cadastrar({ setExibirBalaoDicaEntrar }) {
     
 
-    // Chamando o 🚕 motorista para ficar de prontidão no portão da 🏠 Casa
+    // 🚕 Contratando o motorista para este cômodo
     const navigate = useNavigate();
 
 
@@ -169,11 +169,13 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
     const [mostrarModalSucesso, setMostrarModalSucesso] = useState(() => {
         const valorInicial = false;
-        console.log("📐 ----------------------------------");
-        console.log("📐 useState() - componente - 🏛️ Cadastro.jsx");
-        console.log("📐 Lazy Initialization - 🔵 mostrarModalSucesso");
-        console.log("📐 🔵 mostrarModalSucesso nasceu como = ", valorInicial);
-        console.log("📐 ----------------------------------");
+
+        // console.log("📐 ----------------------------------");
+        // console.log("📐 useState() - componente - 🏛️ Cadastro.jsx");
+        // console.log("📐 Lazy Initialization - 🔵 mostrarModalSucesso");
+        // console.log("📐 🔵 mostrarModalSucesso nasceu como = ", valorInicial);
+        // console.log("📐 ----------------------------------");
+
         return valorInicial;
     });
 
@@ -332,12 +334,12 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
             senh: ""
         };
 
-        console.log("");
-        console.log("📐 ----------------------------------");
-        console.log("📐 useState() - componente - 🏛️ Cadastro.jsx");
-        console.log("📐 Lazy Initialization - 📝 novoUsuario");
-        console.log("📐 📝 novoUsuario nasceu como = ", valorInicial);
-        console.log("📐 ----------------------------------");
+        // console.log("");
+        // console.log("📐 ----------------------------------");
+        // console.log("📐 useState() - componente - 🏛️ Cadastro.jsx");
+        // console.log("📐 Lazy Initialization - 📝 novoUsuario");
+        // console.log("📐 📝 novoUsuario nasceu como = ", valorInicial);
+        // console.log("📐 ----------------------------------");
 
         return valorInicial;
 
@@ -346,12 +348,12 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
     // ✨ Dispara sempre que o 'novoUsuario' mudar de fato (Vigia da Prancheta)
     useEffect(() => {
 
-        console.log("");
-        console.log("✨ ----------------------------------");
-        console.log("✨ useEffect() - componente - 🏛️ Cadastro.jsx");
-        console.log("✨ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
-        console.log("✨ 📝 novoUsuario = ", novoUsuario);
-        console.log("✨ ----------------------------------");
+        // console.log("");
+        // console.log("✨ ----------------------------------");
+        // console.log("✨ useEffect() - componente - 🏛️ Cadastro.jsx");
+        // console.log("✨ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
+        // console.log("✨ 📝 novoUsuario = ", novoUsuario);
+        // console.log("✨ ----------------------------------");
     
     }, [novoUsuario]);
 

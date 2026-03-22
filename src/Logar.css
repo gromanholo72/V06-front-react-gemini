@@ -12,7 +12,7 @@
 }
 
 /* 🏢 LOGINTUDO: Container que agrupa a gaveta e o formulário */
-.LoginTudo {
+.LoginTudo-Login {
 
     display: flex;
     flex-direction: column;
@@ -23,7 +23,7 @@
 }
 
 /* 📝 LOGINFORM: O card sólido de entrada */
-.LoginForm {
+.LoginForm-Login {
 
     background: #306396;
     
@@ -43,7 +43,7 @@
 
 
 
-.LoginForm h3 {
+.LoginForm-Login h3 {
     color: white;
     font-size: 24px;
     text-align: center;
@@ -57,7 +57,7 @@
 
 }
 
-.LoginForm img {
+.LoginForm-Login img {
     width: 80px;
     height: 80px;
     margin: 0 auto 10px;
@@ -67,14 +67,14 @@
 }
 
 /* 📏 INPUTLAGURATOTAL: Estrutura dos campos de entrada */
-.InputLaguraTotal {
+.InputLarguraTotal-Login {
     display: flex;
     flex-direction: column;
     gap: 5px;
     width: 100%;
 }
 
-.LoginForm label {
+.LoginForm-Login label {
     font-weight: 600;
     color: white;
     font-size: 14px;
@@ -82,7 +82,7 @@
     margin-left: 2px;
 }
 
-.LoginForm input {
+.LoginForm-Login input {
     padding: 10px;
     border: 2px solid #eceff1;
     border-radius: 8px;
@@ -90,7 +90,7 @@
     transition: border-color 0.3s ease;
 }
 
-.LoginForm input:focus {
+.LoginForm-Login input:focus {
     outline: none;
     border-color: #ff4d4d; 
 }
@@ -105,7 +105,7 @@
 
 
 /* ⚡ BOTAOPADRAOLOGIN: Ação principal de entrada */
-.BotaoPadraoLogin {
+.BotaoPadraoLogin-Login {
     background-color: rgb(79, 170, 128);
     background-color: rgb(212, 175, 55);
     color: white;
@@ -120,19 +120,19 @@
     transition: all 0.3s ease;
 }
 
-.BotaoPadraoLogin:hover {
+.BotaoPadraoLogin-Login:hover {
     filter: brightness(0.9);
     transform: translateY(-2px);
 }
 
 /* 🔗 CAMPOLINK: Botões de navegação secundária */
-.CampoLink {
+.CampoLink-Login {
     display: flex;
     gap: 10px;
     width: 100%;
 }
 
-#BotaoLinkCadastro, #BotaoLinkEsqueci {
+#BotaoLinkCadastro-Login, #BotaoLinkEsqueci-Login {
     flex: 1;
     padding: 10px;
     border-radius: 8px;
@@ -145,40 +145,66 @@
     transition: all 0.3s ease;
 }
 
-#BotaoLinkCadastro:hover, #BotaoLinkEsqueci:hover {
+#BotaoLinkCadastro-Login:hover, #BotaoLinkEsqueci-Login:hover {
     background-color: #cfd8dc;
 }
 
-/* 🧪 CPEFTEXTES: Painel de botões de teste */
-.CpefTextes {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    padding: 20px;
+
+/* ⚠️ MSG-FORM-LOGIN: O container da mensagem de erro */
+.MsgForm-Login {
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
     width: 100%;
     max-width: 800px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    transition: opacity 1.0s ease-in-out, max-height 0.8s ease-in-out, margin 0.8s ease-in-out, visibility 1.0s;
+    overflow: hidden;
 }
 
-/* 🔘 BOT-TESTES: Estilo dos botões do programador */
-.bot1, .bot2, .bot4, .bot5, .bot6, .bot7, .bot8 {
-    padding: 10px 15px;
-    cursor: pointer;
-    background-color: #34495e;
-    color: white;
-    border: 1px solid #95a5a6;
-    border-radius: 5px;
-    font-size: 12px;
-    transition: all 0.2s;
+.MsgForm-Login.ativo-Login {
+    visibility: visible;
+    opacity: 1;
+    max-height: 100px; 
+    margin-bottom: 15px; 
 }
 
-.bot1:hover, .bot2:hover, .bot4:hover {
-    background-color: #7f8c8d;
-    transform: scale(1.05);
+.alerta-erro-Login {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 45px;
+    width: 100%;
 }
+
+.MsgForm-Login.ativo-Login .alerta-erro-Login {
+    animation: balanco-Login 0.3s ease-in-out;
+}
+
+.linha-topo-Login { font-size: 1.1em; }
+.linha-foco-Login { font-size: 0.9em; opacity: 0.9; }
+
+@keyframes balanco-Login {
+    0% { transform: translateY(-10px); }
+    50% { transform: translateY(5px); }
+    100% { transform: translateY(0); }
+}
+
+
+
+
+
+
 
 /* Animação de entrada dos cards */
 @keyframes surgir-card {
@@ -200,12 +226,141 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🧪 CPEFTEXTES: Painel de botões de teste */
+.CpefTextes-Login {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* gap: 15px; */
+    /* padding: 20px; */
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    /* margin-top: 30px; */
+}
+
+/* 🧱 LINHA-BOTOES-TESTE: Agrupa os botões em linhas organizadas */
+.Linha-Botoes-Teste-Login {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* gap: 10px; Removido para usar margin nos botões */
+    /* padding-top: 10px !important; */
+    /* padding-bottom: 10px !important; */
+    width: 100%; /* Força que cada div ocupe uma linha inteira no container pai */
+}
+
+/* 🛠️ LINHA-PROG: Destaque exclusivo para o grupo do programador */
+.Linha-Prog-Login {
+    background-color: rgba(44, 62, 80, 0.15); 
+    /* padding: 10px; */
+    border-radius: 12px;
+    border: 1px dashed #2c3e50;
+    
+
+}
+
+/* 🏷️ ROTULO-TESTE: Estilo do label centralizado nos grupos */
+.Rotulo-Teste-Login {
+    width: 100%;
+    text-align: center;
+    margin: 5px 0 0 0;
+    color: #2c3e50;
+}
+
+/* 🛡️ LINHA-ADMIN: Destaque exclusivo para o grupo de administradores */
+.Linha-Admin-Login {
+    background-color: rgba(48, 99, 150, 0.4);
+    /* padding: 15px; */
+    border-radius: 12px;
+    border: 1px dashed #306396; 
+}
+
+/* � LINHA-ATENDENTE: Destaque exclusivo para o grupo de atendentes */
+.Linha-Atendente-Login {
+    background-color: rgba(155, 89, 182, 0.4); /* Roxo */
+    /* padding: 15px; */
+    border-radius: 12px;
+    border: 1px dashed #8e44ad; 
+}
+
+/* �🏠 LINHA-CLIENTE: Destaque exclusivo para o grupo de clientes */
+.Linha-Cliente-Login {
+    background-color: rgba(212, 175, 55, 0.4);
+    /* padding: 15px; */
+    border-radius: 12px;
+    border: 1px dashed #d4af37; 
+}
+
+/* �‍⚕️ LINHA-CUIDA: Destaque exclusivo para o grupo de cuidadoras */
+.Linha-Cuida-Login {
+    background-color: rgba(79, 170, 128, 0.4);
+    /* padding: 15px; */
+    border-radius: 12px;
+    border: 1px dashed #4faa80; 
+}
+
+/* 🔘 BOT-TESTE: Estilo unificado dos botões de teste */
+.Botao-Teste-Login {
+    margin-left: 10px;
+    margin-right: 10px;
+    /* margin-top: 10px; */
+    margin-bottom: 10px;
+
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #34495e;
+    color: white;
+    border: 1px solid #95a5a6;
+    border-radius: 5px;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @media (max-width: 768px) {
 
 
 
 
-    .LoginForm h3 {
+    .LoginForm-Login h3 {
        
         font-size: 34px;
        
@@ -213,7 +368,7 @@
 
 
 
-    .LoginForm label {
+    .LoginForm-Login label {
 
         font-size: 16px;
 
@@ -221,7 +376,7 @@
     
 
     
-    .LoginForm input {
+    .LoginForm-Login input {
 
         padding: 14px;
         font-size: 20px;
@@ -230,7 +385,7 @@
 
 
 
-    .BotaoPadraoLogin {
+    .BotaoPadraoLogin-Login {
       
         padding: 18px;
         font-size: 22px;
@@ -239,7 +394,7 @@
 
 
 
-    #BotaoLinkCadastro, #BotaoLinkEsqueci {
+    #BotaoLinkCadastro-Login, #BotaoLinkEsqueci-Login {
     
         padding: 18px;
         font-size: 20px;
@@ -253,7 +408,7 @@
 
 
 /* 🧱 Definição da animação de pulsação */
-@keyframes pulsarFoco {
+@keyframes pulsarFoco-Login {
     0% {
         background-color: #ffffff;
         border-color: #ddd;
@@ -286,8 +441,8 @@
 } */
 
 /* Classe que será aplicada apenas quando o usuário vier do cadastro */
-.input-pulsar {
-    animation: pulsarFoco 1.5s infinite ease-in-out;
+.input-pulsar-Login {
+    animation: pulsarFoco-Login 1.5s infinite ease-in-out;
     background-color: red; 
     border: 2px solid  red; 
 }

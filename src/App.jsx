@@ -1,12 +1,13 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'; 
-import { Routes, Route, useNavigate, Navigate} from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate, Outlet } from 'react-router-dom'; // 🧱 Importando Outlet
 import { ref, onValue } from 'firebase/database'; // Importe do Firebase RTDB
 import { db_realtime } from './firebaseConfig';
 import { useAuth } from './AutenticacaoContexto';
 
 
 import './App.css';
+// import './Logado.css'; // 🧱 Importando o CSS do layout diretamente
 
 
 // 🧱 Os Cômodos (Componentes)
@@ -17,13 +18,14 @@ import { Contato } from './Contato';
 import { Logar } from './Logar';
 import { Cadastrar } from './Cadastrar';
 
-import { Logado } from './Logado';
 import { Diretrizes } from './Diretrizes';
 import { Funcoes } from './Funcoes';
 
 
 import { UsuarioIdentificacao } from './UsuarioIdentificacao'; 
 import { UsuarioContato } from './UsuarioContato';
+import { UsuarioFormacao } from './UsuarioFormacao';
+import { UsuarioLogado } from './UsuarioLogado'; // 🧱 Importação adicionada
 
 import { Endereco } from './Endereco';
 import { Cnpj } from './Cnpj';
@@ -46,6 +48,7 @@ import { RelSolicitacoes } from './RelSolicitacoes';
 import { PacienteApresentacaoEmpresa } from './PacienteApresentacaoEmpresa';
 import { PacienteIdentificacao } from './PacienteIdentificacao';
 import { PacienteEndereco } from './PacienteEndereco';
+import { PacienteCadastroRemedio } from './PacienteCadastroRemedio';
 import { PacienteAlimentacao } from './PacienteAlimentacao';
 import { PacienteBanho } from './PacienteBanho';
 import { PacienteEmergencia } from './PacienteEmergencia';
@@ -103,15 +106,11 @@ export default function App() {
     const { 
 
         carregandoModal, 
-        // setCarregandoModal,
-
-
+     
         carregandoModalRapido, 
         setCarregandoModalRapido,
 
-
         dadosToken, 
-        dadosUsuarioCompleto, // 📐 Recuperando o Dossiê já carregado na memória
         carregandoPermissoesFireBase, 
         onClickSair, 
         socket 
@@ -603,174 +602,221 @@ export default function App() {
 
 
 
-// -------------------------------------------------------------
-/* INICIO - 🛠️ VIGILÂNCIA DE INTEGRIDADE DOS CARDS - CLIENTE */
-// -------------------------------------------------------------
+    // -------------------------------------------------------------
+    /* INICIO - 🛠️ VIGILÂNCIA DE PREENCHIMENTO DOS CARDS - CLIENTE */
+    // -------------------------------------------------------------
 
-/* // 🛠️ Ferramenta de Trabalho para o status de integridade dos cards do cliente */
-const [statusCliente, setStatusCliente] = useState({
-    contato: false,
-    endereco: false,
-    cnpj: false,
-    formacao: false
-});
+    const [statusAdministrador, setStatusAdministrador] = useState({
+        contato: false,
+        endereco: false
+    });
+
+    /* 🔍 Monitor de Status Administrador */
+    useEffect(() => {
+
+        // console.log("");
+        // console.log("🔍 -------------------------------------");
+        // console.log("🔍 INSPEÇÃO DE STATUS ADMINISTRADOR");
+        // console.log("🔍 contato  :", statusAdministrador.contato);
+        // console.log("🔍 endereco :", statusAdministrador.endereco);
+        // console.log("🔍 -------------------------------------");
+
+    }, [statusAdministrador]);
+  
+    const [statusCuidadora, setStatusCuidadora] = useState({
+        contato: false,
+        endereco: false,
+        cnpj: false,
+        formacao: false
+    });
+
+    /* 🔍 Monitor de Status Cuidadora */
+    useEffect(() => {
+
+        // console.log("");
+        // console.log("🔍 -------------------------------------");
+        // console.log("🔍 INSPEÇÃO DE STATUS CUIDADORA");
+        // console.log("🔍 contato  :", statusCuidadora.contato);
+        // console.log("🔍 endereco :", statusCuidadora.endereco);
+        // console.log("🔍 cnpj     :", statusCuidadora.cnpj);
+        // console.log("🔍 formacao :", statusCuidadora.formacao);
+        // console.log("🔍 -------------------------------------");
+
+    }, [statusCuidadora]);
+
+    const [statusCliente, setStatusCliente] = useState({
+        contato: false,
+        endereco: false
+    });
+
+    /* 🔍 Monitor de Status Cliente */
+    useEffect(() => {
+
+        // console.log("");
+        // console.log("🔍 -------------------------------------");
+        // console.log("🔍 INSPEÇÃO DE STATUS CLIENTE");
+        // console.log("🔍 contato  :", statusCliente.contato);
+        // console.log("🔍 endereco :", statusCliente.endereco);
+        // console.log("🔍 -------------------------------------");
+
+    }, [statusCliente]);
+
+    /* // 🧱 Nova Lógica: Busca direta no RTDB baseada no CPF do Token (Tempo Real) */
+    useEffect(() => {
+
+        // 3️⃣ Verificação de Segurança usando o CPF do Token
+        // 🛡️ A trava de segurança agora vive dentro da função que é chamada
+        if (!dadosToken?.cpef) {
+
+            // console.log("🔍 🚨 -----------------------------------------------------------");
+            // console.log("🔍 🚨 VIGILÂNCIA DE BANCO DE DADOS:");
+            // console.log("🔍 🚨 useEffect() - componente - 🧿 App.jsx");
+            // console.log("🔍 🚨 Vigilância de integridade: Nenhum CPF detectado no token. Resetando status.");
 
 
-/* 📐 Regra de Ouro: Cliente só acessa Paciente se tiver Contato e Endereço preenchidos */
-const clientePodeAcessarPaciente = statusCliente.contato && statusCliente.endereco;
-
-/* 🔍 Monitor de Status (Logs estruturados com emojis - Regra #2) */
-useEffect(() => {
-
-    console.log("");
-    console.log("🔍 -------------------------------------");
-    console.log("🔍 INSPEÇÃO DE STATUS DO CLIENTE");
-    console.log("🔍 contato  :", statusCliente.contato);  
-    console.log("🔍 endereco :", statusCliente.endereco); 
-    console.log("🔍 cnpj     :", statusCliente.cnpj);    
-    console.log("🔍 formacao :", statusCliente.formacao); 
-    console.log("🔍 PERMISSÃO PACIENTE:", clientePodeAcessarPaciente ? "✅ AUTORIZADO" : "❌ BLOQUEADO");
-    // console.log("🔍 -------------------------------------");
-
-}, [statusCliente, clientePodeAcessarPaciente]);
-
-
-/* // 🧱 Nova Lógica: Busca direta no RTDB baseada no CPF do Token (Tempo Real) */
-useEffect(() => {
-
-    // 3️⃣ Verificação de Segurança usando o CPF do Token
-    // 🛡️ A trava de segurança agora vive dentro da função que é chamada
-    if (!dadosToken?.cpef) {
-
-        // console.log("🔍 🚨 -----------------------------------------------------------");
-        // console.log("🔍 🚨 VIGILÂNCIA DE BANCO DE DADOS:");
-        // console.log("🔍 🚨 useEffect() - componente - 🧿 App.jsx");
-        // console.log("🔍 🚨 Vigilância de integridade: Nenhum CPF detectado no token. Resetando status.");
-
-        setStatusCliente({
-            contato: false,
-            endereco: false,
-            cnpj: false,
-            formacao: false
-        });
-
-        return;
-
-    }
-
-    // 4️⃣ Preparação da Rota usando o CPF limpo
-    const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
-    // 📐 Ajuste: Busca a raiz do usuário para analisar todos os nós internos
-    const usuarioRef = ref(db_realtime, `usuarios/${cpfLimpo}`);
-
-    // console.log("");
-    // console.log("🔍 🚨 -----------------------------------------------------------");
-    // console.log("🔍 🚨 VIGILÂNCIA DE BANCO DE DADOS:");
-    // console.log("🔍 🚨 useEffect() - componente - 🧿 App.jsx");
-    // console.log("🔍 🚨 Caminho (CPF):", dadosToken.cpef);
-    
-    // 5️⃣ Conexão em Tempo Real (Ouvinte - Listener)
-    const unsubscribe = onValue(usuarioRef, (snapshot) => {
-        
-        // 📐 Lógica: Mapeado conforme as diretrizes do .geminirules e componentes específicos
-        if (snapshot.exists()) {
-            
-            const dadosUsuario = snapshot.val();
-
-            // console.log("🔍 🚨 dadosUsuario:", dadosUsuario);
-
-            // --- INICIO DA ANÁLISE DE INTEGRIDADE (Validações) ---
-
-            // A - 🔐 Dados de Contato
-            // Padrão: { mail, fone } (Obrigatórios)
-            const contato = dadosUsuario?.dadosContato;
-            const temContato = !!(contato?.mail?.trim() && contato?.fone?.trim());
-
-            // B - ⚙️ Dados de Endereço (conforme Endereco.jsx)
-            // Padrão: dadosEndereco: { cep, num } (Obrigatórios)
-            const endereco = dadosUsuario?.dadosEndereco;
-            const temEndereco = !!(endereco?.cep?.trim() && endereco?.num?.trim());
-
-            // C - 🏢 Dados da Empresa (conforme Cnpj.jsx)
-            // Padrão: cnpj_dados: { num_cnpj, razao } (Obrigatórios)
-            const empresa = dadosUsuario?.cnpj_dados;
-            const temEmpresa = !!(empresa?.num_cnpj?.trim() && empresa?.razao?.trim());
-
-            // D - 🎓 Dados de Formação (conforme Formacao.jsx)
-            // Padrão: formacao_dados: { nivel } (Obrigatório)
-            const formacao = dadosUsuario?.formacao_dados;
-            const temFormacao = !!(formacao?.nivel?.trim());
-
-            // --- FIM DA ANÁLISE DE INTEGRIDADE ---
-
-            // 6️⃣ Atualização de Memória (Estado Local)
-            setStatusCliente({
-                contato: temContato,
-                endereco: temEndereco,
-                cnpj: temEmpresa,
-                formacao: temFormacao
+            setStatusAdministrador({
+                contato: false,
+                endereco: false
             });
 
-            // console.log("🔍 🚨 Vigilância de integridade concluída com sucesso!");
 
-        } else {
-            
-            console.warn("❌ ✨ Alerta: Usuário logado (CPF) mas sem dados cadastrados no Realtime.");
-
-            setStatusCliente({
+            setStatusCuidadora({
                 contato: false,
                 endereco: false,
                 cnpj: false,
                 formacao: false
             });
 
+            setStatusCliente({
+                contato: false,
+                endereco: false
+            });
+
+            return;
+
         }
 
-    }, (error) => {
         
-        console.error("❌ 🔴 Erro fatal na escuta do Realtime Database (CPF):", error.message);
+        const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
+       
+        const usuarioRef = ref(db_realtime, `usuarios/${cpfLimpo}`);
 
-    });
-
-
-
-    return () => {
-
-        console.log("🔍 🔴 ✨ Encerrando escuta do Realtime Database (Clean-up).");
-        unsubscribe();
-
-    };
+        const unsubscribe = onValue(usuarioRef, (snapshot) => {
+            
+            if (snapshot.exists()) {
+                
+                const dadosUsuario = snapshot.val();
 
 
+                // --- INICIO DA ANÁLISE DE INTEGRIDADE (Validações) ---
 
-}, [dadosToken?.cpef]); 
+                // A - 🔐 Dados de Contato
+                // Padrão: { mail, fone } (Obrigatórios)
+                const contato = dadosUsuario?.dadosContato;
+                const temContato = !!(contato?.mail?.trim() && contato?.fone?.trim());
 
+                // B - ⚙️ Dados de Endereço (conforme Endereco.jsx)
+                // Padrão: dadosEndereco: { cep, num } (Obrigatórios)
+                const endereco = dadosUsuario?.dadosEndereco;
+                const temEndereco = !!(endereco?.cepe?.trim() && endereco?.nume?.trim());
 
-const perfilEstaCompleto = Object.values(statusCliente).every(status => status === true);
+                // C - 🏢 Dados da Empresa (conforme Cnpj.jsx)
+                // Padrão: cnpj_dados: { num_cnpj, razao } (Obrigatórios)
+                const empresa = dadosUsuario?.dadosEmpresa;
+                const temEmpresa = !!(empresa?.cnpj?.trim() && empresa?.raza?.trim());
 
+                // D - 🎓 Dados de Formação (conforme Formacao.jsx)
+                // Padrão: formacao_dados: { nivel } (Obrigatório)
+                const formacao = dadosUsuario?.dadosFormacao;
+                const temFormacao = !!(formacao?.nivel?.trim());
 
-// -------------------------------------------------------------
-/* FIM - 🛠️ VIGILÂNCIA DE INTEGRIDADE DOS CARDS - CLIENTE */
-// -------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
+                // --- FIM DA ANÁLISE DE INTEGRIDADE ---
 
 
 
 
+                setStatusAdministrador({
+                    contato: temContato,
+                    endereco: temEndereco
+                });
+
+                setStatusCuidadora({
+                    contato: temContato,
+                    endereco: temEndereco,
+                    cnpj: temEmpresa,
+                    formacao: temFormacao
+                });
+
+                setStatusCliente({
+                    contato: temContato,
+                    endereco: temEndereco
+                });
+
+   
 
 
+            } else {
+                
 
+                console.warn("❌ ✨ Alerta: Usuário logado (CPF) mas sem dados cadastrados no Realtime.");
+
+
+                setStatusAdministrador({
+                    contato: false,
+                    endereco: false
+                });
+
+                setStatusCuidadora({
+                    contato: false,
+                    endereco: false,
+                    cnpj: false,
+                    formacao: false
+                });
+
+                setStatusCliente({
+                    contato: false,
+                    endereco: false
+                });
+
+
+            }
+
+        }, (error) => {
+            
+            console.error("❌ 🔴 Erro fatal na escuta do Realtime Database (CPF):", error.message);
+
+        });
+
+        return () => {
+
+            console.log("🔍 🔴 ✨ Encerrando escuta do Realtime Database (Clean-up).");
+            unsubscribe();
+
+        };
+
+    }, [dadosToken?.cpef]); 
+
+
+    const perfilEstaCompletoAdministrador = Object.values(statusAdministrador).every(status => status === true);
+    const perfilEstaCompletoCuidadora = Object.values(statusCuidadora).every(status => status === true);
+    const perfilEstaCompletoCliente = Object.values(statusCliente).every(status => status === true);
+
+    /* 🔍 Monitor de Status Geral (Calculado) */
+    useEffect(() => {
+
+        // console.log("");
+        // console.log("🔍 -------------------------------------");
+        // console.log("🔍 INSPEÇÃO DE STATUS GERAL (CALCULADO)");
+        // console.log("🔍 perfilEstaCompletoAdministrador:", perfilEstaCompletoAdministrador);
+        // console.log("🔍 perfilEstaCompletoCuidadora:", perfilEstaCompletoCuidadora);
+        // console.log("🔍 perfilEstaCompletoCliente:", perfilEstaCompletoCliente);
+        // console.log("🔍 -------------------------------------");
+
+    }, [perfilEstaCompletoAdministrador, perfilEstaCompletoCuidadora, perfilEstaCompletoCliente]);
+
+    // -------------------------------------------------------------
+    /* FIM - 🛠️ VIGILÂNCIA DE PREENCHIMENTO DOS CARDS - CLIENTE */
+    // -------------------------------------------------------------
 
 
 
@@ -820,8 +866,6 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
 
-
-
     /*  ------------------------------------- */
     /*  INICIO DO RETURN - Retorno da Central: */
     /*  ------------------------------------- */
@@ -830,7 +874,12 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
 
-        /* 🛡️ CONTAINER-EXTERNO-BLINDADO */
+
+
+        /* -------------------------------------- */
+        /* INICIO - 🛡️ CONTAINER-EXTERNO-BLINDADO */
+        /* -------------------------------------- */
+
         <div className="container-externo-blindado" data-func={dadosToken?.func}>
 
 
@@ -887,8 +936,6 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                 <div className="header-Logo" onClick={() => navigate('/')}>
                     <img className="Imagem-Logotipo"  src="/imagens/LogoSVG6.png" alt="Logo" />
                 </div>
-
-
 
 
 
@@ -953,9 +1000,6 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
 
-
-
-
                 {/* ---------------------------------- */}
                 {/* INICIO do - 🔩 Conteiner geral individualizado*/}
                 {/* ---------------------------------- */}
@@ -969,12 +1013,18 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
        
                     {dadosToken?.func === 'programador' && (
                         <>
+
+
+
                             <button 
                                 className="Btn-geral-programador-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/interno/Relatorios')}
+                                onClick={() => navegarERecolher('/interno/UsuarioLogado')}
                             >
-                                Relatório
+                                Inicio
                             </button>
+
+
+
 
                             {/* --- SUBMENU: CADASTRAR --- */}
                             <div className="submenu-tudo-cadastrar-prof">
@@ -1000,6 +1050,38 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                                 </div>
                             </div>
 
+
+
+
+                            {/* --- SUBMENU: RELATÓRIOS --- */}
+                            <div className="submenu-tudo-cadastrar-prof">
+                                <button  
+                                    className="Btn-geral-programador-prof"
+                                    onClick={(e) => lidarComClique(e, 'relatorios')}
+                                    aria-expanded={secaoAberta === 'relatorios'}
+                                >
+                                    Relatórios
+                                    <span className="icone-seta">
+                                        {secaoAberta === 'relatorios' ? "🔼" : "🔽"}
+                                    </span>
+                                </button>
+                                
+                                <div className={`submenu-flutuante-cadastrar-prof ${secaoAberta === 'relatorios' ? 'aberto' : 'fechado'}`}>
+                                    <button onClick={() => navegarERecolher('/interno/RelClientes')}>
+                                        Clientes
+                                    </button>
+                                    <button onClick={() => navegarERecolher('/interno/RelCuidadoras')}>
+                                        Cuidadoras
+                                    </button>
+                                    <button onClick={() => navegarERecolher('/interno/RelSolicitacoes')}>
+                                        Solicitações
+                                    </button>
+                                </div>
+                            </div>
+
+
+
+
                             <button 
                                 className="Btn-geral-programador-prof btn-centralizado"
                                 onClick={() => navegarERecolher('/ListaUsuarios')}
@@ -1007,12 +1089,8 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                                 Usuários
                             </button>
 
-                            <button 
-                                className="Btn-geral-programador-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/ListaUsuariosToken')}
-                            >
-                                Token
-                            </button>
+
+
                         </>
                     )}
 
@@ -1028,8 +1106,8 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
                             <button 
-                                className="Btn-geral-administrador-prof btn-centralizado largura50px"
-                                onClick={() => navegarERecolher('/interno')}
+                                className="Btn-geral-administrador-prof btn-centralizado"
+                                onClick={() => navegarERecolher('/interno/UsuarioLogado')}
                             >
                                 Inicio
                             </button>
@@ -1037,7 +1115,7 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
                             <button 
-                                className="Btn-geral-administrador-prof btn-centralizado largura70px"
+                                className="Btn-geral-administrador-prof btn-centralizado"
                                 onClick={() => navegarERecolher('/interno/Funcoes')}
                             >
                                 Funcoes
@@ -1082,14 +1160,14 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                             </div>
 
                             <button 
-                                className="Btn-geral-administrador-prof btn-centralizado largura50px"
+                                className="Btn-geral-administrador-prof btn-centralizado"
                                 onClick={() => navegarERecolher('/ListaLogs')}
                             >
                                 Logs
                             </button>
 
                             <button 
-                                className="Btn-geral-administrador-prof btn-centralizado largura70px"
+                                className="Btn-geral-administrador-prof btn-centralizado"
                                 onClick={() => navegarERecolher('/SuporteAdmin')}
                             >
                                 Suporte
@@ -1125,17 +1203,8 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                                 Contato
                             </button>
 
-
-                            <button 
-                                className="Btn-geral-visitante Lista-Publica" 
-                                // onClick={() => navegarERecolher('/ListaUsuariosPublico')}
-                            >
-                                Lista Publica
-                            </button>
-
-
-                            
                         </>
+
                     )}
 
 
@@ -1147,7 +1216,7 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
                             <button 
                                 className="Btn-geral-cuidadora-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/interno')}
+                                onClick={() => navegarERecolher('/interno/UsuarioLogado')}
                             >
                                 Inicio
                             </button>
@@ -1174,11 +1243,11 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
                             <button 
-                                className={`Btn-geral-cuidadora-prof btn-centralizado ${perfilEstaCompleto ? '' : 'BotaoBloqueado'}`}
-                                onClick={() => perfilEstaCompleto && navegarERecolher('/interno/Chamados')}
-                                title={!perfilEstaCompleto ? "Complete seu perfil (Contato, Endereço, CNPJ e Formação) para liberar." : "Acessar Chamados"}
+                                className={`Btn-geral-cuidadora-prof ${perfilEstaCompletoCuidadora ? '' : 'BotaoBloqueado'}`}
+                                onClick={() => perfilEstaCompletoCuidadora && navegarERecolher('/interno/Chamados')}
+                                title={!perfilEstaCompletoCuidadora ? "Complete seu perfil (Contato, Endereço, CNPJ e Formação) para liberar." : "Acessar Chamados"}
                             >
-                                Chamados {!perfilEstaCompleto && "🔒"}
+                                Chamados {!perfilEstaCompletoCuidadora && "🔒"}
                             </button>
 
 
@@ -1195,6 +1264,17 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
                     {dadosToken?.func === 'cliente' && (
                         <>
+
+
+
+                            <button 
+                                className="Btn-geral-cliente-prof btn-centralizado"
+                                onClick={() => navegarERecolher('/interno/UsuarioLogado')}
+                            >
+                                Inicio
+                            </button>
+
+
                             <button 
                                 className="Btn-geral-cliente-prof btn-centralizado" 
                                 onClick={() => navegarERecolher('/interno/PacienteApresentacaoEmpresa')}
@@ -1212,7 +1292,7 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                             {/* --- SUBMENU: SOLICITAÇÃO --- */}
                             <div className="submenu-tudo-solicitacao-prof">
                                 <button 
-                                    className="Btn-geral-cliente-prof" 
+                                    className="Btn-geral-cliente-prof BotaoBloqueado" 
                                     onClick={(e) => lidarComClique(e, 'solicitacao')}
                                     aria-expanded={secaoAberta === 'solicitacao'}
                                 >
@@ -1232,26 +1312,26 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                             {/* --- SUBMENU: PACIENTE --- */}
                             <div className="submenu-tudo-paciente-prof">
                                 <button 
-                                    className={`Btn-geral-cliente-prof btn-fonte-paciente ${clientePodeAcessarPaciente ? '' : 'BotaoBloqueado'}`}
-                                    onClick={(e) => clientePodeAcessarPaciente && lidarComClique(e, 'paciente')}
+                                    className={`Btn-geral-cliente-prof btn-fonte-paciente ${perfilEstaCompletoCliente ? '' : 'BotaoBloqueado'}`}
+                                    onClick={(e) => perfilEstaCompletoCliente && lidarComClique(e, 'paciente')}
                                     aria-expanded={secaoAberta === 'paciente'}
-                                    title={!clientePodeAcessarPaciente ? "Preencha Contato e Endereço para liberar." : "Gerenciar Paciente"}
+                                    title={!perfilEstaCompletoCliente ? "Preencha Contato e Endereço para liberar." : "Gerenciar Paciente"}
                                 >
                                     Paciente
                                     <span className="icone-seta">
-                                        {!clientePodeAcessarPaciente ? "🔒" : (secaoAberta === 'paciente' ? "🔼" : "🔽")}
+                                        {!perfilEstaCompletoCliente ? "🔒" : (secaoAberta === 'paciente' ? "🔼" : "🔽")}
                                     </span>
                                 </button>
                                 
                                 <div className={`submenu-flutuante-cliente-prof ${secaoAberta === 'paciente' ? 'aberto' : 'fechado'}`}>
-                                    <button onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}>Identificação</button>
-                                    <button onClick={() => navegarERecolher('/interno/PacienteEndereco')}>Endereço</button>
-                                    <button onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}>Alimentação</button>
-                                    <button onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}>Remédios</button>
-                                    <button onClick={() => navegarERecolher('/interno/PacienteBanho')}>Banho</button>
-                                    <button onClick={() => navegarERecolher('/interno/PacienteBanho')}>Acordado</button>
-                                    <button onClick={() => navegarERecolher('/interno/PacienteBanho')}>Recreação</button>
-                                    <button onClick={() => navegarERecolher('/interno/PacienteEmergencia')}>Emergência</button>
+                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}>Identificação</button>
+                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteEndereco')}>Endereço</button>
+                                    <button onClick={() => navegarERecolher('/interno/PacienteRemedio')}>Medicamentos</button>
+                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}>Alimentação</button>
+                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteBanho')}>Banho</button>
+                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteBanho')}>Acordado</button>
+                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteBanho')}>Recreação</button>
+                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteEmergencia')}>Emergência</button>
                                 </div>
                             </div>
                         </>
@@ -1321,6 +1401,8 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
 
+
+
                         
                         {/* INICIO - BOTAO MEU PERFIL */}
                         <button 
@@ -1338,7 +1420,14 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                         )}
 
 
+
+
+
+
+
+                        {/* ------------------------------------ */}
                         {/* INICIO DO - SUB MENU - DADOS DO USUARIO */}
+                        {/* ------------------------------------ */}
                         
                         <div className={`SubmenuFlutuante-Estilizado ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}>
                             
@@ -1355,11 +1444,6 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
 
-
-
-
-
-
                             {/* ----------------------- */}
                             {/* INICIO - DADOS PESSOAIS */}
                             {/* ----------------------- */}
@@ -1369,23 +1453,20 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                                 {dadosToken?.func === 'administrador' && (
                                     <>
 
-                                        <button 
-                                            
+
+                                        <button                                          
                                             className="Perfil-Opcoes"
                                             onClick={() => navegarERecolher('/interno/UsuarioContato')}>
-
-                                            {statusCliente.contato ? "✔️" : "❌"} Contato
-
+                                            {statusAdministrador.contato ? "✔️" : "❌"} Contato
                                         </button>
+
 
                                         <button 
-
                                             className="Perfil-Opcoes"
                                             onClick={() => navegarERecolher('/interno/Endereco')}>
-
-                                            {statusCliente.endereco ? "✔️" : "❌"} Endereço
-
+                                            {statusAdministrador.endereco ? "✔️" : "❌"} Endereço
                                         </button>
+
 
                                     </>
                                 )}
@@ -1394,39 +1475,32 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                                 {dadosToken?.func === 'cuidadora' && (
                                     <>
 
-                                        <button 
-                                            
+
+                                        <button                                           
                                             className="Perfil-Opcoes"
                                             onClick={() => navegarERecolher('/interno/UsuarioContato')}>
-
-                                            {statusCliente.contato ? "✔️" : "❌"} Contato
-
+                                            {statusCuidadora.contato ? "✔️" : "❌"} Contato
                                         </button>
 
-                                        <button 
 
+                                        <button 
                                             className="Perfil-Opcoes"
                                             onClick={() => navegarERecolher('/interno/Endereco')}>
-
-                                            {statusCliente.endereco ? "✔️" : "❌"} Endereço
-
+                                            {statusCuidadora.endereco ? "✔️" : "❌"} Endereço
                                         </button>
 
 
-                                        <button 
-                                            
+                                        <button  
                                             className="Perfil-Opcoes"
                                             onClick={() => navegarERecolher('/interno/Cnpj')}>
-                                            {statusCliente.cnpj ? "✔️" : "❌"} CNPJ
+                                            {statusCuidadora.cnpj ? "✔️" : "❌"} CNPJ
                                         </button>
                                         
                                     
                                         <button 
-                                        
                                             className="Perfil-Opcoes"
-                                            onClick={() => navegarERecolher('/interno/Formacao')}>
-                                            {statusCliente.formacao ? "✔️" : "❌"} Formação 
-
+                                            onClick={() => navegarERecolher('/interno/UsuarioFormacao')}>
+                                            {statusCuidadora.formacao ? "✔️" : "❌"} Formação 
                                         </button>
 
                                     </>
@@ -1436,23 +1510,20 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                                 {dadosToken?.func === 'cliente' && (
                                     <>
 
-                                        <button 
-                                            
+
+                                        <button                                     
                                             className="Perfil-Opcoes"
                                             onClick={() => navegarERecolher('/interno/UsuarioContato')}>
-
                                             {statusCliente.contato ? "✔️" : "❌"} Contato
-
                                         </button>
+
 
                                         <button 
-
                                             className="Perfil-Opcoes"
                                             onClick={() => navegarERecolher('/interno/Endereco')}>
-
                                             {statusCliente.endereco ? "✔️" : "❌"} Endereço
-
                                         </button>
+
 
                                     </>
                                 )}
@@ -1468,8 +1539,7 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                                   
 
 
-            
-
+    
                             {/* ------------------------------------------- */}
                             {/* INICIO - BOTAO SAIR - PARA TODOS O USUARIOS */}
                             {/* ------------------------------------------- */}
@@ -1527,6 +1597,9 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
 
+
+
+
                     </div>
 
                     // ---------------------------------------------------
@@ -1557,10 +1630,10 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                              
                                 onClick={(e) => {
 
-                                    console.log("");
-                                    console.log("📐 ----------------------------------");
-                                    console.log("📐 🚀 EVENTO: Clique no botao 'Criar Conta'");
-                                    console.log("📐 🔵 Estado 'Dica Visível' = ", exibirBalaoDicaCriarConta);
+                                    // console.log("");
+                                    // console.log("📐 ----------------------------------");
+                                    // console.log("📐 🚀 EVENTO: Clique no botao 'Criar Conta'");
+                                    // console.log("📐 🔵 Estado 'Dica Visível' = ", exibirBalaoDicaCriarConta);
                                     
                                     navegarERecolher('/Cadastrar');
 
@@ -1650,15 +1723,16 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
 
+            {/* ----------------------- */}
+            {/* INICIO - ROUTES - ROTAS */}
+            {/* ----------------------- */}
 
-
-            {/* 🧱 AREA-PALCO: Onde os CARDS brilham */}
             <main className="main-area-principal">
 
             <div className="header-spacer"></div>
 
+            
                 <Routes>
-
 
 
 
@@ -1667,14 +1741,31 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                     <Route 
                         path="/" 
                         element={
-                            <Inicio 
-                                // exibirDica={exibirDica} 
+                            <Inicio  
+
                             />
                         } 
                     />
 
-                    <Route path="/sobre" element={<Sobre />} /> 
-                    <Route path="/contato" element={<Contato />} />
+
+                    <Route 
+                        path="/sobre" 
+                        element={
+                            <Sobre 
+
+                            />
+                        } 
+                    /> 
+
+
+                    <Route 
+                        path="/contato" 
+                        element={
+                            <Contato 
+                            
+                            />
+                        } 
+                    />
 
 
                     <Route 
@@ -1683,12 +1774,9 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                             <Logar 
                                 socket={socket} 
                                 setExibirBalaoDicaCriarConta={setExibirBalaoDicaCriarConta} 
-                                // setSecaoAberta={setSecaoAberta}
                             />
                         } 
                     />
-
-
 
 
 
@@ -1697,219 +1785,168 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                         element={
                             <Cadastrar 
                                 socket={socket} 
-                                /* // Passando a ferramenta de trabalho para o componente filho */
                                 setExibirBalaoDicaEntrar={setExibirBalaoDicaEntrar} 
-                                // exibirBalaoDicaEntrar={exibirBalaoDicaEntrar}
                             />
                         } 
                     />
 
 
 
-
-
-
-                    <Route
-                        
-                        path="ListaUsuariosPublico" 
-                        element={<ListaUsuariosPublico />} 
-                    
-                    />
-                 
-
-
-
-
-
-
-
-
-
-                    {/* 🛠️ Rotas de Administração Técnica (Programador) */}
-                    <Route 
-                        path="/ListaUsuarios" 
-                        element={
-                            dadosToken?.func === 'programador' ? (
-                                <ListaUsuarios />
-                            ) : (
-                                <Navigate to="/" replace />
-                            )
-                        } 
-                    />
-
-
-                    <Route 
-                        path="/ListaUsuariosToken" 
-                        element={
-                            dadosToken?.func === 'programador' ? (
-                                <ListaUsuariosToken />
-                            ) : (
-                                /* // 🚀 Se o token expirar e ele virar visitante, a mola dispara: */
-                                <Navigate to="/" replace />
-                            )
-                        } 
-                    />
-
-
-
-
-
-
-
+               
 
 
 
                     {/* 🔐 Setor Privativo: Acesso condicionado ao fim do carregamento */}
                     <Route 
-                        path="/interno/*" 
+                        path="/interno" 
                         element={
-
                             carregandoModal ? null :
-
-                            dadosToken?.func && dadosToken.func !== 'visitante' ? (
-                                <Logado 
-
-                                // Não preciso disso mais, só vou de8ixar aqui para lembrar do aprendizado
-                                    // sinalInternet={sinalInternet}
-                                    // sinalFirebase={sinalFirebase}
-                                    // perfilEstaCompleto={perfilEstaCompleto} 
-                                    // pacienteEstaCompleto={pacienteEstaCompleto}
-
-                                />
+                            dadosToken?.func && dadosToken.func !== 'visitante' ? (                   
+                                <Outlet  />         
                             ) : (
-                                <Navigate 
-
-                                    to="/" replace 
-
-                                />
+                                <Navigate to="/" replace />
                             )
-
-
                         } 
                     >
 
-
-
-
-
-
-
-
-
-
-
-
-                        {/* 🚪 Sub-cômodos (Rotas Filhas de /interno) */}
-                       
-                        <Route path="UsuarioIdentificacao" element={<UsuarioIdentificacao />} />
-                        <Route path="UsuarioContato" element={<UsuarioContato />} />
-                        
-                        <Route path="Endereco" element={<Endereco />} />
-                        <Route path="Cnpj" element={<Cnpj />} />
-                        <Route path="Formacao" element={<Formacao />} />
-                        <Route path="Funcoes" element={<Funcoes />} />
-                        <Route path="UsuarioReferencias" element={<UsuarioReferencias />} />
-
-                        <Route path="CadAdministrador" element={<CadAdministrador />} />
-                        <Route path="diretrizes" element={<Diretrizes />} />
-                        <Route path="Chamados" element={<Chamados />} />
-
-                        <Route path="RelCuidadoras" element={<RelCuidadoras />} />
-                        <Route path="RelClientes" element={<RelClientes />} />
-                        <Route path="RelSolicitacoes" element={<RelSolicitacoes />} />
-                        
-
-
-                        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                        {/* 🧭 Rota Index: Evita tela branca ao acessar /interno diretamente */}
+                        <Route index element={<Navigate to="UsuarioLogado" replace />} />
 
 
                         {/* 🧱 Controle do Programador dentro do Interno */}
                         <Route 
-
                             path="PainelMaster" 
                             element={
                                 dadosToken?.func === 'programador' ? (
                                     <PainelMaster />
                                 ) : (
-                                    <Navigate to="/interno" replace />
+                                    <Navigate to="/interno/UsuarioLogado" replace />
                                 )
                             } 
-
                         />
 
 
 
 
 
+                        {/* 🚪 Sub-cômodos (Rotas Filhas de /interno) */}          
+                        <Route 
+                            path="UsuarioIdentificacao" 
+                            element={<UsuarioIdentificacao />} 
+                        />
 
 
+                        <Route 
+                            path="UsuarioContato" 
+                            element={<UsuarioContato />} 
+                        />
 
 
+                        <Route 
+                            path="Endereco" 
+                            element={<Endereco />} 
+                        />
 
 
+                        <Route 
+                            path="Cnpj" 
+                            element={<Cnpj />} 
+                        />
 
-                        {/* 🧱 Botoes texte - dentro do app.jsx */}
 
-                        {/* <Route
+                        <Route 
+                            path="UsuarioFormacao" 
+                            element={<UsuarioFormacao />} 
+                        />
+
+
+                        <Route 
+                            path="Formacao" 
+                            element={<Formacao />} 
+                        />
+
+
+                        <Route 
+                            path="Funcoes" 
+                            element={<Funcoes />} 
+                        />
+
+
+                        <Route 
+                            path="UsuarioReferencias" 
+                            element={<UsuarioReferencias />} 
+                        />
+
+
+                        <Route 
+                            path="CadAdministrador" 
+                            element={<CadAdministrador />} 
+                        />
+
+
+                        <Route 
+                            path="diretrizes" 
+                            element={<Diretrizes />} 
+                        />
+
+
+                        <Route 
+                            path="Chamados" 
+                            element={<Chamados />} 
+                        />
+
+
+                        <Route 
+                            path="RelCuidadoras" 
+                            element={<RelCuidadoras />} 
+                        />
+
+
+                        <Route 
+                            path="RelClientes" 
+                            element={<RelClientes />} 
+                        />
+
+
+                        <Route 
+                            path="RelSolicitacoes" 
+                            element={<RelSolicitacoes />} 
+                        />
                         
-                            path="CardTerceiros" 
-                            element={<CardTerceiros />} 
-                            
-                        /> */}
-                 
-                        <Route
-                        
+
+                        <Route                  
                             path="TestePermissao" 
-                            element={<TestePermissao />} 
-                        
+                            element={<TestePermissao />}                    
                         />
 
 
-
-                        <Route
-                            
+                        <Route                         
                             path="TestePermissaoMelhor" 
-                            element={<TestePermissaoMelhor />} 
-                        
+                            element={<TestePermissaoMelhor />}                       
                         />
 
 
-                        <Route
-                            
+                        <Route                           
                             path="Notificacoes" 
-                            element={<Notificacoes />} 
-                        
+                            element={<Notificacoes />}                       
                         />
 
 
-                        <Route
-                            
+                        <Route                            
                             path="Chat" 
                             element={<Chat />} 
-                        
                         />
 
 
-
-                        <Route
-                            
-                            path="Logado" 
-                            element={<Logado />} 
-                        
+                        <Route   
+                            path="UsuarioLogado" 
+                            element={
+                                <UsuarioLogado 
+                                    perfilEstaCompletoAdministrador={perfilEstaCompletoAdministrador} 
+                                    perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
+                                    perfilEstaCompletoCliente={perfilEstaCompletoCliente} 
+                                />
+                            } 
                         />
 
 
@@ -1919,11 +1956,13 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
                         <Route path="PacienteApresentacaoEmpresa"element={<PacienteApresentacaoEmpresa />} />
                         <Route path="PacienteIdentificacao" element={<PacienteIdentificacao />} />
                         <Route path="PacienteEndereco" element={<PacienteEndereco />} />
+                        <Route path="PacienteRemedio" element={<PacienteCadastroRemedio />} />
                         <Route path="PacienteAlimentacao" element={<PacienteAlimentacao />} />
                         <Route path="PacienteBanho" element={<PacienteBanho />} />
                         <Route path="PacienteEmergencia" element={<PacienteEmergencia />} />
                         <Route path="ClienteSolicitacao" element={<ClienteSolicitacao />} />
                         
+
 
 
 
@@ -1935,26 +1974,36 @@ const perfilEstaCompleto = Object.values(statusCliente).every(status => status =
 
 
 
-
                     {/* 🛡️ Trava de Segurança: Redireciona qualquer rota inexistente para o Início */}
                     <Route path="*" element={<Navigate to="/" />} />
 
 
 
 
+
                 </Routes>
+
 
             </main>
 
+            {/* ----------------------- */}
+            {/* FIM - ROUTES - ROTAS */}
+            {/* ----------------------- */}
 
 
 
 
 
 
+        </div> 
+
+        /* -------------------------------------- */
+        /* FIM DO - 🛡️ CONTAINER-EXTERNO-BLINDADO */
+        /* -------------------------------------- */
 
 
-        </div> /* FIM DO - 🛡️ CONTAINER-EXTERNO-BLINDADO */
+
+
 
     );
 

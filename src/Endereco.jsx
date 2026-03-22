@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 import { ref, update, get } from "firebase/database"; 
 
@@ -13,18 +13,12 @@ import './Endereco.css';
 
 export function Endereco() {
 
-
     const cepInputRef = useRef(null);
 
-    
     const { dadosToken } = useAuth();
     
-
-    // No início do componente, junto aos outros hooks:
     const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
    
-
-    // 🧰 Ferramentas de Trabalho (Hooks)
     const [cep, setCep] = useState('');
     const [rua, setRua] = useState('');
     const [bairro, setBairro] = useState('');
@@ -32,71 +26,74 @@ export function Endereco() {
     const [estado, setEstado] = useState('');
     const [numero, setNumero] = useState('');
     
-
+    const [carregandoOperacao, setCarregandoOperacao] = useState(false);
     const [podeEditar, setPodeEditar] = useState(false);
 
-
-
-
+    // 🧱 REF para controlar a execução da busca sem disparar o useEffect ao abrir a edição
+    const podeEditarRef = useRef(podeEditar);
     useEffect(() => {
-        // Se o portão de edição abrir, foca no CEP
-        if (podeEditar) {
-
-            cepInputRef.current?.focus();
-
-        }
+        podeEditarRef.current = podeEditar;
     }, [podeEditar]);
 
 
+    // ---------------------------------
+    // INICIO - 🧭 Sensor de localização
+    // ---------------------------------
 
-
-
-
-    
-
-
-
-
-    
-
-    /* 🧱 FERRAMENTAS DE TRABALHO (useEffect) - MONITORAMENTO */
     useEffect(() => {
-
-        // console.log("");
-        // console.warn("✨ 🛰️ ----------------------------------");
-        // console.warn("✨ 🛰️ useEffect() - componente - 📍 Endereco.jsx");
-        // console.warn("✨ 🛰️ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
-
-        if (dadosToken?.cpef) {
-
-            // console.warn("✨ 🛰️ 🧖‍♂️ dadosToken.cpef = ", dadosToken.cpef);
-
-            carregarDadosDoBanco();
-
-        } else {
-
-            // console.warn("✨ 🛰️ ⏳ Aguardando sinal da Antena Central para carregar Endereço...");
-
+        if (podeEditar) {
+            cepInputRef.current?.focus();
         }
+    }, [podeEditar]);
 
-        // console.warn("✨ 🛰️ ----------------------------------");
+    // ---------------------------------
+    // FIM - 🧭 Sensor de localização
+    // ---------------------------------
 
-    }, [dadosToken]);
 
 
 
-    /* 🕵️‍♂️ FUNÇÃO: Distribui o endereço para os cards (Memória ou Banco) */
-    const carregarDadosDoBanco = async () => {
 
-        /* 🧱 Primeiro, verificamos se o endereço já está na memória (Contexto) */
-        const infoEndereco = dadosToken?.ende;
+    
 
-        /* 🚀 Se o cpef existe mas NÃO tem endereço na memória, busca na Antena Central */
-        if (!infoEndereco || Object.keys(infoEndereco).length === 0) {
+
+
+
+    
+
+    // ---------------------------------
+    // INICIO - 🕵️‍♂️ Distribui o endereço para os cards
+    // ---------------------------------
+
+    const popularCamposEndereco = useCallback((dados) => {
+
+        setCep(String(dados.cepe || '').trim());
+        setRua(String(dados.ruaa || '').trim());
+        setBairro(String(dados.bair || '').trim());
+        setCidade(String(dados.cida || '').trim());
+        setEstado(String(dados.esta || '').trim());
+        setNumero(String(dados.nume || '').trim());
+
+    }, []);
+
+    const limparCampos = useCallback(() => {
+        setCep('');
+        setRua('');
+        setBairro('');
+        setCidade('');
+        setEstado('');
+        setNumero('');
+    }, []);
+
+    const carregarDadosDoBanco = useCallback(async () => {
+
+        const cpfAtivo = dadosToken?.cpef;
+
+        if (cpfAtivo) {
+             
+            console.warn("✨ 🛰️ Endereço vazio na memória. Buscando na Antena Central...");
             
-            // console.warn("✨ 🛰️ Endereço vazio na memória. Buscando na Antena Central...");
-            
-            const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
+            const cpfLimpo = cpfAtivo.replace(/\D/g, "");
             const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/dadosEndereco`);
 
             try {
@@ -107,27 +104,25 @@ export function Endereco() {
 
                     const dadosEnde = snapshot.val();
 
-
-
-                    console.log("");
-                    console.log("✨ --------------------------------------------------");
-                    console.log("✨ CARREGANDO DADOS DO ENDERECO DIRETO DO FIREBASE");
-                    console.log("✨ useEffect() - Componente - 📍 Endereco.jsx");
-                    console.log("✨ ✅ Endereço encontrado no Realtime.");
-                    console.log("✨ --------------------------------------------------");
+                    // console.log("");
+                    // console.log("✨ --------------------------------------------------");
+                    // console.log("✨ CARREGANDO DADOS DO ENDERECO DIRETO DO FIREBASE");
+                    // console.log("✨ useEffect() - Componente - 📍 Endereco.jsx");
+                    // console.log("✨ ✅ Endereço encontrado no Realtime.");
+                    // console.log("✨ --------------------------------------------------");
 
                     popularCamposEndereco(dadosEnde);
-                    setEhNovoCadastro(false); // 🎯 Existe no banco, não é novo
+                    setEhNovoCadastro(false);
                     setPodeEditar(false);
 
                 } else {
 
-                    console.log("");
-                    console.log("✨ 🛰️ ----------------------------------");
-                    console.log("✨ 🛰️ useEffect() - componente - 📍 Endereco.jsx");
-                    console.log("✨ 🛰️ funcao: carregarDadosDoBanco()");
-                    console.log("✨ 📍 Nenhum endereço no banco. Liberando edição.");
-                    console.log("✨ --------------------------------------------------");
+                    // console.log("");
+                    // console.log("✨ 🛰️ ----------------------------------");
+                    // console.log("✨ 🛰️ useEffect() - componente - 📍 Endereco.jsx");
+                    // console.log("✨ 🛰️ funcao: carregarDadosDoBanco()");
+                    // console.log("✨ 📍 Nenhum endereço no banco. Liberando edição.");
+                    // console.log("✨ --------------------------------------------------");
                     
                     limparCampos();  
                     setEhNovoCadastro(true); 
@@ -141,49 +136,21 @@ export function Endereco() {
 
             }
 
-        } else {
-
-            console.log("");
-            console.log("✨ 🛰️ ----------------------------------");
-            console.log("✨ 🛰️ useEffect() - componente - 📍 Endereco.jsx");
-            console.log("✨ 🛰️ funcao: carregarDadosDoBanco()");
-            console.log("✨ 🛰️ 🏠 Populando cards com endereço da memória.");
-
-            popularCamposEndereco(infoEndereco);
-            setEhNovoCadastro(false); 
-            setPodeEditar(false);
-
         }
-    };
 
+    }, [dadosToken?.cpef, popularCamposEndereco, limparCampos]);
 
-    /* 🧱 Função Auxiliar para popular os estados dos cards de Endereço */
-    const popularCamposEndereco = (dados) => {
+    useEffect(() => {
+        if (dadosToken?.cpef) {
+            carregarDadosDoBanco();
+        } else {
+            console.warn("✨ 🛰️ ⏳ Aguardando sinal da Antena Central para carregar Endereço...");
+        }
+    }, [dadosToken, carregarDadosDoBanco]);
 
-        setCep(String(dados.cepe || '').trim());
-        setRua(String(dados.ruaa || '').trim());
-        setBairro(String(dados.bair || '').trim());
-        setCidade(String(dados.cida || '').trim());
-        setEstado(String(dados.esta || '').trim());
-        setNumero(String(dados.nume || '').trim());
-
-    };
-
-
-    const limparCampos = () => {
-        setCep('');
-        setRua('');
-        setBairro('');
-        setCidade('');
-        setEstado('');
-        setNumero('');
-    };
-
-
-
-
-
-
+    // ---------------------------------
+    // FIM - 🕵️‍♂️ Distribui o endereço para os cards
+    // ---------------------------------
 
 
 
@@ -201,14 +168,12 @@ export function Endereco() {
     // INICIO - 🔍 BUSCA ViaCEP (Só se estiver em modo edição) - Versão Moderna 2026
     // --------------------------------------------------------------------
 
-    const realizarBuscaCep = async () => {
+    const realizarBuscaCep = useCallback(async () => {
 
-        if (!podeEditar) return;
+        if (!podeEditarRef.current) return;
 
         const apenasNumeros = cep.replace(/\D/g, '');
 
-
-        // Se o usuário apagar o CEP ou o tamanho for menor que 8, limpa os campos dependentes
         if (apenasNumeros.length < 8) {
             setRua('');
             setBairro('');
@@ -217,36 +182,41 @@ export function Endereco() {
             return;
         }
 
-
         if (apenasNumeros.length === 8) {
             try {
-                const resposta = await fetch(`https://viacep.com.br/ws/${apenasNumeros}/json/`);
+                setCarregandoOperacao(true); 
+                
+                const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
+
+                const requisicao = fetch(`https://viacep.com.br/ws/${apenasNumeros}/json/`);
+
+                const [resposta] = await Promise.all([requisicao, tempoMinimo]);
                 const dados = await resposta.json();
                 if (!dados.erro) {
                     setRua(dados.logradouro || '');
                     setBairro(dados.bairro || '');
                     setCidade(dados.localidade || '');
                     setEstado(dados.uf || '');
+                } else {
+                    alert("⚠️ CEP não encontrado na base de dados.");
+                    limparCampos(); 
                 }
             } catch (error) {
                 console.error("❌ Falha na comunicação com o serviço de CEP:", error);
+                alert("❌ Erro ao buscar CEP. Verifique sua conexão.");
+            } finally {
+                setCarregandoOperacao(false); 
             }
         }
-    };
+    }, [cep, limparCampos]);
 
     useEffect(() => {
         realizarBuscaCep();
-    }, [cep, podeEditar]);
+    }, [realizarBuscaCep]); 
 
     // --------------------------------------------------------------------
     // FIM - 🔍 BUSCA ViaCEP (Só se estiver em modo edição) - Versão Moderna 2026
     // --------------------------------------------------------------------
-
-
-
-
-
-
 
 
 
@@ -290,12 +260,6 @@ export function Endereco() {
 
 
 
-
-
-
-
-
-
     // ------------------------------
     // INICIO - 🛠️ MÁSCARA DE NUMERO
     // ------------------------------
@@ -327,13 +291,6 @@ export function Endereco() {
 
 
 
-
-
-
-
-
-
-
      /* -------------------------------------------------------- */
     /* INICIO - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
     /* -------------------------------------------------------- */
@@ -347,24 +304,26 @@ export function Endereco() {
         }, 3000);
     };
 
-
     const salvardadosEndereco = async () => {
 
+        if (carregandoOperacao) return;
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        console.log("");
-        console.log("💾 📍 ------------------------------");
-        console.log("💾 📍 INICIANDO SALVAMENTO:");
-        console.log("💾 📍 Componente - 📍 Endereco.jsx");
-        console.log("💾 📍 Funcao: salvardadosContato()");
-        console.log("💾 📍 -------------------------------");
+
+        // console.log("");
+        // console.log("💾 📍 ------------------------------");
+        // console.log("💾 📍 INICIANDO SALVAMENTO:");
+        // console.log("💾 📍 Componente - 📍 Endereco.jsx");
+        // console.log("💾 📍 Funcao: salvardadosEndereco()");
+        // console.log("💾 📍 -------------------------------");
 
         setMsg({ tipo: '', texto: '' });
+        setCarregandoOperacao(true); // ⏳ Ativa modo carregando
 
         try {
 
-            const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
-
+            const cpfLimpo = dadosToken?.cpef ? dadosToken.cpef.replace(/\D/g, "") : "";
+            
             if (!cpfLimpo) {
 
                 console.error("✨ 🛑 Falha crítica: CPF não encontrado para salvar nos cards.");
@@ -372,13 +331,13 @@ export function Endereco() {
 
             }
 
-            console.log("");
-            console.log("💾 📍 -------------------------------");
-            console.log("💾 📍 🔍 EXTRAÇÃO DE IDENTIDADE:");
-            console.log("💾 📍 🛰️ Componente - 📍 Endereco.jsx");
-            console.log("💾 📍 🆔 cpfLimpo (para URL):", cpfLimpo);
-            console.log("💾 📍 🌐 URL_SERVIDOR:", URL_SERVIDOR);
-            console.log("💾 📍 -------------------------------");
+            // console.log("");
+            // console.log("💾 📍 -------------------------------");
+            // console.log("💾 📍 🔍 EXTRAÇÃO DE IDENTIDADE:");
+            // console.log("💾 📍 🛰️ Componente - 📍 Endereco.jsx");
+            // console.log("💾 📍 🆔 cpfLimpo (para URL):", cpfLimpo);
+            // console.log("💾 📍 🌐 URL_SERVIDOR:", URL_SERVIDOR);
+            // console.log("💾 📍 -------------------------------");
 
        
 
@@ -396,30 +355,35 @@ export function Endereco() {
             
 
 
-            console.log("");
-            console.log("📐 ----------------------------------");
-            console.log("📐 📦 DADOS PREPARADOS PARA ENVIO (CONTATO):");
-            console.log("📐 componente - UsuarioContato.jsx");
-            console.log("📐 payload:", payload);
-            console.log("📐 ----------------------------------");
+            // console.log("");
+            // console.log("📐 ----------------------------------");
+            // console.log("📐 📦 DADOS PREPARADOS PARA ENVIO (ENDERECO):");
+            // console.log("📐 componente - Endereco.jsx");
+            // console.log("📐 payload:", payload);
+            // console.log("📐 ----------------------------------");
+
+            // ⏳ UX: Garante tempo mínimo de 1 segundo de loading
+            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
 
             // �📡 Transmissão para a VPS
-            const resposta = await fetch(`${URL_SERVIDOR}/atualizar-endereco`, {
+            const requisicao = fetch(`${URL_SERVIDOR}/atualizar-endereco`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
 
+            const [resposta] = await Promise.all([requisicao, tempoMinimo]);
+            
             const resultado = await resposta.json();
 
             if (resposta.ok) {
 
-                console.log("");
-                console.log("💾 📡 -----------------------------------------------------------");
-                console.log("💾 📡 Resposta do Servidor OK");
-                console.log("💾 🛰️ Componente - 📞 UsuarioContato.jsx");
-                console.log("💾 📡 Status : ✅ Sincronizado");
-                console.log("💾 📡 -----------------------------------------------------------");
+                // console.log("");
+                // console.log("💾 📡 -----------------------------------------------------------");
+                // console.log("💾 📡 Resposta do Servidor OK");
+                // console.log("💾 🛰️ Componente - 📍 Endereco.jsx");
+                // console.log("💾 📡 Status : ✅ Sincronizado");
+                // console.log("💾 📡 -----------------------------------------------------------");
 
                 setMsg({ tipo: 'sucesso', texto: '✅ Endereco atualizado com sucesso!' });
 
@@ -440,6 +404,7 @@ export function Endereco() {
 
         } finally {
 
+            setCarregandoOperacao(false); // 🏁 Finaliza modo carregando
             temporizadorMSG();
 
         }
@@ -474,10 +439,8 @@ export function Endereco() {
 
         console.log("✨ 🔄 Cancelando edição. Restaurando dados do Contexto...");
 
-        // Chamamos a função que já sabe ler o Contexto e preencher os inputs
         carregarDadosDoBanco(); 
 
-        // Trava os inputs novamente (Fecha o portão de edição)
         setPodeEditar(false); 
         
         console.log("✨ ✅ Edição cancelada e cards restaurados com sucesso!");
@@ -493,19 +456,18 @@ export function Endereco() {
 
     return (
        
-        <div className="perfil-endereco-componente-principal">
+        <div className="componente-de-pagina">
         
         
             <div className="perfil-endereco-componente-suporte">
 
 
-                {/* 🧱 O formulário agora vive dentro de um container com título próprio */}
+    
                 <div className="perfil-endereco-usuario-card">
 
 
-                    <div className="perfil-endereco-card-titulo">
-                        📍 ENDEREÇO RESIDENCIAL
-                    </div>
+
+                    <div className="perfil-endereco-card-titulo">📍 ENDEREÇO RESIDENCIAL</div>
 
 
 
@@ -515,6 +477,8 @@ export function Endereco() {
 
                     <div className="perfil-endereco-card-corpo">
 
+            
+                        {carregandoOperacao && <div className="loading-overlay-card">⏳ Processando...</div>}
 
                                 
                         <div className="Campo flex-cep">
@@ -524,7 +488,7 @@ export function Endereco() {
                                 type="text" 
                                 name="cepe"
                                 placeholder="00.000-000"
-                                disabled={!podeEditar} 
+                                disabled={!podeEditar || carregandoOperacao} 
                                 value={cep} 
                                 onChange={mascaraCep} 
                                 autoComplete="postal-code"
@@ -533,41 +497,45 @@ export function Endereco() {
                             />
                         </div>
 
+
+
                         <div className="Campo flex-rua">
                             <label>Rua/Avenida</label>
-                            <input type="text" disabled={!podeEditar} value={rua} onChange={(e) => setRua(e.target.value)} />
+                            <input type="text" disabled={!podeEditar || carregandoOperacao} value={rua} onChange={(e) => setRua(e.target.value)} />
                         </div>
     
+
+
                         <div className="Campo flex-numero">    
                             <label>Nº</label>
                             <input 
                                 type="text" 
                                 name="nume"
-                                // placeholder="S/N"
-                                disabled={!podeEditar} 
+                                disabled={!podeEditar || carregandoOperacao} 
                                 value={numero} 
                                 onChange={mascaraNume} 
                                 autoComplete="address-line2"
                             />  
                         </div>
 
+
                         <div className="Campo flex-bairro "> 
                             <label>Bairro</label>
-                            <input type="text" disabled={!podeEditar} value={bairro} onChange={(e) => setBairro(e.target.value)} />
+                            <input type="text" disabled={!podeEditar || carregandoOperacao} value={bairro} onChange={(e) => setBairro(e.target.value)} />
                         </div>
+
 
                         <div className="Campo flex-cidade"> 
                             <label>Cidade</label>
-                            <input type="text" disabled={!podeEditar} value={cidade} onChange={(e) => setCidade(e.target.value)} />
+                            <input type="text" disabled={!podeEditar || carregandoOperacao} value={cidade} onChange={(e) => setCidade(e.target.value)} />
                         </div>
+
 
                         <div className="Campo flex-estado "> 
                             <label>UF</label>
-                            <input type="text" disabled={!podeEditar} value={estado} maxLength="2" onChange={(e) => setEstado(e.target.value.toUpperCase())} />
+                            <input type="text" disabled={!podeEditar || carregandoOperacao} value={estado} maxLength="2" onChange={(e) => setEstado(e.target.value.toUpperCase())} />
                         </div>
                         
-
-
 
 
 
@@ -591,13 +559,14 @@ export function Endereco() {
                                     <button 
                                         type="button" 
                                         className="BotaoSalvar" 
+                                        disabled={carregandoOperacao}
                                         onClick={salvardadosEndereco}
                                     >
-                                        💾 Salvar
+                                        {carregandoOperacao ? '⏳ Salvando...' : '💾 Salvar'}
                                     </button>
 
                                     {/* O botão cancelar só aparece se não for um cadastro novo */}
-                                    {!ehNovoCadastro && (
+                                    {!ehNovoCadastro && !carregandoOperacao && (
                                         <button 
                                             type="button" 
                                             className="BotaoCancelar" 

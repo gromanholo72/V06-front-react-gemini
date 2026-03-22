@@ -390,10 +390,12 @@ export function CadAdministrador() {
 
 
                     <div className="cad-admin-header-card"><h3>🔑 Cadastrar Usuário</h3></div>
+
                     <div className="cad-admin-corpo-card">
+                        
                         <form className="cad-admin-formulario" onSubmit={registrarAdmin}>
 
-                            {msg.texto && <div className={`cad-admin-feedback ${msg.tipo}`}>{msg.texto}</div>}
+                            {msg.texto && <div className={`cad-admin-feedback ${msg.tipo}`}> {msg.texto} </div>}
 
                             <div className="cad-admin-grupo-input">
                                 <label>CPF:</label>
@@ -448,12 +450,17 @@ export function CadAdministrador() {
                             </div>
 
 
+
+
                             
                             <button 
                                 className="cad-admin-botao-registrar" 
                                 type="submit" 
                                 disabled={estaCarregando}>🏗️ {estaCarregando ? 'Cadastrando...' : 'Cadastrar'}
                             </button>
+
+
+
 
 
                         </form>

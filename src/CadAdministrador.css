@@ -20,6 +20,7 @@
 /* Card Esquerdo: Largura curta para o CPF */
 .cad-admin-card-compacto {
 
+  position: relative; /* 🧱 Âncora: Define este card como o limite para o feedback */
   width: 400px; 
 
   background: #ffffff;
@@ -173,13 +174,20 @@ select.cad-admin-input-estilizado {
 /* --- FEEDBACK --- */
 
 .cad-admin-feedback {
-  /* margin-top: 20px;
-  margin-left: 20px;
-  margin-right:20px; */
-  padding: 10px;
+  position: absolute;  /* 🧱 Flutua sobre o conteúdo */
+  top: 75px;           /* 🧱 Posicionado logo abaixo do cabeçalho do card */
+  left: 50%;           /* 🧱 Centralização horizontal */
+  transform: translateX(-50%);
+  width: 90%;          /* 🧱 Garante margem segura nas laterais */
+  z-index: 100;        /* 🧱 Fica acima dos inputs */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* 🧱 Sombra para destacar do fundo */
+
+  padding: 12px;
   border-radius: 6px;
-  font-size: 0.85rem;
-  text-align: left;
+  font-size: 0.9rem;
+  text-align: center;
+  font-weight: bold;
+  animation: entradaSuave 0.4s ease-out;
 }
 
 .cad-admin-feedback.erro { background: #fdeded; color: #c0392b; border: 1px solid #fadbd8; }

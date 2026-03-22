@@ -12,7 +12,7 @@ import './Formacao.css';
 
 export function Formacao() {
 
-    const { dadosToken, dadosUsuarioCompleto } = useAuth();
+    const { dadosToken } = useAuth();
 
     const formacaoInputRef = useRef(null);
 
@@ -33,6 +33,22 @@ export function Formacao() {
     const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
     const [podeEditar, setPodeEditar] = useState(false);
 
+    const [carregandoOperacao, setCarregandoOperacao] = useState(false);
+
+    /* -------------------------------------------------------- */
+    /* INICIO - 📨 SISTEMA DE MENSAGENS E FEEDBACK VISUAL */
+    /* -------------------------------------------------------- */
+    const [msg, setMsg] = useState({ tipo: '', texto: '' });
+
+    // ⏳ Função centralizada para limpar mensagens após um tempo
+    const temporizadorMSG = () => {
+        setTimeout(() => {
+            setMsg({ tipo: '', texto: '' });
+        }, 4000);
+    };
+    /* -------------------------------------------------------- */
+    /* FIM - 📨 SISTEMA DE MENSAGENS E FEEDBACK VISUAL */
+    /* -------------------------------------------------------- */
 
     useEffect(() => {
         // Se o portão de edição abrir, foca no primeiro campo
@@ -60,34 +76,29 @@ export function Formacao() {
         console.log("");
         console.log("🔍 -----------------------------------------------------------");
         console.log("🔍 INSPEÇÃO DE GATILHO - 🎓 Formacao.jsx");
-        console.log("🔍 dadosUsuarioCompleto está:", dadosUsuarioCompleto);
-        console.log("🔍 Possui CPEF?:", dadosUsuarioCompleto?.cpef ? "✅ Sim" : "❌ Não");
+        console.log("🔍 dadosToken está:", dadosToken);
+        console.log("🔍 Possui CPEF?:", dadosToken?.cpef ? "✅ Sim" : "❌ Não");
         console.log("🔍 -----------------------------------------------------------");
     
-        if (dadosUsuarioCompleto?.cpef) {
-            distribuirDadosEspecialidades();
+        if (dadosToken?.cpef) {
+            carregarDadosDoBanco();
         } else {
             console.warn("✨ ⏳ Aguardando sinal da Antena Central para carregar Formação...");
         }
-    }, [dadosUsuarioCompleto]);
+    }, [dadosToken]);
     
     
 
 
-    /* 🕵️‍♂️ FUNÇÃO: Distribui os dados da Antena Central para os cards de Formação */
-    const distribuirDadosEspecialidades = async () => {
-        if (!dadosUsuarioCompleto?.cpef) {
-            console.warn("✨ ⏳ CPF não encontrado, aguardando sinal da Antena Central...");
-            return;
-        }
+    /* 🕵️‍♂️ FUNÇÃO: Carrega os dados da Antena Central */
+    const carregarDadosDoBanco = async () => {
     
-        const infoFormacaoMemoria = dadosUsuarioCompleto?.formacao_dados;
-    
-        // Verifica se o objeto de formação na memória está vazio ou não existe
-        if (!infoFormacaoMemoria || Object.values(infoFormacaoMemoria).every(v => !v)) {
+        const cpfAtivo = dadosToken?.cpef;
+
+        if (cpfAtivo) {
             console.warn("✨ 🎓 Formação vazia na memória. Buscando na Antena Central...");
             
-            const cpfLimpo = dadosUsuarioCompleto.cpef.replace(/\D/g, "");
+            const cpfLimpo = cpfAtivo.replace(/\D/g, "");
             const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/formacao_dados`);
     
             try {
@@ -109,11 +120,6 @@ export function Formacao() {
                 console.error("❌ Erro ao buscar formação na Antena Central:", error);
                 setPodeEditar(true); // Libera edição em caso de erro
             }
-        } else {
-            console.warn("✨ 🛰️ 🎓 Populando cards com formação da memória.");
-            popularCamposFormacao(infoFormacaoMemoria);
-            setEhNovoCadastro(false);
-            setPodeEditar(false);
         }
     };
     
@@ -149,13 +155,17 @@ export function Formacao() {
     // 💾 SALVAR NO FIREBASE
     const salvarEspecialidadeNoBanco = async () => {
 
+        if (carregandoOperacao) return;
+
         // 🧱 VALIDAÇÃO DE SEGURANÇA
         if (!formacao.trim()) {
-            alert("⚠️ Por favor, selecione o Nível de Formação antes de salvar.");
+            setMsg({ tipo: 'erro', texto: '⚠️ Por favor, selecione o Nível de Formação.' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             formacaoInputRef.current?.focus();
             return;
         }
 
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         console.log("");
         console.log("📐 ----------------------------------");
         console.log("📐 🚀 EVENTO: Clique no botão '💾 Salvar Formação'");
@@ -163,9 +173,12 @@ export function Formacao() {
         console.log("📐 📍 update(ref(db_realtime, `usuarios/...`))");
         console.log("📐 ----------------------------------");
 
+        setCarregandoOperacao(true);
+        setMsg({ tipo: '', texto: '' });
+
         try {
 
-            const cpfLimpo = dadosUsuarioCompleto.cpef.replace(/\D/g, "");
+            const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
             const caminhoNoBanco = ref(db_realtime, 'usuarios/' + cpfLimpo);
 
             const dadosFormacao = {
@@ -175,17 +188,26 @@ export function Formacao() {
                 inst: instituicao
             };
 
-            await update(caminhoNoBanco, { formacao_dados: dadosFormacao });
+            // ⏳ UX: Garante tempo mínimo de loading para feedback visual
+            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
+            
+            const operacaoBanco = update(caminhoNoBanco, { formacao_dados: dadosFormacao });
 
-            alert("✅ Formação atualizada com sucesso!");
-            setEhNovoCadastro(false);
+            await Promise.all([operacaoBanco, tempoMinimo]);
 
-            setPodeEditar(false);
+            setMsg({ tipo: 'sucesso', texto: '✅ Formação atualizada com sucesso!' });
+            
+            // Recarrega para garantir sincronia e travar edição
+            carregarDadosDoBanco();
 
         } catch (error) {
 
-            alert("Erro ao conectar com a Antena Central.");
+            console.error("❌ Erro ao salvar:", error);
+            setMsg({ tipo: 'erro', texto: '❌ Erro ao conectar com a Antena Central.' });
 
+        } finally {
+            setCarregandoOperacao(false);
+            temporizadorMSG();
         }
     };
 
@@ -204,24 +226,29 @@ export function Formacao() {
 
 
     return (
-        <div className="perfil-formacao-componente-principal">
-            {/* ❌ Cabeçalho antigo removido para manter a limpeza da planta */}
+
+         <div className="componente-de-pagina">
+            
 
             <div className="perfil-formacao-componente-suporte">
 
                 {/* 🏗️ Início do Card de Formação */}
                 <div className="perfil-formacao-usuario-card">
                     <div className="perfil-formacao-card-titulo">🎓 FORMAÇÃO PROFISSIONAL</div>
+
+                    {/* 📨 Feedback Visual para o Usuário */}
+                    {msg.texto && <div className={`cad-admin-feedback ${msg.tipo}`}>{msg.texto}</div>}
                                         
                     <div className="perfil-formacao-card-corpo">
                       
+                            {carregandoOperacao && <div className="loading-overlay-card">⏳ Processando...</div>}
                       
                             
                             <div className="flex-nivel">
-                                <label>Nível de Formação <span className="asterisco-obrigatorio">*</span></label>
+                                <label>Nível de Formação<span className="asterisco-obrigatorio">*</span></label>
                                 <select
                                     ref={formacaoInputRef} 
-                                    disabled={!podeEditar} 
+                                    disabled={!podeEditar || carregandoOperacao} 
                                     value={formacao} 
                                     onChange={(e) => setFormacao(e.target.value)}
                                     className="SelectFormatado"
@@ -239,7 +266,7 @@ export function Formacao() {
                                 <label>Curso / Especialidade</label>
                                 <input 
                                     type="text" 
-                                    disabled={!podeEditar} 
+                                    disabled={!podeEditar || carregandoOperacao} 
                                     value={especificacao} 
                                     onChange={(e) => setEspecificacao(e.target.value)} 
                                     placeholder="Ex: Geriatria, Instrumentação, etc."
@@ -251,7 +278,7 @@ export function Formacao() {
                                 <label>Registro Profissional</label>
                                 <input 
                                     type="text" 
-                                    disabled={!podeEditar} 
+                                    disabled={!podeEditar || carregandoOperacao} 
                                     value={registroProfissional} 
                                     onChange={(e) => setRegistroProfissional(e.target.value)} 
                                 />
@@ -261,7 +288,7 @@ export function Formacao() {
                                 <label>Instituição de Ensino</label>
                                 <input 
                                     type="text" 
-                                    disabled={!podeEditar} 
+                                    disabled={!podeEditar || carregandoOperacao} 
                                     value={instituicao} 
                                     onChange={(e) => setInstituicao(e.target.value)} 
                                 />
@@ -295,17 +322,23 @@ export function Formacao() {
 
                                 ) : (
                                     <>
-                                        <button type="button" className="BotaoSalvar" onClick={salvarEspecialidadeNoBanco}>💾 Salvar Formação</button>
+                                        <button 
+                                            type="button" 
+                                            className="BotaoSalvar" 
+                                            disabled={carregandoOperacao}
+                                            onClick={salvarEspecialidadeNoBanco}>
+                                            {carregandoOperacao ? '⏳ Salvando...' : '💾 Salvar Formação'}
+                                        </button>
                                         
-                                        {!ehNovoCadastro && (
+                                        {!ehNovoCadastro && !carregandoOperacao && (
                                             <button type="button" className="BotaoCancelar" onClick={() => { 
                                                 console.log("");
                                                 console.log("📐 ----------------------------------");
                                                 console.log("📐 🚀 EVENTO: Clique no botão '✖️ Cancelar'");
                                                 console.log("📐 componente - 🧿 Formacao.jsx");
-                                                console.log("📐 📍 distribuirDadosEspecialidades() & setPodeEditar(false)");
+                                                console.log("📐 📍 carregarDadosDoBanco() & setPodeEditar(false)");
                                                 console.log("📐 ----------------------------------");
-                                                distribuirDadosEspecialidades(); setPodeEditar(false); 
+                                                carregarDadosDoBanco(); setPodeEditar(false); 
                                             }}>✖️ Cancelar</button>
                                         )}
                                         

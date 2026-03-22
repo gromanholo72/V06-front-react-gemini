@@ -13,22 +13,46 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
+
+
+
+    // ----------------------------------------------------
+    // INICIO DO - Ferramentas de Trabalho (Hooks)
+    // ----------------------------------------------------
+
     // 🚕 Contratando o motorista para este cômodo
     const navigate = useNavigate();
 
-
-
-
     const { logarNoFirebase, setCarregandoModal } = useAuth();
+
+    // ----------------------------------------------------
+    // FIM DO - Ferramentas de Trabalho (Hooks)
+    // ----------------------------------------------------
+
+
+
+
+
 
 
     
+
+    // ----------------------------------------------------
+    // INICIO DO - Sensor de Localização
+    // ----------------------------------------------------
 
     // 🧭 Sensor de localização
     const location = useLocation(); 
 
     /*  🧱 Verifica se o usuário veio redirecionado do cadastro com sucesso */
     const veioDoCadastro = location.state?.cadastroSucesso;
+
+    // ----------------------------------------------------
+    // FIM DO - Sensor de Localização
+    // ----------------------------------------------------
+
+
+
 
 
 
@@ -44,6 +68,8 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
     // console.log("📡📻 ✈️ ----------------------------------");
 
     
+
+
 
 
 
@@ -78,12 +104,6 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         // Segura 500 ms para ficar aparecendo o modalCarregando
         setTimeout(() => {
-
-            // console.log("🔫 ✅ 500ms passados. Desligando Modal e subindo Gaveta.");
-            // console.log("📐 ⚪ [ACTION] -> setCarregandoModal(false)"); setCarregandoModal(false); 
-            // console.log(`📐 🎨 [ACTION] -> setTipoMsg("${tipo}")`);     setTipoMsg(tipo);
-            // console.log(`📐 📝 [ACTION] -> setMsgErro("${texto}")`);   setMsgErro(texto);
-            // console.log("📐 👁️ [ACTION] -> setMsgVisivel(true)");       setMsgVisivel(true);
 
             // 🔓 Desliga o modal de carregamento
             setCarregandoModal(false);
@@ -146,9 +166,6 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
-
-
-
     //  --------------------------------------------------------------
     //  INICIO DO  - BLOCO PREENCIAMENTO E MONITORAMENTO DE FORMULARIO LOGAR
     //  --------------------------------------------------------------
@@ -185,10 +202,6 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
     //  --------------------------------------------------------------
     //  FIM DO  - BLOCO PREENCIAMENTO E MONITORAMENTO DE FORMULARIO LOGAR
     //  --------------------------------------------------------------
-
-
-
-
 
 
 
@@ -238,8 +251,10 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
+    // ----------------------------------------------------
+    // INICIO DO - Monitora digitação em tempo real
+    // ----------------------------------------------------
 
-    // monitora o trabalho manual (digitação) em tempo real.
     const handleChange = (e) => {
 
         const { name, value } = e.target;
@@ -248,6 +263,9 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
     };
 
+    // ----------------------------------------------------
+    // FIM DO - Monitora digitação em tempo real
+    // ----------------------------------------------------
 
 
 
@@ -257,6 +275,10 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
+
+    // ----------------------------------------------------
+    // INICIO DO - Recebe CPF vindo do Cadastro
+    // ----------------------------------------------------
 
     useEffect(() => {
 
@@ -282,6 +304,9 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
     }, [location.state]);
 
+    // ----------------------------------------------------
+    // FIM DO - Recebe CPF vindo do Cadastro
+    // ----------------------------------------------------
 
 
 
@@ -289,9 +314,9 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
-
-
-
+    // ----------------------------------------------------
+    // INICIO DO - Enviar dados de login para o servidor
+    // ----------------------------------------------------
 
     const enviarDadosLoginParaServidor = async (e) => {
 
@@ -361,7 +386,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
                         // 🚪 Desliga o modal e abre a porta para a área interna
                         setCarregandoModal(false);
-                        navigate('/interno');
+                        navigate('/interno/UsuarioLogado');
 
                     } catch (fbError) {
 
@@ -378,7 +403,6 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                         }, 500)
 
                     }
-
 
                 } else {
 
@@ -404,9 +428,6 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         } catch (error) {
 
-
-
-
             setTimeout(() => {
         
                 dispararMensagem("Erro de conexão com o servidor.");
@@ -417,6 +438,9 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
     };
 
+    // ----------------------------------------------------
+    // FIM DO - Enviar dados de login para o servidor
+    // ----------------------------------------------------
 
 
 
@@ -424,19 +448,9 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-    
-
+    /*  ----------------- */
+    /*  INICIO - Mascaras */
+    /*  ----------------- */
 
     const mascaraCpef = (e) => {
         // 🧱 Passo 1: Limpeza (Remove tudo o que não é número)
@@ -459,12 +473,8 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
         });
     };
 
-
-
-
-
-
     const validarCPF = (cpf) => {
+
         // 🧱 Passo 1: Limpeza total
         const cpfLimpo = cpf.replace(/\D/g, '');
     
@@ -488,6 +498,9 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
         return true; // 🏆 CPF Válido!
     };
 
+    /*  ----------------- */
+    /*  FIM - Mascaras */
+    /*  ----------------- */
 
 
 
@@ -497,49 +510,47 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
-
-
-
-    /*  ------------------------------------- */
-    /*  INICIO DO RETURN - Retorno da Central: */
-    /*  ------------------------------------- */
+    /*  --------------------------- */
+    /*  INICIO DO RETURN - Retorno  */
+    /*  ----------------------------*/
 
     return (
 
-       <div className="componente-de-pagina">
+
+
+        <div className="componente-de-pagina">
+
+
+
+            {/* -------------------------- */}
+            {/* INICIO - 📋 CARD CADASTRAR */}
+            {/* -------------------------- */}
+
+            <div className="Card-Logar">
 
 
 
 
+                {/* ------------------------------ */}
+                {/* INICIO DO - FORM LOGIN TUDO (LoginTudo-Login) */}
+                {/* ------------------------------ */}
 
-       {/* 📋 CARD CADASTRAR */}
-       <div className="Card-Logar">
+                <div className="LoginTudo-Login">
+        
+                    {/* <div className="info-gaveta">
+                        <div>
+                            <p>📡 Monitorando da gaveta - credenciais:</p>
+                            <div><span>👔 cpef: </span> <strong>{credenciais.cpef}</strong></div>
+                            <div><span>🔑 senh: </span> <strong>{credenciais.senh}</strong></div>
+                        </div>
+                    </div> */}
 
-
-
-
-
-            <div className="LoginTudo">
-    
-
-
-                {/* <div className="info-gaveta">
-                    <div>
-                        <p>📡 Monitorando da gaveta - credenciais:</p>
-                        <div><span>👔 cpef: </span> <strong>{credenciais.cpef}</strong></div>
-                        <div><span>🔑 senh: </span> <strong>{credenciais.senh}</strong></div>
-                    </div>
-                </div> */}
-
-
-
-
-                <div className={`MsgForm ${msgVisivel ? 'ativo' : ''} ${tipoMsg}`}>
-                        <span className="alerta-erro">
+                    <div className={`MsgForm-Login ${msgVisivel ? 'ativo-Login' : ''} ${tipoMsg}`}>
+                        <span className="alerta-erro-Login">
                             {tipoMsg === "sucesso" ? (
                                 <>
-                                    <div className="linha-topo">✅ Cadastro realizado com sucesso!</div>
-                                    <div className="linha-foco">AGORA FAÇA SEU LOGIN</div>
+                                    <div className="linha-topo-Login">✅ Cadastro realizado com sucesso!</div>
+                                    <div className="linha-foco-Login">AGORA FAÇA SEU LOGIN</div>
                                 </>
                             ) : (
                                 <>⚠️ {msgErro}</>
@@ -548,150 +559,207 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                     </div>
 
 
+                    {/* ------------------------------ */}
+                    {/* INICIO DO - FORM LOGIN - className="LoginForm-Login" */}
+                    {/* ------------------------------ */}
+
+                    <form className="LoginForm-Login" onSubmit={enviarDadosLoginParaServidor}>  
+
+                        <h3>LOGIN</h3>
+
+                        <img src="imagens/login.jpg" alt="Login" />
+
+                        <div className="InputLarguraTotal-Login">
+                            <label>CPF:</label>
+                            <input 
+                                type="text" 
+                                name="cpef" 
+                                value={credenciais.cpef}
+                                onChange={mascaraCpef} 
+                                autoComplete="username"
+                                placeholder="Digite seu CPF"
+                                maxLength="14"
+                                required 
+                            /> 
+                        </div>
+
+                        <div className="InputLarguraTotal-Login">
+                            <label>Senha:</label>
+                            <input 
+                                type="password" 
+                                className={`${veioDoCadastro ? 'input-pulsar-Login' : ''}`}
+                                name="senh" 
+                                value={credenciais.senh}
+                                placeholder="Digite sua senha"
+                                autoComplete="current-password"
+                                onChange={handleChange} 
+                                required 
+                            />
+                        </div>
+
+                        <button type="submit" className="BotaoPadraoLogin-Login">Entrar</button>
+
+                        <div className="CampoLink-Login"> 
+                            <button type="button" id="BotaoLinkEsqueci-Login">Esqueci a senha</button>  
+                        </div>  
+
+                    </form> 
+
+                    {/* ------------------------------ */}
+                    {/* FIM DO - FORM LOGIN - className="LoginForm-Login" */}
+                    {/* ------------------------------ */}
+
+                </div> 
+
+                {/* ------------------------------ */}
+                {/* FIM DO - FORM LOGIN TUDO */}
+                {/* ------------------------------ */}
+            
+            
 
 
 
 
-                <form className="LoginForm" onSubmit={enviarDadosLoginParaServidor}>  
 
-                    <h3>LOGIN</h3>
+                {/* ------------------------------ */}
+                {/* INICIO DO - className="CpefTextes-Login"> */}
+                {/* ------------------------------ */}
 
-                    <img src="imagens/login.jpg" alt="Login" />
+                <div className="CpefTextes-Login">
 
-                    <div className="InputLaguraTotal">
-                        <label>CPF:</label>
-                        <input 
-                            type="text" 
-                            name="cpef" 
-                            value={credenciais.cpef}
-                            onChange={mascaraCpef} 
-                            autoComplete="username"
-                            placeholder="Digite seu CPF"
-                             maxLength="14"
-                            required 
+
+                    {/* 🛠️ LINHA 1: PROGRAMADOR */}
+                    <div className="Linha-Botoes-Teste-Login Linha-Prog-Login">
+                        <h4 className="Rotulo-Teste-Login">Programador</h4>
+                        <input type="button" className="Botao-Teste-Login" value="GIULIANO" 
+                            onClick={() => preencherCampos({
+                                cpef: "121.149.148-01",
+                                senh: "Olhoquetudove@7"
+                            })}
                         /> 
                     </div>
 
-                    <div className="InputLaguraTotal">
-                        <label>Senha:</label>
-                        <input 
-                            type="password" 
-                            className={`${veioDoCadastro ? 'input-pulsar' : ''}`}
-                            name="senh" 
-                            value={credenciais.senh}
-                            placeholder="Digite sua senha"
-                            autoComplete="current-password"
-                            onChange={handleChange} 
-                            required 
+
+                    {/* 🛡️ LINHA 2: ADMINISTRADORES */}
+                    <div className="Linha-Botoes-Teste-Login Linha-Admin-Login">
+                        <h4 className="Rotulo-Teste-Login">Administrador</h4>
+                        <input type="button" className="Botao-Teste-Login" value="ANDRESSA" 
+                            onClick={() => preencherCampos({
+                                cpef: "663.745.531-87",
+                                senh: "123"
+                            })}
+                        />
+        
+                        <input type="button" className="Botao-Teste-Login" value="JOÃO VICTOR" 
+                            onClick={() => preencherCampos({
+                                cpef: "505.842.550-55",
+                                senh: "123"
+                            })}
                         />
                     </div>
 
-                    <button type="submit" className="BotaoPadraoLogin">Entrar</button>
 
-                    <div className="CampoLink"> 
-                        <button type="button" id="BotaoLinkEsqueci">Esqueci a senha</button>  
-                    </div>  
+                    {/* 👩‍⚕️ LINHA 3: CUIDADORAS */}
+                    <div className="Linha-Botoes-Teste-Login Linha-Cuida-Login">
+                        <h4 className="Rotulo-Teste-Login">Cuidadoras</h4>
+                        <input type="button" className="Botao-Teste-Login" value="JOANA" 
+                            onClick={() => preencherCampos({
+                                cpef: "103.646.340-06",
+                                senh: "1"
+                            })}/> 
 
-                </form> {/* FIM DO - className="LoginForm" */}
+                        <input type="button" className="Botao-Teste-Login" value="PAULA" 
+                            onClick={() => preencherCampos({ 
+                                cpef: "293.348.470-69",
+                                senh: "12"
+                            })}/>
 
+                        <input type="button" className="Botao-Teste-Login" value="MARIA" 
+                            onClick={() => preencherCampos({
+                                cpef: "519.310.058-93",
+                                senh: "123"
+                            })}/>
 
-
-
-
-
-
-            </div> {/* FIM DO - className="LoginTudo"> */}
-           
-           
-
-
-
-            <div className="CpefTextes">
-
-                <input type="button" className="bot1" value="GIULIANO (PROGRAMADOR)" 
-                    onClick={() => preencherCampos({
-                        cpef: "121.149.148-01",
-                        senh: "Olhoquetudove@7"
-                    })}/> 
-
-
-                <input type="button" className="bot2" value="ANDRESSA (ADMINISTRADORA)" 
-                    onClick={() => preencherCampos({
-                        cpef: "663.745.531-87",
-                        senh: "123"
-                    })}/>
-  
+                        <input type="button" className="Botao-Teste-Login" value="ISABEL" 
+                            onClick={() => preencherCampos({ 
+                                cpef: "200.335.920-63",
+                                senh: "123"
+                            })}/>
+                    </div>
 
 
-                <input type="button" className="bot4" value="JOANA (CUIDADORA)" 
-                    onClick={() => preencherCampos({
-                        cpef: "103.646.340-06",
-                        senh: "1"
-                    })}/> 
+                    {/* 🏠 LINHA 4: CLIENTES */}
+                    <div className="Linha-Botoes-Teste-Login Linha-Cliente-Login">
+                        <h4 className="Rotulo-Teste-Login">Clientes</h4>
+                        <input type="button" className="Botao-Teste-Login" value="BEATRIZ" 
+                            onClick={() => preencherCampos({
+                                cpef: "060.915.660-83",
+                                senh: "12345"
+                            })}/> 
 
-                <input type="button" className="bot5" value="PAULA (CUIDADORA)" 
-                    onClick={() => preencherCampos({ 
-                        cpef: "293.348.470-69",
-                        senh: "12"
-                    })}/>
+                        <input type="button" className="Botao-Teste-Login" value="LUCIANA" 
+                            onClick={() => preencherCampos({
+                                cpef: "763.626.770-56",
+                                senh: "12345"
+                            })}/> 
 
-                <input type="button" className="bot6" value="MARIA (CUIDADORA)" 
-                    onClick={() => preencherCampos({
-                        cpef: "519.310.058-93",
-                        senh: "123"
-                    })}/>
-
-                <input type="button" className="bot7" value="ISABEL (CUIDADORA)" 
-                    onClick={() => preencherCampos({ 
-                        cpef: "200.335.920-63",
-                        senh: "123"
-                    })}/>
-
-                <input type="button" className="bot8" value="BEATRIZ (CLIENTE)" 
-                    onClick={() => preencherCampos({
-                        cpef: "060.915.660-83",
-                        senh: "12345"
-                    })}/> 
+                        <input type="button" className="Botao-Teste-Login" value="MARCO" 
+                            onClick={() => preencherCampos({    
+                                cpef: "844.450.750-43",
+                                senh: "12345"
+                            })}/> 
+                    </div>
 
 
-                <input type="button" className="bot9" value="LUCIANA (CLIENTE)" 
-                    onClick={() => preencherCampos({
-                        cpef: "763.626.770-56",
-                        senh: "12345"
-                    })}/> 
+                    {/* 🎧 LINHA 2.5: ATENDENTES */}
+                    <div className="Linha-Botoes-Teste-Login Linha-Atendente-Login">
+                        <h4 className="Rotulo-Teste-Login">Atendentes</h4>
+                        <input type="button" className="Botao-Teste-Login" value="FERNANDA" 
+                            onClick={() => preencherCampos({
+                                cpef: "875.673.130-22",
+                                senh: "123"
+                            })}
+                        />
+        
+                        <input type="button" className="Botao-Teste-Login" value="CARLOS" 
+                            onClick={() => preencherCampos({
+                                cpef: "943.757.760-99",
+                                senh: "123"
+                            })}
+                        />
+                    </div>
 
 
 
+                </div> 
 
-                <input type="button" className="bot10" value="MARCO (CLIENTE)" 
-                    onClick={() => preencherCampos({    
-                        cpef: "844.450.750-43",
-                        senh: "12345"
-                    })}/> 
-
+                {/* ------------------------------ */}
+                {/* FIM DO - className="CpefTextes-Login"> */}
+                {/* ------------------------------ */}
 
 
 
-
-
-
-
-            </div> {/* FIM DO - className="CpefTextes"> */}
 
 
 
             </div>
 
+            {/* -------------------------- */}
+            {/* FIM - 📋 CARD CADASTRAR */}
+            {/* -------------------------- */}
 
-        </div> // FIM DO - <div className="DivConteudo">
+
+
+
+        </div>
 
 
 
     ); 
 
-    /*  ------------------------------------- */
-    /*  FIM DO RETURN - Retorno da Central: */
-    /*  ------------------------------------- */
+    /*  ----------------------- */
+    /*  FIM DO RETURN - Retorno */
+    /*  ----------------------- */
 
 
 

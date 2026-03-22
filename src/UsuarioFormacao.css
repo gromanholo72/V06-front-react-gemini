@@ -1,35 +1,24 @@
 
 /* 🏠 1. COMPONENTE-PRINCIPAL (PALCO DO SETOR) */
-.perfil-endereco-componente-principal {
-
-    /* background-color: rgb(243, 243, 129); */
+.perfil-formacao-componente-principal {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 /* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */
-.perfil-endereco-componente-suporte {
-
+.perfil-formacao-componente-suporte {
     width: 100%;
     min-width: 300px;
-    max-width: 600px;
+    max-width: 800px !important;
     display: grid;
     gap: 20px;
-    
 }
 
-
-
-
-
 /* 📋 3. CARD-DADOS (O CARTÃO DE CONTATO) */
-.perfil-endereco-usuario-card {
-
+.perfil-formacao-usuario-card {
     position: relative; 
-    
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -37,15 +26,14 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: box-shadow 0.3s ease;
-
     margin: 20px;
 }
 
 /* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */
-.perfil-endereco-card-titulo {
+.perfil-formacao-card-titulo {
     
     
-    background-color: #ebf2f7; 
+    background-color: #ebf2f7 !important;
     border-bottom: 3px solid #306396;
 
 
@@ -56,122 +44,70 @@
     text-align: left;
 }
 
-
 /* 📐 FEEDBACK FLUTUANTE (SALTADO) - Estilo Padronizado */
-.cad-admin-feedback-endereco {
-
+.cad-admin-feedback-formacao {
     position: absolute;
-
     top: 45px;
     left: 50%;
     transform: translateX(-50%);
-    
     width: 90%;
     z-index: 100; /* Garante que fique acima dos inputs */
-    
     padding: 12px;
     border-radius: 8px;
     font-weight: bold;
     font-size: 20px;
     text-align: center;
-    
     /* ✨ O efeito "Saltado" */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-    
     animation: pularNaTela 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.cad-admin-feedback-endereco.erro { 
+.cad-admin-feedback-formacao.erro { 
     background: #fff5f5; color: #c0392b; border: 1px solid #ffcece; 
 }
 
-.cad-admin-feedback-endereco.sucesso { 
+.cad-admin-feedback-formacao.sucesso { 
     background: #f0fdf4; color: #27ae60; border: 1px solid #bbf7d0; 
 }
 
-
-
-
-
-
-
-
-
-
 /* 📄 5. CARD-BODY (ÁREA DE CONTEÚDO) */
-.perfil-endereco-card-corpo {
-    /* background-color: rgb(243, 178, 125); */
+.perfil-formacao-card-corpo {
     padding-top: 15px;
     padding-left: 30px;
     padding-right: 30px;
     padding-bottom: 30px;
     display: flex;
-    /* flex-direction: column; */
     gap: 15px;
-
-
     flex-wrap: wrap; 
     width: 100%;
     box-sizing: border-box;
-
-
-
 }
-
-
-.Campo {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-
-
-
-
-
-/* Manter isso em todos os formularios */
-
-.flex-cep {
-    flex: 1 1 110px;
-}
-
-.flex-rua {
-    flex: 6 1 320px;
-}
-
-.flex-numero {
-    flex: 1 1 80px; 
-}
-
-.flex-bairro {
-    flex: 4 1 270px;
-}
-
-.flex-cidade {
-    flex: 4 1 270px;
-}
-
-.flex-estado {
-    flex: 1 1 70px;
-}
-
-
-
-
-
-
-
-
 
 /* 🔍 6. CAMPOS (AGRUPADORES DE DADOS) */
-.perfil-endereco-card-corpo div, .Campo {
+.perfil-formacao-card-corpo div, .Campo-formacao {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-.perfil-endereco-card-corpo label {
+/* Flexbox definitions */
+.flex-nivel-formacao {
+    flex: 1 1 270px;
+}
+
+.flex-curso-formacao {
+    flex: 1 1 270px;
+}
+
+.flex-registro-formacao {
+    flex: 1 1 270px;
+}
+
+.flex-instituicao-formacao {
+    flex: 1 1 270px;
+}
+
+.perfil-formacao-card-corpo label {
     font-size: 14px;
     font-weight: bold;
     color: black;
@@ -180,17 +116,15 @@
 }
 
 /* 🎫 7. INPUTS (ACABAMENTO DOS DADOS) */
-.perfil-endereco-card-corpo input {
+.perfil-formacao-card-corpo input,
+.perfil-formacao-card-corpo select {
     padding: 10px;
     border: 1px solid #cccccc;
     border-radius: 8px;
     font-size: 14px;
-    
     /* 🎨 COR ÚNICA PARA TODOS EM EDIÇÃO */
-   
     color: black !important;
     background-color: #ffffff !important;
-
     font-weight: bold;
     width: 100%;
     box-sizing: border-box;
@@ -198,21 +132,32 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-
-
-
-
-
-
-
+/* 🧱 AJUSTE ESPECÍFICO PARA O SELECT (GARANTIR TRIÂNGULO) */
+.perfil-formacao-card-corpo select {
+    cursor: pointer !important;
+    
+    /* 1. Remove o estilo nativo (que as vezes falha ou é feio) */
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    
+    /* 2. Adiciona a seta via SVG (Garante visual igual em todo navegador) */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 0.65em auto !important;
+    
+    /* 3. Espaço para não escrever em cima da seta */
+    padding-right: 2.5rem !important;
+}
 
 /* 🎫 7. INPUTS (PADRONIZAÇÃO TOTAL NA EDIÇÃO HABILITADA) */
-.perfil-endereco-card-corpo input:not(:disabled),
-.perfil-endereco-card-corpo input:-webkit-autofill,
-.perfil-endereco-card-corpo input:-webkit-autofill:hover,
-.perfil-endereco-card-corpo input:-webkit-autofill:focus {
+.perfil-formacao-card-corpo input:not(:disabled),
+.perfil-formacao-card-corpo input:-webkit-autofill,
+.perfil-formacao-card-corpo input:-webkit-autofill:hover,
+.perfil-formacao-card-corpo input:-webkit-autofill:focus {
     
-    /* 🎨 FORÇA O FUNDO BRANCO (Mata o azul/amarelo do navegador) */
+    /* 🎨 FORÇA O FUNDO CINZA (Mata o azul/amarelo do navegador) */
     background-color: #c5c0c0 !important;
     
     /* 🎨 FORÇA A COR DO TEXTO PRETO NÍTIDO */
@@ -229,17 +174,20 @@
     box-sizing: border-box;
     cursor: text;
 
-    /* 🛡️ O TRUQUE DE MESTRE: Sobrescreve a cor de fundo do Autofill com branco */
+    /* 🛡️ O TRUQUE DE MESTRE: Sobrescreve a cor de fundo do Autofill com branco (tom ajustado) */
     box-shadow: 0 0 0px 1000px #c4c4c3 inset !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
-
-
-
+/* 🧱 CORREÇÃO PARA SELECT (Permitir que a seta apareça sem a sombra do autofill cobrindo) */
+.perfil-formacao-card-corpo select:not(:disabled) {
+    background-color: #c5c0c0 !important;
+    color: #000000 !important;
+    box-shadow: none !important; /* Remove a sombra que cobria a seta */
+}
 
 /* ✨ ESTADO DE FOCO (QUANDO O USUÁRIO CLICA PARA DIGITAR) */
-.perfil-endereco-card-corpo input:focus {
+.perfil-formacao-card-corpo input:focus {
     outline: none !important;
     border-color: #007bff !important;
     
@@ -248,36 +196,24 @@
 
     /* 🛡️ PROTEÇÃO: Aplicando a sombra interna com a cor de foco para o Autofill não vencer */
     box-shadow: 0 0 0px 1000px #a1a1a1 inset, 0 0 5px rgba(0, 123, 255, 0.2) !important;
-    
     transition: background-color 0s; /* Resposta imediata ao clique */
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ✨ ESTADO DE FOCO PARA SELECT (Sem sombra interna) */
+.perfil-formacao-card-corpo select:focus {
+    outline: none !important;
+    border-color: #007bff !important;
+    background-color: #e9e4e4 !important;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2) !important; /* Apenas brilho externo */
+}
 
 /* 🚫 8. INPUT-DISABLED (PADRONIZAÇÃO TOTAL - VERSÃO 2026) */
-.perfil-endereco-card-corpo input:disabled,
-.perfil-endereco-card-corpo input:disabled:-webkit-autofill,
-.perfil-endereco-card-corpo input:disabled:-webkit-autofill:hover,
-.perfil-endereco-card-corpo input:disabled:-webkit-autofill:focus {
+.perfil-formacao-card-corpo input:disabled,
+.perfil-formacao-card-corpo input:disabled:-webkit-autofill,
+.perfil-formacao-card-corpo input:disabled:-webkit-autofill:hover,
+.perfil-formacao-card-corpo input:disabled:-webkit-autofill:focus {
     
-    /* 🎨 FORÇA O FUNDO CINZA (Mata o branco do navegador) */
+    /* 🎨 FORÇA O FUNDO CINZA CLARO (Mata o branco do navegador) */
     background-color: rgb(240, 240, 240) !important;
     
     /* 🎨 FORÇA A COR DO TEXTO */
@@ -294,27 +230,23 @@
     transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Garante que o campo 'Nº' (ou qualquer um com classe flex) não tente ser diferente */
-.perfil-endereco-card-corpo .Campo input:disabled {
+/* 🚫 8.1 SELECT DISABLED (Sem sombra interna) */
+.perfil-formacao-card-corpo select:disabled {
     background-color: rgb(240, 240, 240) !important;
+    color: #777777 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
 }
 
-
-
-
-
-
-
-
 /* 🕹️ 9. ÁREA DE BOTÕES (COMANDO DOS CARDS) */
-.AreaBotoes {
+.AreaBotoes-formacao {
     display: flex;
     gap: 15px;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     width: 100%;
 }
 
-.AreaBotoes button {
+.AreaBotoes-formacao button {
     padding: 14px;
     border-radius: 6px;
     font-weight: bold;
@@ -327,91 +259,65 @@
     transition: filter 0.2s;
 }
 
-/* 🧱 Blindagem de Escopo: Adicionamos a classe pai para garantir a prioridade das cores */
-.perfil-endereco-usuario-card .BotaoEditar { background-color: #306396; color: white; width: 100%; }
-.perfil-endereco-usuario-card .BotaoSalvar { background-color: rgb(212, 175, 55); color: white; flex: 2; }
-.perfil-endereco-usuario-card .BotaoCancelar { background-color: #c0392b; color: white; flex: 1; }
+/* 🧱 Blindagem de Escopo */
+.perfil-formacao-usuario-card .BotaoEditar-formacao { background-color: #306396; color: white; width: 100%; }
+.perfil-formacao-usuario-card .BotaoSalvar-formacao { background-color: rgb(212, 175, 55); color: white; flex: 2; }
+.perfil-formacao-usuario-card .BotaoCancelar-formacao { background-color: #c0392b; color: white; flex: 1; }
 
-.AreaBotoes button:hover {
+.AreaBotoes-formacao button:hover {
     /* IMPLEMENTAÇÃO: Efeito visual ao passar o mouse nas ferramentas */
     filter: brightness(0.9);
 }
 
 /* ✨ 10. ANIMAÇÃO (ZERO MOVIMENTO) */
 @keyframes fadeInSecoTotal {
-    from { 
-        opacity: 0;
-        /* transform: translate(0, 0) !important; */
-    }
-    to { 
-        opacity: 1;
-        /* transform: translate(0, 0) !important; */
-    }
-}
-
-@keyframes pularNaTela {
-    from { 
-        opacity: 0;
-        transform: translate(-50%, -20px) scale(0.9);
-    }
-    to { 
-        opacity: 1;
-        transform: translate(-50%, 0) scale(1);
-    }
-}
-
-
-/* ⏳ OVERLAY DE CARREGAMENTO NO CARD (Bloqueio Visual) */
-.loading-overlay-card {
-    position: fixed; /* 🧱 Mudança: De absolute para fixed (Tela Inteira) */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    
-    background: rgba(255, 255, 255, 0.5);  /* 🧱 Mais translúcido */
-    backdrop-filter: blur(4px);            /* 🧱 Desfoque maior para o fundo */
-    z-index: 10000;                        /* 🧱 Acima de tudo (Header, Menu, etc) */
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    font-size: 20px;
-    font-weight: bold;
-    color: #306396;                        /* Azul da identidade visual */
-    
-    border-radius: 8px;                    /* Segue o arredondamento do card pai */
-    animation: fadeInOverlay 0.3s ease;    /* Entrada suave */
-}
-
-@keyframes fadeInOverlay {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
+@keyframes pularNaTela {
+    from { opacity: 0; transform: translate(-50%, -20px) scale(0.9); }
+    to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
 
-    
+/* ⏳ OVERLAY DE CARREGAMENTO NO CARD (Bloqueio Visual) */
+.loading-overlay-card-formacao {
+    position: fixed; /* 🧱 Mudança: De absolute para fixed (Tela Inteira) */
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(255, 255, 255, 0.5);  /* 🧱 Mais translúcido */
+    backdrop-filter: blur(4px);            /* 🧱 Desfoque maior para o fundo */
+    z-index: 10000;                        /* 🧱 Acima de tudo (Header, Menu, etc) */
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: bold; color: #306396;
+    border-radius: 8px;                    /* Segue o arredondamento do card pai */
+    animation: fadeInOverlay 0.3s ease;
+}
 
+/* 🧱 AVISO DE CAMPO OBRIGATÓRIO (PADRÃO FORMACAO.CSS) */
+.observacao-obrigatorio-formacao {
+    color: #e00c0c;
+    display: block;
+    text-align: left;
+    background-color: wheat;
+    font-size: 0.9em;
+    padding: 10px;
+    width: 100%;
+    border-radius: 4px;
+    /* margin-bottom: 10px; */
+     margin-top: 10px;
+}
+
+.asterisco-obrigatorio {
+    color: red;
+    font-weight: bold;
+}
+
+@keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+
+/* 📱 MEDIA QUERY (MOBILE) */
 @media (max-width: 768px) {
-
-    .AreaBotoes { flex-direction: column; }
- 
-    .perfil-endereco-card-corpo label {
-
-        font-size: 16px !important;
-    
-    }
-
-    .perfil-endereco-card-corpo input {
-
-        font-size: 18px !important;
-    
-    }
-
-    .AreaBotoes button {
-        padding: 20px !important;
-        font-size: 18px !important;
-    }
-
+    .AreaBotoes-formacao { flex-direction: column; }
+    .perfil-formacao-card-corpo label { font-size: 16px !important; }
+    .perfil-formacao-card-corpo input { font-size: 18px !important; }
+    .AreaBotoes-formacao button { padding: 20px !important; font-size: 18px !important; }
 }
