@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 import { useNavigate, useLocation} from 'react-router-dom';
+import { ref, get } from "firebase/database"; 
 
 import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto.jsx';
 
@@ -23,7 +24,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
     // 🚕 Contratando o motorista para este cômodo
     const navigate = useNavigate();
 
-    const { logarNoFirebase, setCarregandoModal } = useAuth();
+    const { logarNoFirebase, setCarregandoModal, db_realtime } = useAuth();
 
     // ----------------------------------------------------
     // FIM DO - Ferramentas de Trabalho (Hooks)
@@ -75,7 +76,82 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
     /*  ---------------------------------------------------------------------- */
-    /* INICIO DA - 🗂️ 🚨 GAVETA DE ALERTA: Para mostrar o erro na <div className="MsgForm"> */
+    /*  INICIO DA - 🖱️ MONITORAMENTO DE CLIQUES GLOBAIS (Cancelamento de Dicas) */
+    /*  ---------------------------------------------------------------------- */
+
+    const deveExibirDicaRef = useRef(false);
+
+    useEffect(() => {
+        const cancelarDicaFutura = () => {
+             /* 🛑 Se houver clique em qualquer lugar, cancelamos a intenção futura de abrir o balão */
+             deveExibirDicaRef.current = false;
+             /* 🛑 E garantimos que feche imediatamente se já estiver aberto */
+             setExibirBalaoDicaCriarConta(false);
+        };
+        window.addEventListener('click', cancelarDicaFutura);
+        return () => window.removeEventListener('click', cancelarDicaFutura);
+    }, [setExibirBalaoDicaCriarConta]);
+    
+    // ----------------------------------------------------------------------
+    // FIM - 🖱️ MONITORAMENTO DE CLIQUES GLOBAIS (Cancelamento de Dicas)
+    // ----------------------------------------------------------------------
+
+
+
+
+
+
+    // ----------------------------------------------------------------------
+    // INICIO - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
+    // ----------------------------------------------------------------------
+    const [cpfsCadastrados, setCpfsCadastrados] = useState([]);
+
+    useEffect(() => {
+        if (!db_realtime) return;
+
+        const verificarUsuariosCadastrados = async () => {
+
+            console.log("🕵️‍♂️ ----------------------------------");
+            console.log("🕵️‍♂️ Logar.jsx: Verificando usuários já cadastrados...");
+
+            const usuariosRef = ref(db_realtime, 'usuarios');
+            try {
+                const snapshot = await get(usuariosRef);
+                if (snapshot.exists()) {
+                    const listaCpfs = Object.keys(snapshot.val()); // Pega apenas os CPFs (chaves)
+                    setCpfsCadastrados(listaCpfs);
+                    console.log("🕵️‍♂️ Cadastrados encontrados:", listaCpfs.length);
+                }
+            } catch (error) {
+                console.error("❌ Erro ao verificar cadastros:", error);
+            }
+        };
+
+        verificarUsuariosCadastrados();
+
+    }, [db_realtime]);
+
+    /* 🎨 Função auxiliar para pintar o botão se já estiver cadastrado */
+    const getEstiloBotao = (cpfFormatado) => {
+        const cpfLimpo = cpfFormatado.replace(/\D/g, "");
+        if (cpfsCadastrados.includes(cpfLimpo)) {
+            return { backgroundColor: '#c0392b', color: 'white', borderColor: '#a93226' }; // 🔴 Vermelho "Alerta"
+        }
+        return {};
+    
+    // ----------------------------------------------------------------------
+    // FIM - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
+    // ----------------------------------------------------------------------
+    };
+
+
+
+
+
+    
+
+    /*  ---------------------------------------------------------------------- */
+    /* INICIO DA - �🗂️ 🚨 GAVETA DE ALERTA: Para mostrar o erro na <div className="MsgForm"> */
     /*  ---------------------------------------------------------------------- */
 
     const timerGavetaRef = useRef(null);
@@ -95,6 +171,9 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
         console.log("🔫 🎟️ dadoExtra =", dadoExtra);
         console.log("🔫 🎨 Tipo =", tipo);
         console.log("🔫 ----------------------------------");
+
+        /* 🛡️ Armamos o gatilho: A dica pode aparecer, a menos que um clique ocorra. */
+        deveExibirDicaRef.current = true;
 
         /* // 🧱 2. RESET DE OBRA: Se já existir um timer rodando, nós o cancelamos usando o .current */
         if (timerGavetaRef.current) {
@@ -129,7 +208,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
-                    if (texto === "Usuário não cadastrado no sistema.") {
+                    if (texto === "Usuário não cadastrado no sistema." && deveExibirDicaRef.current) {
                         setExibirBalaoDicaCriarConta(true);
                     }
 
@@ -532,7 +611,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
                 {/* ------------------------------ */}
-                {/* INICIO DO - FORM LOGIN TUDO (LoginTudo-Login) */}
+                {/* INICIO DO - FORM LOGIN TUDO */}
                 {/* ------------------------------ */}
 
                 <div className="LoginTudo-Login">
@@ -557,6 +636,8 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                             )}
                         </span>
                     </div>
+
+                    
 
 
                     {/* ------------------------------ */}
@@ -597,7 +678,14 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                             />
                         </div>
 
-                        <button type="submit" className="BotaoPadraoLogin-Login">Entrar</button>
+                        {/* 🛑 O onClick abaixo impede que este clique chegue na window e feche a dica que vai nascer */}
+                        <button 
+                            type="submit" 
+                            className="BotaoPadraoLogin-Login"
+                            onClick={(e) => e.stopPropagation()} 
+                        >
+                            Entrar
+                        </button>
 
                         <div className="CampoLink-Login"> 
                             <button type="button" id="BotaoLinkEsqueci-Login">Esqueci a senha</button>  
@@ -628,10 +716,13 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                 <div className="CpefTextes-Login">
 
 
+
+
                     {/* 🛠️ LINHA 1: PROGRAMADOR */}
                     <div className="Linha-Botoes-Teste-Login Linha-Prog-Login">
                         <h4 className="Rotulo-Teste-Login">Programador</h4>
                         <input type="button" className="Botao-Teste-Login" value="GIULIANO" 
+                            style={getEstiloBotao("121.149.148-01")}
                             onClick={() => preencherCampos({
                                 cpef: "121.149.148-01",
                                 senh: "Olhoquetudove@7"
@@ -640,10 +731,16 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                     </div>
 
 
+
+
+
                     {/* 🛡️ LINHA 2: ADMINISTRADORES */}
                     <div className="Linha-Botoes-Teste-Login Linha-Admin-Login">
+
+
                         <h4 className="Rotulo-Teste-Login">Administrador</h4>
                         <input type="button" className="Botao-Teste-Login" value="ANDRESSA" 
+                            style={getEstiloBotao("663.745.531-87")}
                             onClick={() => preencherCampos({
                                 cpef: "663.745.531-87",
                                 senh: "123"
@@ -651,63 +748,118 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                         />
         
                         <input type="button" className="Botao-Teste-Login" value="JOÃO VICTOR" 
+                            style={getEstiloBotao("505.842.550-55")}
                             onClick={() => preencherCampos({
                                 cpef: "505.842.550-55",
                                 senh: "123"
                             })}
                         />
+
+
                     </div>
+
+
+
 
 
                     {/* 👩‍⚕️ LINHA 3: CUIDADORAS */}
                     <div className="Linha-Botoes-Teste-Login Linha-Cuida-Login">
+
+
                         <h4 className="Rotulo-Teste-Login">Cuidadoras</h4>
                         <input type="button" className="Botao-Teste-Login" value="JOANA" 
+                            style={getEstiloBotao("103.646.340-06")}
                             onClick={() => preencherCampos({
                                 cpef: "103.646.340-06",
                                 senh: "1"
                             })}/> 
 
                         <input type="button" className="Botao-Teste-Login" value="PAULA" 
+                            style={getEstiloBotao("293.348.470-69")}
                             onClick={() => preencherCampos({ 
                                 cpef: "293.348.470-69",
                                 senh: "12"
                             })}/>
 
                         <input type="button" className="Botao-Teste-Login" value="MARIA" 
+                            style={getEstiloBotao("519.310.058-93")}
                             onClick={() => preencherCampos({
                                 cpef: "519.310.058-93",
                                 senh: "123"
                             })}/>
 
                         <input type="button" className="Botao-Teste-Login" value="ISABEL" 
+                            style={getEstiloBotao("200.335.920-63")}
                             onClick={() => preencherCampos({ 
                                 cpef: "200.335.920-63",
                                 senh: "123"
                             })}/>
+
+                        <input type="button" className="Botao-Teste-Login" value="ANA" 
+                            style={getEstiloBotao("123.456.789-09")}
+                            onClick={() => preencherCampos({ 
+                                cpef: "123.456.789-09",
+                                senh: "123"
+                            })}/>
+
+
                     </div>
+
+
+
 
 
                     {/* 🏠 LINHA 4: CLIENTES */}
                     <div className="Linha-Botoes-Teste-Login Linha-Cliente-Login">
                         <h4 className="Rotulo-Teste-Login">Clientes</h4>
                         <input type="button" className="Botao-Teste-Login" value="BEATRIZ" 
+                            style={getEstiloBotao("060.915.660-83")}
                             onClick={() => preencherCampos({
                                 cpef: "060.915.660-83",
                                 senh: "12345"
                             })}/> 
 
                         <input type="button" className="Botao-Teste-Login" value="LUCIANA" 
+                            style={getEstiloBotao("763.626.770-56")}
                             onClick={() => preencherCampos({
                                 cpef: "763.626.770-56",
                                 senh: "12345"
                             })}/> 
 
                         <input type="button" className="Botao-Teste-Login" value="MARCO" 
+                            style={getEstiloBotao("844.450.750-43")}
                             onClick={() => preencherCampos({    
                                 cpef: "844.450.750-43",
                                 senh: "12345"
                             })}/> 
+
+                        <input type="button" className="Botao-Teste-Login" value="PEDRO" 
+                            style={getEstiloBotao("453.368.658-30")}
+                            onClick={() => preencherCampos({
+                                cpef: "453.368.658-30",
+                                senh: "12345"
+                            })}/>
+
+                        <input type="button" className="Botao-Teste-Login" value="CARLA" 
+                            style={getEstiloBotao("939.836.130-37")}
+                            onClick={() => preencherCampos({
+                                cpef: "939.836.130-37",
+                                senh: "12345"
+                            })}/>
+
+                        <input type="button" className="Botao-Teste-Login" value="ROBERTO" 
+                            style={getEstiloBotao("729.583.410-09")}
+                            onClick={() => preencherCampos({
+                                cpef: "729.583.410-09",
+                                senh: "12345"
+                            })}/>
+
+                        <input type="button" className="Botao-Teste-Login" value="SANDRA" 
+                            style={getEstiloBotao("810.332.940-03")}
+                            onClick={() => preencherCampos({
+                                cpef: "810.332.940-03",
+                                senh: "12345"
+                            })}/>
                     </div>
 
 
@@ -715,6 +867,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                     <div className="Linha-Botoes-Teste-Login Linha-Atendente-Login">
                         <h4 className="Rotulo-Teste-Login">Atendentes</h4>
                         <input type="button" className="Botao-Teste-Login" value="FERNANDA" 
+                            style={getEstiloBotao("875.673.130-22")}
                             onClick={() => preencherCampos({
                                 cpef: "875.673.130-22",
                                 senh: "123"
@@ -722,6 +875,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                         />
         
                         <input type="button" className="Botao-Teste-Login" value="CARLOS" 
+                            style={getEstiloBotao("943.757.760-99")}
                             onClick={() => preencherCampos({
                                 cpef: "943.757.760-99",
                                 senh: "123"

@@ -1,6 +1,7 @@
 
 // 🏗️ 2 ⚙️ Hooks (Ferramentas de trabalho) do 🧠 Gerente do React na 🏠 Casa (react)
 import { useState, useEffect, useRef } from 'react'; 
+import { ref, get } from "firebase/database"; 
 
 // 🏗️ 🚕 useNavigate (O Motorista): O Hook que contrata o piloto para a viagem entre páginas da 🏠 Casa (react).
 import { useNavigate } from 'react-router-dom'; 
@@ -21,7 +22,7 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
 
-    const { setCarregandoModal } = useAuth();
+    const { setCarregandoModal, db_realtime } = useAuth();
 
 
 
@@ -371,8 +372,47 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
 
+    // ----------------------------------------------------------------------
+    // INICIO - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
+    // ----------------------------------------------------------------------
+    const [cpfsCadastrados, setCpfsCadastrados] = useState([]);
+
+    useEffect(() => {
+        if (!db_realtime) return;
+
+        const verificarUsuariosCadastrados = async () => {
+            console.log("🕵️‍♂️ ----------------------------------");
+            console.log("🕵️‍♂️ Cadastrar.jsx: Verificando usuários já cadastrados...");
+
+            const usuariosRef = ref(db_realtime, 'usuarios');
+            try {
+                const snapshot = await get(usuariosRef);
+                if (snapshot.exists()) {
+                    const listaCpfs = Object.keys(snapshot.val()); 
+                    setCpfsCadastrados(listaCpfs);
+                    console.log("🕵️‍♂️ Cadastrados encontrados:", listaCpfs.length);
+                }
+            } catch (error) {
+                console.error("❌ Erro ao verificar cadastros:", error);
+            }
+        };
+
+        verificarUsuariosCadastrados();
+    }, [db_realtime]);
+
+    const getEstiloBotao = (cpfFormatado) => {
+        const cpfLimpo = cpfFormatado.replace(/\D/g, "");
+        if (cpfsCadastrados.includes(cpfLimpo)) {
+            return { backgroundColor: '#c0392b', color: 'white', borderColor: '#a93226' }; 
+        }
+        return {};
+    };
+    // ----------------------------------------------------------------------
+    // FIM - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
+    // ----------------------------------------------------------------------
+
     // ---------------------------------------------------------------------------
-    // INICIO DO - CpefTextes - facilitar preenchimento - sai da versao de producao
+    // INICIO DO - CpefTextes - organizar preenchimento (CATEGORIZADO)
     // ---------------------------------------------------------------------------
 
     // Função para automatizar o preenchimento do FORM
@@ -942,114 +982,138 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
 
-                <div className="CpefTextes">
+                <div className="CpefTextes-Cad">
 
-                    <input type="button" className="bot4" value="JOANA (CUIDADORA)" 
-                        onClick={() => preencherCampos({
+                 
+                    {/* 👩‍⚕️ LINHA 3: CUIDADORAS */}
+                    <div className="Linha-Botoes-Teste-Cad Linha-Cuida-Cad">
+                        <h4 className="Rotulo-Teste-Cad">Cuidadoras</h4>
+                        <input type="button" className="Botao-Teste-Cad" value="JOANA" 
+                            style={getEstiloBotao("103.646.340-06")}
+                            onClick={() => preencherCampos({
+                                nome: "JOANA DE CASSIA MEDEIROS", 
+                                cpef: "103.646.340-06",
+                                func: "cuidadora", 
+                                senh: "1"
+                            })}/> 
+                        <input type="button" className="Botao-Teste-Cad" value="PAULA" 
+                            style={getEstiloBotao("293.348.470-69")}
+                            onClick={() => preencherCampos({ 
+                                nome: "PAULA TOLER DO PASSADO",
+                                cpef: "293.348.470-69",
+                                func: "cuidadora", 
+                                senh: "12"
+                            })}/>
+                        <input type="button" className="Botao-Teste-Cad" value="MARIA" 
+                            style={getEstiloBotao("519.310.058-93")}
+                            onClick={() => preencherCampos({
+                                nome: "MARIA DAS GRAÇAS MENEGUEL",
+                                cpef: "519.310.058-93",
+                                func: "cuidadora", 
+                                senh: "123"
+                            })}/>
+                        <input type="button" className="Botao-Teste-Cad" value="ISABEL" 
+                            style={getEstiloBotao("200.335.920-63")}
+                            onClick={() => preencherCampos({ 
+                                nome: "ISABEL PILANTRA PRA SEMPRE",
+                                cpef: "200.335.920-63",
+                                func: "cuidadora", 
+                                senh: "123"
+                            })}/>
+                        <input type="button" className="Botao-Teste-Cad" value="ANA" 
+                            style={getEstiloBotao("123.456.789-09")}
+                            onClick={() => preencherCampos({ 
+                                nome: "ANA MARIA BRAGA",
+                                cpef: "123.456.789-09",
+                                func: "cuidadora", 
+                                senh: "123"
+                            })}/>
+                    </div>
 
-                            nome: "JOANA DE CASSIA MEDEIROS", 
-                            cpef: "103.646.340-06",
-                            // mail: "gromanholo722@gmail.com",
-                            // fone: "(16) 9-8185-0365",
+                    {/* 🏠 LINHA 4: CLIENTES */}
+                    <div className="Linha-Botoes-Teste-Cad Linha-Cliente-Cad">
+                        <h4 className="Rotulo-Teste-Cad">Clientes</h4>
+                        <input type="button" className="Botao-Teste-Cad" value="BEATRIZ" 
+                            style={getEstiloBotao("060.915.660-83")}
+                            onClick={() => preencherCampos({
+                                nome: "BEATRIZ QUE GOSTA DO PAI",
+                                cpef: "060.915.660-83",
+                                func: "cliente", 
+                                senh: "12345"
+                            })}/> 
+                        <input type="button" className="Botao-Teste-Cad" value="LUCIANA" 
+                            style={getEstiloBotao("763.626.770-56")}
+                            onClick={() => preencherCampos({
+                                nome: "LUCIANA AMARAL MATADO MATARAIA",
+                                cpef: "763.626.770-56",
+                                func: "cliente", 
+                                senh: "12345"
+                            })}/> 
+                        <input type="button" className="Botao-Teste-Cad" value="MARCO" 
+                            style={getEstiloBotao("844.450.750-43")}
+                            onClick={() => preencherCampos({    
+                                nome: "MARCO ANTONIO CASALE",
+                                cpef: "844.450.750-43",
+                                func: "cliente", 
+                                senh: "12345"
+                            })}/> 
+                        <input type="button" className="Botao-Teste-Cad" value="PEDRO" 
+                            style={getEstiloBotao("453.368.658-30")}
+                            onClick={() => preencherCampos({
+                                nome: "PEDRO ALVARES CABRAL",
+                                cpef: "453.368.658-30",
+                                func: "cliente", 
+                                senh: "12345"
+                            })}/> 
+                        <input type="button" className="Botao-Teste-Cad" value="CARLA" 
+                            style={getEstiloBotao("939.836.130-37")}
+                            onClick={() => preencherCampos({
+                                nome: "CARLA PEREZ DO AXE",
+                                cpef: "939.836.130-37",
+                                func: "cliente", 
+                                senh: "12345"
+                            })}/> 
+                        <input type="button" className="Botao-Teste-Cad" value="ROBERTO" 
+                            style={getEstiloBotao("729.583.410-09")}
+                            onClick={() => preencherCampos({
+                                nome: "ROBERTO CARLOS REI",
+                                cpef: "729.583.410-09",
+                                func: "cliente", 
+                                senh: "12345"
+                            })}/> 
+                        <input type="button" className="Botao-Teste-Cad" value="SANDRA" 
+                            style={getEstiloBotao("810.332.940-03")}
+                            onClick={() => preencherCampos({
+                                nome: "SANDRA ROSA MADALENA",
+                                cpef: "810.332.940-03",
+                                func: "cliente", 
+                                senh: "12345"
+                            })}/> 
+                    </div>
 
-                            func: "cuidadora", 
-
-                            // datc: dataHoje, 
-                            senh: "1"
-
-                        })}/> 
-
-                    <input type="button" className="bot5" value="PAULA (CUIDADORA)" 
-                        onClick={() => preencherCampos({
-
-                            nome: "PAULA TOLER DO PASSADO", 
-                            cpef: "293.348.470-69",
-                            // mail: "aromanholo7724@gmail.com", 
-                            // fone: "(16) 9-7777-6666",
-
-                            func: "cuidadora", 
-
-                            // datc: dataHoje,
-                            senh: "12"
-
-                        })}/>
-
-                    <input type="button" className="bot6" value="MARIA (CUIDADORA)" 
-                        onClick={() => preencherCampos({
-
-                            nome: "MARIA DAS GRAÇAS MENEGUEL", 
-                            cpef: "519.310.058-93",
-                            // mail: "gromanholoere44@gmail.com", 
-                            // fone: "(16) 9-7777-6666",
-
-                            func: "cuidadora", 
-
-                            // datc: dataHoje,
-                            senh: "123"
-
-                        })}/>
-
-                    <input type="button" className="bot7" value="ISABEL (CUIDADORA)" 
-                        onClick={() => preencherCampos({
-
-                            nome: "ISABEL PILANTRA PRA SEMPRE", 
-                            cpef: "200.335.920-63",
-                            // mail: "gromanholoere44@gmail.com", 
-                            // fone: "(16) 9-7777-6666",
-
-                            func: "cuidadora", 
-                            
-                            // datc: dataHoje,
-                            senh: "123"
-
-                        })}/>
-
-                    <input type="button" className="bot8" value="BEATRIZ (CLIENTE)" 
-                        onClick={() => preencherCampos({
-
-                            nome: "BEATRIZ QUE GOSTA DO PAI", 
-                            cpef: "060.915.660-83",
-                            // mail: "aromanholo7745@gmail.com", 
-                            // fone: "(16) 9-4545-4545",
-
-                            func: "cliente", 
-                            // datc: dataHoje,
-
-                            senh: "12345"
-
-                        })}/> 
-                    
-                    <input type="button" className="bot9" value="LUCIANA (CLIENTE)" 
-                        onClick={() => preencherCampos({
-
-                            nome: "LUCIANA AMARAL MATADO MATARAIA", 
-                            cpef: "763.626.770-56",
-                            // mail: "aromanholo7745@gmail.com", 
-                            // fone: "(16) 9-4545-4545",
-
-                            func: "cliente", 
-                            // datc: dataHoje,
-                            senh: "12345"
-
-                        })}/> 
-
-                    <input type="button" className="bot10" value="MARCO (CLIENTE)" 
-                        onClick={() => preencherCampos({
-
-                            nome: "MARCO ANTONIO CASALE", 
-                            cpef: "844.450.750-43",
-                            // mail: "aromanholo7745@gmail.com", 
-                            // fone: "(16) 9-4545-4545",
-
-                            func: "cliente", 
-                            // datc: dataHoje,
-                            senh: "12345"
-
-                        })}/> 
-
-
-                
-                </div>  {/* FIM DO - <div className="CpefTextes"> */}
+                    {/* 🎧 LINHA 2.5: ATENDENTES */}
+                    <div className="Linha-Botoes-Teste-Cad Linha-Atendente-Cad">
+                        <h4 className="Rotulo-Teste-Cad">Atendentes</h4>
+                        <input type="button" className="Botao-Teste-Cad" value="FERNANDA" 
+                            style={getEstiloBotao("875.673.130-22")}
+                            onClick={() => preencherCampos({
+                                nome: "FERNANDA SOUZA SANTOS",
+                                cpef: "875.673.130-22",
+                                func: "atendente",
+                                senh: "123"
+                            })}
+                        />
+                        <input type="button" className="Botao-Teste-Cad" value="CARLOS" 
+                            style={getEstiloBotao("943.757.760-99")}
+                            onClick={() => preencherCampos({
+                                nome: "CARLOS EDUARDO OLIVEIRA",
+                                cpef: "943.757.760-99",
+                                func: "atendente",
+                                senh: "123"
+                            })}
+                        />
+                    </div>
+                </div> {/* FIM DO - <div className="CpefTextes-Cad"> */}
 
 
 

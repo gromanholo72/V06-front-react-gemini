@@ -794,14 +794,12 @@ input[type="submit"]:disabled {
     align-items: center;
     justify-content: space-between; 
     padding: 0 10px;
-    border-top: 2px solid #306396;
+    border: none;
     border-bottom: 2px solid #306396;
-    border-left: none;
-    border-right: none;
     color: #000000;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 0;
     position: relative;
     overflow: hidden;
     /* background-color: transparent; */
@@ -818,7 +816,7 @@ input[type="submit"]:disabled {
     flex-direction: column;
     gap: 5px;
     padding: 5px 0;
-    border-radius: 8px;
+    border-radius: 0;
     /* background-color: white;  */
     
     /* Animação Mestra */
@@ -848,11 +846,9 @@ input[type="submit"]:disabled {
 .submenu-flutuante-cliente-prof button {
     width: 120px;
     height: 35px;
-    border-top: 2px solid #306396;
+    border: none;
     border-bottom: 2px solid #306396;
-    border-left: none;
-    border-right: none;
-    border-radius: 8px;
+    border-radius: 0;
     /* background-color: white; */
     font-weight: bold;
     cursor: pointer;
@@ -867,7 +863,7 @@ input[type="submit"]:disabled {
 .submenu-flutuante-cliente-prof button:hover {
     color: white; 
     background-color: rgb(143, 142, 142);
-    border-top: 2px solid white; 
+    border: none;
     border-bottom: 2px solid white; 
 }
 
@@ -2155,32 +2151,55 @@ input[type="submit"]:disabled {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* 📋 SUBMENU FLUTUANTE - ESTILO MODERNO 2026 */
 .SubmenuFlutuante-Estilizado {
     position: absolute;
-    top: 55px; /* 📐 Ajuste fino para afastar levemente do header */
+    top: 55px; 
     right: 0;
-    width: 240px; /* 📐 Largura confortável para leitura */
+    width: 240px; 
     
-    background: #ffffff; /* 🎨 Branco puro para limpeza visual */
+    background: #ffffff; 
     
-    border-radius: 16px; /* 📐 Bordas bem arredondadas (Modern UI) */
+    border-radius: 16px; 
     
     /* 🎨 Sombra de alta profundidade para destacar sobre o conteúdo */
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 2px 10px rgba(0,0,0,0.05);
-    border: 1px solid rgba(0,0,0,0.06); /* Borda ultra sutil */
+    border: 1px solid rgba(0,0,0,0.06); 
     
-    padding: 20px; /* Espaçamento interno do card */
+    padding: 20px; 
     z-index: 1000;
     
     display: flex;
     flex-direction: column;
-    gap: 4px; /* Espaço entre os botões */
+    gap: 4px;
 
     /* 🏎️ Animação Física Suave */
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     opacity: 0;
-    transform: translateY(-20px) scale(0.98); /* Efeito de surgir e crescer levemente */
+    transform: translateY(-20px) scale(0.98); 
     pointer-events: none;
 }
 
@@ -2190,15 +2209,50 @@ input[type="submit"]:disabled {
     pointer-events: auto;
 }
 
-
-.dados-pessoais button {
-    padding-top: 15px !important;
-    padding-bottom: 15px !important;
-    font-size: 16px !important;
+/* 🔘 BOTÕES DO MENU (ITENS DE NAVEGAÇÃO) */
+.SubmenuFlutuante-Estilizado button {
+    font-size: 14px;
+    font-weight: 600;
+    color: #57606f;
+    background: none;
+    border: none;
+    
+    padding: 15px 15px;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 10px; 
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    
+    transition: all 0.2s ease;
 }
 
+/* ✨ HOVER NOS BOTÕES */
+.SubmenuFlutuante-Estilizado button:hover {
+    color: #306396; 
+    background: #f1f4f8; 
+    transform: translateX(4px); 
+}
 
+/* 🚪 BOTÃO SAIR (COM DESTAQUE DE ALERTA) */
+.SubmenuFlutuante-Estilizado .Botao-Acao-Sair {
+    font-size: 18px;
+    color: rgb(0, 0, 0); 
+    background: #306396;
+    background-color: rgb(212, 175, 55);
+    font-weight: 700;
+    justify-content: left; 
+    margin-top: 5px;
+}
 
+.SubmenuFlutuante-Estilizado .Botao-Acao-Sair:hover {
+    background:#c0392b;  
+    color: #fceceb;
+    transform: none; 
+}
 
 /* 🧱 CABEÇALHO DO MENU (NOME E CPF) */
 .Header-Menu-Perfil {
@@ -2227,7 +2281,7 @@ input[type="submit"]:disabled {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    /* padding: 8px 15px; */
+
 
     padding-top: 10px;
     padding-bottom: 10px;
@@ -2243,7 +2297,6 @@ input[type="submit"]:disabled {
 
 }
 
-
 .Header-Funcao span {
     font-size: 16px;
     font-weight: 600;
@@ -2253,27 +2306,19 @@ input[type="submit"]:disabled {
 .Header-Funcao strong {
     font-size: 12px;
     text-transform: uppercase;
-    background: #eaf2f8; /* Azul bem claro */
-    color: #306396;       /* Azul da marca */
+    background: #eaf2f8; 
+    color: #306396;     
     padding: 4px 10px;
     border-radius: 20px;
     font-weight: 800;
     letter-spacing: 0.5px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+.dados-pessoais button {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    font-size: 16px !important;
+}
 
 .Perfil-Opcoes {
 
@@ -2295,14 +2340,137 @@ input[type="submit"]:disabled {
     /* ↕️ Centraliza na vertical */
     align-items: center;
 
-    /* 📏 Espaçamento interno (ajuste conforme sua necessidade) */
-    /* padding: 10px 20px; */
-    
     /* 🎨 Outros estilos que você já deve ter */
-    width: 100%; /* ou a largura que desejar */
+    width: 100%; 
     cursor: pointer;
-    text-align: center; /* Backup para navegadores muito antigos */
+    text-align: center; 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 📐 PADRÃO DE LOGS: menu-sidebar-programador.css */
+
+.menu-sidebar-programador-container {
+    position: relative;
+    width: 100%; 
+    background: #ffffff; 
+    border-radius: 16px; 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0,0,0,0.06); 
+    padding: 15px; 
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.menu-sidebar-programador-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+
+.menu-sidebar-programador-funcao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px; /* Equalizando com o padding do botão */
+    border-bottom: 2px solid #306396;
+}
+
+.menu-sidebar-programador-titulo {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.menu-sidebar-programador-badge {
+    font-size: 10px;
+    text-transform: uppercase;
+    background: #306396; 
+    color: #ffffff;     
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 800;
+}
+
+.menu-sidebar-programador-lista-botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.menu-sidebar-programador-btn-item {
+    font-size: 14px;
+    font-weight: 600;
+    color: #57606f;
+    background: #f8f9fa;
+    border: none;
+    border-bottom: 1px solid #e0e0e0; /* Adicionando a linha para alinhar com o título */
+    padding: 12px 15px;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 0; /* Removendo arredondamento para o estilo linear */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    transition: all 0.2s ease;
+}
+
+/* ✨ HOVER EXCLUSIVO */
+.menu-sidebar-programador-btn-item:hover {
+    color: #ffffff; 
+    background: #306396; 
+    transform: translateX(5px); 
+    box-shadow: 4px 4px 12px rgba(48, 99, 150, 0.15);
+}
+
+.menu-sidebar-programador-icon {
+    font-size: 1.1rem;
+    filter: grayscale(1);
+}
+
+.menu-sidebar-programador-btn-item:hover .menu-sidebar-programador-icon {
+    filter: grayscale(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2331,53 +2499,6 @@ input[type="submit"]:disabled {
     margin: 6px 10px;
 }
 
-
-
-
-/* 🔘 BOTÕES DO MENU (ITENS DE NAVEGAÇÃO) */
-.SubmenuFlutuante-Estilizado button {
-    font-size: 14px;
-    font-weight: 600;
-    color: #57606f; /* Cinza médio para texto */
-    background: none;
-    border: none;
-    
-    padding: 15px 15px;
-    text-align: left;
-    cursor: pointer;
-    width: 100%;
-    border-radius: 10px; /* Botões arredondados internamente */
-    
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Texto na esquerda, Ícone na direita */
-    
-    transition: all 0.2s ease;
-}
-
-/* ✨ HOVER NOS BOTÕES */
-.SubmenuFlutuante-Estilizado button:hover {
-    color: #306396; /* Azul no texto */
-    background: #f1f4f8; /* Fundo azulado muito sutil */
-    transform: translateX(4px); /* Pequeno movimento para direita */
-}
-
-/* 🚪 BOTÃO SAIR (COM DESTAQUE DE ALERTA) */
-.SubmenuFlutuante-Estilizado .Botao-Acao-Sair {
-    font-size: 18px;
-    color: rgb(0, 0, 0); 
-    background: #306396;
-    background-color: rgb(212, 175, 55);
-    font-weight: 700;
-    justify-content: left; /* Centralizado */
-    margin-top: 5px;
-}
-
-.SubmenuFlutuante-Estilizado .Botao-Acao-Sair:hover {
-    background:#c0392b;  /* Fundo avermelhado sutil */
-    color: #fceceb;
-    transform: none; /* Não move, apenas muda cor */
-}
 
 /* 🧱 CORTINA TRANSPARENTE PARA FECHAR AO CLICAR FORA */
 .Cortina-Fechar {
@@ -2627,55 +2748,481 @@ input[type="submit"]:disabled {
 
 
 
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------ */
+/* 🧱 ESTRUTURA INTERNA DA SIDEBAR (Títulos e Botões)     */
+/* ------------------------------------------------------ */
+
+/* Título das Seções (ex: PACIENTE) */
+.titulo-setor-sidebar {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #05182c; 
+    margin: 5px 0px 8px 0px; /* Removendo margem lateral */
+    padding: 0 15px 8px 15px; /* Usando padding para o texto e mantendo a borda 100% */
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid #547299; /* Borda sutil e profissional */
+    border-radius: 0; 
+}
+
+/* Container da Lista de Botões */
+.lista-botoes-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 2px; /* Espaço mínimo para não ficar grudado */
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+/* Botões da Sidebar */
+.lista-botoes-vertical button {
+    width: 100%; /* Agora ocupa 100% para a borda alinhar com o título */
+    text-align: left;
+    padding: 10px 20px; /* Altura confortável */
+
+
+    /* Reset visual */
+    background: transparent;
+    border: none;
+    border-top: none !important; /* Garante override de estilos antigos */
+    border-bottom: 1px solid #547299 !important;
+    
+    color: #4a5568; /* Cinza escuro profissional */
+    font-weight: 600;
+    font-size: 14px;
+    
+    /* Design System: Aba lateral */
+    border-radius: 0; 
+    
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Garante alinhamento à esquerda */
+}
+
+/* Hover Suave */
+.lista-botoes-vertical button:hover:not(.BotaoBloqueado) {
+    background-color: #e6f7ff; /* Azul bem claro */
+    color: #0077cc; /* Azul link */
+    padding-left: 25px; /* Movimento de feedback */
+}
+
+/* Tratamento para Botões Bloqueados (🔒) dentro da lista */
+.lista-botoes-vertical button.BotaoBloqueado {
+    opacity: 0.5;
+    background: transparent !important;
+    color: #a0aec0 !important;
+    cursor: not-allowed;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* 📐 📐 📐 LOGS DE ESTILO: SidebarCuidadora.css */
+
+.menu-sidebar-cuidadora-container {
+    position: relative;
+    width: 100%; 
+    background: #ffffff; 
+    border-radius: 20px; 
+    box-shadow: 0 8px 30px rgba(142, 68, 173, 0.08); /* Sombra levemente roxa */
+    border: 1px solid rgba(142, 68, 173, 0.1); 
+    padding: 20px; 
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.menu-sidebar-cuidadora-header {
+    border-bottom: 2px solid #8e44ad; /* Cor Roxa Operacional */
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+}
+
+.menu-sidebar-cuidadora-funcao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu-sidebar-cuidadora-titulo {
+    font-size: 15px;
+    font-weight: 800;
+    color: #2c3e50;
+    text-transform: uppercase;
+}
+
+.menu-sidebar-cuidadora-badge {
+    font-size: 10px;
+    background: #8e44ad;
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 900;
+}
+
+.menu-sidebar-cuidadora-lista-botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-sidebar-cuidadora-btn-item {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4b5563;
+    background: #f9fafb;
+    border: 1px solid #f3f4f6;
+    padding: 14px 16px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ✨ HOVER EXCLUSIVO CUIDADORA */
+.menu-sidebar-cuidadora-btn-item:hover {
+    background: #8e44ad;
+    color: #ffffff;
+    transform: translateX(6px);
+    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.25);
+}
+
+/* 🚨 BOTÃO DE SUPORTE COM DESTAQUE */
+.menu-sidebar-cuidadora-btn-alerta:hover {
+    background: #e74c3c !important;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3) !important;
+}
+
+.menu-sidebar-cuidadora-icon {
+    font-size: 1.2rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* 💻 AJUSTE PC: LAYOUT SIDEBAR QUANDO LOGADO (UNIFICADO) */
+
 @media (min-width: 768px) {
     
     /* 1. Transforma o Menu Flutuante em Sidebar Fixa à Esquerda */
-    .container-externo-blindado:not([data-func="visitante"]) .SubmenuFlutuante-Estilizado {
+    .container-externo-blindado:not([data-func="visitante"]) .submenu-tudo-paciente-prof {
         display: flex !important;
         flex-direction: column;
         
-        position: fixed !important; /* Fixa na tela (relativo ao container pai transformado) */
-        top: 70px !important;       /* Abaixo do Header */
-        left: 0 !important;         /* Colado na esquerda */
-        bottom: 0 !important;       /* Até o fim da tela */
+        position: fixed !important;
+        top: 70px !important;      
+        left: 0 !important;         
+        bottom: 0 !important;       
         
-        width: 200px !important;    /* Largura da Sidebar */
+        width: 240px !important;    
         height: calc(100vh - 70px) !important;
         
-        opacity: 1 !important;      /* Sempre visível */
-        transform: none !important; /* Remove animações de entrada */
+        opacity: 1 !important;     
+        transform: none !important; 
         pointer-events: auto !important;
         
-        border-radius: 0 !important; /* Remove bordas arredondadas de card */
+        border-radius: 0 !important; 
         border-right: 1px solid #e0e0e0;
         box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
         background-color: #f8f9fa !important;
         
-        overflow-y: auto; /* Rolagem se o menu for muito grande */
+        overflow-y: auto; 
         padding-top: 20px;
     }
 
 
+
+
+
+
+
+
+
+
+
+/* 1. Transforma o Menu Flutuante em Sidebar Fixa à Esquerda */
+.container-externo-blindado:not([data-func="visitante"]) .submenu-tudo-gerenciar-prof {
+    display: flex !important;
+    flex-direction: column;
+    
+    position: fixed !important;
+    top: 70px !important;      
+    left: 0 !important;         
+    bottom: 0 !important;       
+    
+    width: 200px !important;    
+    height: calc(100vh - 70px) !important;
+    
+    opacity: 1 !important;     
+    transform: none !important; 
+    pointer-events: auto !important;
+    
+    border-radius: 0 !important; 
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
+    background-color: #f8f9fa !important;
+    
+    overflow-y: auto; 
+    padding-top: 20px;
+}
+
+
+
+
+
+
+
+/* 1. Transforma o Menu Flutuante em Sidebar Fixa à Esquerda */
+.container-externo-blindado:not([data-func="visitante"]) .submenu-tudo-gerenciar-prof {
+    display: flex !important;
+    flex-direction: column;
+    
+    position: fixed !important;
+    top: 70px !important;      
+    left: 0 !important;         
+    bottom: 0 !important;       
+    
+    width: 200px !important;    
+    height: calc(100vh - 70px) !important;
+    
+    opacity: 1 !important;     
+    transform: none !important; 
+    pointer-events: auto !important;
+    
+    border-radius: 0 !important; 
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
+    background-color: #f8f9fa !important;
+    
+    overflow-y: auto; 
+    padding-top: 20px;
+}
+
+
+
+
+
+
+
+
+/* 1. Transforma o Menu Flutuante em Sidebar Fixa à Esquerda */
+.container-externo-blindado:not([data-func="visitante"]) .menu-sidebar-programador {
+    display: flex !important;
+    flex-direction: column;
+    
+    position: fixed !important;
+    top: 70px !important;      
+    left: 0 !important;         
+    bottom: 0 !important;       
+    
+    width: 200px !important;    
+    height: calc(100vh - 70px) !important;
+    
+    opacity: 1 !important;     
+    transform: none !important; 
+    pointer-events: auto !important;
+    
+    border-radius: 0 !important; 
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
+    background-color: #f8f9fa !important;
+    
+    overflow-y: auto; 
+    padding-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.container-externo-blindado:not([data-func="visitante"]) .menu-sidebar-programador-container {
+    display: flex !important;
+    flex-direction: column;
+    
+    position: fixed !important;
+    top: 70px !important;      
+    left: 0 !important;         
+    bottom: 0 !important;       
+    
+    width: 200px !important;    
+    height: calc(100vh - 70px) !important;
+    
+    opacity: 1 !important;     
+    transform: none !important; 
+    pointer-events: auto !important;
+    
+    border-radius: 0 !important; 
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
+    background-color: #f8f9fa !important;
+    
+    overflow-y: auto; 
+    padding-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.container-externo-blindado:not([data-func="visitante"]) .menu-sidebar-cuidadora-container {
+    display: flex !important;
+    flex-direction: column;
+    
+    position: fixed !important;
+    top: 70px !important;      
+    left: 0 !important;         
+    bottom: 0 !important;       
+    
+    width: 250px !important;    
+    height: calc(100vh - 70px) !important;
+    
+    opacity: 1 !important;     
+    transform: none !important; 
+    pointer-events: auto !important;
+    
+    border-radius: 0 !important; 
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
+    background-color: #f8f9fa !important;
+    
+    overflow-y: auto; 
+    padding-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     .container-externo-blindado:not([data-func="visitante"]) .SubmenuFlutuante-Estilizado button{
-       
         padding: 10px 15px;
-
     }
-
 
     /* 2. Empurra o Conteúdo Principal (componente-de-pagina) para a Direita */
     .container-externo-blindado:not([data-func="visitante"]) .main-area-principal {
+        padding-left: 250px; 
+        width: 100%;
+        box-sizing: border-box;
+        transition: padding-left 0.3s ease;
+    }
+
+
+
+    /* ✅ Forma correta e blindada */
+    .container-externo-blindado[data-func="programador"] .main-area-principal {
         padding-left: 200px; 
         width: 100%;
         box-sizing: border-box;
         transition: padding-left 0.3s ease;
     }
 
-    /* 3. Esconde o Botão de Perfil (Pois o menu já está fixo na tela) */
-    .container-externo-blindado:not([data-func="visitante"]) .Botao-Acao-Meu-Perfil {
-        display: none !important;
+    .container-externo-blindado[data-func="administrador"] .main-area-principal {
+        padding-left: 200px; 
+        width: 100%;
+        box-sizing: border-box;
+        transition: padding-left 0.3s ease;
     }
+
+
+
+    /* 3. Esconde o Botão de Perfil (Pois o menu já está fixo na tela) */
+    /* .container-externo-blindado:not([data-func="visitante"]) .Botao-Acao-Meu-Perfil {
+        display: none !important;
+    } */
 
 
     .dados-pessoais button {
@@ -2692,47 +3239,40 @@ input[type="submit"]:disabled {
 
 
 
+    /* 🧱 CABEÇALHO DO MENU (NOME E CPF) */
+    .Header-Menu-Perfil {
+    
+        margin-bottom: 5px;
+    }
 
-/* 🧱 CABEÇALHO DO MENU (NOME E CPF) */
-.Header-Menu-Perfil {
-  
-    margin-bottom: 5px;
-}
+    .Header-Menu-Perfil strong {
+        font-size: 12px;
+    }
 
-.Header-Menu-Perfil strong {
-    font-size: 12px;
-}
+    .Header-Menu-Perfil span {
+        font-size: 12px;
+    
+    }
 
-.Header-Menu-Perfil span {
-    font-size: 12px;
-   
-}
+    /* 🏷️ TAG DE FUNÇÃO (BADGE) */
+    .Header-Funcao {
+    
+        padding-top: 10px;
+        padding-bottom: 10px;
 
-/* 🏷️ TAG DE FUNÇÃO (BADGE) */
-.Header-Funcao {
-   
-    padding-top: 10px;
-    padding-bottom: 10px;
+        margin-bottom: 5px;
 
-    margin-bottom: 5px;
+    }
 
-}
+    .Header-Funcao span {
+        font-size: 12px;
+    
+    }
 
-.Header-Funcao span {
-    font-size: 12px;
-   
-}
-
-.Header-Funcao strong {
-    font-size: 10px;
-   
-}
-
-
-
-
-
-
+    .Header-Funcao strong {
+        font-size: 10px;
+    
+    }
 
 
 
@@ -2741,6 +3281,23 @@ input[type="submit"]:disabled {
    
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2830,65 +3387,113 @@ input[type="submit"]:disabled {
 
 
 
-/* -------------------------------- */
-/* INICIO - MENU - programador prof */
-/* -------------------------------- */
+    /* -------------------------------- */
+    /* INICIO - MENU - programador prof */
+    /* -------------------------------- */
 
-/* Garante que o container do submenu não limite o posicionamento */
-.submenu-tudo-cadastrar-prof {
-    position: relative; 
-    display: block; /* Ocupa a linha toda no menu hambúrguer */
-    width: 130px;
+    /* Garante que o container do submenu não limite o posicionamento */
+    .submenu-tudo-cadastrar-prof {
+        position: relative; 
+        display: block; /* Ocupa a linha toda no menu hambúrguer */
+        width: 130px;
+        
+    }
+
+    /* 📦 Submenu Flutuante PROF - Ajustado para a DIREITA no Mobile */
+    .submenu-flutuante-cadastrar-prof {
+        position: absolute;
+        top: 0;          
+        left: 135px;      
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 0;
+        z-index: 1001;   
+        border-radius: 8px;
+        background-color: transparent;
+        width: 120px;
+    }
+
+    .submenu-flutuante-cadastrar-prof button{
+        height: 45px;
+        font-size: 14px !important;
+    }
+
+    /* Ajuste para que a seta mude de direção se desejar (opcional) */
+    .Btn-geral-programador-prof[aria-expanded="true"] .icone-seta {
+        transform: rotate(-90deg); /* Aponta para o submenu na direita */
+        transition: transform 0.3s;
+    }
+
+    /* Previne que o brilho do hover cause scroll horizontal indesejado no mobile */
+    .Btn-geral-programador-prof {
+        overflow: hidden;
+        height: 45px;
+    }
+
+    .submenu-flutuante-cadastrar-prof {
+        top: 0;
+        left: 135px;
+        transform: translateX(-10px);
+    }
+    .submenu-flutuante-cadastrar-prof.aberto {
+        transform: translateX(0);
+    }
+    .submenu-flutuante-cadastrar-prof.fechado {
+        transform: translateX(-10px);
+    }
+
+    /* -------------------------------- */
+    /* FIM - MENU - programador prof */
+    /* -------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* ----------------------------------- */
+    /* INICIO - MENU - ADMINISTRADOR PROF  */
+    /* ----------------------------------- */
+
+
+
+    /* 🚀 Botão Principal Administrador */
+    .Btn-geral-administrador-prof {
+        width: 130px !important;
+        height: 45px;
     
-}
+    }
 
-/* 📦 Submenu Flutuante PROF - Ajustado para a DIREITA no Mobile */
-.submenu-flutuante-cadastrar-prof {
-    position: absolute;
-    top: 0;          
-    left: 135px;      
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 0;
-    z-index: 1001;   
-    border-radius: 8px;
-    background-color: transparent;
-    width: 120px;
-}
 
-.submenu-flutuante-cadastrar-prof button{
-    height: 45px;
-    font-size: 14px !important;
-}
+    .submenu-flutuante-gerenciar-prof {
 
-/* Ajuste para que a seta mude de direção se desejar (opcional) */
-.Btn-geral-programador-prof[aria-expanded="true"] .icone-seta {
-    transform: rotate(-90deg); /* Aponta para o submenu na direita */
-    transition: transform 0.3s;
-}
+        top: -5px; 
+        left: 135px;
+        /* height: 45px; */
+        width: 120px;
+    }
 
-/* Previne que o brilho do hover cause scroll horizontal indesejado no mobile */
-.Btn-geral-programador-prof {
-    overflow: hidden;
-    height: 45px;
-}
+    .submenu-flutuante-gerenciar-prof button {
+        /* width: 150px; */
+        height: 45px;
+        font-size: 14px !important; 
+    }
 
-.submenu-flutuante-cadastrar-prof {
-    top: 0;
-    left: 135px;
-    transform: translateX(-10px);
-}
-.submenu-flutuante-cadastrar-prof.aberto {
-    transform: translateX(0);
-}
-.submenu-flutuante-cadastrar-prof.fechado {
-    transform: translateX(-10px);
-}
 
-/* -------------------------------- */
-/* FIM - MENU - programador prof */
-/* -------------------------------- */
 
 
 
@@ -2908,87 +3513,39 @@ input[type="submit"]:disabled {
 
 
 
-/* ----------------------------------- */
-/* INICIO - MENU - ADMINISTRADOR PROF  */
-/* ----------------------------------- */
 
 
 
-/* 🚀 Botão Principal Administrador */
-.Btn-geral-administrador-prof {
-    width: 130px !important;
-    height: 45px;
-  
-}
 
 
-.submenu-flutuante-gerenciar-prof {
 
-    top: -5px; 
-    left: 135px;
-    /* height: 45px; */
-    width: 120px;
-}
+    /* ----------------------------------- */
+    /* INICIO - MENU - CLIENTE PROF        */
+    /* ----------------------------------- */
 
-.submenu-flutuante-gerenciar-prof button {
-    /* width: 150px; */
-    height: 45px;
-    font-size: 14px !important; 
-}
+    /* 🚀 Botão Principal Cliente */
+    .Btn-geral-cliente-prof {
+        font-size: 16px !important; 
+        width: 130px !important;
+        height: 45px;
+    }
 
 
 
+    .submenu-flutuante-cliente-prof {
 
+        top: -5px; 
+        left: 135px;
+        /* height: 45px; */
+        width: 120px;
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ----------------------------------- */
-/* INICIO - MENU - CLIENTE PROF        */
-/* ----------------------------------- */
-
-/* 🚀 Botão Principal Cliente */
-.Btn-geral-cliente-prof {
-    font-size: 16px !important; 
-    width: 130px !important;
-    height: 45px;
-}
-
-
-
-.submenu-flutuante-cliente-prof {
-
-    top: -5px; 
-    left: 135px;
-    /* height: 45px; */
-    width: 120px;
-}
-
-
-.submenu-flutuante-cliente-prof button {
-    /* width: 150px; */
-    height: 45px;
-    font-size: 16px !important; 
-}
+    .submenu-flutuante-cliente-prof button {
+        /* width: 150px; */
+        height: 45px;
+        font-size: 16px !important; 
+    }
 
 
 
@@ -3042,9 +3599,6 @@ input[type="submit"]:disabled {
         width: 140px; 
         height: 45px;
     }
-
-
-
 
 
 
@@ -3112,22 +3666,6 @@ input[type="submit"]:disabled {
 
 
     
-    
-
-
-
-
-
-
-    
-
-   
-
-
-
-
-
-
 
 
     .submenu-container-geral {
@@ -3139,6 +3677,121 @@ input[type="submit"]:disabled {
         display: block;
     }
 
+
+
+
+    /* 📐 PADRÃO DE LOGS: menu-sidebar-administrador.css */
+
+    .menu-sidebar-administrador-container {
+        position: relative;
+        width: 100%; 
+        background: #ffffff; 
+        border-radius: 16px; 
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+        border: 1px solid rgba(0,0,0,0.06); 
+        padding: 15px; 
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .menu-sidebar-administrador-header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 5px;
+    }
+
+    .menu-sidebar-administrador-funcao {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 5px;
+        border-bottom: 2px solid #306396;
+    }
+
+    .menu-sidebar-administrador-titulo {
+        font-size: 16px;
+        font-weight: 700;
+        color: #2c3e50;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .menu-sidebar-administrador-badge {
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #306396; 
+        color: #ffffff;     
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 800;
+    }
+
+    .menu-sidebar-administrador-lista-botoes {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 10px;
+    }
+
+    .menu-sidebar-administrador-btn-item {
+        font-size: 14px;
+        font-weight: 600;
+        color: #57606f;
+        background: #f8f9fa;
+        border: 1px solid transparent;
+        padding: 12px 15px;
+        text-align: left;
+        cursor: pointer;
+        width: 100%;
+        border-radius: 10px; 
+        display: flex;
+        align-items: center;
+        justify-content: space-between; 
+        transition: all 0.2s ease;
+    }
+
+    /* ✨ HOVER EXCLUSIVO */
+    .menu-sidebar-administrador-btn-item:hover {
+        color: #ffffff; 
+        background: #306396; 
+        transform: translateX(5px); 
+        box-shadow: 4px 4px 12px rgba(48, 99, 150, 0.15);
+    }
+
+    .menu-sidebar-administrador-icon {
+        font-size: 1.1rem;
+        filter: grayscale(1);
+    }
+
+    .menu-sidebar-administrador-btn-item:hover .menu-sidebar-administrador-icon {
+        filter: grayscale(0);
+    }
+
+    /* 💻 AJUSTE PC: SIDEBAR ADMINISTRADOR */
+    @media (min-width: 768px) {
+        .container-externo-blindado:not([data-func="visitante"]) .menu-sidebar-administrador-container {
+            display: flex !important;
+            flex-direction: column;
+            position: fixed !important;
+            top: 70px !important;      
+            left: 0 !important;         
+            bottom: 0 !important;       
+            width: 200px !important;    
+            height: calc(100vh - 70px) !important;
+            opacity: 1 !important;     
+            transform: none !important; 
+            pointer-events: auto !important;
+            border-radius: 0 !important; 
+            border-right: 1px solid #e0e0e0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
+            background-color: #f8f9fa !important;
+            overflow-y: auto; 
+            padding-top: 20px;
+        }
+    }
 
 
 

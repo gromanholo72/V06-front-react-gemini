@@ -12,7 +12,8 @@
     min-width: 300px;
     max-width: 800px;
     display: grid;
-    gap: 20px;
+    /* gap: 20px; */
+    padding: 20px;
 }
 
 
@@ -28,7 +29,7 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: box-shadow 0.3s ease;
-    margin: 20px;
+    margin-bottom: 20px;
 }
 
 /* 🏷️ 4. CARD-HEADER (TOPO DO CARTÃO) */
@@ -38,7 +39,7 @@
     padding: 15px 20px;
     font-weight: bold;
     color: #333333;
-    font-size: 20px;
+    font-size: 14px;
     text-align: left;
 }
 

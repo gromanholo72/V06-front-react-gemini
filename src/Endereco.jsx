@@ -1,20 +1,13 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-
-import { ref, update, get } from "firebase/database"; 
-
+import { ref, get } from "firebase/database"; 
 import { db_realtime } from './firebaseConfig.js';
-
 import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto';
-
 import './Endereco.css'; 
-
-
 
 export function Endereco() {
 
     const cepInputRef = useRef(null);
-
     const { dadosToken } = useAuth();
     
     const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
@@ -373,7 +366,6 @@ export function Endereco() {
             });
 
             const [resposta] = await Promise.all([requisicao, tempoMinimo]);
-            
             const resultado = await resposta.json();
 
             if (resposta.ok) {
@@ -386,7 +378,6 @@ export function Endereco() {
                 // console.log("💾 📡 -----------------------------------------------------------");
 
                 setMsg({ tipo: 'sucesso', texto: '✅ Endereco atualizado com sucesso!' });
-
                 carregarDadosDoBanco();
 
             } else {
@@ -541,9 +532,13 @@ export function Endereco() {
 
 
 
+
+
+
+
                         <div className="AreaBotoes">
 
-                            {!podeEditar ? (
+                            {!podeEditar && !ehNovoCadastro ? (
                                 <button 
                                     type="button" 
                                     className="BotaoEditar" 
@@ -581,6 +576,11 @@ export function Endereco() {
                                 </>
                             )}
                         </div>
+
+
+
+
+
 
 
 

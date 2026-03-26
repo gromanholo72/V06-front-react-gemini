@@ -191,6 +191,12 @@
     animation: balanco-Login 0.3s ease-in-out;
 }
 
+/* 🧱 Estilo para mensagens de erro (padrão do sistema) */
+.MsgForm-Login.erro .alerta-erro-Login {
+    background-color: #dc3545;
+    color: white;
+}
+
 .linha-topo-Login { font-size: 1.1em; }
 .linha-foco-Login { font-size: 0.9em; opacity: 0.9; }
 

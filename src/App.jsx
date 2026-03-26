@@ -229,8 +229,6 @@ export default function App() {
 
 
 
-
-
     
 
     // --------------------------------------
@@ -303,17 +301,6 @@ export default function App() {
     // --------------------------------------
     // FIM DO - Balao Dica Criar Conta
     // --------------------------------------
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -830,6 +817,11 @@ export default function App() {
 
 
 
+
+
+
+
+
     // -------------------------------------------------------------
     /* INICIO DO - MODAL 🔥 FIREBASE */
     // -------------------------------------------------------------
@@ -946,10 +938,9 @@ export default function App() {
                 {/* INICIO - 🍔 O Botão Hambúrguer assume o controle direto aqui */}
                 {/* ---------------------------------- */}
 
-                <button 
-                    className={`btn-menu-base ${exibirBalaoDicaMenuHamburguer ? 'pulsar-ativo' : ''}`}
-                    onClick={() => {
+                <button className={`btn-menu-base ${exibirBalaoDicaMenuHamburguer ? 'pulsar-ativo' : ''}`}
 
+                    onClick={() => {
 
                         // 🍔 Verificamos se o menu já está aberto
                         if (menuAberto) {
@@ -975,7 +966,6 @@ export default function App() {
                             // Se você usa a função abrirSecao para logs extras, chame-a aqui:
                             // abrirSecao('menu-aberto'); 
                         }
-
 
                     }}
                 >
@@ -1053,31 +1043,53 @@ export default function App() {
 
 
 
-                            {/* --- SUBMENU: RELATÓRIOS --- */}
-                            <div className="submenu-tudo-cadastrar-prof">
-                                <button  
-                                    className="Btn-geral-programador-prof"
-                                    onClick={(e) => lidarComClique(e, 'relatorios')}
-                                    aria-expanded={secaoAberta === 'relatorios'}
-                                >
-                                    Relatórios
-                                    <span className="icone-seta">
-                                        {secaoAberta === 'relatorios' ? "🔼" : "🔽"}
-                                    </span>
-                                </button>
-                                
-                                <div className={`submenu-flutuante-cadastrar-prof ${secaoAberta === 'relatorios' ? 'aberto' : 'fechado'}`}>
-                                    <button onClick={() => navegarERecolher('/interno/RelClientes')}>
-                                        Clientes
-                                    </button>
-                                    <button onClick={() => navegarERecolher('/interno/RelCuidadoras')}>
-                                        Cuidadoras
-                                    </button>
-                                    <button onClick={() => navegarERecolher('/interno/RelSolicitacoes')}>
-                                        Solicitações
-                                    </button>
+
+
+
+                            {/* -------------------------------------------------- */}
+                            {/* INICIO - 📊 MENU SIDEBAR: PROGRAMADOR - RELATÓRIOS */}
+                            {/* -------------------------------------------------- */}
+
+                            <div className="menu-sidebar-programador-container">
+
+                                <div className="menu-sidebar-programador-header">
+                                    <div className="menu-sidebar-programador-funcao">
+                                        <span className="menu-sidebar-programador-titulo">Relatórios</span>
+                                    </div>
                                 </div>
+                                
+                                <div className="menu-sidebar-programador-lista-botoes">
+                                    <button 
+                                        className="menu-sidebar-programador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/RelClientes')}
+                                    >
+                                        Clientes <span className="menu-sidebar-programador-icon">📊</span>
+                                    </button>
+                                    
+                                    <button 
+                                        className="menu-sidebar-programador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/RelCuidadoras')}
+                                    >
+                                        Cuidadoras <span className="menu-sidebar-programador-icon">👩‍⚕️</span>
+                                    </button>
+                                    
+                                    <button 
+                                        className="menu-sidebar-programador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/RelSolicitacoes')}
+                                    >
+                                        Solicitações <span className="menu-sidebar-programador-icon">📝</span>
+                                    </button>
+
+                                </div>
+
                             </div>
+
+                            {/* ----------------------------------------------- */}
+                            {/* FIM - 📊 MENU SIDEBAR: PROGRAMADOR - RELATÓRIOS */}
+                            {/* ----------------------------------------------- */}
+
+
+
 
 
 
@@ -1102,17 +1114,12 @@ export default function App() {
                         <>
 
 
-
-
-
                             <button 
                                 className="Btn-geral-administrador-prof btn-centralizado"
                                 onClick={() => navegarERecolher('/interno/UsuarioLogado')}
                             >
                                 Inicio
                             </button>
-
-
 
                             <button 
                                 className="Btn-geral-administrador-prof btn-centralizado"
@@ -1124,40 +1131,60 @@ export default function App() {
 
 
 
+                            {/* ----------------------------------------------------- */}
+                            {/* INICIO - ⚙️ MENU SIDEBAR: PROGRAMADOR - ADMINISTRADOR */}
+                            {/* ----------------------------------------------------- */}
 
+                            <div className="menu-sidebar-programador-container">
 
-
-
-                            {/* <button 
-                                className="Btn-geral-administrador-prof btn-centralizado largura100px"
-                                onClick={() => navegarERecolher('/interno/RelatoriosAdmin')}
-                            >
-                                Painel Geral
-                            </button> */}
-
-
-                            {/* --- SUBMENU: GERENCIAR --- */}
-                            <div className="submenu-tudo-gerenciar-prof">
-                                <button  
-                                    className="Btn-geral-administrador-prof"
-                                    onClick={(e) => lidarComClique(e, 'gerenciar')}
-                                    aria-expanded={secaoAberta === 'gerenciar'}
-                                >
-                                    Gerenciar
-                                    <span className="icone-seta">
-                                        {secaoAberta === 'gerenciar' ? "🔼" : "🔽"}
-                                    </span>
-                                </button>
-                                
-                                <div className={`submenu-flutuante-gerenciar-prof ${secaoAberta === 'gerenciar' ? 'aberto' : 'fechado'}`}>
-                                    <button onClick={() => navegarERecolher('/interno/ListaColaboradores')}>
-                                        Colaboradores
-                                    </button>
-                                    <button onClick={() => navegarERecolher('/interno/Configuracoes')}>
-                                        Configurações
-                                    </button>
+                                <div className="menu-sidebar-programador-header">
+                                    <div className="menu-sidebar-programador-funcao">
+                                        <span className="menu-sidebar-programador-titulo">Administração</span>
+                                    </div>
                                 </div>
+                                
+                                <div className="menu-sidebar-programador-lista-botoes">
+                                    
+                                    <button 
+                                        className="menu-sidebar-programador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/AdmUsuarios')}
+                                    >
+                                        Usuários <span className="menu-sidebar-programador-icon">👥</span>
+                                    </button>
+                                    
+                                    <button 
+                                        className="menu-sidebar-programador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/AdmFinanceiro')}
+                                    >
+                                        Financeiro <span className="menu-sidebar-programador-icon">💰</span>
+                                    </button>
+                                    
+                                    <button 
+                                        className="menu-sidebar-programador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/AdmConfiguracoes')}
+                                    >
+                                        Configurações <span className="menu-sidebar-programador-icon">⚙️</span>
+                                    </button>
+
+                                    <button 
+                                        className="menu-sidebar-programador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/AdmLogs')}
+                                    >
+                                        Logs <span className="menu-sidebar-programador-icon">📜</span>
+                                    </button>
+
+                                </div>
+
                             </div>
+
+                            {/* --------------------------------------------------- */}
+                            {/* FIM - ⚙️ MENU SIDEBAR: PROGRAMADOR - ADMINISTRADOR */}
+                            {/* --------------------------------------------------- */}
+
+
+
+
+
 
                             <button 
                                 className="Btn-geral-administrador-prof btn-centralizado"
@@ -1172,6 +1199,8 @@ export default function App() {
                             >
                                 Suporte
                             </button>
+
+
                         </>
                     )}
 
@@ -1255,6 +1284,74 @@ export default function App() {
 
 
 
+
+                            {/* --------------------------------------------------- */}
+                            {/* INICIO - 👩‍⚕️ MENU SIDEBAR: CUIDADORA - EXCLUSIVO */}
+                            {/* --------------------------------------------------- */}
+
+                            <div className="menu-sidebar-cuidadora-container">
+
+                                <div className="menu-sidebar-cuidadora-header">
+                                    <div className="menu-sidebar-cuidadora-funcao">
+                                        <span className="menu-sidebar-cuidadora-titulo">Área da Cuidadora</span>
+                                    </div>
+                                </div>
+                                
+                                <div className="menu-sidebar-cuidadora-lista-botoes">
+                                    
+                                    <button 
+                                        className="menu-sidebar-cuidadora-btn-item"
+                                        onClick={() => navegarERecolher('/interno/MeusPlantoes')}
+                                    >
+                                        Meus Plantões <span className="menu-sidebar-cuidadora-icon">⏰</span>
+                                    </button>
+                                    
+                                    <button 
+                                        className="menu-sidebar-cuidadora-btn-item"
+                                        onClick={() => navegarERecolher('/interno/EvolucaoPaciente')}
+                                    >
+                                        Registrar Evolução <span className="menu-sidebar-cuidadora-icon">🩺</span>
+                                    </button>
+                                    
+                                    <button 
+                                        className="menu-sidebar-cuidadora-btn-item"
+                                        onClick={() => navegarERecolher('/interno/EscalaMensal')}
+                                    >
+                                        Minha Escala <span className="menu-sidebar-cuidadora-icon">📅</span>
+                                    </button>
+
+                                    <button 
+                                        className="menu-sidebar-cuidadora-btn-item"
+                                        onClick={() => navegarERecolher('/interno/AssumirPlantao')}
+                                    >
+                                        Assumir Plantão <span className="menu-sidebar-cuidadora-icon">🤝</span>
+                                    </button>
+
+                                    <button 
+                                        className="menu-sidebar-cuidadora-btn-item menu-sidebar-cuidadora-btn-alerta"
+                                        onClick={() => navegarERecolher('/interno/SuporteOperacional')}
+                                    >
+                                        Suporte / S.O.S <span className="menu-sidebar-cuidadora-icon">🚨</span>
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            {/* ------------------------------------------------- */}
+                            {/* FIM - 👩‍⚕️ MENU SIDEBAR: CUIDADORA - EXCLUSIVO */}
+                            {/* ------------------------------------------------- */}
+
+
+
+
+
+
+
+
+
+
+
                         </>
                     )}
 
@@ -1289,51 +1386,88 @@ export default function App() {
                                 Diretrizes
                             </button>
 
-                            {/* --- SUBMENU: SOLICITAÇÃO --- */}
-                            <div className="submenu-tudo-solicitacao-prof">
-                                <button 
-                                    className="Btn-geral-cliente-prof BotaoBloqueado" 
-                                    onClick={(e) => lidarComClique(e, 'solicitacao')}
-                                    aria-expanded={secaoAberta === 'solicitacao'}
-                                >
-                                    Solicitação
-                                    <span className="icone-seta">
-                                        {secaoAberta === 'solicitacao' ? "🔼" : "🔽"}
-                                    </span>
-                                </button>
+                          
 
-                                <div className={`submenu-flutuante-cliente-prof ${secaoAberta === 'solicitacao' ? 'aberto' : 'fechado'}`}>
-                                    <button onClick={() => navegarERecolher('/interno/ClienteSolicitacaoNova')}>Serviços</button>
-                                    <button onClick={() => navegarERecolher('/interno/ClienteMinhasSolicitacoes')}>Orçamento</button>
-                                    <button onClick={() => navegarERecolher('/interno/HistoricoSolicitacoes')}>Extrato</button>
-                                </div>
-                            </div>
 
-                            {/* --- SUBMENU: PACIENTE --- */}
+
+                            {/* ------------------------------- */}
+                            {/* INICIO - SIDEBAR FIXA: PACIENTE */}
+                            {/* ------------------------------- */}
+
                             <div className="submenu-tudo-paciente-prof">
-                                <button 
-                                    className={`Btn-geral-cliente-prof btn-fonte-paciente ${perfilEstaCompletoCliente ? '' : 'BotaoBloqueado'}`}
-                                    onClick={(e) => perfilEstaCompletoCliente && lidarComClique(e, 'paciente')}
-                                    aria-expanded={secaoAberta === 'paciente'}
-                                    title={!perfilEstaCompletoCliente ? "Preencha Contato e Endereço para liberar." : "Gerenciar Paciente"}
-                                >
-                                    Paciente
-                                    <span className="icone-seta">
-                                        {!perfilEstaCompletoCliente ? "🔒" : (secaoAberta === 'paciente' ? "🔼" : "🔽")}
-                                    </span>
-                                </button>
                                 
-                                <div className={`submenu-flutuante-cliente-prof ${secaoAberta === 'paciente' ? 'aberto' : 'fechado'}`}>
-                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}>Identificação</button>
-                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteEndereco')}>Endereço</button>
-                                    <button onClick={() => navegarERecolher('/interno/PacienteRemedio')}>Medicamentos</button>
-                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}>Alimentação</button>
-                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteBanho')}>Banho</button>
-                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteBanho')}>Acordado</button>
-                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteBanho')}>Recreação</button>
-                                    <button className="BotaoBloqueado" onClick={() => navegarERecolher('/interno/PacienteEmergencia')}>Emergência</button>
+                                {/* Título da Seção (Substituiu o antigo Botão Dropdown) */}
+                                <h3 className="titulo-setor-sidebar">
+                                    Prontuario do Paciente {!perfilEstaCompletoCliente && <span title="Perfil Incompleto"></span>}
+                                </h3>
+
+                                
+                                <div className="lista-botoes-vertical">
+                                    <button 
+                                        // className="BotaoBloqueado" 
+                                        onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}
+                                    >
+                                        Identificação
+                                    </button>
+                                    
+                                    <button 
+                                        // className="BotaoBloqueado" 
+                                        onClick={() => navegarERecolher('/interno/PacienteEndereco')}
+                                    >
+                                        Endereço
+                                    </button>
+                                    
+                                    <button 
+                                        onClick={() => navegarERecolher('/interno/PacienteRemedio')}
+                                    >
+                                        Medicamentos
+                                    </button>
+                                    
+                                    <button 
+                                        className="BotaoBloqueado" 
+                                        onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}
+                                    >
+                                        Alimentação
+                                    </button>
+                                    
+                                    <button 
+                                        className="BotaoBloqueado" 
+                                        onClick={() => navegarERecolher('/interno/PacienteBanho')}
+                                    >
+                                        Banho
+                                    </button>
+                                    
+                                    <button 
+                                        className="BotaoBloqueado" 
+                                        onClick={() => navegarERecolher('/interno/PacienteAcordado')}
+                                    >
+                                        Acordado
+                                    </button>
+                                    
+                                    <button 
+                                        className="BotaoBloqueado" 
+                                        onClick={() => navegarERecolher('/interno/PacienteRecreacao')}
+                                    >
+                                        Recreação
+                                    </button>
+                                    
+                                    <button 
+                                        className="BotaoBloqueado" 
+                                        onClick={() => navegarERecolher('/interno/PacienteEmergencia')}
+                                    >
+                                        Emergência
+                                    </button>
                                 </div>
                             </div>
+
+                            {/* ------------------------------- */}
+                            {/* INICIO - SIDEBAR FIXA: PACIENTE */}
+                            {/* ------------------------------- */}
+
+
+
+
+
                         </>
                     )}
 
@@ -1422,15 +1556,14 @@ export default function App() {
 
 
 
-
-
-
                         {/* ------------------------------------ */}
                         {/* INICIO DO - SUB MENU - DADOS DO USUARIO */}
                         {/* ------------------------------------ */}
                         
                         <div className={`SubmenuFlutuante-Estilizado ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}>
                             
+
+
                             <div className="Header-Menu-Perfil">
                                 <strong>{dadosToken?.nome || "Usuário"}</strong>
                                 <span>{formatarCPF(dadosToken?.cpef)}</span>
@@ -1537,8 +1670,6 @@ export default function App() {
 
 
                                   
-
-
     
                             {/* ------------------------------------------- */}
                             {/* INICIO - BOTAO SAIR - PARA TODOS O USUARIOS */}
@@ -1646,6 +1777,7 @@ export default function App() {
                             <BalaoDicaCriarConta 
                                 exibirBalaoDicaCriarConta={exibirBalaoDicaCriarConta} 
                             />
+
                         </div>
 
                         {/* FIM - BOTAO CRIAR CONTA */}
@@ -1736,8 +1868,10 @@ export default function App() {
 
 
 
+                    {/* -------------------------- */}
+                    {/* INICIO - 🌍 Rotas Públicas */}
+                    {/* -------------------------- */}
 
-                    {/* 🌍 Rotas Públicas */}
                     <Route 
                         path="/" 
                         element={
@@ -1746,7 +1880,6 @@ export default function App() {
                             />
                         } 
                     />
-
 
                     <Route 
                         path="/sobre" 
@@ -1757,7 +1890,6 @@ export default function App() {
                         } 
                     /> 
 
-
                     <Route 
                         path="/contato" 
                         element={
@@ -1766,7 +1898,6 @@ export default function App() {
                             />
                         } 
                     />
-
 
                     <Route 
                         path="/logar" 
@@ -1778,8 +1909,6 @@ export default function App() {
                         } 
                     />
 
-
-
                     <Route 
                         path="/Cadastrar" 
                         element={
@@ -1790,13 +1919,20 @@ export default function App() {
                         } 
                     />
 
-
-
+                    {/* -------------------------- */}
+                    {/* FIM - 🌍 Rotas Públicas */}
+                    {/* -------------------------- */}
                
 
 
 
-                    {/* 🔐 Setor Privativo: Acesso condicionado ao fim do carregamento */}
+
+
+
+                    {/* ----------------------------------------------------------------------- */}
+                    {/* INICIO - 🔐 Setor Privativo: Acesso condicionado ao fim do carregamento */}
+                    {/* ----------------------------------------------------------------------- */}
+
                     <Route 
                         path="/interno" 
                         element={
@@ -1809,8 +1945,14 @@ export default function App() {
                         } 
                     >
 
+
                         {/* 🧭 Rota Index: Evita tela branca ao acessar /interno diretamente */}
-                        <Route index element={<Navigate to="UsuarioLogado" replace />} />
+                        <Route 
+                            index 
+                            element={
+                                <Navigate to="UsuarioLogado" replace />
+                            } 
+                        />
 
 
                         {/* 🧱 Controle do Programador dentro do Interno */}
@@ -1952,7 +2094,7 @@ export default function App() {
 
 
 
-                        {/* /* 🛣️ Definição de rotas para os setores de Pacientes */}
+                        {/* 🛣️ Definição de rotas para os setores de Pacientes */}
                         <Route path="PacienteApresentacaoEmpresa"element={<PacienteApresentacaoEmpresa />} />
                         <Route path="PacienteIdentificacao" element={<PacienteIdentificacao />} />
                         <Route path="PacienteEndereco" element={<PacienteEndereco />} />
@@ -1969,6 +2111,10 @@ export default function App() {
 
 
                     </Route>
+
+                    {/* ----------------------------------------------------------------------- */}
+                    {/* FIM - 🔐 Setor Privativo: Acesso condicionado ao fim do carregamento */}
+                    {/* ----------------------------------------------------------------------- */}
 
 
 

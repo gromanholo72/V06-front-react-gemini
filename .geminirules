@@ -1033,3 +1033,49 @@ Sempre que criar listas de itens com múltiplos campos (ex: Nome, Dose, Horário
 - **Campos Curtos**: Classes `.flex-paciente-remedio-dose` e `.flex-paciente-remedio-horario` com `flex: 1 1 110px;`.
 
 > 📐 **Nota de Engenharia**: Este layout garante que em telas mobile o "Nome" ocupe a linha superior e a "Dose/Horário" fiquem lado a lado logo abaixo, antes de empilharem totalmente.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+📏 REGRA DE ESPAÇAMENTO DE BLOCOS (PADRÃO MAESTRO)
+Contexto: Aplicável a todos os arquivos de código (JSX, JS, CSS, HTML).
+
+Delimitadores de Bloco: Considere um "Bloco" qualquer conjunto de código envolvido por comentários de cabeçalho e rodapé (Ex: /* INICIO ... */ e /* FIM ... */).
+
+Injeção de Espaçamento: Entre o fechamento de um bloco (/* FIM ... */) e a abertura do próximo bloco (/* INICIO ... */), 
+você DEVE obrigatoriamente inserir exatas 15 linhas em branco (15 quebras de linha).
+
+Visualização: O objetivo é criar um "respiro" visual extremo para facilitar a navegação em arquivos longos.
+
+
+/* -------------------------------------------------------- */
+/* FIM - BLOCO ANTERIOR                                     */
+/* -------------------------------------------------------- */
+(linha vazia 1)
+(linha vazia 2)
+(linha vazia 3)
+(linha vazia 4)
+...
+...
+(linha vazia 15)
+/* -------------------------------------------------------- */
+/* INICIO - PRÓXIMO BLOCO                                   */
+/* -------------------------------------------------------- */
+
+Sempre que gerar ou editar blocos de código que possuam comentários de 
+início e fim (padrão Maestro), insira obrigatoriamente um intervalo de 5 
+linhas vazias entre o término de um bloco e o início do próximo. 
+Não ignore esta regra mesmo em códigos curtos.

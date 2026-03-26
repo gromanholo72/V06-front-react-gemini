@@ -216,13 +216,14 @@ export function PacienteCadastroRemedio() {
     /* -------------------------------------------------------- */
     const salvarDadosRemedio = async () => {
 
-        // if (carregandoOperacao) return;
+        if (carregandoOperacao) return;
 
         setCarregandoOperacao(true);
-        // 🧹 Limpa mensagens anteriores antes de começar
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setMsg({ tipo: '', texto: '' });
 
         try {
+
             const cpfLimpo = dadosToken?.cpef ? dadosToken.cpef.replace(/\D/g, "") : "";
 
             console.log("");
@@ -259,18 +260,23 @@ export function PacienteCadastroRemedio() {
                 }
             };
 
-            const resposta = await fetch(`${URL_SERVIDOR}/atualizar-paciente-remedio`, {
+            // ⏳ UX: Garante tempo mínimo de 1 segundo de loading
+            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
+
+            const requisicao = await fetch(`${URL_SERVIDOR}/atualizar-paciente-remedio`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
+
+            const [resposta] = await Promise.all([requisicao, tempoMinimo]);
 
             const resultado = await resposta.json();
 
             if (resposta.ok) {
 
                 console.log("✅ FUNDAÇÃO: Medicamento sincronizado!");
-                setMsg({ tipo: 'sucesso', texto: '✅ Remédio cadastrado com sucesso!' });
+                setMsg({ tipo: 'sucesso', texto: '✅ Medicamento cadastrado com sucesso!' });
 
                 // Limpeza de campos
                 setRemedio('');
@@ -326,7 +332,7 @@ export function PacienteCadastroRemedio() {
 
                 <div className="perfil-paciente-remedio-usuario-card">
                     
-                    <div className="perfil-paciente-remedio-card-titulo">💊 CADASTRO DE REMÉDIO</div>
+                    <div className="perfil-paciente-remedio-card-titulo">💊 CADASTRO DE MEDICAMENTOS</div>
 
                     {msg.texto && <div className={`cad-admin-feedback-paciente-remedio ${msg.tipo}`}>{msg.texto}</div>}
 
@@ -404,7 +410,7 @@ export function PacienteCadastroRemedio() {
                                 disabled={carregandoOperacao}
                                 onClick={salvarDadosRemedio}
                             >
-                                📥 Incluir Remédio
+                                📥 Incluir Medicamento
                             </button>
                         </div>
 
@@ -420,7 +426,7 @@ export function PacienteCadastroRemedio() {
                 {/* -------------------------------------- */}
 
                 <div className="perfil-paciente-remedio-usuario-card">
-                    <div className="perfil-paciente-remedio-card-titulo">📋 LISTA DE MEDICAMENTOS</div>
+                    <div className="perfil-paciente-remedio-card-titulo">📋 LISTA DE MEDICAMENTOS CADASTRADOS</div>
                     <div className="perfil-paciente-remedio-card-corpo">
                         <table className="tabela-remedios">
                             <thead>

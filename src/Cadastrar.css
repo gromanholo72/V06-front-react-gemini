@@ -18,7 +18,7 @@
     flex-direction: column;
     align-items: center; 
     width: 100%;
-    max-width: 650px;
+    max-width: 740px;
 
 }
 
@@ -77,7 +77,7 @@
 
 
 .CadUsuarioLargNome { 
-    min-width: 250px; 
+    min-width: 260px; 
     flex: 10;
 }
 
@@ -88,7 +88,7 @@
 
 
 .CadUsuarioLargMail { 
-    min-width: 250px; 
+    min-width: 260px; 
     flex: 10; 
 }
 
@@ -103,22 +103,29 @@
 .CadUsuarioLargFunc { 
     /* max-width: 250px;  */
     min-width: 250px; 
-    flex: 1; 
+    flex: 10; 
 }
 
 .CadUsuarioLargSenh { 
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+    
     flex: 1;
     min-width: 250px;
 }
 
 
 .CadUsuarioLargDatC { 
-    min-width: 110px; 
+    min-width: 140px; 
     /* max-width: 250px;  */
     flex: 1; 
+}
+
+/* 🧱 GRUPO QUEBRA LINHA: Força Senha e Data para a linha debaixo */
+.GrupoSenhaData {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
 }
 
 
@@ -293,24 +300,76 @@
 
 
 
-/* 📋 CPEF-TEXTES: Estilização para o container dos botões de teste */
-.CpefTextes {
+/* 🧪 organized test buttons (SAGRADO 📐) - PADRÃO LOGAR.CSS */
+.CpefTextes-Cad {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
-    padding: 20px;
     width: 100%;
-    /* 🚨 IMPORTANTE: Garante que ele não fique escondido sob outros elementos */
-    min-height: 50px; 
-    background: rgba(255, 255, 255, 0.05); /* Um fundo sutil para teste */
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
-    margin-top: 30px;
 }
 
-/* 🔘 ESTILO DOS BOTÕES DE TESTE (bot4 até bot10) */
-.bot4, .bot5, .bot6, .bot7, .bot8, .bot9, .bot10 {
-    padding: 10px 20px;
+/* 🧱 LINHA-BOTOES-TESTE: Agrupa os botões em linhas organizadas */
+.Linha-Botoes-Teste-Cad {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+/* 🛠️ LINHA-PROG: Destaque exclusivo para o grupo do programador */
+.Linha-Prog-Cad {
+    background-color: rgba(44, 62, 80, 0.15); 
+    border-radius: 12px;
+    border: 1px dashed #2c3e50;
+}
+
+/* 🛡️ LINHA-ADMIN: Destaque exclusivo para o grupo de administradores */
+.Linha-Admin-Cad {
+    background-color: rgba(48, 99, 150, 0.4);
+    border-radius: 12px;
+    border: 1px dashed #306396; 
+}
+
+/* 🎧 LINHA-ATENDENTE: Destaque exclusivo para o grupo de atendentes */
+.Linha-Atendente-Cad {
+    background-color: rgba(155, 89, 182, 0.4);
+    border-radius: 12px;
+    border: 1px dashed #8e44ad; 
+}
+
+/* 🏠 LINHA-CLIENTE: Destaque exclusivo para o grupo de clientes */
+.Linha-Cliente-Cad {
+    background-color: rgba(212, 175, 55, 0.4);
+    border-radius: 12px;
+    border: 1px dashed #d4af37; 
+}
+
+/* 👩‍⚕️ LINHA-CUIDA: Destaque exclusivo para o grupo de cuidadoras */
+.Linha-Cuida-Cad {
+    background-color: rgba(79, 170, 128, 0.4);
+    border-radius: 12px;
+    border: 1px dashed #4faa80; 
+}
+
+/* 🏷️ ROTULO-TESTE: Estilo do label centralizado nos grupos */
+.Rotulo-Teste-Cad {
+    width: 100%;
+    text-align: center;
+    margin: 5px 0 0 0;
+    color: #2c3e50;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* 🔘 BOT-TESTE: Estilo unificado dos botões de teste */
+.Botao-Teste-Cad {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 10px 15px;
     cursor: pointer;
     background-color: #34495e;
     color: white;
@@ -320,7 +379,7 @@
     transition: all 0.2s;
 }
 
-.bot4:hover, .bot5:hover, .bot6:hover {
+.Botao-Teste-Cad:hover {
     background-color: #7f8c8d;
     transform: scale(1.05);
 }
