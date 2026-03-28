@@ -1,0 +1,121 @@
+
+/* ----------------------------------------------------------- */
+/* 🛠️ CSS MODULAR: Relatório de Clientes (Versão 3 - Alinhado) */
+/* ----------------------------------------------------------- */
+
+.adm-relatorio-container {
+    padding: 30px;
+    background-color: #f4f7f6;
+    min-height: 100vh;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.adm-relatorio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.adm-relatorio-header h2 {
+    color: #2c3e50;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+/* 🚀 Botão de Exportação */
+.btn-exportar {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-exportar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+}
+
+/* 📊 Tabela de Dados - Engenharia de Alinhamento */
+.adm-relatorio-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.adm-relatorio-tabela {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Cabeçalho: Centralizado por padrão, exceto o Nome */
+.adm-relatorio-tabela th {
+    background-color: #34495e;
+    color: #ecf0f1;
+    padding: 18px 15px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    text-align: center; /* Centraliza tudo no header */
+}
+
+/* 🎯 Exceção: Alinhamento à Esquerda para a coluna do Nome */
+.adm-relatorio-tabela th:nth-child(2),
+.adm-relatorio-tabela td:nth-child(2) {
+    text-align: left;
+    padding-left: 25px;
+}
+
+/* Células: Centralizadas por padrão */
+.adm-relatorio-tabela td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    color: #444;
+    font-size: 0.95rem;
+    text-align: center; /* Centraliza ID, Plano, Status e Ações */
+}
+
+.nome-destaque {
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+/* 🟢 Status Pills */
+.status-pill {
+    display: inline-block; /* Garante que o padding funcione no centro */
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    min-width: 100px; /* Mantém um padrão visual */
+}
+
+.status-pill.ativo { background-color: #d4edda; color: #155724; }
+.status-pill.aguardando { background-color: #fff3cd; color: #856404; }
+
+/* 👁️ Botão Visualizar */
+.btn-visualizar {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-visualizar:hover {
+    background-color: #34495e;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

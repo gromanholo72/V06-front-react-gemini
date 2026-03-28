@@ -1,0 +1,114 @@
+.detalhes-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+}
+
+.detalhes-modal {
+    background: #fff;
+    width: 90%;
+    max-width: 700px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.detalhes-header {
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detalhes-corpo {
+    padding: 25px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.detalhes-secao {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.detalhes-secao h3 {
+    font-size: 1.1rem;
+    color: #34495e;
+    margin-bottom: 15px;
+}
+
+.detalhes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.item {
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.item strong {
+    color: #7f8c8d;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.tag-func {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.tag-func.administrador { color: #d4af37; }
+.tag-func.cuidadora { color: #2ecc71; }
+.tag-func.cliente { color: #3498db; }
+
+.debug-json {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    border: 1px solid #ddd;
+    color: #c0392b;
+    white-space: pre-wrap;
+}
+
+.btn-fechar {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.btn-voltar {
+    width: 100%;
+    padding: 12px;
+    background: #34495e;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-voltar:hover { background: #1a252f; }

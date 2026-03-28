@@ -834,16 +834,16 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                             })}/> 
 
                         <input type="button" className="Botao-Teste-Login" value="PEDRO" 
-                            style={getEstiloBotao("453.368.658-30")}
+                            style={getEstiloBotao("004.838.240-03")}
                             onClick={() => preencherCampos({
-                                cpef: "453.368.658-30",
+                                cpef: "004.838.240-03",
                                 senh: "12345"
                             })}/>
 
                         <input type="button" className="Botao-Teste-Login" value="CARLA" 
-                            style={getEstiloBotao("939.836.130-37")}
+                            style={getEstiloBotao("342.297.530-63")}
                             onClick={() => preencherCampos({
-                                cpef: "939.836.130-37",
+                                cpef: "342.297.530-63",
                                 senh: "12345"
                             })}/>
 

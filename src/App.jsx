@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'; 
 import { Routes, Route, useNavigate, Navigate, Outlet } from 'react-router-dom'; // 🧱 Importando Outlet
-import { ref, onValue } from 'firebase/database'; // Importe do Firebase RTDB
+import { ref, get, set, push, serverTimestamp, onValue } from 'firebase/database'; // Importe do Firebase RTDB
 import { db_realtime } from './firebaseConfig';
 import { useAuth } from './AutenticacaoContexto';
 
@@ -36,6 +36,15 @@ import { UsuarioReferencias } from './UsuarioReferencias';
 import { CadAdministrador } from './CadAdministrador';
 import { ListaUsuarios } from './ListaUsuarios';
 import { ListaUsuariosToken } from './ListaUsuariosToken';
+
+
+
+import {ProgramadorRelatorioCliente } from './ProgramadorRelatorioCliente';
+
+
+
+
+import { AdministradorRelatorioClientes } from './AdministradorRelatorioClientes';
 
 
 
@@ -722,21 +731,28 @@ export default function App() {
 
 
 
-                setStatusAdministrador({
-                    contato: temContato,
-                    endereco: temEndereco
+                // 📐 Estabilização Maestro: Só atualiza se o valor BOLEANO mudar
+                setStatusAdministrador(prev => {
+                    if (prev.contato === temContato && prev.endereco === temEndereco) return prev;
+                    return { contato: temContato, endereco: temEndereco };
                 });
 
-                setStatusCuidadora({
-                    contato: temContato,
-                    endereco: temEndereco,
-                    cnpj: temEmpresa,
-                    formacao: temFormacao
+                setStatusCuidadora(prev => {
+                    if (prev.contato === temContato && 
+                        prev.endereco === temEndereco && 
+                        prev.cnpj === temEmpresa && 
+                        prev.formacao === temFormacao) return prev;
+                    return { 
+                        contato: temContato, 
+                        endereco: temEndereco, 
+                        cnpj: temEmpresa, 
+                        formacao: temFormacao 
+                    };
                 });
 
-                setStatusCliente({
-                    contato: temContato,
-                    endereco: temEndereco
+                setStatusCliente(prev => {
+                    if (prev.contato === temContato && prev.endereco === temEndereco) return prev;
+                    return { contato: temContato, endereco: temEndereco };
                 });
 
    
@@ -783,7 +799,6 @@ export default function App() {
 
     }, [dadosToken?.cpef]); 
 
-
     const perfilEstaCompletoAdministrador = Object.values(statusAdministrador).every(status => status === true);
     const perfilEstaCompletoCuidadora = Object.values(statusCuidadora).every(status => status === true);
     const perfilEstaCompletoCliente = Object.values(statusCliente).every(status => status === true);
@@ -801,9 +816,105 @@ export default function App() {
 
     }, [perfilEstaCompletoAdministrador, perfilEstaCompletoCuidadora, perfilEstaCompletoCliente]);
 
+    /* 🔍 Monitor: Status CUIDADORA (Vigilância Maestro) */
+    useEffect(() => {
+        // 🛡️ TRAVA DE PERFIL: Só executa se o usuário logado for cuidadora
+        if (dadosToken?.func !== 'cuidadora') return;
+
+        const cpfLimpo = dadosToken?.cpef?.replace(/\D/g, "");
+        
+        // console.log("");
+        // console.log("🔍 -----------------------------------------------------------");
+        // console.log("🔍 MONITOR CUIDADORA: Ativado para Perfil Cuidadora");
+        // console.log("🔍 Status Local (Vite)  :", perfilEstaCompletoCuidadora ? "✅ Completo" : "❌ Incompleto");
+
+        if (!cpfLimpo) {
+            console.log("🔍 🛡️ TRAVA: CPF ausente. Abortando.");
+            console.log("🔍 -----------------------------------------------------------");
+            return;
+        }
+
+        const atualizarStatusCuidadora = async () => {
+            try {
+                const statusRef = ref(db_realtime, `usuarios/${cpfLimpo}/dadosInterno/dadosUsuarioCompleto`);
+                const snapshot = await get(statusRef);
+                const statusNoBanco = snapshot.val();
+
+                if (perfilEstaCompletoCuidadora && statusNoBanco !== true) {
+                    await set(statusRef, true);
+                    console.log("📐 🚀 LOG: Gravando 'true' no perfil da Cuidadora.");
+                } 
+                else if (!perfilEstaCompletoCuidadora && statusNoBanco === true) {
+                    await set(statusRef, false);
+                    console.log("📐 ⚠️ LOG: Perfil Cuidadora REGREDIU.");
+                } else {
+                    console.log("🔍 ✨ LOG: Sincronia de Cuidadora OK.");
+                }
+            } catch (error) {
+                console.error("❌ 📐 Erro no monitor da Cuidadora:", error);
+            }
+            console.log("🔍 -----------------------------------------------------------");
+        };
+
+        atualizarStatusCuidadora();
+    }, [perfilEstaCompletoCuidadora, dadosToken?.func]); // 🎯 Adicionado func como dependência
+
+    /* 🔍 Monitor: Status CLIENTE (Vigilância Maestro) */
+    useEffect(() => {
+        // 🛡️ TRAVA DE PERFIL: Só executa se o usuário logado for cliente
+        if (dadosToken?.func !== 'cliente') return;
+
+        const cpfLimpo = dadosToken?.cpef?.replace(/\D/g, "");
+
+        // console.log("");
+        // console.log("🔍 -----------------------------------------------------------");
+        // console.log("🔍 MONITOR CLIENTE: Ativado para Perfil Cliente");
+        // console.log("🔍 Status Local (Vite)  :", perfilEstaCompletoCliente ? "✅ Completo" : "❌ Incompleto");
+
+        if (!cpfLimpo) {
+            console.log("🔍 🛡️ TRAVA: CPF ausente. Abortando.");
+            console.log("🔍 -----------------------------------------------------------");
+            return;
+        }
+
+        const atualizarStatusCliente = async () => {
+            try {
+                const statusRef = ref(db_realtime, `usuarios/${cpfLimpo}/dadosInterno/dadosUsuarioCompleto`);
+                const snapshot = await get(statusRef);
+                const statusNoBanco = snapshot.val();
+
+                if (perfilEstaCompletoCliente && statusNoBanco !== true) {
+                    await set(statusRef, true);
+                    console.log("📐 🚀 LOG: Gravando 'true' no perfil do Cliente.");
+                } 
+                else if (!perfilEstaCompletoCliente && statusNoBanco === true) {
+                    await set(statusRef, false);
+                    console.log("📐 ⚠️ LOG: Perfil Cliente REGREDIU.");
+                } else {
+                    console.log("🔍 ✨ LOG: Sincronia de Cliente OK.");
+                }
+            } catch (error) {
+                console.error("❌ 📐 Erro no monitor do Cliente:", error);
+            }
+            console.log("🔍 -----------------------------------------------------------");
+        };
+
+        atualizarStatusCliente();
+    }, [perfilEstaCompletoCliente, dadosToken?.func]);
+
     // -------------------------------------------------------------
     /* FIM - 🛠️ VIGILÂNCIA DE PREENCHIMENTO DOS CARDS - CLIENTE */
     // -------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1005,42 +1116,65 @@ export default function App() {
                         <>
 
 
+                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* INICIO - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - PROGRAMADOR */}
+                            {/* -------------------------------------------------------------------------------------------- */}
 
-                            <button 
-                                className="Btn-geral-programador-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/interno/UsuarioLogado')}
-                            >
-                                Inicio
-                            </button>
+                            <div className="menu-horizontal-programador-container">
 
 
+                                {/* ------------------------------------ */}
+                                {/* INICIO - BOTOES COMUNS - PROGRAMADOR */}
+                                {/* ------------------------------------ */}
 
-
-                            {/* --- SUBMENU: CADASTRAR --- */}
-                            <div className="submenu-tudo-cadastrar-prof">
-                                <button  
-                                    className="Btn-geral-programador-prof"
-                                    onClick={(e) => lidarComClique(e, 'cadastrar')}
-                                    aria-expanded={secaoAberta === 'cadastrar'}
+                                <button className="Btn-geral-programador-prof btn-centralizado"
+                                    onClick={() => navegarERecolher('/interno/UsuarioLogado')}
                                 >
-                                    Cadastrar
-                                    <span className="icone-seta">
-                                        {secaoAberta === 'cadastrar' ? "🔼" : "🔽"}
-                                    </span>
+                                    Inicio
                                 </button>
-                                
-                                {/* 🚀 O Submenu não tem mais o && para permitir a animação de saída */}
-                                <div className={`submenu-flutuante-cadastrar-prof ${secaoAberta === 'cadastrar' ? 'aberto' : 'fechado'}`}>
-                                    <button onClick={() => navegarERecolher('/interno/CadAdministrador')}>
-                                        Administrador
+
+                                {/* ------------------------------------ */}
+                                {/* FIM - BOTOES COMUNS - PROGRAMADOR */}
+                                {/* ------------------------------------ */}
+
+
+
+                                {/* ----------------------------------------- */}
+                                {/* INICIO - SUBMENU HORIZONTAL - PROGRAMADOR */}
+                                {/* ----------------------------------------- */}
+
+                                <div className="submenu-tudo-cadastrar-prof">
+                                    <button  
+                                        className="Btn-geral-programador-prof"
+                                        onClick={(e) => lidarComClique(e, 'cadastrar')}
+                                        aria-expanded={secaoAberta === 'cadastrar'}
+                                    >
+                                        Cadastrar
+                                        <span className="icone-seta">
+                                            {secaoAberta === 'cadastrar' ? "🔼" : "🔽"}
+                                        </span>
                                     </button>
-                                    <button onClick={() => navegarERecolher('/interno/CadAtendente')}>
-                                        Atendente
-                                    </button>
+                                    
+                                    {/* 🚀 O Submenu não tem mais o && para permitir a animação de saída */}
+                                    <div className={`submenu-flutuante-cadastrar-prof ${secaoAberta === 'cadastrar' ? 'aberto' : 'fechado'}`}>
+                                    
+                                        <button onClick={() => navegarERecolher('/interno/CadAdministrador')}>
+                                            Administrador
+                                        </button>
+                                       
+                                    </div>
                                 </div>
+
+                                {/* ----------------------------------------- */}
+                                {/* FIM - SUBMENU HORIZONTAL - PROGRAMADOR */}
+                                {/* ----------------------------------------- */}
+
+    
                             </div>
 
-
+                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* FIM - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - PROGRAMADOR */}
+                            {/* -------------------------------------------------------------------------------------------- */}
 
 
 
@@ -1059,27 +1193,25 @@ export default function App() {
                                 </div>
                                 
                                 <div className="menu-sidebar-programador-lista-botoes">
+
                                     <button 
                                         className="menu-sidebar-programador-btn-item"
                                         onClick={() => navegarERecolher('/interno/RelClientes')}
                                     >
-                                        Clientes <span className="menu-sidebar-programador-icon">📊</span>
-                                    </button>
-                                    
-                                    <button 
-                                        className="menu-sidebar-programador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/RelCuidadoras')}
-                                    >
-                                        Cuidadoras <span className="menu-sidebar-programador-icon">👩‍⚕️</span>
-                                    </button>
-                                    
-                                    <button 
-                                        className="menu-sidebar-programador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/RelSolicitacoes')}
-                                    >
-                                        Solicitações <span className="menu-sidebar-programador-icon">📝</span>
+                                        Usuarios-leitura antiga <span className="menu-sidebar-programador-icon">👥</span>
                                     </button>
 
+
+
+                                    <button 
+                                        className="menu-sidebar-programador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/ProgramadorRelatorioCliente')}
+                                    >
+                                        Usuarios <span className="menu-sidebar-programador-icon">👥</span>
+                                    </button>
+
+
+                                    
                                 </div>
 
                             </div>
@@ -1088,18 +1220,6 @@ export default function App() {
                             {/* FIM - 📊 MENU SIDEBAR: PROGRAMADOR - RELATÓRIOS */}
                             {/* ----------------------------------------------- */}
 
-
-
-
-
-
-
-                            <button 
-                                className="Btn-geral-programador-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/ListaUsuarios')}
-                            >
-                                Usuários
-                            </button>
 
 
 
@@ -1114,96 +1234,105 @@ export default function App() {
                         <>
 
 
-                            <button 
-                                className="Btn-geral-administrador-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/interno/UsuarioLogado')}
-                            >
-                                Inicio
-                            </button>
+                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* INICIO - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - ADMINISTRADOR */}
+                            {/* -------------------------------------------------------------------------------------------- */}
 
-                            <button 
-                                className="Btn-geral-administrador-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/interno/Funcoes')}
-                            >
-                                Funcoes
-                            </button>
+                            <div className="menu-horizontal-administrador-container">
+
+                                {/* -------------------------------------------------------------------------------------------- */}
+                                {/* INICIO - BOTOES DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - ADMINISTRADOR */}
+                                {/* -------------------------------------------------------------------------------------------- */}
+
+                                <button className="Btn-geral-administrador-prof btn-centralizado"
+                                    onClick={() => navegarERecolher('/interno/UsuarioLogado')}
+                                >
+                                    Inicio
+                                </button>
+
+                                <button className="Btn-geral-administrador-prof btn-centralizado"
+                                    onClick={() => navegarERecolher('/interno/Funcoes')}
+                                >
+                                    Funcoes
+                                </button>
 
 
+                                {/* -------------------------------------------------------------------------------------------- */}
+                                {/* FIM - BOTOES DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - ADMINISTRADOR */}
+                                {/* -------------------------------------------------------------------------------------------- */}
+
+                            </div>
+
+                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* INICIO - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - ADMINISTRADOR */}
+                            {/* -------------------------------------------------------------------------------------------- */}
+
+                            
 
 
-                            {/* ----------------------------------------------------- */}
-                            {/* INICIO - ⚙️ MENU SIDEBAR: PROGRAMADOR - ADMINISTRADOR */}
-                            {/* ----------------------------------------------------- */}
+                            {/* --------------------------------------- */}
+                            {/* INICIO - MENU SIDEBAR: administrador */}
+                            {/* ---------------------------------------- */}
 
-                            <div className="menu-sidebar-programador-container">
+                            <div className="menu-sidebar-administrador-container">
 
-                                <div className="menu-sidebar-programador-header">
-                                    <div className="menu-sidebar-programador-funcao">
-                                        <span className="menu-sidebar-programador-titulo">Administração</span>
+                                <div className="menu-sidebar-administrador-header">
+                                    <div className="menu-sidebar-administrador-funcao">
+                                        <span className="menu-sidebar-administrador-titulo">Administração</span>
                                     </div>
                                 </div>
                                 
-                                <div className="menu-sidebar-programador-lista-botoes">
+                                <div className="menu-sidebar-administrador-lista-botoes">
                                     
                                     <button 
-                                        className="menu-sidebar-programador-btn-item"
+                                        className="menu-sidebar-administrador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/AdministradorRelatorioClientes')}
+                                    >
+                                        <span>Clientes</span> <span className="menu-sidebar-administrador-icon">👥</span>
+                                    </button>
+
+
+                                    <button 
+                                        className="menu-sidebar-administrador-btn-item"
                                         onClick={() => navegarERecolher('/interno/AdmUsuarios')}
                                     >
-                                        Usuários <span className="menu-sidebar-programador-icon">👥</span>
-                                    </button>
-                                    
-                                    <button 
-                                        className="menu-sidebar-programador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/AdmFinanceiro')}
-                                    >
-                                        Financeiro <span className="menu-sidebar-programador-icon">💰</span>
-                                    </button>
-                                    
-                                    <button 
-                                        className="menu-sidebar-programador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/AdmConfiguracoes')}
-                                    >
-                                        Configurações <span className="menu-sidebar-programador-icon">⚙️</span>
+                                        <span>Cuidadoras</span> <span className="menu-sidebar-administrador-icon">👩‍⚕️</span>
                                     </button>
 
                                     <button 
-                                        className="menu-sidebar-programador-btn-item"
+                                        className="menu-sidebar-administrador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/AdmFinanceiro')}
+                                    >
+                                        <span>Financeiro</span> <span className="menu-sidebar-administrador-icon">💰</span>
+                                    </button>
+                                    
+                                    <button 
+                                        className="menu-sidebar-administrador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/AdmConfiguracoes')}
+                                    >
+                                        <span>Configurações</span> <span className="menu-sidebar-administrador-icon">⚙️</span>
+                                    </button>
+
+                                    <button 
+                                        className="menu-sidebar-administrador-btn-item"
                                         onClick={() => navegarERecolher('/interno/AdmLogs')}
                                     >
-                                        Logs <span className="menu-sidebar-programador-icon">📜</span>
+                                        <span>Solicitações</span> <span className="menu-sidebar-administrador-icon">📝</span>
                                     </button>
 
                                 </div>
 
                             </div>
 
-                            {/* --------------------------------------------------- */}
-                            {/* FIM - ⚙️ MENU SIDEBAR: PROGRAMADOR - ADMINISTRADOR */}
-                            {/* --------------------------------------------------- */}
+                            {/* ------------------------------------ */}
+                            {/* FIM - MENU SIDEBAR: administrador */}
+                            {/* -------------------------------- --- */}
 
 
 
 
-
-
-                            <button 
-                                className="Btn-geral-administrador-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/ListaLogs')}
-                            >
-                                Logs
-                            </button>
-
-                            <button 
-                                className="Btn-geral-administrador-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/SuporteAdmin')}
-                            >
-                                Suporte
-                            </button>
-
-
-                        </>
+                        </>   
                     )}
-
 
 
 
@@ -1242,42 +1371,63 @@ export default function App() {
                     {dadosToken?.func === 'cuidadora' && (
                         <>
 
+                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* INICIO - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CUIDADORA  */}
+                            {/* -------------------------------------------------------------------------------------------- */}
 
-                            <button 
-                                className="Btn-geral-cuidadora-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/interno/UsuarioLogado')}
-                            >
-                                Inicio
-                            </button>
+                            <div className="menu-horizontal-cuidadora-container">
 
+                                {/* -------------------------------------------------------------------------------------------- */}
+                                {/* INICIO - BOTOES DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CUIDADORA  */}
+                                {/* -------------------------------------------------------------------------------------------- */}
 
-
-                            <button 
-                                className="Btn-geral-cuidadora-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/interno/Funcoes')}
-                            >
-                                Funcoes
-                            </button>
-
-
-
-                        
-                            <button 
-                                className="Btn-geral-cuidadora-prof btn-centralizado"
-                                onClick={() => navegarERecolher('/interno/Diretrizes')}
-                            >
-                                Diretrizes
-                            </button>
+                                <button 
+                                    className="Btn-geral-cuidadora-prof btn-centralizado"
+                                    onClick={() => navegarERecolher('/interno/UsuarioLogado')}
+                                >
+                                    Inicio
+                                </button>
 
 
 
-                            <button 
-                                className={`Btn-geral-cuidadora-prof ${perfilEstaCompletoCuidadora ? '' : 'BotaoBloqueado'}`}
-                                onClick={() => perfilEstaCompletoCuidadora && navegarERecolher('/interno/Chamados')}
-                                title={!perfilEstaCompletoCuidadora ? "Complete seu perfil (Contato, Endereço, CNPJ e Formação) para liberar." : "Acessar Chamados"}
-                            >
-                                Chamados {!perfilEstaCompletoCuidadora && "🔒"}
-                            </button>
+                                <button 
+                                    className="Btn-geral-cuidadora-prof btn-centralizado"
+                                    onClick={() => navegarERecolher('/interno/Funcoes')}
+                                >
+                                    Funcoes
+                                </button>
+
+
+
+                            
+                                <button 
+                                    className="Btn-geral-cuidadora-prof btn-centralizado"
+                                    onClick={() => navegarERecolher('/interno/Diretrizes')}
+                                >
+                                    Diretrizes
+                                </button>
+
+
+
+                                <button 
+                                    className={`Btn-geral-cuidadora-prof ${perfilEstaCompletoCuidadora ? '' : 'BotaoBloqueado'}`}
+                                    onClick={() => perfilEstaCompletoCuidadora && navegarERecolher('/interno/Chamados')}
+                                    title={!perfilEstaCompletoCuidadora ? "Complete seu perfil (Contato, Endereço, CNPJ e Formação) para liberar." : "Acessar Chamados"}
+                                >
+                                    Chamados {!perfilEstaCompletoCuidadora && "🔒"}
+                                </button>
+
+
+                                {/* -------------------------------------------------------------------------------------------- */}
+                                {/* FIM - BOTOES DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CUIDADORA     */}
+                                {/* -------------------------------------------------------------------------------------------- */}
+
+                            </div>
+
+                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* FIM - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CUIDADORA     */}
+                            {/* -------------------------------------------------------------------------------------------- */}
+
 
 
 
@@ -1354,7 +1504,6 @@ export default function App() {
 
                         </>
                     )}
-
 
 
 
@@ -1786,7 +1935,7 @@ export default function App() {
 
                         {/* INICIO - BOTAO ENTRAR */}
 
-                           <div style={{ position: 'relative', display: 'inline-block' }}>
+                        <div style={{ position: 'relative', display: 'inline-block' }}>
                             <button 
                                 className={`Botao-Acao-Visitante-Perfil ${exibirBalaoDicaEntrar ? 'pulsar-ativo' : ''}`} 
                                 style={{ width: '90px' }} 
@@ -2039,14 +2188,20 @@ export default function App() {
 
 
                         <Route 
+                            path="RelClientes" 
+                            element={<RelClientes />} 
+                        />
+
+
+                        <Route 
                             path="RelCuidadoras" 
                             element={<RelCuidadoras />} 
                         />
 
 
                         <Route 
-                            path="RelClientes" 
-                            element={<RelClientes />} 
+                            path="ProgramadorRelatorioCliente" 
+                            element={<ProgramadorRelatorioCliente />} 
                         />
 
 
@@ -2091,6 +2246,13 @@ export default function App() {
                             } 
                         />
 
+
+
+                        {/* 👥 Rota do Relatório de Clientes: Administrador */}
+                        <Route 
+                        path="/interno/AdministradorRelatorioClientes" 
+                        element={<AdministradorRelatorioClientes />} 
+                    />
 
 
 

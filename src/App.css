@@ -236,6 +236,148 @@ input[type="submit"]:disabled {
 
 
 
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* INICIO - ESTILIZAÇÃO DO MENU SIDEBAR - ADMINISTRADOR                                                            */
+/* ---------------------------------------------------------------------------------------------------------------- */
+
+.container-externo-blindado:not([data-func="visitante"]) .menu-sidebar-administrador-container {
+
+    padding: 15px;
+
+    display: flex !important;
+    flex-direction: column;
+    
+    position: fixed !important;
+    top: 70px !important;      
+    left: 0px !important;         
+    bottom: 0 !important;       
+    
+    width: 200px !important;    
+    height: calc(100vh - 70px) !important;
+    
+    opacity: 1 !important;     
+    transform: none !important; 
+    pointer-events: auto !important;
+    
+    border-radius: 0 !important; 
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
+    background-color: #f8f9fa !important;
+    
+    overflow-y: auto; 
+    padding-top: 20px;
+
+}
+
+.menu-sidebar-administrador-header {
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    /* padding-bottom: 8px; */
+}
+
+.menu-sidebar-administrador-titulo {
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #4a5568;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid rgb(0, 0, 0);
+    padding-bottom: 5px;
+}
+
+.menu-sidebar-administrador-lista-botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu-sidebar-administrador-btn-item {
+    display: flex;
+    justify-content: space-between; /* 📐 Garante texto na esquerda e ícone na direita */
+    align-items: center;
+    width: 100%;
+    padding: 14px 10px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    color: #2d3748;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* 📐 EFEITO DE INTERAÇÃO MAESTRO */
+.menu-sidebar-administrador-btn-item:hover {
+    background-color: #f7fafc;
+    border-color: #3182ce; /* Azul administrativo */
+    color: #3182ce;
+    transform: translateX(6px); /* Deslize suave para a direita */
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.menu-sidebar-administrador-icon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.menu-sidebar-administrador-btn-item:hover .menu-sidebar-administrador-icon {
+    transform: scale(1.2) rotate(5deg); /* Ícone ganha vida no hover */
+}
+
+/* 📐 ESTADO DE CLIQUE (FEEDBACK TÁTIL) */
+.menu-sidebar-administrador-btn-item:active {
+    transform: scale(0.97) translateX(4px);
+    background-color: #edf2f7;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* FIM - ESTILIZAÇÃO DO MENU SIDEBAR - ADMINISTRADOR                                                               */
+/* ---------------------------------------------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+.menu-horizontal-programador-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px;
+   
+}
+
+
+
+
+.menu-horizontal-administrador-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px;
+   
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -335,7 +477,7 @@ input[type="submit"]:disabled {
     height: 35px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 0 10px;
     border-top: 2px solid #306396;
     border-bottom: 2px solid #306396;
@@ -449,6 +591,17 @@ input[type="submit"]:disabled {
 .fonte-diretrizes{
     letter-spacing: 1.7px !important;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* 📦 Submenu Flutuante (Transição Suave) */
@@ -1929,7 +2082,7 @@ input[type="submit"]:disabled {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(5, 10, 15, 0.55); /* Azul marinho quase preto */
+    background-color: rgba(195, 202, 209, 0.55); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1941,28 +2094,23 @@ input[type="submit"]:disabled {
 .painel-comando-central {
     width: 250px;
     padding: 15px;
-    /* background: #111; */
-  
     background-color: rgba(250, 250, 250, 0.25); 
-
     border: 1px solid #333;
     border-radius: 4px;
     text-align: center;
     box-shadow: 0 0 40px rgba(0, 229, 255, 0.1);
-
     transform: translateY(-105px);
-
 }
 
 /* 🏷️ Texto identificador */
 .rotulo-identificador-sistema {
     display: block;
-    color: #00E5FF; /* Ciano Neon */
+    color: #04acbe;
     font-family: 'Courier New', Courier, monospace;
     font-size: 0.85rem;
     letter-spacing: 2px;
     margin-bottom: 15px;
-    text-shadow: 0 0 10px rgba(0, 229, 255, 0.95);
+    text-shadow: 0 0 0px rgb(1, 48, 53);
 }
 
 /* 🛣️ O Trilho da Barra (Background da barra) */
@@ -3395,7 +3543,7 @@ input[type="submit"]:disabled {
     .submenu-tudo-cadastrar-prof {
         position: relative; 
         display: block; /* Ocupa a linha toda no menu hambúrguer */
-        width: 130px;
+        width: 140px;
         
     }
 

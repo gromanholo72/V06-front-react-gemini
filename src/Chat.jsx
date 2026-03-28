@@ -87,13 +87,16 @@ export function Chat() {
 
         try {
 
-            const resposta = await fetch(`${BASE_URL_SERVIDOR}/api/lista-conversas`);
+            const resposta = await fetch(`${URL_SERVIDOR}/api/lista-conversas`);
             const dados = await resposta.json();
             setListaUsuariosParaSideBar(dados);
-            console.log("✨ ----------------------------------");
-            console.log("✨ Carregar lista de usuarios para ehEquipeSuporte - componente - Chat.jsx");
-            console.log("✨ 🔵 Lista de usuarios", dados);
-            console.log("✨ ----------------------------------");
+            
+            console.log("");
+            console.log("🔄 📡 ----------------------------------");
+            console.log("🔄 📡 Componente - Chat.jsx");
+            console.log("🔄 📡 Funcao: buscarLista()");
+            console.log("🔄 📡 🔵 Lista de usuários sincronizada:", dados);
+            console.log("🔄 📡 ----------------------------------");
 
         } catch (error) {
 
@@ -421,12 +424,16 @@ export function Chat() {
 
         const manipularNovaMensagem = (data) => {
 
-            console.log(`✨ 🔵 Mensagem recebida nos cards: ${data.texto}`);
+            console.log("");
+            console.log("📡 🔵 ----------------------------------");
+            console.log("📡 🔵 EVENTO: socket.on('message')");
+            console.log(`📡 🔵 Mensagem recebida: ${data.texto}`);
+            console.log("📡 🔵 ----------------------------------");
 
             const elementoAudio = document.getElementById('soundNotification');
             if (elementoAudio) {
                 elementoAudio.play().catch(() => {
-                    console.log(`✨ 🔵 Áudio aguardando interação do usuário.`);
+                    console.log(` 🔵 Áudio aguardando interação do usuário.`);
                 });
             }
 
@@ -434,7 +441,10 @@ export function Chat() {
 
         const atualizarSidebar = () => {
 
-            console.log("✨ 👔 Socket avisou: Atualizando sidebar...");
+            console.log("");
+            console.log("📡 👔 ----------------------------------");
+            console.log("📡 👔 Socket avisou: Atualizando sidebar...");
+            console.log("📡 👔 ----------------------------------");
 
             buscarLista();
 
@@ -447,7 +457,11 @@ export function Chat() {
 
             socket.off('message', manipularNovaMensagem);
             socket.off('atualizar_sidebar', atualizarSidebar);
-            console.log(`✨ 🔵 Conexão de rádio encerrada para: ${dadosToken?.nome}`);
+            
+            console.log("");
+            console.log("📡 🛑 ----------------------------------");
+            console.log(`📡 🛑 Conexão de rádio encerrada para: ${dadosToken?.nome}`);
+            console.log("📡 🛑 ----------------------------------");
 
         };
 
@@ -515,6 +529,12 @@ export function Chat() {
             funcao_suporte_referencia: ehEquipeSuporte ? dadosToken.func : "CentralDeAtendimento" 
 
         };
+
+        console.log("");
+        console.log("🔄 📡 ----------------------------------");
+        console.log("🔄 📡 DISPARANDO MENSAGEM VIA SOCKET");
+        console.log("🔄 📡 Payload:", messageData);
+        console.log("🔄 📡 ----------------------------------");
     
         socket.emit('message', messageData);
 
@@ -558,7 +578,12 @@ export function Chat() {
         const desativarEscuta = onValue(mensagensRef, (snapshot) => {
 
             const dados = snapshot.val();
-            
+
+            console.log("");
+            console.log("🔄 📡 ----------------------------------");
+            console.log(`🔄 📡 FIREBASE: Dados recebidos para conversa [${cpfParaEscutaLimpo}]`);
+            console.log("🔄 📡 ----------------------------------");
+
             if (dados) {
 
                 const listaDoBanco = Object.values(dados).sort((a, b) => a.timestamp - b.timestamp);

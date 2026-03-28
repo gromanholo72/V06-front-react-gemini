@@ -1,0 +1,137 @@
+/* ------------------------------------------------------------- */
+/* INICIO - 🔎 ESTILIZAÇÃO DO CARD CLIENTE (V3 MAESTRO)          */
+/* ------------------------------------------------------------- */
+
+.detalhes-cliente-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+
+
+
+
+.detalhes-cliente-modal-card {
+    background: #ffffff;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    animation: surgimentoCardCliente 0.3s ease-out;
+    animation: surgimentoCardCliente 0.3s ease-out;
+}
+
+
+
+
+.detalhes-cliente-header-card {
+    background-color: #ebf2f7;
+    border-bottom: 2px solid #306396;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detalhes-cliente-header-card h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 900;
+    color: #2c3e50;
+    letter-spacing: 1px;
+}
+
+.id-subtitulo {
+    font-size: 9px;
+    color: #7f8c8d;
+    font-weight: 700;
+    display: block;
+}
+
+.btn-fechar-cliente {
+    background: none; border: none;
+    font-size: 28px; color: #c0392b;
+    cursor: pointer; line-height: 1;
+}
+
+
+
+
+
+.detalhes-cliente-corpo-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.card-cliente-secao-interna {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.titulo-cliente-secao-pequeno {
+    font-size: 10px;
+    font-weight: 800;
+    color: #306396;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 4px;
+}
+
+
+
+
+
+.grade-cliente-detalhes {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.detalhe-item-cliente {
+    font-size: 11px; /* Fonte menor conforme solicitado */
+    color: #444;
+    display: flex;
+    gap: 8px;
+    white-space: nowrap; /* Trava: Não quebra a frase */
+}
+
+.detalhe-item-cliente strong {
+    color: #2c3e50;
+    min-width: 100px;
+}
+
+.detalhe-item-cliente span {
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+.detalhes-cliente-footer-card {
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    text-align: right;
+}
+
+.btn-cliente-voltar {
+    background: #306396; color: white;
+    border: none; padding: 8px 16px; border-radius: 6px;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+}
+
+@keyframes surgimentoCardCliente {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+/* FIM - 🔎 ESTILIZAÇÃO DO CARD CLIENTE (V3 MAESTRO)             */

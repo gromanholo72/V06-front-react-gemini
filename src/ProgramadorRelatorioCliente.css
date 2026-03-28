@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------- */
-/* INICIO - 📊 ESTILIZAÇÃO EXCLUSIVA: RELATÓRIO DE CLIENTES      */
+/* INICIO - 📊 ESTILIZAÇÃO EXCLUSIVA: RELATÓRIO DO PROGRAMADOR   */
 /* ------------------------------------------------------------- */
 
 /* 🏠 1. COMPONENTE-PRINCIPAL (PALCO DO RELATÓRIO) */
@@ -12,6 +12,10 @@
     animation: relClientes_surgir 0.6s ease-out;
 }
 
+
+
+
+
 /* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */
 .rel-clientes-suporte {
     width: 100%;
@@ -21,13 +25,19 @@
     gap: 0px; 
 }
 
+
+
+
+
 /* 🏷️ 3. CARD-HEADER (TOPO DO RELATÓRIO) */
 .rel-clientes-header {
     background-color: #ebf2f7; 
     padding: 15px 20px;
     border-radius: 16px 16px 0 0;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     z-index: 2;
 }
 
@@ -40,28 +50,74 @@
     letter-spacing: 1px;
 }
 
-.rel-clientes-header p {
-    margin: 5px 0 0 0;
-    color: #547299;
-    font-weight: 600;
-    font-size: 0.95rem;
+
+
+
+
+/* 🛠️ CONTROLES ESPECÍFICOS DO PROGRAMADOR */
+.controles-programador {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
+
+.badge-tecnica {
+    background-color: #34495e;
+    color: #ecf0f1;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.btn-exportar {
+    background: rgb(212, 175, 55);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.btn-exportar:hover {
+    filter: brightness(0.9);
+    transform: translateY(-1px);
+}
+
+
+
+
 
 /* 📦 4. TABELA CONTAINER (BOX SHADOW ACENTUADA) */
 .rel-clientes-tabela-container {
     background: #ffffff;
     border-radius: 0 0 16px 16px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-    overflow-x: auto; /* 📐 Habilita o scroll horizontal quando o conteúdo exceder */
+    overflow-x: auto; 
     border: 1px solid #e0e0e0;
     border-top: none;
 }
+
+.carregando-alerta {
+    padding: 60px;
+    text-align: center;
+    font-weight: bold;
+    color: rgb(212, 175, 55);
+}
+
+
+
+
 
 /* 📊 5. TABELA ESTILIZADA */
 .rel-clientes-tabela {
     width: 100%;
     border-collapse: collapse;
-    min-width: max-content; /* 📐 Garante que a tabela não encolha além do necessário, forçando o scroll */
+    min-width: max-content; 
     background-color: white;
 }
 
@@ -72,28 +128,22 @@
 }
 
 .rel-clientes-tabela th {
-    padding: 10px 15px;
+    padding: 12px 15px;
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 800;
+    border: 1px solid black;
 }
 
-/* 🧱 INTERATIVIDADE DAS LINHAS */
-.rel-clientes-tabela tbody tr {
-    cursor: pointer;
-}
-
-/* 🎨 LINHAS HORIZONTAIS CONTRASTANTES */
 .rel-clientes-tabela td {
     padding: 10px 15px;
-    border-bottom: 1px solid #000000; 
+    border: 1px solid black; 
     color: #2c3e50;
     font-weight: 600;
     font-size: 12px;
 }
 
-/* ✨ ZEBRA STRIPING PROFISSIONAL */
 .rel-clientes-tabela tbody tr:nth-child(even) {
     background-color: #f9fbfd;
 }
@@ -103,16 +153,61 @@
     transition: background-color 0.2s ease;
 }
 
-/* ✅ TAG DE STATUS */
-.rel-clientes-tag-ativo {
-    background-color: #e9f7ef;
-    color: #27ae60;
-    padding: 6px 14px;
-    border-radius: 30px;
-    font-size: 11px;
-    font-weight: 900;
-    border: 1px solid #d4efdf;
+.nome-destaque {
+    font-weight: 800;
+    color: #1a1a1a;
 }
+
+
+
+
+
+/* ✅ TAGS E PILLS */
+.tag-func {
+    text-transform: capitalize;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.tag-func.administrador { color: #d4af37; }
+.tag-func.cuidadora { color: #2ecc71; }
+.tag-func.cliente { color: #3498db; }
+
+.status-pill {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.status-pill.ativo { background-color: #e9f7ef; color: #27ae60; border: 1px solid #d4efdf; }
+
+
+
+
+
+/* 👁️ BOTÃO VISUALIZAR */
+.btn-visualizar {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.btn-visualizar:hover {
+    background-color: #306396;
+    color: white;
+}
+
+
+
+
 
 @keyframes relClientes_surgir {
     from { opacity: 0; transform: translateY(15px); }
@@ -120,5 +215,5 @@
 }
 
 /* ------------------------------------------------------------- */
-/* FIM - 📊 ESTILIZAÇÃO EXCLUSIVA: RELATÓRIO DE CLIENTES         */
+/* FIM - 📊 ESTILIZAÇÃO EXCLUSIVA: RELATÓRIO DO PROGRAMADOR       */
 /* ------------------------------------------------------------- */

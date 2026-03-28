@@ -148,6 +148,21 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
     };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // ===========================================
     // INICIO - MOSTRA o erro na <div className="MsgForm">
     // ===========================================
@@ -222,7 +237,6 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
         return () => clearInterval(cronometro);
 
     }, [mostrarModalSucesso, contagem]); 
-
 
     useEffect(() => {
 
@@ -326,13 +340,30 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
     const [novoUsuario, setNovoUsuario] = useState(() => {
 
         const valorInicial = {
-            nome: "",
+
+
+           // 👤 Dados Básicos
+           dadosBasico: {
             cpef: "",
-            mail: "",
-            fone: "",
-            func: "",
-            datc: dataHoje,
-            senh: ""
+            nome: "",
+            func: ""
+            },
+
+            // 🔐 Dados Segurança
+            dadosSeguranca: {
+                senh: ""
+            },
+
+            // ⚙️ Dados Internos
+            dadosInterno: {
+                dadosUsuarioCompleto: false,
+                usuarioLiberadoPeloAdministrador: false,
+                perm: "basica",
+                situ: "ativo",
+                datc: new Date().toLocaleDateString('pt-BR'),
+                timestamp: Date.now()
+            }
+
         };
 
         // console.log("");
@@ -426,19 +457,22 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
         console.log("📮 👍 Dados do Form:", dadosVindosDoForm);
         console.log("📮 ----------------------------------");
 
-        setNovoUsuario({
-
-            nome: dadosVindosDoForm.nome || "",
-            cpef: dadosVindosDoForm.cpef || "",
-            mail: dadosVindosDoForm.mail || "",
-            fone: dadosVindosDoForm.fone || "",
-
-            func: dadosVindosDoForm.func || "",
-
-            datc: dadosVindosDoForm.datc || "",
-            senh: dadosVindosDoForm.senh || ""
-
-        });
+        // 📐 Ajuste Maestro: Mantendo a integridade das pastas de dados
+        setNovoUsuario(prev => ({
+            ...prev,
+            dadosBasico: {
+                cpef: dadosVindosDoForm.cpef || "",
+                nome: (dadosVindosDoForm.nome || "").toUpperCase(),
+                func: dadosVindosDoForm.func || ""
+            },
+            dadosSeguranca: {
+                senh: dadosVindosDoForm.senh || ""
+            },
+            dadosInterno: {
+                ...prev.dadosInterno,
+                datc: dadosVindosDoForm.datc || prev.dadosInterno.datc
+            }
+        }));
     
     };
 
@@ -453,31 +487,39 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
 
+// 2. ✍️ Escriturário do Cadastro (V11 - Ajustado para Pastas)
+const handleChange = (e) => {
 
-    // ----------------------------
-    // INICIO DO - Nome em maiusculo
-    // ----------------------------
+    // ✅ Correto: Use 'let' para permitir a transformação
+    let { name, value } = e.target;
 
-    // 2. ✍️ Escriturário do Cadastro
-    const handleChange = (e) => {
+    // 🛠️ Se o pincel estiver no campo "nome", transformamos em MAIÚSCULO
+    if (name === "nome") {
+        value = value.toUpperCase();
+    }
 
-        // ✅ Correto: Use 'let' para permitir a transformação
-        let { name, value } = e.target;
-
-        // 🛠️ Se o pincel estiver no campo "nome", transformamos em MAIÚSCULO
-        if (name === "nome") {
-            value = value.toUpperCase();
+    // 🚀 O SEGREDO DO MAESTRO:
+    // Identificamos para qual pasta o dado deve ir
+    setNovoUsuario(prev => {
+        // Se for cpef, nome ou func -> vai para dadosBasico
+        if (["cpef", "nome", "func"].includes(name)) {
+            return {
+                ...prev,
+                dadosBasico: { ...prev.dadosBasico, [name]: value }
+            };
         }
+        // Se for a senha -> vai para dadosSeguranca
+        if (name === "senh") {
+            return {
+                ...prev,
+                dadosSeguranca: { ...prev.dadosSeguranca, [name]: value }
+            };
+        }
+        // Se cair aqui, é um campo desconhecido
+        return prev;
+    });
 
-        setNovoUsuario(prev => ({ ...prev, [name]: value }));
-
-    };
-
-    // ----------------------------
-    // FIM DO - Nome em maiusculo
-    // ----------------------------
-
-
+};
 
 
 
@@ -519,22 +561,19 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
             // 👤 Dados Básicos
             dadosBasico: {
-                cpef: novoUsuario.cpef,
-                nome: novoUsuario.nome,
-                func: novoUsuario.func
+                cpef: novoUsuario.dadosBasico.cpef,
+                nome: novoUsuario.dadosBasico.nome,
+                func: novoUsuario.dadosBasico.func
             },
 
             // 🔐 Dados Segurança
             dadosSeguranca: {
-                senh: novoUsuario.senh
+                senh: novoUsuario.dadosSeguranca.senh
             },
 
             // ⚙️ Dados Internos
             dadosInterno: {
-                perm: "basica",
-                situ: "ativo",
-                datc: new Date().toLocaleDateString('pt-BR'),
-                timestamp: Date.now()
+                ...novoUsuario.dadosInterno,
             }
 
         };
@@ -567,16 +606,27 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
                 setNovoUsuario({
 
-                    cpef: "",
+                     // 👤 Dados Básicos
+                    dadosBasico: {
+                        cpef: "",
+                        nome: "",
+                        func: ""
+                    },
 
-                    nome: "",
-                    mail: "", 
-                    fone: "", 
+                    // 🔐 Dados Segurança
+                    dadosSeguranca: {
+                        senh: ""
+                    },
 
-                    func: "",
-
-                    datc: dataHoje,
-                    senh: ""  
+                    // ⚙️ Dados Internos
+                    dadosInterno: {
+                        dadosUsuarioCompleto: false,
+                        usuarioLiberadoPeloAdministrador: false,
+                        perm: "basica",
+                        situ: "ativo",
+                        datc: new Date().toLocaleDateString('pt-BR'),
+                        timestamp: Date.now()
+                    }
 
                 });
 
@@ -619,6 +669,21 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
     };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // ----------------------------------------------------
     // FIM DO - Enviar dados de cadastro para o servidor
     // ----------------------------------------------------
@@ -656,11 +721,11 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
     
         // 📐 👔 console.log("📐 🎫 cpef formatado = ", v);
     
-        // 🧱 Passo 4: Atualiza o Objeto (Preservando os outros campos)
-        setNovoUsuario({
-            ...novoUsuario,
-            cpef: v
-        });
+        // 🧱 Passo 4: Atualiza o Objeto no nó correto (dadosBasico)
+        setNovoUsuario(prev => ({
+            ...prev,
+            dadosBasico: { ...prev.dadosBasico, cpef: v }
+        }));
     };
 
 
@@ -704,15 +769,30 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
         let v = e.target.value.replace(/\s/g, '');
     
         // 💾 Atualiza o Objeto
-        setNovoUsuario({
-            ...novoUsuario,
-            senh: v
-        });
+        setNovoUsuario(prev => ({
+            ...prev,
+            dadosSeguranca: { ...prev.dadosSeguranca, senh: v }
+        }));
     };
 
     /*  ----------------- */
     /*  FIM - Mascaras */
     /*  ----------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -850,7 +930,7 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
                                 type="text" 
                                 name="nome" // 🔑 Etiqueta para o Escriturário
                                 placeholder="Nome Completo"
-                                value={novoUsuario.nome}
+                                value={novoUsuario.dadosBasico.nome}
                                 autoComplete="name"
                                 onChange={handleChange} 
                                 required
@@ -864,7 +944,7 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
                                 type="text" 
                                 name="cpef" // 🔑 Etiqueta para o Escriturário
                                 placeholder="000.000.000-00"
-                                value={novoUsuario.cpef}
+                                value={novoUsuario.dadosBasico.cpef}
                                 onChange={mascaraCpef} 
                                 autoComplete="username"
                                 maxLength="14"
@@ -906,7 +986,7 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
                             <label>Interesse:</label>                                                                                    
                             <select 
                                 name="func" // 🔑 Etiqueta para o Escriturário
-                                value={novoUsuario.func} 
+                                value={novoUsuario.dadosBasico.func} 
                                 onChange={handleChange} 
                                 required
                             >
@@ -930,7 +1010,7 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
                                     type={mostrarSenha ? "text" : "password"} 
                                     name="senh"
                                     // placeholder="No mínimo 4 caracteres"
-                                    value={novoUsuario.senh} 
+                                    value={novoUsuario.dadosSeguranca.senh} 
                                     onChange={mascaraSenha}
                                     autoComplete="new-password"
                                     // minLength="4"
@@ -1058,18 +1138,18 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
                                 senh: "12345"
                             })}/> 
                         <input type="button" className="Botao-Teste-Cad" value="PEDRO" 
-                            style={getEstiloBotao("453.368.658-30")}
+                            style={getEstiloBotao("004.838.240-03")}
                             onClick={() => preencherCampos({
                                 nome: "PEDRO ALVARES CABRAL",
-                                cpef: "453.368.658-30",
+                                cpef: "004.838.240-03",
                                 func: "cliente", 
                                 senh: "12345"
                             })}/> 
                         <input type="button" className="Botao-Teste-Cad" value="CARLA" 
-                            style={getEstiloBotao("939.836.130-37")}
+                            style={getEstiloBotao("342.297.530-63")}
                             onClick={() => preencherCampos({
                                 nome: "CARLA PEREZ DO AXE",
-                                cpef: "939.836.130-37",
+                                cpef: "342.297.530-63",
                                 func: "cliente", 
                                 senh: "12345"
                             })}/> 
