@@ -12,7 +12,9 @@ export const PacienteApresentacaoEmpresa = () => {
 
       <h1 className="titulo"> 🏨 Bem-vindo à Nossa Instituição</h1>
 
-      <p className="descricao">📄 Dedicados a oferecer o melhor suporte para quem você ama.</p>
+        <div className="descricao">
+          <p>📄 Dedicados a oferecer o melhor suporte para quem você ama.</p>
+        </div>
 
       <div className="container-cards">
         

@@ -71,8 +71,8 @@ export function UsuarioFormacao() {
     const popularCamposFormacao = useCallback((dados) => {
         setNivel(String(dados.nivel || '').trim());
         setEspecificacao(String(dados.espec || '').trim());
-        setRegistro(String(dados.registro || '').trim());
-        setInstituicao(String(dados.instituicao || '').trim());
+        setRegistro(String(dados.regis || '').trim());
+        setInstituicao(String(dados.insti || '').trim());
     }, []);
 
     const limparCampos = useCallback(() => {

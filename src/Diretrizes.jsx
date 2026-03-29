@@ -1,61 +1,15 @@
-import React, { useState } from 'react';
-import { BalaoDica } from './componentes/BalaoDica';
+import React from 'react';
 import './Diretrizes.css';
 
+/* ------------------------------------------------------------- */
+/* INICIO - ⚖️ COMPONENTE: Diretrizes                            */
+/* ------------------------------------------------------------- */
 export function Diretrizes() {
-   
-
-
-
-
-// 2. Lazy Initialization ("A Estratégica")
-const [dicaDiretrizes, setDicaDiretrizes] = useState(() => {
-    const jaLeu = localStorage.getItem('dicaDiretrizesLida');
-    const valorInicial = jaLeu !== "true";
-
-    // console.log("");
-    // console.log("📐 ----------------------------------");
-    // console.log("📐 useState() - componente - ⚖️ Diretrizes.jsx");
-    // console.log("📐 Lazy Initialization - 🔵 dicaDiretrizes");
-    // console.log("📐 🔵 dicaDiretrizes nasceu como = ", valorInicial);
-    // console.log("📐 ----------------------------------");
-    
-    return valorInicial;
-});
-
-// 🧱 Função para selar a leitura da dica
-const fecharDicaDiretrizes = () => {
-
-    setDicaDiretrizes(false);
-    localStorage.setItem('dicaDiretrizesLida', 'true');
-    
-    // console.log("📐 🔵 dicaDiretrizes = false (Leitura Confirmada)");
-
-};
-
-
-
-
-
     return (
-
         <div className="componente-de-pagina">
 
-
-
-
-           {/* O "Pai" precisa ser relative para o balão se basear nele */}
-           <div className="Card-Informativo-Diretrizes" style={{ position: 'relative' }}>
+           <div className="Card-Informativo-Diretrizes">
                 
-
-                {/* 🧱 Peça Reutilizável: Posicionada no topo do Card */}
-                <BalaoDica 
-                    exibir={dicaDiretrizes} 
-                    texto="✨ Leia com atenção o conteudo abaixo pois são a base do seu contrato!" 
-                    aoFechar={fecharDicaDiretrizes}
-                />
-
-
                 <h2 className="Texto-Destaque-Diretrizes">⚖️ Diretrizes de Conduta</h2>
                 
                 <span className="Subtexto-Especialidade-Diretrizes">
@@ -109,6 +63,12 @@ const fecharDicaDiretrizes = () => {
                             Tocar no paciente para exames apos solicitar permissao ao mesmo:
                         </li>
 
+                        <li>
+                            <strong>👣 Podologia:</strong> 
+                            <br /> 
+                            O serviço de podólogo é cobrado separado da mensalidade base de cuidados.
+                        </li>
+
                     </ul>
 
                     <p className="Frase-Final-Diretrizes">
@@ -121,6 +81,8 @@ const fecharDicaDiretrizes = () => {
 
 
         </div>
-
     );
 }
+/* ------------------------------------------------------------- */
+/* FIM - ⚖️ COMPONENTE: Diretrizes                               */
+/* ------------------------------------------------------------- */

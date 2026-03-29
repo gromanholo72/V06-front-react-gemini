@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ref, onValue } from "firebase/database"; 
 import { db_realtime } from './firebaseConfig';
 import { useAuth } from './AutenticacaoContexto';
+import { DetalhesUsuario } from './DetalhesUsuario';
 import './ProgramadorRelatorioCliente.css'; 
 
 // ---------------------------------
@@ -11,6 +12,7 @@ export function ProgramadorRelatorioCliente() {
     const { socket } = useAuth();
     const [usuarios, setUsuarios] = useState([]);
     const [carregando, setCarregando] = useState(true);
+    const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
 
     // ---------------------------------
     // INICIO - 📐 Monitoramento de Dados Maestro
@@ -50,7 +52,7 @@ export function ProgramadorRelatorioCliente() {
             if (dados) {
                 // 📐 Mapeamento técnico para visualização do Programador
                 const listaFormatada = Object.keys(dados).map(id => ({
-                    id_firebase: id,
+                    id_firebase: String(id),
                     ...dados[id]
                 }));
                 setUsuarios(listaFormatada);
@@ -70,6 +72,10 @@ export function ProgramadorRelatorioCliente() {
     // ---------------------------------
     // FIM - 📡 Busca de Dados na Antena Central (Firebase)
     // ---------------------------------
+
+
+
+
 
 
 
@@ -98,14 +104,14 @@ export function ProgramadorRelatorioCliente() {
 
 
     return (
-        <div className="rel-clientes-principal">
+        <div className="componente-de-pagina">
             <div className="rel-clientes-suporte">
                 <header className="rel-clientes-header">
                     <h2>Relatório Técnico de Usuários 🖥️</h2>
                     <div className="controles-programador">
                         <span className="badge-tecnica">MODO: PROGRAMADOR</span>
                         <button className="btn-exportar" onClick={handleExportarPDF}>
-                            Exportar Relatório 📄
+                            Exportar PDF 📄
                         </button>
                     </div>
                 </header>
@@ -115,44 +121,52 @@ export function ProgramadorRelatorioCliente() {
                         <div className="carregando-alerta">Acessando Antena Central... ⏳</div>
                     ) : (
                         <table className="rel-clientes-tabela">
-                        <thead>
-                            <tr>
-                                <th>ID Firebase</th>
-                                <th>Nome</th>
-                                <th>CPF (CPEF)</th>
-                                <th>Função</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {usuarios.map(user => (
-                                <tr key={user.id_firebase}>
-                                    <td><code>{user.id_firebase}</code></td>
-                                    <td className="nome-destaque">{user.dadosBasico?.nome || user.nome || "N/A"}</td>
-                                    <td>{user.dadosBasico?.cpef || user.cpef || "---"}</td>
-                                    <td>
-                                        <span className={`tag-func ${user.dadosBasico?.func || user.func}`}>
-                                            {user.dadosBasico?.func || user.func}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span className={`status-pill ${user.dadosInterno?.situ || "ativo"}`}>
-                                            {user.dadosInterno?.situ || "Ativo"}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <button className="btn-visualizar" onClick={() => console.log("🔍 Inspecionando:", user)}>
-                                            🔍 Inspecionar
-                                        </button>
-                                    </td>
+                            <thead>
+                                <tr>
+                                    <th>ID Firebase</th>
+                                    <th>Nome</th>
+                                    <th>CPF (CPEF)</th>
+                                    <th>Função</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {usuarios.map(user => (
+                                    <tr key={String(user.id_firebase || Math.random())}>
+                                        <td><code>{String(user.id_firebase).substring(0, 14)}</code></td>
+                                        <td className="nome-destaque">{user.dadosBasico?.nome || user.nome || "N/A"}</td>
+                                        <td>{user.dadosBasico?.cpef || user.cpef || "---"}</td>
+                                        <td>
+                                            <span className={`tag-func ${user.dadosBasico?.func || user.func}`}>
+                                                {user.dadosBasico?.func || user.func}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className={`status-pill ${user.dadosInterno?.situ || "ativo"}`}>
+                                                {user.dadosInterno?.situ || "Ativo"}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button className="btn-visualizar" onClick={() => setUsuarioSelecionado(user)}>
+                                                🔍 Inspecionar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     )}
                 </main>
             </div>
+
+            {/* 🚀 MODAL DE DETALHES TÉCNICOS */}
+            {usuarioSelecionado && (
+                <DetalhesUsuario 
+                    usuario={usuarioSelecionado} 
+                    aoFechar={() => setUsuarioSelecionado(null)} 
+                />
+            )}
         </div>
     );
 }

@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------- */
-/* INICIO - 🔎 ESTILIZAÇÃO DO CARD CLIENTE (V3 MAESTRO)          */
+/* INICIO - 🔎 ESTILIZAÇÃO DA FICHA CUIDADORA (VISUAL 2026)      */
 /* ------------------------------------------------------------- */
 .detalhes-cliente-overlay {
     position: fixed;
@@ -13,24 +13,33 @@
     z-index: 9999;
 }
 
-
-
-
-
 .detalhes-cliente-modal-card {
     background: #ffffff;
     width: 90%;
-    max-width: 400px;
+    max-width: 500px;
     border-radius: 16px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     overflow: hidden;
-    animation: surgimentoCardCliente 0.3s ease-out;
     animation: surgimentoCardCliente 0.3s ease-out;
 }
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🏷️ HEADER E IDENTIDADE                              */
+/* ------------------------------------------------------------- */
 .detalhes-cliente-header-card {
     background-color: #ebf2f7;
     border-bottom: 2px solid #306396;
@@ -76,9 +85,8 @@
 
 
 
-
 /* ------------------------------------------------------------- */
-/* INICIO - 📄 CORPO E SEÇÕES DO DOSSIÊ                          */
+/* INICIO - 📄 CORPO E GRADE DE DADOS (LINHA)                    */
 /* ------------------------------------------------------------- */
 .detalhes-cliente-corpo-card {
     padding: 20px;
@@ -106,72 +114,32 @@
     text-transform: uppercase;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ------------------------------------------------------------- */
-/* INICIO - 🧬 ITENS DE DADOS (PADRÃO EM LINHA)                  */
-/* ------------------------------------------------------------- */
-.grade-cliente-detalhes {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
 .detalhe-item-cliente {
     font-size: 12px;
-    color: #444;
     display: flex;
-    flex-direction: row; /* 📐 Ajuste Maestro: Label e Valor em linha */
+    flex-direction: row;
     align-items: center;
     gap: 10px;
-    padding: 2px 0;
+    padding: 4px 0;
 }
 
 .detalhe-item-cliente label {
     color: #7f8c8d;
     font-size: 10px;
     font-weight: 800;
-    text-transform: uppercase;
-    min-width: 110px; /* 📐 Viga de Alinhamento: Garante que os valores comecem na mesma coluna */
+    min-width: 110px;
 }
 
 .detalhe-item-cliente span {
     color: #1a1a1a;
     font-weight: 700;
-    font-size: 13px;
 }
 
-.valor-destaque-azul {
-    color: #306396 !important;
-    background: #eaf2f8;
-    padding: 2px 8px;
-    border-radius: 4px;
-}
 
-.senha-texto-destaque {
-    color: #c0392b !important;
-    background: #fceceb;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-family: monospace;
-}
 
-/* ------------------------------------------------------------- */
-/* FIM - 🧬 ITENS DE DADOS (PADRÃO EM LINHA)                     */
-/* ------------------------------------------------------------- */
+
+
+
 
 
 
@@ -182,23 +150,49 @@
 
 
 /* ------------------------------------------------------------- */
-/* INICIO - 🚀 FOOTER E ANIMAÇÕES                                */
+/* INICIO - 🚀 FOOTER E BOTÕES                                   */
 /* ------------------------------------------------------------- */
 .detalhes-cliente-footer-card {
     padding: 12px 20px;
     background: #f8f9fa;
     border-top: 1px solid #dee2e6;
-    text-align: right;
+    /* 📐 Ajuste Maestro: Botão em cada extremidade para clareza visual */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-confirmar-cadastro {
+    background-color: rgb(212, 175, 55); /* 🎨 Amarelo Dourado Maestro */
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-right: 0; /* Removido: O Flexbox agora controla o espaçamento */
+    transition: filter 0.2s, transform 0.1s;
+}
+
+.btn-confirmar-cadastro:hover {
+    filter: brightness(1.1);
+}
+
+.btn-confirmar-cadastro:active {
+    transform: scale(0.98);
 }
 
 .btn-cliente-voltar {
     background: #306396; color: white;
-    border: none; padding: 8px 16px; border-radius: 6px;
-    font-size: 12px; font-weight: 700; cursor: pointer;
+    border: none; padding: 10px 20px; border-radius: 8px;
+    font-size: 12px; font-weight: 800; cursor: pointer;
 }
 
 @keyframes surgimentoCardCliente {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
 }
-/* FIM - 🔎 ESTILIZAÇÃO DO CARD CLIENTE (V3 MAESTRO)             */
+/* ------------------------------------------------------------- */
+/* FIM -  FOOTER E BOTÕES                                      */
+/* ------------------------------------------------------------- */

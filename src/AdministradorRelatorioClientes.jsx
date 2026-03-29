@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ref, onValue } from "firebase/database";
-import { db_realtime } from './firebaseConfig.js';
+import { db_realtime } from './firebaseConfig';
 import { DetalhesCliente } from './DetalhesCliente';
 import './AdministradorRelatorioClientes.css';
 
@@ -19,6 +19,9 @@ export function AdministradorRelatorioClientes() {
         console.log("🔍 Total de Clientes:", clientes.length);
         console.log("🔍 -----------------------------------------------------------");
     }, [carregando, clientes]);
+    // ---------------------------------
+    // FIM - 📐 Monitoramento de Dados Maestro
+    // ---------------------------------
 
 
 
@@ -47,10 +50,15 @@ export function AdministradorRelatorioClientes() {
                     if (funcao === 'cuidadora') pesoOrdem = 2;
                     if (funcao === 'cliente') pesoOrdem = 3;
 
+                    // 📐 PADRÃO CAD-ADMINISTRADOR: Extração de Data e Hora
+                    const timestamp = original.timestamp || original.dadosInterno?.timestamp || 0;
+
                     return {
                         ...original,
                         id_firebase: id,
-                        ordem_maestro: pesoOrdem
+                        ordem_maestro: pesoOrdem,
+                        datcExibicao: timestamp ? new Date(timestamp).toLocaleDateString('pt-BR') : (original.dadosInterno?.datc || "N/A"),
+                        horaExibicao: timestamp ? new Date(timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : ""
                     };
                 })
                 .filter(u => u.ordem_maestro === 3)
@@ -97,40 +105,7 @@ export function AdministradorRelatorioClientes() {
         console.log("📐 Quantidade de registros no lote:", clientes.length);
         console.log("📐 -----------------------------------------------------------");
 
-        if (clientes.length === 0) {
-            alert("⚠️ Nenhum dado disponível para exportação.");
-            return;
-        }
-
-        // 📝 1. Definição de Cabeçalhos
-        const cabecalhos = ["ID Firebase", "Nome do Cliente", "Funcao/Plano", "Situacao"];
-
-        // 📝 2. Mapeamento das Linhas (Extraindo dados do Dossiê)
-        const linhas = clientes.map(c => [
-            c.id_firebase || "---",
-            c.dadosBasico?.nome || "N/A",
-            c.dadosBasico?.func || "---",
-            c.dadosInterno?.situ || "Ativo"
-        ]);
-
-        // 📝 3. Construção do CSV (Delimitado por ponto e vírgula para Excel PT-BR)
-        const conteudoCSV = [
-            cabecalhos.join(";"),
-            ...linhas.map(linha => linha.join(";"))
-        ].join("\n");
-
-        // 💾 4. Criação do Link de Download
-        const blob = new Blob(["\ufeff" + conteudoCSV], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", `Relatorio_Clientes_${new Date().toISOString().split('T')[0]}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        console.log("✅ 📄 Exportação de dados concluída com sucesso.");
+        alert('Gerando PDF...');
     };
     // ---------------------------------
     // FIM - 📄 Protocolo de Exportação Maestro (PDF)
@@ -141,41 +116,49 @@ export function AdministradorRelatorioClientes() {
 
 
     return (
-        <div className="adm-relatorio-container">
-            <header className="adm-relatorio-header">
-                <h2>Relatório Geral de Clientes 👥</h2>
-                <button className="btn-exportar" onClick={handleExportarPDF}>
-                    Exportar Relatório 📄
-                </button>
-            </header>
+        <div className="componente-de-pagina adm-relatorio-principal">
+            <div className="adm-relatorio-suporte">
+                
+                <div className="adm-relatorio-usuario-card">
+                    
+                    <header className="adm-relatorio-header">
+                        <h2>Relatório Geral de Clientes 👥</h2>
+                        <button className="btn-exportar" onClick={handleExportarPDF}>
+                            Gerar PDF
+                        </button>
+                    </header>
 
-            <main className="adm-relatorio-content">
-                {carregando ? (
-                    <div className="carregando-alerta">Processando dados... ⏳</div>
-                ) : (
-                    <table className="adm-relatorio-tabela">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nome</th>
-                                <th>Plano</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {clientes.map(cliente => (
-                                <tr key={cliente.id_firebase || Math.random()}>
-                                    <td>#{cliente.id_firebase || "---"}</td>
-                                    <td className="nome-destaque">{cliente.dadosBasico?.nome || "N/A"}</td>
-                                    <td>{cliente.dadosBasico?.func || "---"}</td>
-                                    <td>
-                                        <span className={`status-pill ${cliente.dadosInterno?.situ?.toLowerCase() || 'ativo'}`}>
-                                            {cliente.dadosInterno?.situ || "Ativo"}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <button 
+                    <main className="adm-relatorio-content">
+                        {carregando ? (
+                            <div className="carregando-alerta">Processando dados... ⏳</div>
+                        ) : (
+                            <div className="adm-relatorio-tabela-responsiva">
+                                <table className="adm-relatorio-tabela">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nome</th>
+                                            <th>Plano</th>
+                                            <th>Status</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {clientes.map(cliente => (
+                                            <tr 
+                                                key={String(cliente.id_firebase || Math.random())}
+                                                onClick={() => setUsuarioSelecionado(cliente)}
+                                            >
+                                                <td>#{cliente.id_firebase ? String(cliente.id_firebase).substring(0, 14) : "---"}</td>
+                                                <td className="nome-destaque">{cliente.dadosBasico?.nome?.toUpperCase() || "N/A"}</td>
+                                                <td style={{textTransform: 'capitalize'}}>{cliente.dadosBasico?.func || "---"}</td>
+                                                <td>
+                                                    <span className={`status-pill ${cliente.dadosInterno?.situ?.toLowerCase() || 'ativo'}`}>
+                                                        {cliente.dadosInterno?.situ || "Ativo"}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button 
                                             className="btn-visualizar"
                                             onClick={() => setUsuarioSelecionado(cliente)}
                                         >
@@ -186,8 +169,13 @@ export function AdministradorRelatorioClientes() {
                             ))}
                         </tbody>
                     </table>
-                )}
-            </main>
+                            </div>
+                        )}
+                    </main>
+
+                </div>
+
+            </div>
 
             {/* 🚀 MODAL DE DETALHES (PADRÃO MAESTRO) */}
             {usuarioSelecionado && (

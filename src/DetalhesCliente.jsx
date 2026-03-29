@@ -1,116 +1,176 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './DetalhesCliente.css';
 
-// ---------------------------------
-// INICIO - 📐 COMPONENTE: DetalhesCliente
-// ---------------------------------
+/* ------------------------------------------------------------- */
+/* INICIO - 🔎 COMPONENTE: DetalhesCliente (FICHA DO CLIENTE)    */
+/* ------------------------------------------------------------- */
+
 export function DetalhesCliente({ usuario, aoFechar }) {
     if (!usuario) return null;
 
-    // 📐 Mapeamento Seguro para os nós do Maestro
-    const dbas = usuario.dadosBasico || {};
-    const dint = usuario.dadosInterno || {};
-    const dseg = usuario.dadosSeguranca || {};
-
-    // 🚀 CONSOLE DE INSPEÇÃO MAESTRO
-    useEffect(() => {
-        console.log("");
-        console.log("📐 -----------------------------------------------------------");
-        console.log("📐 Componente: DetalhesCliente.jsx");
-        console.log("📐 Funcao: Renderização de Ficha Administrativa");
-        console.log("📐 Nome Alvo:", dbas.nome || "N/A");
-        console.log("📐 CPF Alvo:", dbas.cpef || "N/A");
-        console.log("📐 -----------------------------------------------------------");
-    }, [dbas]);
-
-
+    // 📐 Mapeamento Seguro Maestro (Protocolo V3)
+    const dBasico = usuario.dadosBasico || {};
+    const dInterno = usuario.dadosInterno || {};
+    const dSeguranca = usuario.dadosSeguranca || {};
+    
+    // Extração do ID Limpo (Apenas números do CPF para ID de Sistema)
+    const idSistema = dBasico.cpef ? dBasico.cpef.replace(/\D/g, "") : "---";
 
 
 
     return (
         <div className="detalhes-cliente-overlay">
+
+
+
+            {/* -------------------------------- */}
+            {/* INICIO - FICHA RESUMO CLIENTE    */}
+            {/* -------------------------------- */}
+
             <div className="detalhes-cliente-modal-card">
                 
+
+
+
+                {/* ----------------------------------------- */}
+                {/* INICIO - FICHA RESUMO CLIENTE - TITULO    */}
+                {/* ----------------------------------------- */}
+
                 <header className="detalhes-cliente-header-card">
-                    <div className="header-info">
+                    <div className="header-info-texto">
                         <h2>🔍 FICHA DO CLIENTE</h2>
-                        <span className="id-subtitulo">ID SISTEMA: {usuario.id_firebase || "N/A"}</span>
+                        <span className="id-subtitulo">ID SISTEMA: {idSistema}</span>
                     </div>
                     <button className="btn-fechar-cliente" onClick={aoFechar}>&times;</button>
                 </header>
 
+                {/* ----------------------------------------- */}
+                {/* FIM - FICHA RESUMO CLIENTE - TITULO    */}
+                {/* ----------------------------------------- */}
 
 
 
 
-                <main className="detalhes-cliente-corpo-card">
+                {/* ----------------------------------------- */}
+                {/* INICIO - FICHA RESUMO CLIENTE - CORPO     */}
+                {/* ----------------------------------------- */}
 
-                    {/* --------------------------------- */}
-                    {/* INICIO - 👤 SEÇÃO: DADOS BÁSICOS  */}
-                    {/* --------------------------------- */}
+                <div className="detalhes-cliente-corpo-card">
+
+
+
+                    {/* --------------------------------------------------------- */}
+                    {/* INICIO - 👤 SEÇÃO: IDENTIFICAÇÃO                          */}
+                    {/* --------------------------------------------------------- */}
+
                     <section className="card-cliente-secao-interna">
+                        
                         <h3 className="titulo-cliente-secao-pequeno">👤 IDENTIFICAÇÃO</h3>
+
                         <div className="grade-cliente-detalhes">
-                            <div className="detalhe-item-cliente"><strong>NOME:</strong> <span>{dbas.nome || "N/A"}</span></div>
-                            <div className="detalhe-item-cliente"><strong>CPF:</strong> <span>{dbas.cpef || "---"}</span></div>
-                            <div className="detalhe-item-cliente"><strong>FUNÇÃO:</strong> <span className={`tag-badge-cliente ${dbas.func}`}>{dbas.func || "---"}</span></div>
+                            
+                            <div className="detalhe-item-cliente">
+                                <label>NOME:</label>
+                                <span>{dBasico.nome?.toUpperCase() || "NOME NÃO INFORMADO"}</span>
+                            </div>
+
+                            <div className="detalhe-item-cliente">
+                                <label>CPF:</label>
+                                <span>{dBasico.cpef || "---"}</span>
+                            </div>
+
+                            <div className="detalhe-item-cliente">
+                                <label>FUNÇÃO NO SISTEMA:</label>
+                                <span className="valor-destaque-azul">{dBasico.func || "cliente"}</span>
+                            </div>
+
                         </div>
+
                     </section>
-                    {/* --------------------------------- */}
-                    {/* FIM - 👤 SEÇÃO: DADOS BÁSICOS     */}
-                    {/* --------------------------------- */}
+
+                    {/* --------------------------------------------------------- */}
+                    {/* FIM - 👤 SEÇÃO: IDENTIFICAÇÃO                             */}
+                    {/* --------------------------------------------------------- */}
 
 
 
 
+                    {/* --------------------------------------------------------- */}
+                    {/* INICIO - ⚙️ SEÇÃO: CONTROLE OPERACIONAL                    */}
+                    {/* --------------------------------------------------------- */}
 
-                    {/* --------------------------------- */}
-                    {/* INICIO - ⚙️ SEÇÃO: CONTROLE INTERNO */}
-                    {/* --------------------------------- */}
                     <section className="card-cliente-secao-interna">
+
                         <h3 className="titulo-cliente-secao-pequeno">⚙️ CONTROLE OPERACIONAL</h3>
+
                         <div className="grade-cliente-detalhes">
-                            <div className="detalhe-item-cliente"><strong>SITUAÇÃO:</strong> <span>{dint.situ?.toUpperCase() || "ATIVO"}</span></div>
-                            <div className="detalhe-item-cliente"><strong>PERMISSÃO:</strong> <span>{dint.perm?.toUpperCase() || "BÁSICA"}</span></div>
-                            <div className="detalhe-item-cliente"><strong>DATA CADASTRO:</strong> <span>{dint.datc || "---"}</span></div>
+                            
                             <div className="detalhe-item-cliente">
-                                <strong>STATUS PERFIL:</strong> 
-                                <span>{dint.dadosUsuarioCompleto ? "✅ CONCLUÍDO" : "⚠️ PENDENTE"}</span>
+                                <label>SITUAÇÃO:</label>
+                                <span className={`status-pill-texto ${dInterno.situ?.toLowerCase() || 'ativo'}`}>
+                                    {dInterno.situ?.toUpperCase() || "ATIVO"}
+                                </span>
                             </div>
+
                             <div className="detalhe-item-cliente">
-                                <strong>LIBERAÇÃO ADM:</strong> 
-                                <span>{dint.usuarioLiberadoPeloAdministrador ? "🔓 LIBERADO" : "🔒 BLOQUEADO"}</span>
+                                <label>PERMISSÃO:</label>
+                                <span>{dInterno.perm?.toUpperCase() || "BASICA"}</span>
                             </div>
+
+                            <div className="detalhe-item-cliente">
+                                <label>DATA CADASTRO:</label>
+                                <span>{dInterno.datc || "---"}</span>
+                            </div>
+
+                            <div className="detalhe-item-cliente">
+                                <label>MEU PREFIL:</label>
+                                <span>{dInterno.dadosUsuarioCompleto ? "✅ CADASTRO CONCLUÍDO" : "⏳ CADASTRO PENDENTE"}</span>
+                            </div>
+
+                            <div className="detalhe-item-cliente">
+                                <label>PRONTUARIO DO PACIENTE:</label>
+                                <span>{dInterno.usuarioLiberadoPeloAdministrador ? "🔓 LIBERADO" : "🔒 BLOQUEADO"}</span>
+                            </div>
+
                         </div>
+
                     </section>
-                    {/* --------------------------------- */}
-                    {/* FIM - ⚙️ SEÇÃO: CONTROLE INTERNO   */}
-                    {/* --------------------------------- */}
+
+                    {/* --------------------------------------------------------- */}
+                    {/* FIM - ⚙️ SEÇÃO: CONTROLE OPERACIONAL                       */}
+                    {/* --------------------------------------------------------- */}
+
+
+
+                </div>
+
+                {/* ---------------------------------------- */}
+                {/* FIM - FICHA RESUMO CLIENTE - CORPO       */}
+                {/* ---------------------------------------- */}
 
 
 
 
-
-                    {/* --------------------------------- */}
-                    {/* INICIO - 🔐 SEÇÃO: SEGURANÇA      */}
-                    {/* --------------------------------- */}
-                    <section className="card-cliente-secao-interna">
-                        <h3 className="titulo-cliente-secao-pequeno">🔐 SEGURANÇA</h3>
-                        <div className="grade-cliente-detalhes">
-                            <div className="detalhe-item-cliente"><strong>SENHA ATUAL:</strong> <code>{dseg.senh || "******"}</code></div>
-                        </div>
-                    </section>
-                    {/* --------------------------------- */}
-                    {/* FIM - 🔐 SEÇÃO: SEGURANÇA         */}
-                    {/* --------------------------------- */}
-
-                </main>
 
                 <footer className="detalhes-cliente-footer-card">
-                    <button className="btn-cliente-voltar" onClick={aoFechar}>Fechar Ficha</button>
+                    <button className="btn-cliente-voltar" onClick={aoFechar}>Voltar ao Relatório</button>
                 </footer>
 
+
+
+
             </div>
+
+            {/* -------------------------------- */}
+            {/* FIM - FICHA RESUMO CLIENTE    */}
+            {/* -------------------------------- */}
+
+
+
         </div>
     );
 }
+
+/* ------------------------------------------------------------- */
+/* FIM - 🔎 COMPONENTE: DetalhesCliente                          */
+/* ------------------------------------------------------------- */

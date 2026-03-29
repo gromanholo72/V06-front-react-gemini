@@ -4,12 +4,46 @@ import { db_realtime } from './firebaseConfig.js';
 import { DetalhesUsuario } from './DetalhesUsuario'; // Importando o novo componente
 import './RelClientes.css'; 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📊 COMPONENTE: RelClientes                           */
+/* ------------------------------------------------------------- */
 export function RelClientes() {
     const [listaClientes, setListaClientes] = useState([]);
     const [carregando, setCarregando] = useState(true);
     // 💡 Estado para controlar qual usuário o programador quer ver
     const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // ---------------------------------
+    // INICIO - 📡 Busca de Dados (Firebase)
+    // ---------------------------------
     useEffect(() => {
         const caminhoDb = ref(db_realtime, 'usuarios');
         
@@ -58,6 +92,24 @@ export function RelClientes() {
             setCarregando(false);
         });
     }, []);
+    // ---------------------------------
+    // FIM - 📡 Busca de Dados (Firebase)
+    // ---------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     return (
         <div className="rel-clientes-principal">
@@ -81,7 +133,6 @@ export function RelClientes() {
                                     <th style={{ textAlign: 'left', border: '1px solid black', padding: '12px' }}>👤 Nome</th>
                                     <th style={{ textAlign: 'center', border: '1px solid black', padding: '12px' }}>🛠️ Função</th>
                                     <th style={{ textAlign: 'center', border: '1px solid black', padding: '12px' }}>🛡️ Cadastro</th>
-                                    <th style={{ textAlign: 'center', border: '1px solid black', padding: '12px' }}>🔓 Liberar Prontuário</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,26 +156,20 @@ export function RelClientes() {
 
                                             <td style={{ border: '1px solid black', padding: '10px', textAlign: 'center' }}>
                                                 {usuario.dadosInterno?.dadosUsuarioCompleto === true ? (
-                                                    <span title="Confirmar cadastro">🌌 confirmar cadastro preenchido</span>
-                                                ) : (
-                                                    <span style={{ backgroundColor: '#ffc107', color: '#000', padding: '4px 8px', borderRadius: '4px', fontSize: '0.85rem', fontWeight: 'bold' }}>
-                                                        ⏳ Pendente de preenchimento
+                                                    <span className="rel-clientes-tag-confirmar">
+                                                        🌌 Confirmar
                                                     </span>
-                                                )}
-                                            </td>
-
-                                            <td style={{ border: '1px solid black', padding: '10px', textAlign: 'center' }}>
-                                                {usuario.dadosInterno?.usuarioLiberadoPeloAdministrador ? (
-                                                    <span style={{ color: '#2ecc71', fontWeight: 'bold' }}>🟢 Liberado</span>
                                                 ) : (
-                                                    <span style={{ color: '#e74c3c', fontWeight: 'bold' }}>🔴 Bloqueado</span>
+                                                    <span className="rel-clientes-tag-pendente">
+                                                        ⏳ Pendente
+                                                    </span>
                                                 )}
                                             </td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="4" style={{ textAlign: 'center', padding: '30px', color: '#777', border: '1px solid black' }}>
+                                        <td colSpan="3" style={{ textAlign: 'center', padding: '30px', color: '#777', border: '1px solid black' }}>
                                             🚫 Nenhum registro identificado.
                                         </td>
                                     </tr>
@@ -145,3 +190,6 @@ export function RelClientes() {
         </div>
     );
 }
+/* ------------------------------------------------------------- */
+/* FIM - 📊 COMPONENTE: RelClientes                             */
+/* ------------------------------------------------------------- */

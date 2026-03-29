@@ -101,6 +101,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
+
     // ----------------------------------------------------------------------
     // INICIO - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
     // ----------------------------------------------------------------------
@@ -111,6 +112,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         const verificarUsuariosCadastrados = async () => {
 
+            console.log("");
             console.log("🕵️‍♂️ ----------------------------------");
             console.log("🕵️‍♂️ Logar.jsx: Verificando usuários já cadastrados...");
 
@@ -148,7 +150,6 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
-    
 
     /*  ---------------------------------------------------------------------- */
     /* INICIO DA - �🗂️ 🚨 GAVETA DE ALERTA: Para mostrar o erro na <div className="MsgForm"> */

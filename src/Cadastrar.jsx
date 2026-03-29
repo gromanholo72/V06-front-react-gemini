@@ -356,8 +356,8 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
             // ⚙️ Dados Internos
             dadosInterno: {
-                dadosUsuarioCompleto: false,
-                usuarioLiberadoPeloAdministrador: false,
+                // dadosUsuarioCompleto: false,
+                // usuarioLiberadoPeloAdministrador: false,
                 perm: "basica",
                 situ: "ativo",
                 datc: new Date().toLocaleDateString('pt-BR'),
@@ -620,8 +620,8 @@ const handleChange = (e) => {
 
                     // ⚙️ Dados Internos
                     dadosInterno: {
-                        dadosUsuarioCompleto: false,
-                        usuarioLiberadoPeloAdministrador: false,
+                        // dadosUsuarioCompleto: false,
+                        // usuarioLiberadoPeloAdministrador: false,
                         perm: "basica",
                         situ: "ativo",
                         datc: new Date().toLocaleDateString('pt-BR'),

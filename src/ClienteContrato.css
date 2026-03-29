@@ -1,0 +1,163 @@
+/* ------------------------------------------------------------- */
+/* INICIO - 🏨 1. ESTRUTURA E FUNDO (PALCO PRINCIPAL)            */
+/* ------------------------------------------------------------- */
+.cliente-contrato-principal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.cliente-contrato-suporte {
+    width: 100%;
+    max-width: 850px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📋 2. CARD DO CONTRATO (DESIGN 2026)                 */
+/* ------------------------------------------------------------- */
+.contrato-usuario-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    animation: surgir_suave 0.6s ease-out;
+}
+
+.contrato-card-header {
+    background-color: #f8fbff;
+    border-bottom: 3px solid #306396;
+    padding: 15px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contrato-card-header h2 {
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0;
+    text-align: center;
+    padding: 10px 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📄 3. CONTEÚDO E CLÁUSULAS                           */
+/* ------------------------------------------------------------- */
+.contrato-card-corpo {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    text-align: left;
+}
+
+.contrato-secao h3 {
+    color: #306396;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.contrato-secao p {
+    color: #455a64;
+    line-height: 1.7;
+    font-size: 15px;
+    margin: 0;
+    text-align: justify;
+}
+
+.contrato-lista {
+    padding-left: 20px;
+    margin: 0;
+    color: #455a64;
+}
+
+.contrato-lista li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🚀 4. BOTÕES E FOOTER                                */
+/* ------------------------------------------------------------- */
+.btn-contrato-pdf {
+    background-color: rgb(212, 175, 55); /* Dourado Maestro */
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 8px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: filter 0.2s;
+    font-size: 14px;
+}
+
+.alerta-contrato {
+    background-color: #fcf8e3;
+    border: 1px solid #faebcc;
+    color: #8a6d3b;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+@keyframes surgir_suave {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* ------------------------------------------------------------- */
+/* FIM - ESTILIZAÇÃO DO CONTRATO                                 */
+/* ------------------------------------------------------------- */

@@ -1,0 +1,136 @@
+/* ----------------------------------------------------------- */
+/* INICIO - ️ 1. HERANÇA VISUAL: RELATÓRIO DE CLIENTES         */
+/* ----------------------------------------------------------- */
+/* 
+   Esta seção importa as regras de design do RelClientes.css 
+   para garantir consistência na experiência do Administrador.
+*/
+
+.nome-destaque {
+    font-weight: 800 !important;
+    color: #1a1a1a !important;
+    text-transform: uppercase;
+}
+
+/* ----------------------------------------------------------- */
+/* FIM - 🏛️ 1. HERANÇA VISUAL: RELATÓRIO DE CLIENTES            */
+/* ----------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO -  2. AJUSTES ESPECÍFICOS PARA CUIDADORAS            */
+/* ------------------------------------------------------------- */
+
+.adm-relatorio-col-cadastro {
+    text-align: center !important;
+    /* 📐 Ajuste Maestro: Largura máxima controlada para a coluna de status */
+    /* width: 120px;  */
+  
+    width: 150px;
+
+
+    /* white-space: normal !important;
+    word-break: break-word; */
+
+
+}
+
+
+.adm-relatorio-col-id {
+    /* text-align: center !important; */
+    /* 📐 Ajuste Maestro: Força a coluna a usar a largura mínima possível */
+    /* width: 20%; */
+    /* white-space: nowrap; */
+    width: 100px; 
+}
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* FIM -  2. AJUSTES ESPECÍFICOS PARA CUIDADORAS                */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🏷️ TAGS DE STATUS (QUEBRA DE LINHA MAESTRO)          */
+/* ------------------------------------------------------------- */
+.rel-clientes-tag-confirmar,
+.rel-clientes-tag-pendente,
+.rel-clientes-tag-autorizado {
+    /* 📐 Ajuste Maestro: Força o empilhamento vertical (quebra) entre o emoji e o texto */
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px; /* Pequeno respiro entre o ícone e a instrução */
+    padding: 8px 4px; /* Aumento do respiro vertical para o novo layout */
+    white-space: normal;
+    width: 100%;
+    text-align: center;
+}
+/* ------------------------------------------------------------- */
+/* FIM - 🏷️ TAGS DE STATUS (QUEBRA DE LINHA MAESTRO)             */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - ✅ TAG EXCLUSIVA: AUTORIZADO (CONFIRMADO)            */
+/* ------------------------------------------------------------- */
+.rel-clientes-tag-autorizado {
+    background-color: #306396; /* 🎨 Azul Maestro: Status de Liberação Final */
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    border: 1px solid #1a436d;
+}
+/* ------------------------------------------------------------- */
+/* FIM - ✅ TAG EXCLUSIVA: AUTORIZADO (CONFIRMADO)               */
+/* ------------------------------------------------------------- */

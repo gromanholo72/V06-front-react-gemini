@@ -1053,29 +1053,79 @@ Sempre que criar listas de itens com múltiplos campos (ex: Nome, Dose, Horário
 📏 REGRA DE ESPAÇAMENTO DE BLOCOS (PADRÃO MAESTRO)
 Contexto: Aplicável a todos os arquivos de código (JSX, JS, CSS, HTML).
 
-Delimitadores de Bloco: Considere um "Bloco" qualquer conjunto de código envolvido por comentários de cabeçalho e rodapé (Ex: /* INICIO ... */ e /* FIM ... */).
+Delimitadores de Bloco: Considere um "Bloco" qualquer conjunto de código envolvido por
+comentários de cabeçalho e rodapé (Ex: /* INICIO ... */ e /* FIM ... */).
 
-Injeção de Espaçamento: Entre o fechamento de um bloco (/* FIM ... */) e a abertura do próximo bloco (/* INICIO ... */), 
-você DEVE obrigatoriamente inserir exatas 15 linhas em branco (15 quebras de linha).
+Injeção de Espaçamento: Entre o fechamento de um bloco (/* FIM ... */) e a abertura do próximo bloco 
+(/* INICIO ... */), você DEVE obrigatoriamente inserir exatas 10 linhas em branco (10 quebras de linha).
 
 Visualização: O objetivo é criar um "respiro" visual extremo para facilitar a navegação em arquivos longos.
 
 
-/* -------------------------------------------------------- */
-/* FIM - BLOCO ANTERIOR                                     */
-/* -------------------------------------------------------- */
+
+
+
+{/* -------------------------------------------------------- */}
+{/* FIM - BLOCO ANTERIOR                                     */}
+{/* -------------------------------------------------------- */}
 (linha vazia 1)
 (linha vazia 2)
 (linha vazia 3)
 (linha vazia 4)
 ...
 ...
-(linha vazia 15)
-/* -------------------------------------------------------- */
-/* INICIO - PRÓXIMO BLOCO                                   */
-/* -------------------------------------------------------- */
+(linha vazia 10)
+{/* -------------------------------------------------------- */}
+{/* INICIO - PRÓXIMO BLOCO                                   */}
+{/* -------------------------------------------------------- */}
 
 Sempre que gerar ou editar blocos de código que possuam comentários de 
-início e fim (padrão Maestro), insira obrigatoriamente um intervalo de 5 
+início e fim (padrão Maestro), insira obrigatoriamente um intervalo de 10 
 linhas vazias entre o término de um bloco e o início do próximo. 
 Não ignore esta regra mesmo em códigos curtos.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 7. Protocolo Maestro de Dados Atômicos (Mapeamento V3)
+Ao manipular objetos de usuário (Firebase/Estados), utilize obrigatoriamente a estrutura de três pilares para garantir segurança e escalabilidade:
+- **dadosBasico**: Informações públicas/identificação (nome, cpef, func, foto, nasc).
+- **dadosInterno**: Controle de sistema e permissões (situ, perm, datc, dadosUsuarioCompleto, usuarioLiberadoPeloAdministrador).
+- **dadosSeguranca**: Dados sensíveis e credenciais (senh, token, uid).
+
+### Regras de Mapeamento em Componentes:
+- Sempre utilize desestruturação segura: `const dBasico = usuario.dadosBasico || {};`.
+- **ID de Sistema**: Deve ser derivado do `cpef` limpo (apenas números) usando `.replace(/\D/g, "")`.
+- **Fichas Resumo (Cards)**: Devem seguir o padrão de `Overlay` -> `ModalCard` -> `Header/Corpo/Footer`.
+
+## 8. Estética de Componentes "Ficha do Cliente"
+Siga este padrão visual para modais de detalhes:
+- **Headers**: Devem conter o título em caixa alta e o "ID SISTEMA" como subtítulo.
+- **Grades de Dados**: Use a classe `grade-cliente-detalhes` com itens compostos por `<label>` (em caixa alta) e `<span>`.
+- **Destaques Visuais**: 
+    - Nomes sempre em `.toUpperCase()`.
+    - Funções com a classe `valor-destaque-azul`.
+    - Status operacionais usando `status-pill-texto` com cores dinâmicas baseadas na string (ativo/pendente).
+
+## 9. Manutenção da Régua de 10 Linhas (Extremo Respiro)
+- **Obrigatório**: Entre o comentário de fechamento `/* FIM - ... */` e o comentário de abertura `/* INICIO - ... */`, insira exatamente 10 linhas em branco.
+- **Aplicação**: Esta regra é absoluta para arquivos JSX e CSS, visando navegação rápida via scroll em arquivos de longa extensão.
+
+## 10. Semântica Maestro de UI
+- **Botão de Fechamento**: Sempre utilizar a classe `btn-fechar-cliente` com o caractere `&times;`.
+- **Footer de Ação**: Botão principal deve ter a classe `btn-cliente-voltar`.
+- **Seções Internas**: Títulos de seção dentro de cards devem usar a classe `titulo-cliente-secao-pequeno` acompanhada de um emoji temático.

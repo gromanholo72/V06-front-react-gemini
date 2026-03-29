@@ -122,3 +122,67 @@
 /* ------------------------------------------------------------- */
 /* FIM - 📊 ESTILIZAÇÃO EXCLUSIVA: RELATÓRIO DE CLIENTES         */
 /* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🏷️ TAG EXCLUSIVA: PENDENTE DE PREENCHIMENTO          */
+/* ------------------------------------------------------------- */
+.rel-clientes-tag-pendente {
+    background-color: #c0392b; /* 🎨 Vermelho Maestro: Alerta de Pendência */
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    display: inline-block;
+    border: 1px solid #a93226;
+}
+/* ------------------------------------------------------------- */
+/* FIM - 🏷️ TAG EXCLUSIVA: PENDENTE DE PREENCHIMENTO             */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🏷️ TAG EXCLUSIVA: CADASTRO CONFIRMADO                */
+/* ------------------------------------------------------------- */
+.rel-clientes-tag-confirmar {
+    background-color: rgb(212, 175, 55); /* 🎨 Amarelo Maestro: Cadastro Confirmado */
+    color: #000000;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    display: inline-block;
+    border: 1px solid #b88b2d;
+}
+/* ------------------------------------------------------------- */
+/* FIM - 🏷️ TAG EXCLUSIVA: CADASTRO CONFIRMADO                   */
+/* ------------------------------------------------------------- */
