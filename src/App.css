@@ -373,12 +373,7 @@ input[type="submit"]:disabled {
    
 }
 
-.menu-horizontal-cliente-container  {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 10px;
-   
-}
+
 
 
 
@@ -940,11 +935,21 @@ input[type="submit"]:disabled {
 /* INICIO - MENU - CLIENTE PROF        */
 /* ----------------------------------- */
 
-.submenu-tudo-solicitacao-prof,
+/* .submenu-tudo-solicitacao-prof,
 .submenu-tudo-paciente-prof {
     position: relative;
     display: inline-block;
+} */
+.submenu-tudo-solicitacao-prof {
+    position: relative;
+    display: inline-block;
 }
+
+
+
+
+
+
 
 /* 🚀 Botão Principal Cliente */
 .Btn-geral-cliente-prof {
@@ -1043,7 +1048,7 @@ input[type="submit"]:disabled {
 }
 
 /* 📱 Ajuste Mobile */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .submenu-flutuante-cliente-prof {
         top: 0;
         left: 115px;
@@ -1051,11 +1056,85 @@ input[type="submit"]:disabled {
     }
     .submenu-flutuante-cliente-prof.aberto { transform: translateX(0); }
     .submenu-flutuante-cliente-prof.fechado { transform: translateX(-15px); }
-}
+} */
 
 /* ----------------------------------- */
 /* FIM - MENU - CLIENTE PROF           */
 /* ----------------------------------- */
+
+
+
+
+
+
+
+
+
+
+.menu-horizontal-cliente-container  {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px;
+   
+}
+
+
+.container-externo-blindado:not([data-func="visitante"]) .submenu-tudo-paciente-prof {
+
+    background-color: #0077cc !important;
+
+    display: flex !important;
+    flex-direction: column;
+    
+    position: fixed !important;
+    top: 70px !important;      
+    left: 0 !important;         
+    bottom: 0 !important;       
+    
+    width: 240px !important;    
+    height: calc(100vh - 70px) !important;
+    
+    opacity: 1 !important;     
+    transform: none !important; 
+    pointer-events: auto !important;
+    
+    border-radius: 0 !important; 
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
+    /* background-color: #f8f9fa !important; */
+    
+    overflow-y: auto; 
+    padding-top: 20px;
+}
+
+
+
+@media (max-width: 768px) {
+
+
+
+    .container-externo-blindado:not([data-func="visitante"]) .submenu-container-geral{
+        width: 100%;
+    }
+    
+
+
+    .container-externo-blindado:not([data-func="visitante"]) .submenu-tudo-paciente-prof {
+    
+        background-color: #6dcc00 !important;
+    
+
+
+    }
+
+}
+    
+ 
+
+
+
+
+
 
 
 
@@ -2671,7 +2750,7 @@ input[type="submit"]:disabled {
 
 
 .Botao-Acao-Visitante-Perfil {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: bold;
     /* display: flex; */
     align-items: center;
@@ -2683,7 +2762,7 @@ input[type="submit"]:disabled {
     /* min-width: max-content; */
     /* position: relative; */
     z-index: 1001;
-    width: 110px;
+    width: 130px;
 }
 
 
@@ -2698,7 +2777,7 @@ input[type="submit"]:disabled {
 
 
 .Botao-Acao-Meu-Perfil {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 800;
     /* font-weight: bold; */
     display: flex;
@@ -2753,16 +2832,16 @@ input[type="submit"]:disabled {
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 16px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
 .Seta-Drop {
-    font-size: 10px;
+    font-size: 20px;
     opacity: 0.8;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-left: 2px;
+    /* margin-left: 2px; */
 }
 
 .Seta-Drop.Aberta {
@@ -2918,7 +2997,7 @@ input[type="submit"]:disabled {
 
 /* Título das Seções (ex: PACIENTE) */
 .titulo-setor-sidebar {
-    font-size: 10px;
+    font-size: 12px;
     text-transform: uppercase;
     color: #05182c; 
     margin: 5px 0px 8px 0px; /* Removendo margem lateral */
@@ -2998,6 +3077,7 @@ input[type="submit"]:disabled {
     position: relative;
     width: 100%; 
     background: #ffffff; 
+    background-color: rgb(212, 175, 55) !important; 
     border-radius: 20px; 
     box-shadow: 0 8px 30px rgba(142, 68, 173, 0.08); /* Sombra levemente roxa */
     border: 1px solid rgba(142, 68, 173, 0.1); 
@@ -3095,31 +3175,7 @@ input[type="submit"]:disabled {
 
 @media (min-width: 768px) {
     
-    /* 1. Transforma o Menu Flutuante em Sidebar Fixa à Esquerda */
-    .container-externo-blindado:not([data-func="visitante"]) .submenu-tudo-paciente-prof {
-        display: flex !important;
-        flex-direction: column;
-        
-        position: fixed !important;
-        top: 70px !important;      
-        left: 0 !important;         
-        bottom: 0 !important;       
-        
-        width: 240px !important;    
-        height: calc(100vh - 70px) !important;
-        
-        opacity: 1 !important;     
-        transform: none !important; 
-        pointer-events: auto !important;
-        
-        border-radius: 0 !important; 
-        border-right: 1px solid #e0e0e0;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
-        background-color: #f8f9fa !important;
-        
-        overflow-y: auto; 
-        padding-top: 20px;
-    }
+   
 
 
 
@@ -3297,7 +3353,8 @@ input[type="submit"]:disabled {
     border-radius: 0 !important; 
     border-right: 1px solid #e0e0e0;
     box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
-    background-color: #f8f9fa !important;
+    /* background-color: #f8f9fa !important; */
+    background-color: rgb(212, 175, 55) !important; 
     
     overflow-y: auto; 
     padding-top: 20px;

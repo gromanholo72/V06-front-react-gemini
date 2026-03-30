@@ -1,4 +1,6 @@
 import React from 'react';
+import { ref, update } from "firebase/database";
+import { db_realtime } from './firebaseConfig';
 import './DetalhesCliente.css';
 
 /* ------------------------------------------------------------- */
@@ -15,6 +17,42 @@ export function DetalhesCliente({ usuario, aoFechar }) {
     
     // Extração do ID Limpo (Apenas números do CPF para ID de Sistema)
     const idSistema = dBasico.cpef ? dBasico.cpef.replace(/\D/g, "") : "---";
+
+
+
+
+
+    // ---------------------------------
+    // INICIO - 💾 AÇÃO: CONFIRMAR CADASTRO CLIENTE (ADMIN)
+    // ---------------------------------
+    const handleConfirmarCadastro = async () => {
+        const cpfLimpo = dBasico.cpef ? dBasico.cpef.replace(/\D/g, "") : null;
+
+        console.log("");
+        console.log("💾 🛡️ ------------------------------");
+        console.log("💾 🛡️ AÇÃO: Confirmar Cadastro Cliente (Admin)");
+        console.log("💾 🛡️ CPF Alvo:", cpfLimpo);
+        console.log("💾 🛡️ -------------------------------");
+
+        if (!cpfLimpo) return;
+
+        try {
+            const internoRef = ref(db_realtime, `usuarios/${cpfLimpo}/dadosCadastro`);
+            await update(internoRef, {
+                autorizadoAdministrador: true,
+                autorizadoAdministradorData: new Date().toLocaleDateString('pt-BR')
+            });
+            console.log("📐 ✅ SUCESSO: Cliente autorizado na Antena Central.");
+            alert("✅ Cadastro do cliente confirmado com sucesso!");
+            aoFechar();
+        } catch (error) {
+            console.error("❌ 🚨 Erro no salvamento Maestro (Cliente):", error);
+            alert("❌ Falha ao sincronizar confirmação.");
+        }
+    };
+    // ---------------------------------
+    // FIM - 💾 AÇÃO: CONFIRMAR CADASTRO CLIENTE (ADMIN)
+    // ---------------------------------
 
 
 
@@ -38,7 +76,7 @@ export function DetalhesCliente({ usuario, aoFechar }) {
 
                 <header className="detalhes-cliente-header-card">
                     <div className="header-info-texto">
-                        <h2>🔍 FICHA DO CLIENTE</h2>
+                        <h2>FICHA DO CLIENTE</h2>
                         <span className="id-subtitulo">ID SISTEMA: {idSistema}</span>
                     </div>
                     <button className="btn-fechar-cliente" onClick={aoFechar}>&times;</button>
@@ -153,6 +191,13 @@ export function DetalhesCliente({ usuario, aoFechar }) {
 
 
                 <footer className="detalhes-cliente-footer-card">
+                    <button 
+                        className="btn-confirmar-cadastro" 
+                        onClick={handleConfirmarCadastro}
+                    >
+                        Confirmar Cadastro
+                    </button>
+
                     <button className="btn-cliente-voltar" onClick={aoFechar}>Voltar ao Relatório</button>
                 </footer>
 

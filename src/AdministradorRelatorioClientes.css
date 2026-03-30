@@ -1,8 +1,7 @@
-
 /* ----------------------------------------------------------- */
-/* INICIO - 🏗️ 1. COMPONENTE-PRINCIPAL (PALCO DA OBRA)           */
+/* INICIO - 🏗️ 1. ESTRUTURA BASE (PALCO E VIGA)                 */
 /* ----------------------------------------------------------- */
-.adm-relatorio-principal {
+.relatorio-cliente-principal {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -12,14 +11,7 @@
     animation: relClientes_surgir 0.6s ease-out;
 }
 
-
-
-
-
-/* ------------------------------------------------------------- */
-/* INICIO - 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL)           */
-/* ------------------------------------------------------------- */
-.adm-relatorio-suporte {
+.relatorio-cliente-suporte {
     width: 100%;
     max-width: 1100px;
     display: flex;
@@ -31,66 +23,42 @@
 
 
 /* ------------------------------------------------------------- */
-/* INICIO - 📋 3. CARD-DADOS (O DOSSIÊ DE CLIENTES)              */
+/* INICIO - 🏷️ 2. CABEÇALHO (IDENTIDADE MAESTRO)                */
 /* ------------------------------------------------------------- */
-.adm-relatorio-usuario-card {
-    position: relative;
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 16px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-}
-
-
-
-
-
-/* ------------------------------------------------------------- */
-/* INICIO - 🏷️ 4. CARD-HEADER (IDENTIDADE MAESTRO)               */
-/* ------------------------------------------------------------- */
-.adm-relatorio-header {
+.relatorio-cliente-header {
     background-color: #ebf2f7; 
-    border-bottom: 3px solid #306396;
-    padding: 10px 20px;
+    /* border-bottom: 3px solid #306396; */
+    padding: 15px 20px;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 2;
 }
 
-.adm-relatorio-header h2 {
-    color: #2c3e50;
-    font-size: 16px;
+.relatorio-cliente-header h2 {
+    margin: 0;
+    color: black;
+    font-size: 15px; /* 📐 Ajuste Maestro: Título reduzido para melhor equilíbrio visual */
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin: 0;
 }
 
-
-
-
-
-/* ------------------------------------------------------------- */
-/* INICIO - 🚀 5. BOTÕES DE AÇÃO (CORES SAGRADAS)                */
-/* ------------------------------------------------------------- */
-.btn-exportar {
-    background-color: rgb(212, 175, 55); /* Dourado Maestro */
-    color: white;
+.relatorio-cliente-btn-pdf {
+    background-color: rgb(75, 77, 75); 
+    color: #ffffff;
     border: none;
-    padding: 10px 10px;
-    border-radius: 6px;
+    padding: 8px 15px;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 12px;
-    transition: filter 0.2s;
-    white-space: nowrap;
+    transition: filter 0.2s, transform 0.1s;
 }
 
-.btn-exportar:hover {
+.relatorio-cliente-btn-pdf:hover {
     filter: brightness(0.9);
-    transform: translateY(-1px);
 }
 
 
@@ -98,78 +66,69 @@
 
 
 /* ------------------------------------------------------------- */
-/* INICIO - 📊 6. TABELA RESPONSIVA & SCROLL (O SEGREDO)         */
+/* INICIO - 📊 3. TABELA E CONTAINER (BOX SHADOW)               */
 /* ------------------------------------------------------------- */
-.adm-relatorio-tabela-responsiva {
-    width: 100%;
-    overflow-x: auto; 
+.relatorio-cliente-tabela-container {
     background: #ffffff;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    /* 📐 Scroll horizontal como último recurso Maestro */
+    overflow-x: auto !important; 
+    /* border: 1px solid #e0e0e0; */
+    border-top: none;
 }
 
-.adm-relatorio-tabela {
+.relatorio-cliente-tabela {
     width: 100%;
-    min-width: 700px; /* 📐 Chão da tabela para acionar scroll horizontal apenas no limite de legibilidade */
+    min-width: 500px; /* 📐 Garante que a tabela não esprema demais o conteúdo */
     border-collapse: collapse;
     background-color: white;
 }
 
-
-
-
-
-/* ------------------------------------------------------------- */
-/* INICIO - 🎨 7. ESTILIZAÇÃO DE CÉLULAS (TH/TD)                 */
-/* ------------------------------------------------------------- */
-.adm-relatorio-tabela th {
-    background-color: #34495e; /* Cinza Profundo Maestro */
+.relatorio-cliente-tabela th {
+    background-color: #9b9fa3;
     color: #ffffff;
     padding: 12px 15px;
     font-weight: 800;
     text-transform: uppercase;
     font-size: 12px;
     text-align: center;
-    letter-spacing: 1px;
     border: 1px solid #2c3e50;
-    /* 📐 Ajuste Maestro: Permite quebra nos cabeçalhos para favorecer o layout compacto */
-    white-space: normal; 
+    /* 📐 Blindagem de Layout: Permite quebra nos cabeçalhos para manter a compactação */
+    white-space: normal !important; 
 }
 
-.adm-relatorio-tabela th:nth-child(2),
-.adm-relatorio-tabela td:nth-child(2) {
-    text-align: left;
-    padding-left: 20px;
-    min-width: 250px; /* 📐 Garante área mínima para o nome quebrar internamente antes de espremer as outras colunas */
-}
-
-.adm-relatorio-tabela td {
-    padding: 10px 15px; 
-    border: 1px solid #e0e0e0;
-    color: #444;
-    font-size: 12px;
+.relatorio-cliente-tabela td {
+    padding: 10px 15px;
+    /* 📐 Ajuste Maestro: Linhas horizontais pretas para contraste superior */
+    border-bottom: 1px solid #000000; 
+    color: #2c3e50;
     font-weight: 600;
-    text-align: center;
-    /* 📐 Ajuste Maestro: Quebra o texto primeiro, ativa scroll horizontal depois */
-    white-space: normal; 
-    word-break: break-word; 
+    font-size: 13px;
+    /* 📐 Blindagem Maestro: Força a quebra de linha para respeitar a largura da viga */
+    white-space: normal !important; 
+    word-break: break-word; /* 📐 Tenta quebrar palavras longas antes de ativar o scroll */
+    overflow-wrap: anywhere; /* 📐 Blindagem total contra vazamento de layout */
 }
 
 .nome-destaque {
     font-weight: 800 !important;
     color: #1a1a1a !important;
+    text-transform: uppercase;
+    text-align: left !important;
 }
 
-.adm-relatorio-tabela tbody tr {
-    cursor: pointer; /* 📐 Interatividade Maestro: Sinaliza que a linha é clicável */
+.relatorio-cliente-tabela tbody tr {
+    cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
-.adm-relatorio-tabela tbody tr:nth-child(even) {
+.relatorio-cliente-tabela tbody tr:nth-child(even) {
     background-color: #f9fbfd;
 }
 
-.adm-relatorio-tabela tbody tr:hover {
+.relatorio-cliente-tabela tbody tr:hover {
     background-color: #d6d4d4;
-    transition: background-color 0.2s ease;
 }
 
 
@@ -177,54 +136,59 @@
 
 
 /* ------------------------------------------------------------- */
-/* INICIO - ✅ 8. TAGS DE STATUS (PILLS MAESTRO)                 */
+/* INICIO - 🏷️ 4. TAGS DE STATUS (REGRAS DE COR)                */
 /* ------------------------------------------------------------- */
-.status-pill {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 50px;
-    font-size: 10px;
-    font-weight: 800;
-    min-width: 100px;
-    text-transform: uppercase;
+.relatorio-cliente-tag-confirmar,
+.relatorio-cliente-tag-pendente,
+.relatorio-cliente-tag-autorizado {
+    color: #ffffff;
+    display: flex !important;
+    flex-direction: row; /* 📐 Alinhamento horizontal Maestro */
+    align-items: center;
+    justify-content: space-between; /* 📐 Distribui para as extremidades */
+    padding: 14px 12px;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box; 
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
 }
 
-.status-pill.ativo { background-color: #e9f7ef; color: #27ae60; border: 1px solid #d4efdf; }
-.status-pill.aguardando { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
-.status-pill.bloqueado { background-color: #fceceb; color: #c0392b; border: 1px solid #fadbd8; }
-
-
-
-
-
-/* ------------------------------------------------------------- */
-/* INICIO - 👁️ 9. BOTÕES DE INTERAÇÃO (DETALHES)                 */
-/* ------------------------------------------------------------- */
-.btn-visualizar {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
+.relatorio-cliente-tag-pendente {
+    background-color: #c0392b; /* Vermelho Maestro */
 }
 
-.btn-visualizar:hover {
+.relatorio-cliente-tag-confirmar {
+    background-color: rgb(212, 175, 55); /* Amarelo Maestro */
+}
+
+.relatorio-cliente-tag-autorizado {
     background-color: #306396; /* Azul Maestro */
-    color: white;
-    box-shadow: 0 4px 8px rgba(48, 99, 150, 0.2);
 }
 
 
 
 
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📐 5. AJUSTES DE COLUNA                              */
+/* ------------------------------------------------------------- */
+.adm-relatorio-col-nome {
+    /* 📐 Alinhamento Maestro: Nomes alinhados à esquerda para padrão de leitura */
+    text-align: left !important;
+}
+
+.adm-relatorio-col-cadastro {
+    width: 160px;
+    text-align: center !important;
+}
 
 @keyframes relClientes_surgir {
     from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
 /* ------------------------------------------------------------- */
-/* FIM - 🏆 PADRÃO GOLDEN: RELATÓRIO ADMINISTRATIVO (VISUAL 2026) */
+/* FIM - RELATÓRIO CLIENTES                                      */
 /* ------------------------------------------------------------- */

@@ -7,32 +7,6 @@ import './AdministradorRelatorioCuidadoras.css';
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* --------------------------------- */
 /* INICIO - 👩‍⚕️ COMPONENTE: AdministradorRelatorioCuidadoras */
 /* --------------------------------- */
@@ -49,9 +23,10 @@ export function AdministradorRelatorioCuidadoras() {
 
 
     // ---------------------------------
-    // INICIO - 📡 Busca de Dados na Antena Central (Firebase)
+    // INICIO - 📡 Busca de Dados noFirebase
     // ---------------------------------
     useEffect(() => {
+
         if (!db_realtime) return;
 
         const caminhoDb = ref(db_realtime, 'usuarios');
@@ -62,10 +37,11 @@ export function AdministradorRelatorioCuidadoras() {
 
             console.log("");
             console.log("🔍 -----------------------------------------------------------");
-            console.log("🔍 MONITOR: Sincronização de Cuidadoras Iniciada");
-            console.log("🔍 -----------------------------------------------------------");
+            console.log("🔍 MONITOR: carregando Cuidadoras");
+            console.log("🔍 dados", dados);
 
             if (dados) {
+
                 const listaFormatada = Object.keys(dados).map(id => {
 
                     const original = dados[id];
@@ -79,6 +55,7 @@ export function AdministradorRelatorioCuidadoras() {
 
                     // 📐 PROTOCOLO MAESTRO V3: Mapeamento Seguro
                     return {
+
                         id_firebase: id,
                         dadosBasico: original.dadosBasico || {},
                         dadosContato: original.dadosContato || {}, 
@@ -89,9 +66,13 @@ export function AdministradorRelatorioCuidadoras() {
                         dadosInterno: original.dadosInterno || {},
                         // dadosSeguranca: original.dadosSeguranca || {},
                         ordem_maestro: pesoOrdem
+
                     };
+
                 })
-                .filter(u => u.ordem_maestro === 2) // 🎯 Filtro exclusivo para Cuidadoras
+
+                // 🎯 Filtro exclusivo para Cuidadoras
+                .filter(u => u.ordem_maestro === 2) 
                 .sort((a, b) => (a.dadosBasico?.nome || "").localeCompare(b.dadosBasico?.nome || ""));
 
                 setListaCuidadoras(listaFormatada);
@@ -99,39 +80,22 @@ export function AdministradorRelatorioCuidadoras() {
                 console.log(`✅ SUCESSO: ${listaFormatada.length} cuidadoras carregadas.`);
 
             } else {
+
                 setListaCuidadoras([]);
+
             }
             
             setCarregando(false);
+
         });
 
         return () => unsubscribe();
+
     }, []);
+
     // ---------------------------------
-    // FIM - 📡 Busca de Dados na Antena Central (Firebase)
+    // FIM - 📡 Busca de Dados no Firebase
     // ---------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -144,11 +108,13 @@ export function AdministradorRelatorioCuidadoras() {
     // INICIO - 📄 Função de Exportação (Placeholder Maestro)
     // ---------------------------------
     const handleGerarRelatorioPDF = () => {
+
         console.log("🚀 ----------------------------------");
         console.log("🚀 AÇÃO: Exportar PDF Cuidadoras");
         console.log("🚀 Lote de processamento:", listaCuidadoras.length);
         console.log("🚀 ----------------------------------");
         alert("Iniciando geração do dossiê das cuidadoras...");
+
     };
     // ---------------------------------
     // FIM - 📄 Função de Exportação
@@ -161,40 +127,22 @@ export function AdministradorRelatorioCuidadoras() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // ---------------------------------
     // INICIO - 🧪 Protocolo de Monitoramento Maestro
     // ---------------------------------
+
     useEffect(() => {
+
         console.log("");
         console.log("📐 -----------------------------------------------------------");
         console.log("📐 MONITOR: Relatório Administrativo de Cuidadoras");
         console.log("📐 Status Carregamento:", carregando ? "⏳ Pendente" : "✅ Finalizado");
-        console.log("📐 Profissionais no Lote:", listaCuidadoras.length);
+        console.log("📐 Numero de cuidadoras:", listaCuidadoras.length);
         console.log("📐 listaCuidadoras:", listaCuidadoras);
         console.log("📐 -----------------------------------------------------------");
+
     }, [carregando, listaCuidadoras]);
+
     // ---------------------------------
     // FIM - 🧪 Protocolo de Monitoramento Maestro
     // ---------------------------------
@@ -205,12 +153,12 @@ export function AdministradorRelatorioCuidadoras() {
 
 
     return (
-        <div className="rel-clientes-principal">
-            <div className="rel-clientes-suporte">
+        <div className="relatorio-cuidadora-principal">
+            <div className="relatorio-cuidadora-suporte">
                 
-                <header className="rel-clientes-header">
+                <header className="relatorio-cuidadora-header">
                     <h2>👩‍⚕️ Relatório de Cuidadoras</h2>
-                    <p>Gestão de profissionais qualificadas ativas no sistema.</p>
+                    {/* <p>Gestão de profissionais qualificadas ativas no sistema.</p> */}
                 </header>
 
                 {carregando ? (
@@ -220,12 +168,11 @@ export function AdministradorRelatorioCuidadoras() {
                 ) : (
 
 
-                    <div className="rel-clientes-tabela-container">
-                        <table className="rel-clientes-tabela">
+                    <div className="relatorio-cuidadora-tabela-container">
+                        <table className="relatorio-cuidadora-tabela">
                             <thead>
                                 <tr>
-                                    <th className="adm-relatorio-col-id">🆔 ID</th>
-                                    <th className="adm-relatorio-col-nome">👤 Nome da Profissional</th>
+                                    <th className="adm-relatorio-col-nome">👤 Nome</th>
                                     <th className="adm-relatorio-col-cadastro">🛡️ Cadastro</th>
                                 </tr>
                             </thead>
@@ -235,6 +182,7 @@ export function AdministradorRelatorioCuidadoras() {
                                         <tr 
                                             key={cuidadora.id_firebase} 
                                             onClick={() => {
+
                                                 console.log("");
                                                 console.log("📐 -----------------------------------------------------------");
                                                 console.log("📐 EVENTO: Clique na linha da tabela (Cuidadora)");
@@ -242,42 +190,41 @@ export function AdministradorRelatorioCuidadoras() {
                                                 console.log("📐 ID Firebase:", cuidadora.id_firebase);
                                                 console.log("📐 Dossiê Selecionado:", cuidadora);
                                                 console.log("📐 -----------------------------------------------------------");
+
                                                 setUsuarioSelecionado(cuidadora);
+
                                             }} 
                                         >
-                                            <td className="adm-relatorio-celula-id">
-                                                #{cuidadora.id_firebase}
-                                            </td>
-
                                             <td className="nome-destaque">
                                                 {cuidadora.dadosBasico?.nome?.toUpperCase() || "N/A"}
                                             </td>
 
+     
 
-                                         
-                                            
                                             <td className="adm-relatorio-col-cadastro">
                                                 {cuidadora.dadosCadastro?.autorizadoAdministrador === true ? (
-                                                    <span className="rel-clientes-tag-autorizado">
-                                                        ✅ Confirmado
+                                                    <span className="relatorio-cuidadora-tag-autorizado">
+                                                        <span>✅</span> <span>Confirmado</span>
                                                     </span>
                                                 ) : cuidadora.dadosCadastro?.perfilCompleto === true ? (
-                                                    <span className="rel-clientes-tag-confirmar">
-                                                        🌌 Confirmar
+                                                    <span className="relatorio-cuidadora-tag-confirmar">
+                                                        <span>🌌</span> <span>Confirmar</span>
                                                     </span>
                                                 ) : (
-                                                    <span className="rel-clientes-tag-pendente">
-                                                        ⏳ Pendente
+                                                    <span className="relatorio-cuidadora-tag-pendente">
+                                                        <span>⏳</span> <span>Pendente</span>
                                                     </span>
                                                 )}
                                             </td>
+
+
 
 
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="3" style={{ textAlign: 'center', padding: '30px', color: '#777' }}>
+                                        <td colSpan="2" style={{ textAlign: 'center', padding: '30px', color: '#777' }}>
                                             🚫 Nenhuma cuidadora cadastrada no momento.
                                         </td>
                                     </tr>
@@ -299,7 +246,12 @@ export function AdministradorRelatorioCuidadoras() {
             )}
         </div>
     );
+
+
+
 }
+
+
 /* --------------------------------- */
 /* FIM - 👩‍⚕️ COMPONENTE: AdministradorRelatorioCuidadoras */
 /* --------------------------------- */

@@ -1,136 +1,198 @@
 /* ----------------------------------------------------------- */
-/* INICIO - ️ 1. HERANÇA VISUAL: RELATÓRIO DE CLIENTES         */
+/* INICIO - 🏗️ 1. ESTRUTURA BASE (PALCO E VIGA)                 */
 /* ----------------------------------------------------------- */
-/* 
-   Esta seção importa as regras de design do RelClientes.css 
-   para garantir consistência na experiência do Administrador.
-*/
+.relatorio-cuidadora-principal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    animation: relClientes_surgir 0.6s ease-out;
+}
+
+.relatorio-cuidadora-suporte {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🏷️ 2. CABEÇALHO (IDENTIDADE MAESTRO)                */
+/* ------------------------------------------------------------- */
+.relatorio-cuidadora-header {
+    background-color: #ebf2f7; 
+    border-bottom: 3px solid #306396;
+    padding: 15px 20px;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.relatorio-cuidadora-header h2 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📊 3. TABELA E CONTAINER (BOX SHADOW)               */
+/* ------------------------------------------------------------- */
+.relatorio-cuidadora-tabela-container {
+    background: #ffffff;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    overflow-x: auto !important; /* 📐 Scroll horizontal como último recurso Maestro */
+    border: 1px solid #e0e0e0;
+    border-top: none;
+}
+
+.relatorio-cuidadora-tabela {
+    width: 100%;
+    /* min-width: 500px; 📐 Removido para permitir ajuste natural da largura */
+    border-collapse: collapse;
+    background-color: white;
+}
+
+
+
+
+
+.relatorio-cuidadora-tabela th {
+    background-color: #34495e;
+    color: #ffffff;
+    padding: 12px 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 12px;
+    text-align: center;
+    border: 1px solid #2c3e50;
+}
+
+
+
+
+
+.relatorio-cuidadora-tabela td {
+    padding: 10px 15px;
+    /* 📐 Ajuste Maestro: Linhas horizontais pretas para contraste superior */
+    border-bottom: 1px solid #000000; 
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 13px;
+    /* word-break: break-word; 📐 Removido para quebra de texto natural */
+    /* overflow-wrap: anywhere; 📐 Removido para quebra de texto natural */
+}
 
 .nome-destaque {
     font-weight: 800 !important;
     color: #1a1a1a !important;
     text-transform: uppercase;
+    text-align: left !important;
 }
 
-/* ----------------------------------------------------------- */
-/* FIM - 🏛️ 1. HERANÇA VISUAL: RELATÓRIO DE CLIENTES            */
-/* ----------------------------------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ------------------------------------------------------------- */
-/* INICIO -  2. AJUSTES ESPECÍFICOS PARA CUIDADORAS            */
-/* ------------------------------------------------------------- */
-
-.adm-relatorio-col-cadastro {
-    text-align: center !important;
-    /* 📐 Ajuste Maestro: Largura máxima controlada para a coluna de status */
-    /* width: 120px;  */
-  
-    width: 150px;
-
-
-    /* white-space: normal !important;
-    word-break: break-word; */
-
-
+.relatorio-cuidadora-tabela tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
+.relatorio-cuidadora-tabela tbody tr:nth-child(even) {
+    background-color: #f9fbfd;
+}
 
-.adm-relatorio-col-id {
-    /* text-align: center !important; */
-    /* 📐 Ajuste Maestro: Força a coluna a usar a largura mínima possível */
-    /* width: 20%; */
-    /* white-space: nowrap; */
-    width: 100px; 
+.relatorio-cuidadora-tabela tbody tr:hover {
+    background-color: #d6d4d4;
 }
 
 
 
 
 
-
-
-
 /* ------------------------------------------------------------- */
-/* FIM -  2. AJUSTES ESPECÍFICOS PARA CUIDADORAS                */
+/* INICIO - 🏷️ 4. TAGS DE STATUS (REGRAS DE COR)                */
 /* ------------------------------------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ------------------------------------------------------------- */
-/* INICIO - 🏷️ TAGS DE STATUS (QUEBRA DE LINHA MAESTRO)          */
-/* ------------------------------------------------------------- */
-.rel-clientes-tag-confirmar,
-.rel-clientes-tag-pendente,
-.rel-clientes-tag-autorizado {
-    /* 📐 Ajuste Maestro: Força o empilhamento vertical (quebra) entre o emoji e o texto */
+.relatorio-cuidadora-tag-confirmar,
+.relatorio-cuidadora-tag-pendente,
+.relatorio-cuidadora-tag-autorizado {
+    color: #ffffff;
     display: flex !important;
-    flex-direction: column;
+    flex-direction: row; /* 📐 Alinhamento horizontal Maestro */
     align-items: center;
-    justify-content: center;
-    gap: 2px; /* Pequeno respiro entre o ícone e a instrução */
-    padding: 8px 4px; /* Aumento do respiro vertical para o novo layout */
-    white-space: normal;
+    justify-content: space-between; /* 📐 Distribui para as extremidades */
+    padding: 14px 12px;
+    white-space: nowrap;
     width: 100%;
+    box-sizing: border-box; /* 📐 Garante que o padding interno seja respeitado */
     text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
 }
-/* ------------------------------------------------------------- */
-/* FIM - 🏷️ TAGS DE STATUS (QUEBRA DE LINHA MAESTRO)             */
-/* ------------------------------------------------------------- */
 
+.relatorio-cuidadora-tag-pendente {
+    background-color: #c0392b; 
+}
 
+.relatorio-cuidadora-tag-confirmar {
+    background-color: rgb(212, 175, 55); 
+}
 
-
-
-
-
-
-
-
-
+.relatorio-cuidadora-tag-autorizado {
+    background-color: #306396;
+}
 
 
 
 
 
 /* ------------------------------------------------------------- */
-/* INICIO - ✅ TAG EXCLUSIVA: AUTORIZADO (CONFIRMADO)            */
+/* INICIO - 🛑 TAG EXCLUSIVA: RECUSADO (REJECT)                  */
 /* ------------------------------------------------------------- */
-.rel-clientes-tag-autorizado {
-    background-color: #306396; /* 🎨 Azul Maestro: Status de Liberação Final */
+.relatorio-cuidadora-tag-recusado {
+    /* 🎨 Maestro Alert: Vermelho vivo para sinalizar bloqueio/recusa */
+    background-color: #c0392b; 
     color: #ffffff;
     border-radius: 4px;
-    font-size: 0.85rem;
     font-weight: 800;
-    border: 1px solid #1a436d;
 }
 /* ------------------------------------------------------------- */
-/* FIM - ✅ TAG EXCLUSIVA: AUTORIZADO (CONFIRMADO)               */
+/* FIM - 🛑 TAG EXCLUSIVA: RECUSADO (REJECT)                     */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📐 5. AJUSTES DE COLUNA                              */
+/* ------------------------------------------------------------- */
+.adm-relatorio-col-nome {
+    /* 📐 Alinhamento Maestro: Nomes alinhados à esquerda para padrão de leitura */
+    text-align: left !important;
+}
+
+.adm-relatorio-col-cadastro {
+    width: 160px;
+    text-align: center !important;
+}
+
+@keyframes relClientes_surgir {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* ------------------------------------------------------------- */
+/* FIM - RELATÓRIO CUIDADORAS                                    */
 /* ------------------------------------------------------------- */

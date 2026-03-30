@@ -5,23 +5,32 @@ import { DetalhesCliente } from './DetalhesCliente';
 import './AdministradorRelatorioClientes.css';
 
 /* 🧭 INICIO - RELATÓRIO DE CLIENTES (V3) */
+
 export function AdministradorRelatorioClientes() {
+
     const [clientes, setClientes] = useState([]);
     const [carregando, setCarregando] = useState(true);
     const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
 
     // 🚀 CONSOLE DE INSPEÇÃO MAESTRO
     useEffect(() => {
+
         console.log("");
         console.log("🔍 -----------------------------------------------------------");
         console.log("🔍 MONITOR: Relatório de Clientes");
         console.log("🔍 Status Carregamento:", carregando ? "⏳ Pendente" : "✅ Finalizado");
         console.log("🔍 Total de Clientes:", clientes.length);
         console.log("🔍 -----------------------------------------------------------");
+
     }, [carregando, clientes]);
+
     // ---------------------------------
     // FIM - 📐 Monitoramento de Dados Maestro
     // ---------------------------------
+
+
+
+
 
 
 
@@ -31,15 +40,25 @@ export function AdministradorRelatorioClientes() {
     // INICIO - 📡 Busca de Dados na Antena Central (Firebase)
     // ---------------------------------
     useEffect(() => {
+
         if (!db_realtime) return;
 
         const caminhoDb = ref(db_realtime, 'usuarios');
         
         const unsubscribe = onValue(caminhoDb, (snapshot) => {
+
             const dados = snapshot.val();
 
+            console.log("");
+            console.log("✨ 🛡️ --------------------------------------");
+            console.log("✨ 🛡️ AdministradorRelatorioClientes.jsx - useEffect");
+            console.log("✨ 🛡️ dados:", dados);
+
+
             if (dados) {
+
                 const listaFormatada = Object.keys(dados).map(id => {
+                    
                     const original = dados[id];
                     
                     // 📐 Extração de metadados para ordenação e filtro
@@ -63,6 +82,13 @@ export function AdministradorRelatorioClientes() {
                 })
                 .filter(u => u.ordem_maestro === 3)
                 .sort((a, b) => a.ordem_maestro - b.ordem_maestro);
+
+                console.log("");
+                console.log("✨ 🛡️ --------------------------------------");
+                console.log("✨ 🛡️ AdministradorRelatorioClientes.jsx - useEffect");
+                console.log("✨ 🛡️ FILTRO: Apenas Clientes Detectados (Ordem 3)");
+                console.log("✨ 🛡️ Lista de Clientes:", listaFormatada);
+                console.log("✨ 🛡️ --------------------------------------");
 
                 setClientes(listaFormatada);
             } else {
@@ -116,65 +142,79 @@ export function AdministradorRelatorioClientes() {
 
 
     return (
-        <div className="componente-de-pagina adm-relatorio-principal">
-            <div className="adm-relatorio-suporte">
+        <div className="relatorio-cliente-principal">
+            <div className="relatorio-cliente-suporte">
                 
-                <div className="adm-relatorio-usuario-card">
-                    
-                    <header className="adm-relatorio-header">
-                        <h2>Relatório Geral de Clientes 👥</h2>
-                        <button className="btn-exportar" onClick={handleExportarPDF}>
-                            Gerar PDF
-                        </button>
-                    </header>
+                <header className="relatorio-cliente-header">
+                    <h2>👥 Relatório Geral de Clientes</h2>
+                    {/* 📐 Botão de exportação movido para o header conforme padrão Cuidadoras */}
+                    <button className="relatorio-cliente-btn-pdf" onClick={handleExportarPDF}>
+                        Gerar PDF
+                    </button>
+                </header>
 
-                    <main className="adm-relatorio-content">
-                        {carregando ? (
-                            <div className="carregando-alerta">Processando dados... ⏳</div>
-                        ) : (
-                            <div className="adm-relatorio-tabela-responsiva">
-                                <table className="adm-relatorio-tabela">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nome</th>
-                                            <th>Plano</th>
-                                            <th>Status</th>
-                                            <th>Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {clientes.map(cliente => (
-                                            <tr 
-                                                key={String(cliente.id_firebase || Math.random())}
-                                                onClick={() => setUsuarioSelecionado(cliente)}
-                                            >
-                                                <td>#{cliente.id_firebase ? String(cliente.id_firebase).substring(0, 14) : "---"}</td>
-                                                <td className="nome-destaque">{cliente.dadosBasico?.nome?.toUpperCase() || "N/A"}</td>
-                                                <td style={{textTransform: 'capitalize'}}>{cliente.dadosBasico?.func || "---"}</td>
-                                                <td>
-                                                    <span className={`status-pill ${cliente.dadosInterno?.situ?.toLowerCase() || 'ativo'}`}>
-                                                        {cliente.dadosInterno?.situ || "Ativo"}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <button 
-                                            className="btn-visualizar"
-                                            onClick={() => setUsuarioSelecionado(cliente)}
-                                        >
-                                            👁️ Ver Detalhes
-                                        </button>
-                                    </td>
+                {carregando ? (
+                    <p style={{ padding: '60px', textAlign: 'center', fontWeight: 'bold', color: 'rgb(212, 175, 55)' }}>
+                        ⏳ Sincronizando base de clientes com a Antena Central...
+                    </p>
+                ) : (
+
+                    <div className="relatorio-cliente-tabela-container">
+                        <table className="relatorio-cliente-tabela">
+                            <thead>
+                                <tr>
+                                    <th className="adm-relatorio-col-nome">👤 Nome</th>
+                                    <th className="adm-relatorio-col-cadastro">🛡️ Cadastro</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                            </div>
-                        )}
-                    </main>
+                            </thead>
+                            <tbody>
+                                {clientes.length > 0 ? (
+                                    clientes.map((cliente) => (
+                                        <tr 
+                                            key={cliente.id_firebase} 
+                                            onClick={() => {
+                                                console.log("");
+                                                console.log("📐 -----------------------------------------------------------");
+                                                console.log("📐 EVENTO: Clique na linha da tabela (Cliente)");
+                                                console.log("📐 Alvo Selecionado:", cliente.dadosBasico?.nome?.toUpperCase() || "N/A");
+                                                console.log("📐 ID Firebase:", cliente.id_firebase);
+                                                console.log("📐 -----------------------------------------------------------");
 
-                </div>
+                                                setUsuarioSelecionado(cliente);
+                                            }} 
+                                        >
+                                            <td className="nome-destaque">
+                                                {cliente.dadosBasico?.nome?.toUpperCase() || "N/A"}
+                                            </td>
 
+                                            <td className="adm-relatorio-col-cadastro">
+                                            {cliente.dadosCadastro?.autorizadoAdministrador === true ? (
+                                                    <span className="relatorio-cliente-tag-autorizado">
+                                                        <span>✅</span> <span>Confirmado</span>
+                                                    </span>
+                                                ) : cliente.dadosCadastro?.perfilCompleto === true ? (
+                                                    <span className="relatorio-cliente-tag-confirmar">
+                                                        <span>🌌</span> <span>Confirmar</span>
+                                                    </span>
+                                                ) : (
+                                                    <span className="relatorio-cliente-tag-pendente">
+                                                        <span>⏳</span> <span>Pendente</span>
+                                                    </span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="2" style={{ textAlign: 'center', padding: '30px', color: '#777' }}>
+                                            🚫 Nenhum cliente cadastrado no momento.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
 
             {/* 🚀 MODAL DE DETALHES (PADRÃO MAESTRO) */}

@@ -631,20 +631,6 @@ export default function App() {
     const [autorizadoAdministrador, setAutorizadoAdministrador] = useState(false);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /* 🔍 Monitor de Status Cuidadora */
     useEffect(() => {
 
@@ -835,177 +821,20 @@ export default function App() {
 
     }, [perfilEstaCompletoAdministrador, perfilEstaCompletoCuidadora, perfilEstaCompletoCliente]);
 
-    /* 🔍 Monitor: Status CLIENTE (Vigilância Maestro) */
-    useEffect(() => {
-        // 🛡️ TRAVA DE PERFIL: Só executa se o usuário logado for cliente
-        if (dadosToken?.func !== 'cliente') return;
 
-        const cpfLimpo = dadosToken?.cpef?.replace(/\D/g, "");
 
-        // console.log("");
-        // console.log("🔍 -----------------------------------------------------------");
-        // console.log("🔍 MONITOR CLIENTE: Ativado para Perfil Cliente");
-        // console.log("🔍 Status Local (Vite)  :", perfilEstaCompletoCliente ? "✅ Completo" : "❌ Incompleto");
 
-        if (!cpfLimpo) {
-            console.log("🔍 🛡️ TRAVA: CPF ausente. Abortando.");
-            console.log("🔍 -----------------------------------------------------------");
-            return;
-        }
+    /* ---------------------------------------------------------------------------------- */
+    /* INICIO - 🔍 VERIFICANDO NO BANCO DE DADOS SE O PERDIL DA CUIDADORA ESTA COMPLETO) */
+    /* ---------------------------------------------------------------------------------- */
 
-        const atualizarStatusCliente = async () => {
-            try {
-                const statusRef = ref(db_realtime, `usuarios/${cpfLimpo}/dadosInterno/dadosUsuarioCompleto`);
-                const snapshot = await get(statusRef);
-                const statusNoBanco = snapshot.val();
-
-                if (perfilEstaCompletoCliente && statusNoBanco !== true) {
-                    await set(statusRef, true);
-                    console.log("📐 🚀 LOG: Gravando 'true' no perfil do Cliente.");
-                } 
-                else if (!perfilEstaCompletoCliente && statusNoBanco === true) {
-                    await set(statusRef, false);
-                    console.log("📐 ⚠️ LOG: Perfil Cliente REGREDIU.");
-                } else {
-                    console.log("🔍 ✨ LOG: Sincronia de Cliente OK.");
-                }
-            } catch (error) {
-                console.error("❌ 📐 Erro no monitor do Cliente:", error);
-            }
-            console.log("🔍 -----------------------------------------------------------");
-        };
-
-        atualizarStatusCliente();
-    }, [perfilEstaCompletoCliente, dadosToken?.func]);
-
-    /* 🔍 Monitor: Status CUIDADORA (Vigilância Maestro) */
-    // useEffect(() => {
-    
-    //     if (dadosToken?.func !== 'cuidadora') return;
-
-    //     const cpfLimpo = dadosToken?.cpef?.replace(/\D/g, "");
-        
-    //     console.log("");
-    //     console.log("🔍 -----------------------------------------------------------");
-    //     console.log("🔍 App.jsx: Ativado para Perfil Cuidadora");
-
-    //     console.log("🔍 cpfLimpo  :", cpfLimpo );
-    //     console.log("🔍 perfilEstaCompletoCuidadora  :", perfilEstaCompletoCuidadora );
-
-    //     if (!cpfLimpo) {
-    //         console.log("🔍 🛡️ TRAVA: CPF ausente. Abortando.");
-    //         console.log("🔍 -----------------------------------------------------------");
-    //         return;
-    //     }
-
-    //     const atualizarStatusCuidadora = async () => {
-
-    //         try {
-
-    //             const statusRef = ref(db_realtime, `usuarios/${cpfLimpo}/dadosInterno/dadosUsuarioCompleto`);
-    //             const snapshot = await get(statusRef);
-    //             const statusNoBanco = snapshot.val();
-
-    //             console.log("🔍 statusNoBanco :", snapshot.val() );
-
-    //             if (perfilEstaCompletoCuidadora && statusNoBanco !== true) {
-
-    //                 await set(statusRef, true);
-    //                 console.log("📐 🚀 LOG: Gravando 'true' no perfil da Cuidadora.");
-
-    //             } 
-    //             else if (!perfilEstaCompletoCuidadora && statusNoBanco === true) {
-
-    //                 await set(statusRef, false);
-    //                 console.log("📐 ⚠️ LOG: Perfil Cuidadora REGREDIU.");
-
-    //             } else {
-
-    //                 console.log("🔍 ✨ LOG: Sincronia de Cuidadora OK.");
-
-    //             }
-
-    //         } catch (error) {
-
-    //             console.error("❌ 📐 Erro no monitor da Cuidadora:", error);
-
-    //         }
-
-    //         console.log("🔍 -----------------------------------------------------------");
-
-    //     };
-
-    //     atualizarStatusCuidadora();
-
-    // }, [perfilEstaCompletoCuidadora, dadosToken?.func]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /* 🔍 Monitor: Status CUIDADORA (Vigilância Maestro) */
     useEffect(() => {
     
         if (dadosToken?.func !== 'cuidadora') return;
 
         const cpfLimpo = dadosToken?.cpef?.replace(/\D/g, "");
         
-        // console.log("");
-        // console.log("🔍 -----------------------------------------------------------");
-        // console.log("🔍 App.jsx: Ativado para Perfil Cuidadora");
-        // console.log("🔍 cpfLimpo  :", cpfLimpo );
-        // console.log("🔍 perfilEstaCompletoCuidadora  :", perfilEstaCompletoCuidadora );
-
-        if (!cpfLimpo) {
-            console.log("🔍 🛡️ TRAVA: CPF ausente. Abortando.");
-            console.log("🔍 -----------------------------------------------------------");
-            return;
-        }
+        if (!cpfLimpo) return;
 
         const atualizarStatusCuidadora = async () => {
 
@@ -1016,43 +845,59 @@ export default function App() {
                 const snapshot = await get(cadastroRef);
                 const dadosAtuais = snapshot.val() || {};
 
-                // console.log("🔍 Status Atual no Banco:", dadosAtuais.dadosUsuarioCompleto);
+                console.log("");
+                console.log("📐 🔍 -----------------------------------------------------------");
+                console.log("📐 🔍 App.jsx: Verificacao para o Perfil Cuidadora");
+                console.log("📐 🔍 cpfLimpo  :", cpfLimpo );
+                console.log("📐 🔍 perfilEstaCompletoCuidadora  :", perfilEstaCompletoCuidadora );
+                
+                console.log("📐 🔍 Dados atuais do Banco de dados - dadosAtuais:");
+                console.log(dadosAtuais);
+                console.log("📐 🔍 perfilCompleto:", dadosAtuais.perfilCompleto);
+                console.log("📐 🔍 perfilCompletoData:", dadosAtuais.perfilCompletoData);
+                console.log("📐 🔍 -----------------------------");
 
-                if (perfilEstaCompletoCuidadora && dadosAtuais.dadosUsuarioCompleto !== true) {
+                if (perfilEstaCompletoCuidadora && dadosAtuais.perfilCompleto !== true) {
 
                     const dataHoje = new Date().toLocaleDateString('pt-BR');
 
                     await update(cadastroRef, { 
                         perfilCompleto: true,
-                        perfilCompletoData: dataHoje // 📅 Salvando a data de preenchimento
+                        perfilCompletoData: dataHoje
                     });
 
-                    // console.log("🔍 dadosUsuarioCompleto:", true);
-                    // console.log(`📐 🚀 LOG: Perfil concluído em ${dataHoje}. Sincronizado.`);
+                    console.log("");
+                    console.log("📐 🔍 ✔️ -----------------------------");
+                    console.log("📐 🔍 ✔️ perfilCompleto:", true); 
+                    console.log("📐 🔍 ✔️ perfilCompletoData:", dataHoje); 
+                    console.log("📐 🔍 ✔️ -----------------------------");
 
                 } 
-                else if (!perfilEstaCompletoCuidadora && dadosAtuais.dadosUsuarioCompleto === true) {
+
+                else if (!perfilEstaCompletoCuidadora && dadosAtuais.perfilCompleto === true) {
 
                     await update(cadastroRef, { 
                         perfilCompleto: false,
-                        perfilCompletoData: "" // Limpa a data se o perfil regredir
+                        perfilCompletoData: ""
                     });
 
-                    console.log("📐 ⚠️ LOG: Perfil Cuidadora REGREDIU.");
+                    console.log("");
+                    console.log("📐 🔍 ❌ -----------------------------");
+                    console.log("📐 🔍 ❌ perfilCompleto:", false);
+                    console.log("📐 🔍 ❌ perfilCompletoData:", ""); 
+                    console.log("📐 🔍 ❌ -----------------------------");
 
                 } else {
 
-                    // console.log("🔍 ✨ LOG: Sincronia de Cuidadora OK.");
+                    console.log("📐 🔍  LOG: Sincronia de Cuidadora OK.");
 
                 }
 
             } catch (error) {
 
-                console.error("❌ 📐 Erro no monitor da Cuidadora:", error);
+                console.error("📐 ❌  Erro no monitor da Cuidadora:", error);
 
             }
-
-            // console.log("🔍 -----------------------------------------------------------");
 
         };
 
@@ -1060,25 +905,108 @@ export default function App() {
 
     }, [perfilEstaCompletoCuidadora, dadosToken?.func]);
 
+    /* ---------------------------------------------------------------------------------- */
+    /* FIM - 🔍 VERIFICANDO NO BANCO DE DADOS SE O PERDIL DA CUIDADORA ESTA COMPLETO) */
+    /* ---------------------------------------------------------------------------------- */
 
 
 
 
+    /* ---------------------------------------------------------------------------------- */
+    /* INICIO - 🔍 VERIFICANDO NO BANCO DE DADOS SE O PERDIL DO CLIENTE ESTA COMPLETO) */
+    /* ---------------------------------------------------------------------------------- */
 
+    useEffect(() => {
+       
+        if (dadosToken?.func !== 'cliente') return;
 
+        const cpfLimpo = dadosToken?.cpef?.replace(/\D/g, "");
 
+        if (!cpfLimpo) return;
 
+        const atualizarStatusCliente = async () => {
+            try {
+
+                const cadastroRef = ref(db_realtime, `usuarios/${cpfLimpo}/dadosCadastro`);
+                const snapshot = await get(cadastroRef);
+                const dadosAtuais = snapshot.val() || {};
+
+                console.log("");
+                console.log("📐 🔍 -----------------------------------------------------------");
+                console.log("📐 🔍 App.jsx: Verificacao para o Perfil Cliente");
+                console.log("📐 🔍 cpfLimpo  :", cpfLimpo );
+                console.log("📐 🔍 perfilEstaCompletoCliente  :", perfilEstaCompletoCliente );
+                
+                console.log("📐 🔍 Dados atuais do Banco de dados - dadosAtuais:");
+                console.log(dadosAtuais);
+                console.log("📐 🔍 perfilCompleto:", dadosAtuais.perfilCompleto);
+                console.log("📐 🔍 perfilCompletoData:", dadosAtuais.perfilCompletoData);
+                console.log("📐 🔍 -----------------------------");
+
+                if (perfilEstaCompletoCliente && dadosAtuais.perfilCompleto !== true) {
+
+                    const dataHoje = new Date().toLocaleDateString('pt-BR');
+
+                    await update(cadastroRef, { 
+                        perfilCompleto: true,
+                        perfilCompletoData: dataHoje
+                    });
+
+                    console.log("");
+                    console.log("📐 🔍 ✔️ -----------------------------");
+                    console.log("📐 🔍 ✔️ perfilCompleto:", true); 
+                    console.log("📐 🔍 ✔️ perfilCompletoData:", dataHoje); 
+                    console.log("📐 🔍 ✔️ -----------------------------");
+
+                } 
+
+                else if (!perfilEstaCompletoCliente && dadosAtuais.perfilCompleto === true) {
+
+                    await update(cadastroRef, { 
+                        perfilCompleto: false,
+                        perfilCompletoData: ""
+                    });
+
+                    console.log("");
+                    console.log("📐 🔍 ❌ -----------------------------");
+                    console.log("📐 🔍 ❌ perfilCompleto:", false);
+                    console.log("📐 🔍 ❌ perfilCompletoData:", ""); 
+                    console.log("📐 🔍 ❌ -----------------------------");
+
+                } else {
+
+                    console.log("📐 🔍  LOG: Sincronia de Cuidadora OK.");
+
+                }
+
+            } catch (error) {
+
+                console.error("❌ 📐 Erro no monitor do Cliente:", error);
+
+            }
+            console.log("🔍 -----------------------------------------------------------");
+        };
+
+        atualizarStatusCliente();
+
+    }, [perfilEstaCompletoCliente, dadosToken?.func]);
+
+    /* ---------------------------------------------------------------------------------- */
+    /* FIM - 🔍 VERIFICANDO NO BANCO DE DADOS SE O PERDIL DO CLIENTE ESTA COMPLETO) */
+    /* ---------------------------------------------------------------------------------- */
 
 
 
 
 
     /* ------------------------------------------------------------- */
-    /* INICIO - 🔍 MONITOR: AUTORIZAÇÃO CUIDADORA (VIGILÂNCIA REALTIME) */
+    /* INICIO - 🔍 VERIFICANDO NO BANCO DE DADOS SE EXISTE INFORMACAO) */
+    /* INICIO - 🔍 DE AURORIZACAO DO ADMINISTRADOR ) */
     /* ------------------------------------------------------------- */
+
     useEffect(() => {
     
-        if (dadosToken?.func !== 'cuidadora') return;
+        if (dadosToken?.func !== 'cuidadora' && dadosToken?.func !== 'cliente') return;
 
         const cpfLimpo = dadosToken?.cpef?.replace(/\D/g, "");
         
@@ -1091,52 +1019,41 @@ export default function App() {
         const statusRef = ref(db_realtime, `usuarios/${cpfLimpo}/dadosCadastro`);
         
         const unsubscribe = onValue(statusRef, (snapshot) => {
-            // 🧱 Blindagem Maestro: Garante que 'dados' seja um objeto mesmo se o nó for null no Firebase
+
+            // 🧱 Garante que 'dados' seja um objeto mesmo se o nó for null no Firebase
             const dados = snapshot.val() || {};
 
             console.log("");
-            console.log("🔍 🛡️ -----------------------------------------------------------");
-            console.log("🔍 🛡️ MONITOR REALTIME: Autorização Admin");
-            console.log("🔍 🛡️ Cuidadora:", dadosToken?.nome?.toUpperCase());
-            console.log("🔍 🛡️ autorizadoAdministrador:", dados.autorizadoAdministrador || false);
-            console.log("🔍 🛡️ -----------------------------------------------------------");
+            console.log("✨ 🛡️ --------------------------------------");
+            console.log("✨ 🛡️ App.jsx - useEffect: Autorização Admin");
+            console.log("✨ 🛡️ Cuidadora:", dadosToken?.nome?.toUpperCase());
+            console.log("✨ 🛡️ dadosToken?.cpef:", dadosToken?.cpef);
+            console.log("✨ 🛡️ dadosToken?.func:", dadosToken?.func);
+            console.log("✨ 🛡️ autorizadoAdministrador:", dados.autorizadoAdministrador || false);
+            console.log("✨ 🛡️ ---------------------------------------");
 
             setAutorizadoAdministrador(!!dados.autorizadoAdministrador);
+
         });
 
         return () => unsubscribe(); // 🧹 Cleanup Sagrado
 
     }, [dadosToken?.cpef, dadosToken?.func]);
     
-    /* ------------------------------------------------------------- */
-    /* FIM - 🔍 MONITOR: AUTORIZAÇÃO CUIDADORA                       */
-    /* ------------------------------------------------------------- */
-
-
-
-
-
-
-
-    // ---------------------------------
-    // INICIO - 📐 MONITOR: autorizadoAdministrador (ESTADO MAESTRO)
-    // ---------------------------------
-    
     useEffect(() => {
 
         console.log("");
-        console.log("✨ 📐 -----------------------------------------------------------");
-        console.log("✨ 📐 MONITOR DE ESTADO: autorizadoAdministrador");
-        console.log("✨ 📐 Contexto: App.jsx");
-        console.log("✨ 📐 Valor Atual:", autorizadoAdministrador);
-       
-        console.log("✨ 📐 -----------------------------------------------------------");
+        console.log("✨ 🛡️ -----------------------------------------------------------");
+        console.log("✨ 🛡️ App.jsx - useEffect PURO - autorizadoAdministrador");
+        console.log("✨ 🛡️ autorizadoAdministrador - Valor Atual:", autorizadoAdministrador);
+        console.log("✨ 🛡️ -----------------------------------------------------------");
 
     }, [autorizadoAdministrador]);
 
-    // ---------------------------------
-    // FIM - 📐 MONITOR: autorizadoAdministrador
-    // ---------------------------------
+    /* ------------------------------------------------------------- */
+    /* FIM - 🔍 VERIFICANDO NO BANCO DE DADOS SE EXISTE INFORMACAO) */
+    /* FIM - 🔍 DE AURORIZACAO DO ADMINISTRADOR ) */
+    /* ------------------------------------------------------------- */
 
 
 
@@ -1147,38 +1064,7 @@ export default function App() {
 
 
 
-
-
-
-
-
-
-
-
-
-    // -------------------------------------------------------------
-    /* FIM - 🛠️ VIGILÂNCIA DE PREENCHIMENTO DOS CARDS - CLIENTE */
-    // -------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   
 
 
 
@@ -1539,13 +1425,6 @@ export default function App() {
                                 
                                 <div className="menu-sidebar-administrador-lista-botoes">
                                     
-                                    <button 
-                                        className="menu-sidebar-administrador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/AdministradorRelatorioClientes')}
-                                    >
-                                        <span>Clientes</span> <span className="menu-sidebar-administrador-icon">👥</span>
-                                    </button>
-
 
                                     <button 
                                         className="menu-sidebar-administrador-btn-item"
@@ -1554,6 +1433,15 @@ export default function App() {
                                         <span>Cuidadoras</span> <span className="menu-sidebar-administrador-icon">👩‍⚕️</span>
                                     </button>
 
+
+                                    <button 
+                                        className="menu-sidebar-administrador-btn-item"
+                                        onClick={() => navegarERecolher('/interno/AdministradorRelatorioClientes')}
+                                    >
+                                        <span>Clientes</span> <span className="menu-sidebar-administrador-icon">👥</span>
+                                    </button>
+
+                                
                                     <button 
                                         className="menu-sidebar-administrador-btn-item"
                                         onClick={() => navegarERecolher('/interno/AdmFinanceiro')}
@@ -1561,6 +1449,7 @@ export default function App() {
                                         <span>Financeiro</span> <span className="menu-sidebar-administrador-icon">💰</span>
                                     </button>
                                     
+
                                     <button 
                                         className="menu-sidebar-administrador-btn-item"
                                         onClick={() => navegarERecolher('/interno/AdmConfiguracoes')}
@@ -1568,12 +1457,14 @@ export default function App() {
                                         <span>Configurações</span> <span className="menu-sidebar-administrador-icon">⚙️</span>
                                     </button>
 
+
                                     <button 
                                         className="menu-sidebar-administrador-btn-item"
                                         onClick={() => navegarERecolher('/interno/AdmLogs')}
                                     >
                                         <span>Solicitações</span> <span className="menu-sidebar-administrador-icon">📝</span>
                                     </button>
+
 
                                 </div>
 
@@ -1690,16 +1581,9 @@ export default function App() {
 
 
 
-
-
-
-
                             {/* --------------------------------------------------- */}
                             {/* INICIO - 👩‍⚕️ MENU SIDEBAR: CUIDADORA - EXCLUSIVO */}
                             {/* --------------------------------------------------- */}
-
-
-
 
                             <div className="menu-sidebar-cuidadora-container">
 
@@ -1763,22 +1647,9 @@ export default function App() {
 
                             </div>
 
-
-
-
-
                             {/* ------------------------------------------------- */}
                             {/* FIM - 👩‍⚕️ MENU SIDEBAR: CUIDADORA - EXCLUSIVO */}
                             {/* ------------------------------------------------- */}
-
-
-
-
-
-
-
-
-
 
 
                         </>
@@ -1791,8 +1662,6 @@ export default function App() {
 
                     {dadosToken?.func === 'cliente' && (
                         <>
-
-
 
 
                             {/* -------------------------------------------------------------------------------------------- */}
@@ -1830,6 +1699,14 @@ export default function App() {
 
                                 <button 
                                     className="Btn-geral-cliente-prof btn-centralizado fonte-diretrizes" 
+                                    
+                                    style={{
+                                        opacity: autorizadoAdministrador ? 1 : 0.5,
+                                        pointerEvents: autorizadoAdministrador ? 'auto' : 'none',
+                                        filter: autorizadoAdministrador ? 'none' : 'grayscale(1)',
+                                        cursor: autorizadoAdministrador ? 'default' : 'not-allowed'
+                                    }}
+
                                     onClick={() => navegarERecolher('/interno/clienteContrato')}
                                 >
                                     Contrato
@@ -1848,20 +1725,28 @@ export default function App() {
                           
 
 
-
                             {/* ------------------------------- */}
                             {/* INICIO - SIDEBAR FIXA: PACIENTE */}
                             {/* ------------------------------- */}
 
                             <div className="submenu-tudo-paciente-prof">
-                                
-                                {/* Título da Seção (Substituiu o antigo Botão Dropdown) */}
-                                <h3 className="titulo-setor-sidebar">
-                                    Prontuario do Paciente {!perfilEstaCompletoCliente && <span title="Perfil Incompleto"></span>}
-                                </h3>
 
+                                <div className="menu-sidebar-paciente-header">
+                                    <div className="menu-sidebar-paciente-funcao">
+                                        <h3 className="titulo-setor-sidebar">
+                                            {autorizadoAdministrador ? "Prontuario do Paciente" : "Prontuario do Paciente 🔒"}
+                                        </h3>
+                                    </div>
+                                </div>
                                 
-                                <div className="lista-botoes-vertical">
+                                <div className="lista-botoes-vertical"
+                                    style={{
+                                        opacity: autorizadoAdministrador ? 1 : 0.5,
+                                        pointerEvents: autorizadoAdministrador ? 'auto' : 'none',
+                                        filter: autorizadoAdministrador ? 'none' : 'grayscale(1)',
+                                        cursor: autorizadoAdministrador ? 'default' : 'not-allowed'
+                                    }}
+                                >
                                     <button 
                                         // className="BotaoBloqueado" 
                                         onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}
@@ -1929,9 +1814,6 @@ export default function App() {
                             {/* ------------------------------- */}
 
 
-
-
-
                         </>
                     )}
 
@@ -1973,8 +1855,7 @@ export default function App() {
 
 
                         {/* BOTAO CHAT */}
-                        <div 
-                            className="Botao-Chat" 
+                        <div className="Botao-Chat" 
                             onClick={() => {
                                 console.log("");
                                 console.log("📐 ----------------------------------");
@@ -2003,8 +1884,7 @@ export default function App() {
 
                         
                         {/* INICIO - BOTAO MEU PERFIL */}
-                        <button 
-                            className={`Botao-Acao-Meu-Perfil ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}
+                        <button className={`Botao-Acao-Meu-Perfil ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}
                             onClick={() => setSecaoAberta(secaoAberta === 'perfil' ? null : 'perfil')}
                         >
                             <div className="Avatar-Circulo">

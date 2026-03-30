@@ -111,7 +111,7 @@ export function DetalhesCuidadora({ usuario, aoFechar }) {
 
                 <header className="detalhes-cliente-header-card">
                     <div className="header-info-texto">
-                        <h2>🔍 FICHA DA CUIDADORA</h2>
+                        <h2>FICHA DA CUIDADORA</h2>
                         <span className="id-subtitulo">ID SISTEMA: {idSistema}</span>
                     </div>
                     <button className="btn-fechar-cliente" onClick={aoFechar}>&times;</button>
@@ -369,8 +369,8 @@ export function DetalhesCuidadora({ usuario, aoFechar }) {
                                 <span>{dCadastro.perfilCompleto ? "✅ CONCLUÍDO" : "⏳ PENDENTE"}</span>
                             </div>
                             <div className="detalhe-item-cliente">
-                                <label>Confirmado pelo Administrador:</label>
-                                <span>{dInterno.cadastroDadosCompleto ? "✅ SIM" : "❌ NÃO"}</span>
+                                <label>Autorizado pelo Administrador:</label>
+                                <span>{dCadastro.autorizadoAdministrador ? "✅ SIM" : "❌ NÃO"}</span>
                             </div>
                         </div>
                     </section>

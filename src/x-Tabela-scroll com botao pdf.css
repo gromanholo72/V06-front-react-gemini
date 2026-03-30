@@ -1,0 +1,230 @@
+
+/* ----------------------------------------------------------- */
+/* INICIO - 🏗️ 1. COMPONENTE-PRINCIPAL (PALCO DA OBRA)           */
+/* ----------------------------------------------------------- */
+.adm-relatorio-principal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    animation: relClientes_surgir 0.6s ease-out;
+}
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL)           */
+/* ------------------------------------------------------------- */
+.adm-relatorio-suporte {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📋 3. CARD-DADOS (O DOSSIÊ DE CLIENTES)              */
+/* ------------------------------------------------------------- */
+.adm-relatorio-usuario-card {
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🏷️ 4. CARD-HEADER (IDENTIDADE MAESTRO)               */
+/* ------------------------------------------------------------- */
+.adm-relatorio-header {
+    background-color: #ebf2f7; 
+    border-bottom: 3px solid #306396;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+}
+
+.adm-relatorio-header h2 {
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🚀 5. BOTÕES DE AÇÃO (CORES SAGRADAS)                */
+/* ------------------------------------------------------------- */
+.btn-exportar {
+    background-color: rgb(212, 175, 55); /* Dourado Maestro */
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 12px;
+    transition: filter 0.2s;
+    white-space: nowrap;
+}
+
+.btn-exportar:hover {
+    filter: brightness(0.9);
+    transform: translateY(-1px);
+}
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📊 6. TABELA RESPONSIVA & SCROLL (O SEGREDO)         */
+/* ------------------------------------------------------------- */
+.adm-relatorio-tabela-responsiva {
+    width: 100%;
+    overflow-x: auto; 
+    background: #ffffff;
+}
+
+.adm-relatorio-tabela {
+    width: 100%;
+    min-width: 700px; /* 📐 Chão da tabela para acionar scroll horizontal apenas no limite de legibilidade */
+    border-collapse: collapse;
+    background-color: white;
+}
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🎨 7. ESTILIZAÇÃO DE CÉLULAS (TH/TD)                 */
+/* ------------------------------------------------------------- */
+.adm-relatorio-tabela th {
+    background-color: #34495e; /* Cinza Profundo Maestro */
+    color: #ffffff;
+    padding: 12px 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: 1px;
+    border: 1px solid #2c3e50;
+    /* 📐 Ajuste Maestro: Permite quebra nos cabeçalhos para favorecer o layout compacto */
+    white-space: normal; 
+}
+
+.adm-relatorio-tabela th:nth-child(2),
+.adm-relatorio-tabela td:nth-child(2) {
+    text-align: left;
+    padding-left: 20px;
+    min-width: 250px; /* 📐 Garante área mínima para o nome quebrar internamente antes de espremer as outras colunas */
+}
+
+.adm-relatorio-tabela td {
+    padding: 10px 15px; 
+    border: 1px solid #e0e0e0;
+    color: #444;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    /* 📐 Ajuste Maestro: Quebra o texto primeiro, ativa scroll horizontal depois */
+    white-space: normal; 
+    word-break: break-word; 
+}
+
+.nome-destaque {
+    font-weight: 800 !important;
+    color: #1a1a1a !important;
+}
+
+.adm-relatorio-tabela tbody tr {
+    cursor: pointer; /* 📐 Interatividade Maestro: Sinaliza que a linha é clicável */
+    transition: background-color 0.2s ease;
+}
+
+.adm-relatorio-tabela tbody tr:nth-child(even) {
+    background-color: #f9fbfd;
+}
+
+.adm-relatorio-tabela tbody tr:hover {
+    background-color: #d6d4d4;
+    transition: background-color 0.2s ease;
+}
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - ✅ 8. TAGS DE STATUS (PILLS MAESTRO)                 */
+/* ------------------------------------------------------------- */
+.status-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 800;
+    min-width: 100px;
+    text-transform: uppercase;
+}
+
+.status-pill.ativo { background-color: #e9f7ef; color: #27ae60; border: 1px solid #d4efdf; }
+.status-pill.aguardando { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.status-pill.bloqueado { background-color: #fceceb; color: #c0392b; border: 1px solid #fadbd8; }
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 👁️ 9. BOTÕES DE INTERAÇÃO (DETALHES)                 */
+/* ------------------------------------------------------------- */
+.btn-visualizar {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-visualizar:hover {
+    background-color: #306396; /* Azul Maestro */
+    color: white;
+    box-shadow: 0 4px 8px rgba(48, 99, 150, 0.2);
+}
+
+
+
+
+
+@keyframes relClientes_surgir {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* ------------------------------------------------------------- */
+/* FIM - 🏆 PADRÃO GOLDEN: RELATÓRIO ADMINISTRATIVO (VISUAL 2026) */
+/* ------------------------------------------------------------- */
