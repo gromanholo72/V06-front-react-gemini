@@ -1,31 +1,59 @@
-
-/* 🧱 VARIAVEIS GLOBAIS DE CONTROLE */
 :root {
+
+    --largura-minima-projeto: 270px;
     --largura-maxima-projeto: 1600px;
+    --altura-header: 70px;
+
+    --cor-padrao-azul: rgb(48, 99, 150);
+    --cor-padrao-amarelo: rgb(212, 175, 55); 
+    --cor-padrao-vermalho: rgb(192, 57, 43);
+    --cor-padrao-verde: rgb(79, 121, 66);
+    --cor-padraobranco: rgb(248, 250, 252);
+    --cor-padraoFundoBotao: rgba(90, 86, 86);
+
+    --cor-padraoFundoBotao: rgb(160, 159, 159);
+    --cor-padraoTextoBotao: rgb(7, 7, 7); 
+    
+    --cor-padraoFundoBotaoHover: rgba(90, 86, 86);
+    --cor-padraoTextoBotaoHover: white;
+
+    --LarguraSidebarCuidadora: 195px;
+       
 }
 
 
-/* 🛡️ CONTAINER-EXTERNO-BLINDADO - envolve todo o site para garantir a blindagem da estrutura*/
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------------------------------------------------------- */
+/* 🛡️ INICIO - CONTAINER-EXTERNO-BLINDADO - envolve todo o site para garantir a blindagem da estrutura */
+/* ---------------------------------------------------------------------------------------------------- */
 
 .container-externo-blindado {
-    
-    background-color: #b0bdb9;
-    min-height: 100vh;
-   
-    border: 2px solid rgb(128, 126, 126);
 
-    min-width: 320px;
-    width: 100%;
-    max-width: var(--largura-maxima-projeto); 
-    margin: 0 auto;    /* 🧱 Centraliza o projeto horizontalmente */
+    margin: 0 auto;
+
     display: flex;
     flex-direction: column;
-  
+    min-width: var(--largura-minima-projeto);
+    max-width: var(--largura-maxima-projeto); 
+    min-height: 100vh;
+    width: 100%;
+    background-color: #b0bdb9;
+    border: 2px solid rgb(128, 126, 126);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
 } 
 
-/* FIM DO - 🛡️ CONTAINER-EXTERNO-BLINDADO */
+/* --------------------------------------------------------------------------------------------------- */
+/* 🛡️ FIM - CONTAINER-EXTERNO-BLINDADO - envolve todo o site para garantir a blindagem da estrutura */
+/* ---------------------------------------------------------------------------------------------------- */
 
 
 
@@ -35,38 +63,34 @@
 
 
 
-/* 🏗️ CABEÇALHO DE CONTROLE */
+
+
+/* ---------------------------------- */
+/* INICIO - 🏗️ CABEÇALHO DE CONTROLE */
+/* ---------------------------------- */
 
 .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    /* background: rgb(250, 250, 250); */
-    background: rgb(183, 195, 211);
     background: #306396;
-
     border: 2px solid white;
-
     z-index: 1000;
     position: fixed; 
     top: 0;
-    left: 50%; /* 🧱 Centralização para elemento FIXO */
-    transform: translateX(-50%); /* 🧱 Garante o centro exato */
+    left: 50%;
+    transform: translateX(-50%); 
     width: 100%;
     max-width: var(--largura-maxima-projeto); 
     box-sizing: border-box;
-
-    height: 70px;
-    
+    height: var(--altura-header); 
     padding-left: 15px;
-    padding-right: 10px;
-
-    /* overflow: hidden; */
-   
+    padding-right: 15px;
 } 
 
-/* FIM DO - 🏗️ CABEÇALHO DE CONTROLE */
+/* ---------------------------------- */
+/* FIM - 🏗️ CABEÇALHO DE CONTROLE */
+/* ---------------------------------- */
 
 
 
@@ -75,1117 +99,36 @@
 
 
 
-/* 🖼️ 1. NUCLEO-IDENTIDADE (Extrema Esquerda) */
 
-.header-Logo {
-    /* order: 1; */
-    /* display: flex; */
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    min-width: 100px;
-    padding: 10px;
+
+
+
+
+/* ------------------- */
+/* INICIO - LOGOMARCA */
+/* ------------------- */
+
+.div-Logo-header{
     flex-shrink: 0;
 }
-.header-Logo:hover {
-    transform: scale(1.05);
-}
+
 .Imagem-Logotipo {
     height: 40px;
     width: auto;
     max-width: 100%;      
-    display: block;
-    object-fit: contain;
 }
-
-/* 🖼️ FIM DO - 1. IDENTIDADE-LOGOTIPO-CLIQUES*/
-
-
-
-
-
-
-
-
-
-
-
-/* .Container-Menu-Mestre {
-
-    width: 100%;
-
-} */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 🗺️ 2. HUB-NAVEGACAO-CENTRAL (CENTRO) */
-.hub-navegacao-central {
-    
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    flex: 2;
-    margin-right: 10px;
-
-}
-
-.hub-navegacao-central .Botao-Acao-Geral {
-    margin-left: 30px;
-}
-
-.hub-navegacao-central .btn-apresentacao-empresa {
-   font-size: 12px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ----------------------------------------------------------------- */
-/* INICIO - 🔘 PADRÕES GLOBAIS DE BOTÕES (ATIVO / BLOQUEADO) */
-/* ----------------------------------------------------------------- */
-
-/* 🧱 Estilo para o botão quando está habilitado */
-.BotaoAtivo {
-    cursor: pointer;
-    opacity: 1;
-}
-
-.BotaoBloqueado, 
-button:disabled,
-input[type="button"]:disabled,
-input[type="submit"]:disabled {
-    
-    /* 🔒 Funcional (CSS): Impede cliques e interações de mouse */
-    pointer-events: none !important;
-
-    /* �️ Visual: Aparência de "desligado" */
-    cursor: not-allowed !important; 
-    /* opacity: 0.65 !important; */
-    filter: grayscale(100%) !important;
-    box-shadow: none !important;
-    user-select: none;
-    
-    /* 🎨 Cores Padronizadas para Bloqueio */
-    background-color: #e0e0e0 !important;
-    color: #9e9e9e !important;
-    border: 1px solid #cccccc !important;
-    
-    /* 🛑 Remove transformações e animações */
-    transform: none !important;
-    transition: none !important;
-}
-
-/* 🚫 BLOQUEIO DE HOVER: Garantia extra para não reagir ao mouse */
-.BotaoBloqueado:hover, button:disabled:hover,
-.BotaoBloqueado:active, button:disabled:active {
-    background-color: #e0e0e0 !important;
-    color: #9e9e9e !important;
-    transform: none !important;
-    box-shadow: none !important;
-    border-color: #cccccc !important;
-}
-
-/* 🚫 REMOVE O BRILHO: Tira o efeito de luz passando (::after) */
-.BotaoBloqueado::after, button:disabled::after {
-    display: none !important; 
-}
-
-/* ----------------------------------------------------------------- */
-/* FIM - 🔘 PADRÕES GLOBAIS DE BOTÕES (ATIVO / BLOQUEADO) */
-/* ----------------------------------------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ---------------------------------------------------------------------------------------------------------------- */
-/* INICIO - ESTILIZAÇÃO DO MENU SIDEBAR - ADMINISTRADOR                                                            */
-/* ---------------------------------------------------------------------------------------------------------------- */
-
-.container-externo-blindado:not([data-func="visitante"]) .menu-sidebar-administrador-container {
-
-    padding: 15px;
-
-    display: flex !important;
-    flex-direction: column;
-    
-    position: fixed !important;
-    top: 70px !important;      
-    left: 0px !important;         
-    bottom: 0 !important;       
-    
-    width: 200px !important;    
-    height: calc(100vh - 70px) !important;
-    
-    opacity: 1 !important;     
-    transform: none !important; 
-    pointer-events: auto !important;
-    
-    border-radius: 0 !important; 
-    border-right: 1px solid #e0e0e0;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
-    background-color: #f8f9fa !important;
-    
-    overflow-y: auto; 
-    padding-top: 20px;
-
-}
-
-.menu-sidebar-administrador-header {
-    margin-bottom: 10px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    /* padding-bottom: 8px; */
-}
-
-.menu-sidebar-administrador-titulo {
-    font-size: 16px;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: #4a5568;
-    letter-spacing: 1.5px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-bottom: 2px solid rgb(0, 0, 0);
-    padding-bottom: 5px;
-}
-
-.menu-sidebar-administrador-lista-botoes {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.menu-sidebar-administrador-btn-item {
-    display: flex;
-    justify-content: space-between; /* 📐 Garante texto na esquerda e ícone na direita */
-    align-items: center;
-    width: 100%;
-    padding: 14px 10px;
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    color: #2d3748;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-/* 📐 EFEITO DE INTERAÇÃO MAESTRO */
-.menu-sidebar-administrador-btn-item:hover {
-    background-color: #f7fafc;
-    border-color: #3182ce; /* Azul administrativo */
-    color: #3182ce;
-    transform: translateX(6px); /* Deslize suave para a direita */
-    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.menu-sidebar-administrador-icon {
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
-}
-
-.menu-sidebar-administrador-btn-item:hover .menu-sidebar-administrador-icon {
-    transform: scale(1.2) rotate(5deg); /* Ícone ganha vida no hover */
-}
-
-/* 📐 ESTADO DE CLIQUE (FEEDBACK TÁTIL) */
-.menu-sidebar-administrador-btn-item:active {
-    transform: scale(0.97) translateX(4px);
-    background-color: #edf2f7;
-}
-
-/* ---------------------------------------------------------------------------------------------------------------- */
-/* FIM - ESTILIZAÇÃO DO MENU SIDEBAR - ADMINISTRADOR                                                               */
-/* ---------------------------------------------------------------------------------------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-.menu-horizontal-programador-container {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 10px;
-   
-}
-
-
-.menu-horizontal-administrador-container {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 10px;
-   
-}
-
-.menu-horizontal-cuidadora-container {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 10px;
-   
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.submenu-container-geral {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 10px;
-   
-}
-
-.submenu-container-geral button {
-
-    border-top: 2px solid #306396;
-    border-bottom: 2px solid #306396;
-    border-left: none;
-    border-right: none;
-
-    /* padding-top: 10px;
-    padding-bottom: 10px; */
-
-    color: #000000;
-    background: rgb(199, 197, 197);
-    /* background: rgb(212, 175, 55); */
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    /* width: 100px; */
-   
-    position: relative;
-    overflow: hidden;
-}
-
-.submenu-container-geral button:hover {
-
-    color: white; 
-    background: gray;
-
-    border-top: 2px solid white; 
-    border-bottom: 2px solid white; 
-}
-
-.submenu-container-geral button::after {
-    content: '';
-    position: absolute;
-    /* top: 0; */
-    /* left: -100%; */
-    width: 100%;
-    height: 100%;
-    /* background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); */
-    transition: 0.6s;
-}
-
-.submenu-container-geral button:hover::after {
-    left: 100%;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* -------------------------------- */
-/* INICIO - MENU - programador prof */
-/* -------------------------------- */
-
-.submenu-tudo-cadastrar-prof {
-    position: relative;
-    display: inline-block;
-}
-
-/* 🚀 Botão Principal */
-.Btn-geral-programador-prof {
-    width: 110px; 
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    border-top: 2px solid #306396;
-    border-bottom: 2px solid #306396;
-    border-left: none;
-    border-right: none;
-    /* background-color: transparent; */
-    color: #000000;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-
-
-
-
-
-
-.btn-centralizado {
-    justify-content: center !important;
-}
-
-
-
-
-
-.fonte10px {
-    font-size: 10px !important;
-}
-
-.fonte12px {
-    font-size: 12px !important;
-}
-
-.fonte14px {
-    font-size: 14px !important;
-}
-
-
-
-
-
-.largura40px {
-    width: 40px !important;
-}
-
-.largura50px {
-    width: 50px !important;
-}
-
-.largura60px {
-    width: 60px !important;
-}
-
-.largura70px {
-    width: 70px !important;
-}
-
-.largura80px {
-    width: 80px !important;
-}
-
-.largura90px {
-    width: 90px !important;
-}
-
-.largura100px {
-    width: 100px !important;
-}
-
-.largura110px {
-    width: 110px !important;
-}
-
-.largura120px {
-    width: 120px !important;
-}
-
-.largura130px {
-    width: 130px !important;
-}
-
-.largura140px {
-    width: 140px !important;
-}
-
-.largura150px {
-    width: 150px !important;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-.btn-fonte-paciente {
-    letter-spacing: 1.7px !important;
-}
-
-
-.fonte-diretrizes{
-    letter-spacing: 1.7px !important;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 📦 Submenu Flutuante (Transição Suave) */
-.submenu-flutuante-cadastrar-prof {
-    position: absolute;
-    top: 38px; 
-    left: 0;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 5px 0;
-    /* background-color: white; */
-    border-radius: 8px;
-    
-    /* 🛠️ Configuração da Animação */
-    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-15px);
-    pointer-events: none;
-}
-
-/* ✨ Estado Aberto */
-.submenu-flutuante-cadastrar-prof.aberto {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: all;
-}
-
-/* 🌙 Estado Fechado */
-.submenu-flutuante-cadastrar-prof.fechado {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-15px);
-    pointer-events: none;
-}
-
-/* 🔘 Botões internos do Submenu */
-.submenu-flutuante-cadastrar-prof button {
-    width: 110px;
-    height: 35px;
-    border-top: 2px solid #306396;
-    border-bottom: 2px solid #306396;
-    border-left: none;
-    border-right: none;
-    border-radius: 8px;
-    /* background: white; */
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Texto centralizado no submenu */
-}
-
-/* ✨ Hover Maestro */
-.Btn-geral-programador-prof:hover,
-.submenu-flutuante-cadastrar-prof button:hover {
-    color: white; 
-    background: gray;
-    border-top: 2px solid white; 
-    border-bottom: 2px solid white; 
-}
-
-/* 🌊 Efeito de Brilho Dinâmico */
-.Btn-geral-programador-prof::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: 0.6s;
-}
-
-.Btn-geral-programador-prof:hover::after {
-    left: 100%;
-}
-
-/* -------------------------------- */
-/* INICIO - MENU - programador prof */
-/* -------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ----------------------------------- */
-/* INICIO - MENU - ADMINISTRADOR PROF  */
-/* ----------------------------------- */
-
-.submenu-tudo-gerenciar-prof {
-    position: relative;
-    display: inline-block;
-}
-
-/* 🚀 Botão Principal Administrador */
-.Btn-geral-administrador-prof {
-    width: 100px; 
-    height: 35px;
-    font-size: 12px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    padding: 0 10px;
-    border-top: 2px solid #306396;
-    border-bottom: 2px solid #306396;
-    border-left: none;
-    border-right: none;
-    color: #000000;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    /* background-color: transparent; */
-}
-
-/* 📦 Submenu Flutuante Administrador */
-.submenu-flutuante-gerenciar-prof {
-    position: absolute;
-    top: 38px; 
-    left: 0;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 5px 0;
-    border-radius: 8px;
-    
-    /* Configuração da Animação de Entrada/Saída */
-    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-15px);
-    pointer-events: none;
-}
-
-/* ✨ Estado Aberto */
-.submenu-flutuante-gerenciar-prof.aberto {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: all;
-}
-
-/* 🌙 Estado Fechado */
-.submenu-flutuante-gerenciar-prof.fechado {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-15px);
-    pointer-events: none;
-}
-
-/* 🔘 Botões internos do Submenu Admin */
-.submenu-flutuante-gerenciar-prof button {
-    width: 110px;
-    height: 35px;
-    border-top: 2px solid #306396;
-    border-bottom: 2px solid #306396;
-    border-left: none;
-    border-right: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* ✨ Hover Maestro Admin */
-.Btn-geral-administrador-prof:hover,
-.submenu-flutuante-gerenciar-prof button:hover {
-    color: white; 
-    background: gray;
-    border-top: 2px solid white; 
-    border-bottom: 2px solid white; 
-}
-
-/* 🌊 Efeito de Brilho Dinâmico Admin */
-.Btn-geral-administrador-prof::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: 0.6s;
-}
-
-.Btn-geral-administrador-prof:hover::after {
-    left: 100%;
-}
-
-/* 📱 Ajuste Mobile Admin */
-@media (max-width: 768px) {
-    .submenu-flutuante-gerenciar-prof {
-        top: 0;
-        left: 115px;
-        transform: translateX(-15px);
-    }
-    .submenu-flutuante-gerenciar-prof.aberto {
-        transform: translateX(0);
-    }
-    .submenu-flutuante-gerenciar-prof.fechado {
-        transform: translateX(-15px);
-    }
-}
-
-/* ----------------------------------- */
-/* FIM - MENU - ADMINISTRADOR PROF     */
-/* ----------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ----------------------------------- */
-/* INICIO - MENU - CUIDADORA PROF      */
-/* ----------------------------------- */
-
-/* 🚀 Botão Principal Cuidadora */
-.Btn-geral-cuidadora-prof {
-    width: 110px; 
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centralizado por padrão já que não tem seta */
-    padding: 0 10px;
-    border-top: 2px solid #306396;
-    border-bottom: 2px solid #306396;
-    border-left: none;
-    border-right: none;
-    color: #000000;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* ✨ Hover Maestro Cuidadora */
-.Btn-geral-cuidadora-prof:hover {
-    color: white; 
-    background: gray;
-    border-top: 2px solid white; 
-    border-bottom: 2px solid white; 
-}
-
-/* 🌊 Efeito de Brilho Dinâmico Cuidadora */
-.Btn-geral-cuidadora-prof::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: 0.6s;
-}
-
-.Btn-geral-cuidadora-prof:hover::after {
-    left: 100%;
-}
-
-/* ----------------------------------- */
-/* FIM - MENU - CUIDADORA PROF         */
-/* ----------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ----------------------------------- */
-/* INICIO - MENU - CLIENTE PROF        */
-/* ----------------------------------- */
-
-/* .submenu-tudo-solicitacao-prof,
-.submenu-tudo-paciente-prof {
-    position: relative;
-    display: inline-block;
-} */
-.submenu-tudo-solicitacao-prof {
-    position: relative;
-    display: inline-block;
-}
-
-
-
-
-
-
-
-/* 🚀 Botão Principal Cliente */
-.Btn-geral-cliente-prof {
-    width: 110px; 
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    padding: 0 10px;
-    border: none;
-    border-bottom: 2px solid #306396;
-    color: #000000;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 0;
-    position: relative;
-    overflow: hidden;
-    /* background-color: transparent; */
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* 📦 Submenu Flutuante Cliente (Padrão para Solicitação e Paciente) */
-.submenu-flutuante-cliente-prof {
-    position: absolute;
-    top: 35px; 
-    left: 0;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 5px 0;
-    border-radius: 0;
-    /* background-color: white;  */
-    
-    /* Animação Mestra */
-    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-15px);
-    pointer-events: none;
-}
-
-/* ✨ Estados de Transição */
-.submenu-flutuante-cliente-prof.aberto {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: all;
-}
-
-.submenu-flutuante-cliente-prof.fechado {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-15px);
-    pointer-events: none;
-}
-
-/* 🔘 Botões internos dos Submenus */
-.submenu-flutuante-cliente-prof button {
-    width: 120px;
-    height: 35px;
-    border: none;
-    border-bottom: 2px solid #306396;
-    border-radius: 0;
-    /* background-color: white; */
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-/* ✨ Hover e Brilho */
-.Btn-geral-cliente-prof:hover,
-.submenu-flutuante-cliente-prof button:hover {
-    color: white; 
-    background-color: rgb(143, 142, 142);
-    border: none;
-    border-bottom: 2px solid white; 
-}
-
-.Btn-geral-cliente-prof::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: 0.6s;
-}
-
-.Btn-geral-cliente-prof:hover::after {
-    left: 100%;
-}
-
-/* 📱 Ajuste Mobile */
-/* @media (max-width: 768px) {
-    .submenu-flutuante-cliente-prof {
-        top: 0;
-        left: 115px;
-        transform: translateX(-15px);
-    }
-    .submenu-flutuante-cliente-prof.aberto { transform: translateX(0); }
-    .submenu-flutuante-cliente-prof.fechado { transform: translateX(-15px); }
-} */
-
-/* ----------------------------------- */
-/* FIM - MENU - CLIENTE PROF           */
-/* ----------------------------------- */
-
-
-
-
-
-
-
-
-
-
-.menu-horizontal-cliente-container  {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 10px;
-   
-}
-
-
-.container-externo-blindado:not([data-func="visitante"]) .submenu-tudo-paciente-prof {
-
-    background-color: #0077cc !important;
-
-    display: flex !important;
-    flex-direction: column;
-    
-    position: fixed !important;
-    top: 70px !important;      
-    left: 0 !important;         
-    bottom: 0 !important;       
-    
-    width: 240px !important;    
-    height: calc(100vh - 70px) !important;
-    
-    opacity: 1 !important;     
-    transform: none !important; 
-    pointer-events: auto !important;
-    
-    border-radius: 0 !important; 
-    border-right: 1px solid #e0e0e0;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
-    /* background-color: #f8f9fa !important; */
-    
-    overflow-y: auto; 
-    padding-top: 20px;
-}
-
-
 
 @media (max-width: 768px) {
 
-
-
-    .container-externo-blindado:not([data-func="visitante"]) .submenu-container-geral{
-        width: 100%;
-    }
-    
-
-
-    .container-externo-blindado:not([data-func="visitante"]) .submenu-tudo-paciente-prof {
-    
-        background-color: #6dcc00 !important;
-    
-
-
-    }
-
-}
-    
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* MENU - visitante */
-
-.Btn-geral-visitante {
-    width: 90px;
-    height: 35px;
-    text-align: center;
-
-    padding-left: 8px;
-    padding-right: 8px;
-
-    /* display: flex;             */
-    /* align-items: center;       */
-    /* justify-content: space-between; */
+    .div-Logo-header{
+       display: none;
+   }
 
 }
 
-
-.Lista-Publica {
-    background-color: rgb(212, 175, 55);
-    width: 110px;
-}
+/* ------------------- */
+/* FIM - LOGOMARCA */
+/* ------------------- */
 
 
 
@@ -1208,289 +151,39 @@ input[type="submit"]:disabled {
 
 
 
-/* MENU - cuidadora */
-
-.Btn-geral-cuidadora {
-    width: 90px;
-}
 
 
 
 
+/* ---------------------------------------------- */
+/* INICIO do - 🔩 Conteiner geral individualizado */
+/* ---------------------------------------------- */
 
 
+.submenu-container-geral.menu-mobile-ativo {
 
+    background-color: #222;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* -------------- */
-/* MENU - cliente */
-/* -------------- */
-.Btn-geral-cliente {
-    width: 110px;
-    height: 35px;
-    text-align: left;
-
-    padding-left: 8px;
-    padding-right: 8px;
-
-    display: flex;             /* Transforma o botão em um container flexível */
-    align-items: center;       /* Alinha o texto e a seta verticalmente no centro */
-    justify-content: space-between;
-
-}
-
-.Btn-geral-cliente-solicitacao {
-    font-size: 11px;
-}
-
-
-/* submenu - cliente - solicitacao*/
-.submenu-flutuante-solicitacao {
-    position: absolute;
-    top: 55px; 
-    z-index: 999;
-    border-radius: 8px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-}
-.submenu-flutuante-solicitacao button{ 
-    width: 110px;
-    height: 35px;
-}
 
-
-
-
-/* submenu - cliente - paciente */
-.submenu-flutuante-paciente {
-    position: absolute;
-    top: 55px; 
-    z-index: 999;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-.submenu-flutuante-paciente button{ 
-    width: 110px;
-    height: 35px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.icone-seta {
-    font-size: 14px; 
-    color: #888; 
-    /* margin-left: 10px; */
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 🍔 MENUHAMBURGERTUDO */
-
-.MenuHamburgerTudo {
-    width: 100%;
-    display: none;
-    padding: 5px;
-    z-index: 100;
-
-    --CorLinhasHamburguer:  rgb(79, 170, 128); 
-    --CorLinhasHamburguer:  #306396;
-    --CorLinhasHamburguer:  white;
-
-}
-.MenuHamburger {
-    width: 35px; 
-    height: auto; 
-    cursor: pointer;
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    -webkit-tap-highlight-color: transparent;   
-}
-.MenuHamburger .bar {
-    width: 100%;
-    height: 4px; 
-    background-color: var(--CorLinhasHamburguer);
-    border-radius: 2px;
-    transition: all 0.3s ease-in-out; 
-    position: relative;
-}
-.MenuHamburger .bar::before,
-.MenuHamburger .bar::after {
-    content: ''; 
     position: absolute; 
-    width: 100%;
-    height: 4px; 
-    background-color: var(--CorLinhasHamburguer);
-    border-radius: 2px;
-    transition: all 0.3s ease-in-out; 
-    left: 0;
-}
-.MenuHamburger .bar::before {
-    transform: translateY(-12px); 
-}
-.MenuHamburger .bar::after {
-    transform: translateY(12px); 
-}
-.MenuHamburger.open .bar {
-    background-color: transparent; 
-}
-.MenuHamburger.open .bar::before {
-    transform: translateY(0) rotate(45deg); 
-}
-.MenuHamburger.open .bar::after {
-    transform: translateY(0) rotate(-45deg); 
-}
-
-
-
-
-
-/* // ✨ Efeito de pulso no container do menu para quem entra a primeira vez*/
-.animacao-pulso {
-    position: relative;
-    transition: background-color 0.5s ease;
-    box-shadow: 0 0 0 0 rgba(26, 35, 126, 0.4);
-    animation: pulso-atencao 1s infinite;
-    border-radius: 50%; /* // Ajuste conforme o formato do seu ícone */
-}
-
-@keyframes pulso-atencao {
-    0% { 
-        /* // Inicia com sombra vermelha e fundo levemente avermelhado */
-        box-shadow: 0 0 0 0 red; 
-        background-color: rgba(255, 0, 0, 0.1);
-    }
-    70% { 
-        /* // Expande a sombra para criar o efeito de onda e intensifica o fundo */
-        box-shadow: 0 0 0 15px rgba(26, 35, 126, 0); 
-        background-color: rgba(255, 0, 0, 0.4);
-    }
-    100% { 
-        /* // Retorna ao estado inicial para reiniciar o ciclo infinito */
-        box-shadow: 0 0 0 0 rgba(26, 35, 126, 0); 
-        background-color: rgba(255, 0, 0, 0.1);
-    }
-}
-
-
-
-
-/* // 💬 Estilização do Balão Informativo */
-.BalaoDicaVisitante {
-    position: absolute;
-    top: 90px; 
-    /* right: 90px; */
-    background: red;
-    color: #ffffff;
-    padding: 10px 16px;
-    border-radius: 12px;
-    font-size: 20px;
-    font-weight: 600;
-    white-space: nowrap;
+    top: 68px;
+    left: 0; 
     z-index: 999;
-    box-shadow: 0 4px 12px red;
-    pointer-events: none;
+    width: 100%;
+
+   
 }
 
-/* // 📐 Seta do balão apontando para o ícone */
-.BalaoDicaVisitante::before {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    /* right: 0px; */
+.submenu-container-geral.menu-mobile-ativo button {
+    font-size: 18px;
+} 
 
-    border-left: 7px solid transparent;
-    border-right: 6px solid transparent;
-    border-bottom: 20px solid red;
 
-}
-
-/* FIM DO - 🍔 MENUHAMBURGERTUDO */
+/* ---------------------------------------------- */
+/* FIM do - 🔩 Conteiner geral individualizado */
+/* ---------------------------------------------- */
 
 
 
@@ -1505,253 +198,181 @@ input[type="submit"]:disabled {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 🧱 AREA-PALCO: ONDE OS CARDS BRILHAM */
+/* ----------------------- */
+/* INICIO - ROUTES - ROTAS */
+/* ----------------------- */
 
 .main-area-principal {
-    /* padding-top: 70px; */
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
     width: 100%;
-    /* min-height: 140vh; */
-    /* overflow: hidden; */
-    
+    /* min-height: calc(100vh - var(--altura-header)); */
+    background-color: #b0bdb9;
 }
 
-/* FIM DO - 🧱 AREA-PALCO */
-
-
-
-/* ✨ O SEGREDO: Bloco que empurra o conteúdo para baixo do Header Azul */
 .header-spacer {
-    height: 70px; 
-    
-    /* 🧱 Garante que ele ocupe a largura total */
+    height: var(--altura-header); 
     width: 100%;
-    
-    /* 🚫 Impede que o Flexbox esmague este espaço */
-    flex-shrink: 0; 
-    
-    /* 👻 Invisível e não atrapalha cliques */
+    /* flex-shrink: 0;  */
     background: transparent;
     pointer-events: none;
-    
-    /* 📐 Comentário de Manutenção: 
-       Se mudar o Header, mude aqui também! */
+}
+
+/* ----------------------- */
+/* FIM - ROUTES - ROTAS */
+/* ----------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------- */
+/* INICIO - menu-sidebar - menu lateral esquerda */
+/* --------------------------------------------- */
+
+.menu-sidebar-cuidadora-container {
+    width: var(--LarguraSidebarCuidadora);
+
+    position: fixed;
+    top: var(--altura-header); 
+
+    height: calc(100vh - var(--altura-header)); 
+
+    background-color: var(--cor-padrao-amarelo);
+
+    border-right: 1px solid rgb(61, 57, 57);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding-right: 5px;
+    z-index: 10;
 }
 
 
+.menu-sidebar-cuidadora-header {
+    padding: 10px 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-sidebar-cuidadora-titulo {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    display: block;
+}
+
+.menu-sidebar-cuidadora-lista-botoes {
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px 5px;
+
+}
+
+.menu-sidebar-cuidadora-btn-item {
+   
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 8px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+
+    background-color: var(--cor-padraoFundoBotao);
+    color: var(--cor-padraoTextoBotao);
+
+}
+
+.menu-sidebar-cuidadora-btn-item:hover {
+
+    transform: translateX(5px);
+
+    background-color: var(--cor-padraoFundoBotaoHover);
+    color: var(--cor-padraoTextoBotaoHover);
+
+}
+
+.menu-sidebar-cuidadora-icon {
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.menu-sidebar-cuidadora-btn-alerta {
+
+    color: var(--cor-padrao-vermalho);
+    font-weight: bold;
+
+}
+
+.menu-sidebar-cuidadora-btn-alerta:hover {
+
+    background-color: var(--cor-padrao-vermalho);
+
+}
+
+/* --------------------------------------------- */
+/* FIM - menu-sidebar - menu lateral esquerda */
+/* --------------------------------------------- */
 
 
 
 
 
 
-/* 🖼️ COMPONENTE-DE-PAGINA */
+
+
+
+
+
+
+
+
+/* --------------------------------- */
+/* INICIO - 🖼️ COMPONENTE-DE-PAGINA */
+/* --------------------------------- */
 
 .componente-de-pagina {
-
+    width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    width: 100%;
-    animation: surgir-card 0.8s ease-out;
-
+    justify-content: flex-start;
 }
 
-@keyframes surgir-card {
-
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-
-}
-
-/* FIM DO - 🖼️ COMPONENTE-DE-PAGINA */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.AreaSubmenuPerfil {
-    position: relative;
-    display: inline-block;
-   
-}
-
-
-.SubmenuFlutuante {
-    position: absolute;
-    top: 40px; 
-    left: 30px;
-    z-index: 999;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    background: transparent;
-   
-    /* nao remover esse width: 155px; */
-    /* background: red; */
-    width: 155px;
-
-}
-
-.SubmenuFlutuante button{
-    font-size: 10px;
-}
-
-.SubmenuFlutuante::before {
-    content: "";
-    position: absolute;
-    top: -10px; 
-    left: 0;
-    width: 100%;
-    height: 10px;
-    /* background: transparent; */
-}
-
-/* .Item-Card-Menu {
-    background: none;
-    border: none;
-    padding: 12px 16px;
-    text-align: left;
-    cursor: pointer;
-    font-size: 14px;
-    color: #444;
-}
-
-.Item-Card-Menu:hover {
-    background-color: #f8f9fa;
-    color: #007bff;
-} */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.submenu-tudo {
-    display: inline-block;
-    position: relative;
+.componente-de-pagina.com-sidebar {
+    
+    margin-left: calc(var(--LarguraSidebarCuidadora) );
   
 }
 
+.componente-de-pagina.sem-sidebar {
 
-.submenu-flutuante {
-    position: absolute;
-    top: 55px; 
-    /* left: 30px; */
-    z-index: 999;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    /* background: transparent; */
-   
-    /* background: red; */
-
-  
-  
+     margin-left: 20px;
+     margin-right: 20px; 
 
 }
 
-.submenu-flutuante button{
-    font-size: 10px;
-   
-}
+/* --------------------------------- */
+/* FIM - 🖼️ COMPONENTE-DE-PAGINA */
+/* --------------------------------- */
 
-.submenu-flutuante::before {
-    content: "";
-    position: absolute;
-    top: -10px; 
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background: transparent;
-    /* background: yellow; */
-}
 
 
 
@@ -1768,140 +389,9 @@ input[type="submit"]:disabled {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ⚠️ MSG-FORM: O container da mensagem de erro */
-
-.MsgForm {
-    visibility: hidden;
-    opacity: 0;
-    max-height: 0;
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    justify-content: center;
-    margin: 0 auto;
-    transition: opacity 1.0s ease-in-out, max-height 0.8s ease-in-out, margin 0.8s ease-in-out, visibility 1.0s;
-    overflow: hidden;
-}
-
-.MsgForm.ativo {
-    visibility: visible;
-    opacity: 1;
-    max-height: 100px; 
-    margin-bottom: 15px; 
-    transition: opacity 1.0s ease-in-out, max-height 0.8s ease-in-out, margin 0.8s ease-in-out, visibility 1.0s;
-}
-
-
-
-
-
-.alerta-erro {
-    /* background-color: #ff4d4d;  */
-    /* color: white; */
-  
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 14px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
-    /* border: 2px solid #b30000; */
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    padding: 10px;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-
-    min-height: 45px;
-    width: 100%;
-}
-
-
-
-.MsgForm.ativo .alerta-erro {
-    animation: balanco 0.3s ease-in-out;
-    /* color: black;
-    background-color: #ff4d4d; */
-}
-
-@keyframes balanco {
-    0% { transform: translateY(-10px); }
-    50% { transform: translateY(5px); }
-    100% { transform: translateY(0); }
-}
-
-
-
-/* ⚠️ FIM DO - MSG-FORM: O container da mensagem de erro */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ---------------------- */
-/* MODAL GERAL */
-/* ---------------------- */
-
-
-/* 🧱 MODAL DE CARREGAMENTO - BLINDAGEM TOTAL DA FUNDAÇÃO */
+/* ------------------------------------------------------ */
+/* INICIO - 🧱 MODAL DE CARREGAMENTO - BLINDAGEM TOTAL DA FUNDAÇÃO */
+/* ------------------------------------------------------ */
 
 .modal-overlay-projeto {
     /* Ocupa toda a tela e impede cliques no fundo */
@@ -1917,15 +407,11 @@ input[type="submit"]:disabled {
     z-index: 10000;
     /* 🚀 Nome exclusivo para evitar o pulo visual */
     animation: modal-geral-fadeInOverlay 0.4s ease-out;
-
-
     /* 🧱 Bloqueia a seleção de texto e muda o cursor para sinalizar espera */
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
     cursor: wait;
-
-
 }
 
 .card-loading-moderno {
@@ -1938,13 +424,10 @@ input[type="submit"]:disabled {
     width: 90%;
     max-width: 340px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-
     /* para o modal subir e descer na tela */
     transform: translateY(-80px);
-
     /* 🚀 Conexão com a animação exclusiva do card */
     animation: modal-geral-fadeInModal 0.4s ease-out;
-
 }
 
 .spinner-dual-ring {
@@ -1956,10 +439,8 @@ input[type="submit"]:disabled {
     border-top: 4px solid #28a745;
     border-bottom: 4px solid #28a745;
     border-radius: 50%;
-
-   /* 🚀 Aplicando o novo nome exclusivo */
-   animation: modal-geral-rodar-spinner 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-
+    /* 🚀 Aplicando o novo nome exclusivo */
+    animation: modal-geral-rodar-spinner 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 }
 
 .titulo-loading {
@@ -1994,14 +475,11 @@ input[type="submit"]:disabled {
     background: #28a745;
     border-radius: 10px;
     position: absolute;
-
     /* 🚀 Aplicando o novo nome exclusivo */
     animation: modal-geral-progresso-vai-volta 1.8s ease-in-out infinite;
-
 }
 
 /* 🧱 ANIMAÇÕES DA ESTRUTURA */
-
 @keyframes modal-geral-rodar-spinner {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -2014,8 +492,6 @@ input[type="submit"]:disabled {
 }
 
 @keyframes modal-geral-fadeInModal {
-    /* 🚀 MUDANÇA: É vital repetir o translateY(-80px) aqui. */
-    /* Se não repetirmos, a animação começaria no centro (0) e daria um "pulo" para cima ao terminar. */
     from { 
         opacity: 0; 
         transform: translateY(-80px) scale(1.05); 
@@ -2031,23 +507,6 @@ input[type="submit"]:disabled {
     to { opacity: 1; }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* 🌍 CAMADA 1: O Fundo (Overlay) */
 .modal-overlay-projeto-rapido {
     position: fixed;
@@ -2056,38 +515,31 @@ input[type="submit"]:disabled {
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.45); 
-   
-    backdrop-filter: blur(3px);      /* Desfoque de vidro jateado */
-    
+    /* Desfoque de vidro jateado */
+    backdrop-filter: blur(3px);       
     display: flex;
-    justify-content: center; /* Centro Horizontal */
-    align-items: center;     /* Centro Vertical */
-    z-index: 10000;          /* Acima de tudo */
+    /* Centro Horizontal */
+    justify-content: center; 
+    /* Centro Vertical */
+    align-items: center;     
+    z-index: 10000;   
 }
 
 /* 🟡 CAMADA 2: O Círculo (Plataforma Branca) */
 .circulo-plataforma-loading {
     /* 🎯 SEU AJUSTE DE POSIÇÃO ESPECÍFICO */
     transform: translate(0px, -60px); 
-
     width: 100px;
     height: 100px;
     background: #ffffff;
     background: transparent;
-    border-radius: 50%; /* Torna um círculo perfeito */
-    
+    /* Torna um círculo perfeito */
+    border-radius: 50%; 
     /* 🎯 CENTRALIZAÇÃO DO SPINNER DENTRO DO CÍRCULO */
     display: flex;
     justify-content: center;
     align-items: center;
-
-    /* Sombra e Borda para Profundidade */
-    /* box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3); */
-    /* border: 1px solid rgba(255, 255, 255, 0.1); */
-
     box-shadow: 0 0px 30px green;
-    /* border: 1px solid green; */
-    
     /* Pequena animação de entrada (Pop) */
     animation: pop-entrada 0.3s ease-out;
 }
@@ -2100,7 +552,6 @@ input[type="submit"]:disabled {
     display: flex;
     justify-content: center;
     align-items: center;
-   
 }
 
 .spinner-dual-ring-rapido:after {
@@ -2109,13 +560,10 @@ input[type="submit"]:disabled {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    
     /* Cor do Anel: Cinza Escuro Profissional */
     border: 5px solid #222222; 
     border-color: #222222 transparent #222222 transparent;
-    
     border-color: green transparent green transparent;
-
     /* Animação de Giro Veloz */
     animation: spinner-giro-veloz 0.8s linear infinite;
 }
@@ -2134,6 +582,9 @@ input[type="submit"]:disabled {
     100% { transform: translate(0px, -60px) scale(1); opacity: 1; }
 }
 
+/* ------------------------------------------------------ */
+/* FIM - 🧱 MODAL DE CARREGAMENTO - BLINDAGEM TOTAL DA FUNDAÇÃO */
+/* ------------------------------------------------------ */
 
 
 
@@ -2152,17 +603,12 @@ input[type="submit"]:disabled {
 
 
 
+/* --------------------------------------- */
+/*  INICIO - MODAL carregandoModalRapido   */     
+/* --------------------------------------- */
 
-
-
-
-
-/* ==========================================================
-   📡 SISTEMA DE VARREDURA LINEAR (v02.02 - Protocolo X)
-   ========================================================== */
-
-/* 🌌 Fundo de contenção (Overlay) */
-.camada-interceptacao-fluxo {
+/* 🌌 modal - Fundo de contenção (Overlay) */
+.modal-camada-interceptacao-fluxo {
     position: fixed;
     top: 0;
     left: 0;
@@ -2230,6 +676,9 @@ input[type="submit"]:disabled {
     }
 }
 
+/* --------------------------------------- */
+/*  FIM - MODAL carregandoModalRapido   */     
+/* --------------------------------------- */
 
 
 
@@ -2253,42 +702,43 @@ input[type="submit"]:disabled {
 
 
 
+/* =====================================*/
+/* INICIO - RELACIONADOS DO MENU PERFIL */
+/* =====================================*/
 
 
 
 
 
 
+
+
+
+/* ------------------------------------------------------------ */
+/* INICIO - AREA PRIVADA - MENU PARA LOGADOS - BOTAO MEU PERFIL */
+/* ------------------------------------------------------------ */
 
 .submenu-container-perfil {
-
     position: relative;
     display: flex;
     flex-direction: row; 
     align-items: center; 
     justify-content: flex-end; 
-    gap: 15px; 
-    padding: 5px 10px; 
-
+    gap: 5px; 
+   
 }
 
-
-
-.submenu-container-visitante {
-    display: flex;
-    gap: 10px;
-}
+/* ------------------------------------------------------------ */
+/* FIM - AREA PRIVADA - MENU PARA LOGADOS - BOTAO MEU PERFIL */
+/* ------------------------------------------------------------ */
 
 
 
 
 
-
-
-
-
-
-
+/* --------------------- */
+/*  INICIO - BOTAO CHAT  */     
+/* --------------------- */
 
 .Botao-Chat {
     background: transparent;
@@ -2301,15 +751,19 @@ input[type="submit"]:disabled {
     height: 45px;
     border-radius: 50%;
     transition: all 0.3s ease;
-
-
-    /* ⚓ ESTABILIZADORES DE RENDERIZAÇÃO */
-    backface-visibility: hidden;    /* Evita trepidação em motores Webkit */
-    transform: translateZ(0);       /* Força a aceleração de hardware (GPU) */
+    /* Evita trepidação em motores Webkit */
+    backface-visibility: hidden;    
+    /* Força a aceleração de hardware (GPU) */
+    transform: translateZ(0);       
     -webkit-font-smoothing: subpixel-antialiased;
-    
     /* 🔦 Destaque ao passar o mouse */
     background: rgba(255, 255, 255, 0.0);
+    /* Garante que não encolha na horizontal */
+    min-width: 45px;
+    /* Garante que não encolha na vertical */
+    min-height: 45px;
+    /* IMPEDE que o Flexbox amasse o círculo */
+    flex-shrink: 0;
 }
 
 .Botao-Chat:hover {
@@ -2323,100 +777,122 @@ input[type="submit"]:disabled {
     width: auto;
     object-fit: contain; 
     display: block;
-    
     /* ⚪ Ícone Branco Puro para contraste no azul */
     filter: brightness(0) invert(1);
     transition: transform 0.3s ease;
 }
 
+/* --------------------- */
+/*  FIM - BOTAO CHAT  */     
+/* --------------------- */
 
 
 
 
 
 
+/* --------------------- */
+/* INICIO - BOTAO MEU PERFIL */
+/* --------------------- */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.Botao-Notificacoes {
-    /* margin: 10px; */
-    width: 30px;
-    /* height: 45px; */
+.Botao-Acao-Meu-Perfil {
+    font-size: 18px;
+    font-weight: bold;
     display: flex;
-    align-items: center; 
-    justify-content: center;  
-    font-size: 24px; 
-    cursor: pointer;
-
-    background-color: transparent;
-    
+    align-items: center;
     border: none;
-    transition: transform 0.2s; 
+    
+    gap: 10px;
+    padding: 6px 10px;
+
+    background-color: var(--cor-padraoFundoBotao);
+    color: var(--cor-padraoTextoBotao);
+    
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1001;
 }
 
-.Botao-Notificacoes:hover {
-    transform: scale(1.1);
+.Botao-Acao-Meu-Perfil:hover,
+.Botao-Acao-Meu-Perfil.Ativo {
+
+    background-color: var(--cor-padraoFundoBotaoHover);
+    color: var(--cor-padraoTextoBotaoHover);
+
 }
 
 
 
 
 
-.Divisor-Menu {
-    height: 1px;
-    background: #000000 !important;
-    margin: 5px 0;
+
+.Botao-Acao-Meu-Perfil span {
+    white-space: nowrap;
+    display: block;
+    letter-spacing: 0.5px;
 }
 
+.Avatar-Circulo {
+    flex-shrink: 0;
+    width: 32px;
+    height: 30px;
+    
+    /* 🎨 Cores Invertidas para destaque */
+    background: white; 
+    color: #306396;
+    
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.Seta-Drop {
+    font-size: 20px;
+    opacity: 0.8;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* margin-left: 2px; */
+}
+
+.Seta-Drop.Aberta {
+    transform: rotate(180deg);
+}
+
+.Cortina-Fechar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+}
+
+/* --------------------- */
+/* FIM - BOTAO MEU PERFIL */
+/* --------------------- */
 
 
 
 
 
+/* --------------------------------------- */
+/* INICIO - 📋 SUB MENU - DADOS DO USUARIO */
+/* --------------------------------------- */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 📋 SUBMENU FLUTUANTE - ESTILO MODERNO 2026 */
 .SubmenuFlutuante-Estilizado {
     position: absolute;
     top: 55px; 
-    right: 0;
+    right: 0px;
     width: 240px; 
     
     background: #ffffff; 
-    
     border-radius: 16px; 
     
     /* 🎨 Sombra de alta profundidade para destacar sobre o conteúdo */
@@ -2431,9 +907,9 @@ input[type="submit"]:disabled {
     gap: 4px;
 
     /* 🏎️ Animação Física Suave */
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     opacity: 0;
-    transform: translateY(-20px) scale(0.98); 
+    transform: translateY(-10px) scale(1); 
     pointer-events: none;
 }
 
@@ -2443,7 +919,6 @@ input[type="submit"]:disabled {
     pointer-events: auto;
 }
 
-/* 🔘 BOTÕES DO MENU (ITENS DE NAVEGAÇÃO) */
 .SubmenuFlutuante-Estilizado button {
     font-size: 14px;
     font-weight: 600;
@@ -2464,14 +939,12 @@ input[type="submit"]:disabled {
     transition: all 0.2s ease;
 }
 
-/* ✨ HOVER NOS BOTÕES */
 .SubmenuFlutuante-Estilizado button:hover {
     color: #306396; 
     background: #f1f4f8; 
     transform: translateX(4px); 
 }
 
-/* 🚪 BOTÃO SAIR (COM DESTAQUE DE ALERTA) */
 .SubmenuFlutuante-Estilizado .Botao-Acao-Sair {
     font-size: 18px;
     color: rgb(0, 0, 0); 
@@ -2488,7 +961,6 @@ input[type="submit"]:disabled {
     transform: none; 
 }
 
-/* 🧱 CABEÇALHO DO MENU (NOME E CPF) */
 .Header-Menu-Perfil {
     /* padding: 10px 15px; */
     display: flex;
@@ -2510,7 +982,6 @@ input[type="submit"]:disabled {
     margin-top: 2px;
 }
 
-/* 🏷️ TAG DE FUNÇÃO (BADGE) */
 .Header-Funcao {
     display: flex;
     align-items: baseline;
@@ -2580,1286 +1051,121 @@ input[type="submit"]:disabled {
     text-align: center; 
 }
 
+/* --------------------------------------- */
+/* FIM - 📋 SUB MENU - DADOS DO USUARIO */
+/* --------------------------------------- */
 
 
 
 
 
 
+/* ------------------------------------------------------- */
+/* INICIO - AREA PARA VISITANTES - ENTRAR OU CADASTRAR */
+/* ------------------------------------------------------- */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 📐 PADRÃO DE LOGS: menu-sidebar-programador.css */
-
-.menu-sidebar-programador-container {
+.submenu-container-visitante {
     position: relative;
-    width: 100%; 
-    background: #ffffff; 
-    border-radius: 16px; 
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-    border: 1px solid rgba(0,0,0,0.06); 
-    padding: 15px; 
-    margin-bottom: 20px;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: flex-end; 
+    gap: 5px; 
+   
 }
-
-.menu-sidebar-programador-header {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 5px;
-}
-
-.menu-sidebar-programador-funcao {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 15px; /* Equalizando com o padding do botão */
-    border-bottom: 2px solid #306396;
-}
-
-.menu-sidebar-programador-titulo {
-    font-size: 16px;
-    font-weight: 700;
-    color: #2c3e50;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.menu-sidebar-programador-badge {
-    font-size: 10px;
-    text-transform: uppercase;
-    background: #306396; 
-    color: #ffffff;     
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-weight: 800;
-}
-
-.menu-sidebar-programador-lista-botoes {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 10px;
-}
-
-.menu-sidebar-programador-btn-item {
-    font-size: 14px;
-    font-weight: 600;
-    color: #57606f;
-    background: #f8f9fa;
-    border: none;
-    border-bottom: 1px solid #e0e0e0; /* Adicionando a linha para alinhar com o título */
-    padding: 12px 15px;
-    text-align: left;
-    cursor: pointer;
-    width: 100%;
-    border-radius: 0; /* Removendo arredondamento para o estilo linear */
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    transition: all 0.2s ease;
-}
-
-/* ✨ HOVER EXCLUSIVO */
-.menu-sidebar-programador-btn-item:hover {
-    color: #ffffff; 
-    background: #306396; 
-    transform: translateX(5px); 
-    box-shadow: 4px 4px 12px rgba(48, 99, 150, 0.15);
-}
-
-.menu-sidebar-programador-icon {
-    font-size: 1.1rem;
-    filter: grayscale(1);
-}
-
-.menu-sidebar-programador-btn-item:hover .menu-sidebar-programador-icon {
-    filter: grayscale(0);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ➖ DIVISOR SUTIL */
-.Divisor-Menu {
-    height: 3px;
-    background: #f1f2f6; /* Cinza muito claro */
-    margin: 2px 10px;
-}
-
-
-.Divisor-Botao {
-    height: 3px;
-    background: #bebebe; /* Cinza muito claro */
-    margin: 6px 10px;
-}
-
-
-/* 🧱 CORTINA TRANSPARENTE PARA FECHAR AO CLICAR FORA */
-.Cortina-Fechar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 999;
-}
-
-
-
-
-
 
 .Botao-Acao-Visitante-Perfil {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
-    /* display: flex; */
     align-items: center;
-    /* gap: 10px; */
-    padding: 10px 0px;
-    /* border: 1px solid #e0e0e0; */
+    padding: 10px 10px;
     border-radius: 15px;
     cursor: pointer;
-    /* min-width: max-content; */
-    /* position: relative; */
     z-index: 1001;
-    width: 130px;
+    white-space: nowrap;
+
+    background-color: var(--cor-padraoFundoBotao);
+    color: var(--cor-padraoTextoBotao);
+
 }
-
-
 
 .Botao-Acao-Visitante-Perfil:hover {
-   background-color: #aaa6a6;
-   color: white;
+
+   background-color: var(--cor-padraoFundoBotaoHover);
+   color: var(--cor-padraoTextoBotaoHover);
+
 }
 
+/* ------------------------------------------------------- */
+/* FIM - AREA PARA VISITANTES - ENTRAR OU CADASTRAR */
+/* ------------------------------------------------------- */
 
 
 
 
-.Botao-Acao-Meu-Perfil {
-    font-size: 18px;
-    font-weight: 800;
-    /* font-weight: bold; */
-    display: flex;
-    align-items: center;
-    gap: 10px;
+
+
+
+
+
+/* =====================================*/
+/* FIM - RELACIONADOS DO MENU PERFIL */
+/* =====================================*/
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- CONFIGURAÇÃO PADRÃO (DESKTOP / COMPUTADOR) --- */
+
+/* Esconde a versão mobile por padrão no PC */
+/* .exibir-apenas-mobile {
+    display: none !important;
+} */
+
+/* Mostra a versão desktop no PC */
+/* .exibir-apenas-desktop {
+    display: block; 
+} */
+
+
+/* --- CONFIGURAÇÃO PARA CELULAR (MOBILE) --- */
+
+@media (max-width: 768px) {
     
-    /* Reset de estilos antigos */
-    /* padding: 6px 10px; */
-
-    padding-right: 14px;
-    padding-left: 6px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-
-    border: none;
-    background: rgb(160, 159, 159);
-    color: rgb(7, 7, 7); /* Texto Branco */
-    
-    cursor: pointer;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    position: relative; /* Para o z-index e dropdown */
-    z-index: 1001;
-}
-
-
-.Botao-Acao-Meu-Perfil:hover,
-.Botao-Acao-Meu-Perfil.Ativo {
-    background-color: rgba(90, 86, 86);
-    color: white;
-}
-
-
-.Botao-Acao-Meu-Perfil span {
-    white-space: nowrap;
-    display: block;
-    letter-spacing: 0.5px;
-}
-
-.Avatar-Circulo {
-    flex-shrink: 0;
-    width: 32px;
-    height: 30px;
-    
-    /* 🎨 Cores Invertidas para destaque */
-    background: white; 
-    color: #306396;
-    
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 16px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    border: 2px solid rgba(255, 255, 255, 0.5);
-}
-
-.Seta-Drop {
-    font-size: 20px;
-    opacity: 0.8;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    /* margin-left: 2px; */
-}
-
-.Seta-Drop.Aberta {
-    transform: rotate(180deg);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 🖥️ MONITORAMENTO PARA ESTUDOS */
-
-.monitoramento-temporario {
-    background: #5d6d7e;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-    font-size: 12px;
-    color: #ecf0f1;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.monitoramento-temporario strong {
-    color: #00e676;
-}
-
-
-
-
-.monitoramento-temporario-conexoes {
-    text-align: center;
-    justify-content: center;
-    width: 100%;
-    background: #2c3e50;
-    font-size: 12px;
-    color: #bdc3c7;
-    padding-top: 2px;
-    padding-bottom: 2px;
-   
-}
-.monitoramento-temporario-conexoes div{
-    display: inline-block;
-    margin-left: 15px;
-    margin-right: 15px;
-}
-
-
-
-.info-gaveta {
-    /* display: block;
-    margin: 0; */
-    margin-top: 70px;
-    color: white;
-    background-color: darkslategrey;
-    text-align: center;
-    font-size: 10px;
-    padding-top: 4px;
-    padding-bottom: 2px;
-    /* width: 100vw; */
-
-  }
-  .info-gaveta div{
-    font-weight: bold;
-    margin-left: 5px;
-    margin-right: 5px;
-    display: inline-block;
-  }
-  .info-gaveta div p{
-    font-size: 12px;
-    color: #61dafb;
-    font-weight: bold;
-  }
-  .info-gaveta strong{
-    color: #ffcc00;
-  }
-  
-  /* 🖥️ FIM DO - MONITORAMENTO PARA ESTUDOS */
-
-/* 🧱 AJUSTE DE ANIMAÇÃO: Card Informativo (Apenas aparecer, sem deslizar) */
-.Card-Status-Informativo {
-    animation: fadeInSecoStatus 0.6s ease-out !important;
-    transform: none !important;
-}
-
-@keyframes fadeInSecoStatus {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-
-
-
-
-
-
-/* 📱 MEDIA QUERY: Ativa o hambúrguer no celular */
-@media (max-width: 910px) {
-
-    .header-Logo{
-        display: none;
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ------------------------------------------------------ */
-/* 🧱 ESTRUTURA INTERNA DA SIDEBAR (Títulos e Botões)     */
-/* ------------------------------------------------------ */
-
-/* Título das Seções (ex: PACIENTE) */
-.titulo-setor-sidebar {
-    font-size: 12px;
-    text-transform: uppercase;
-    color: #05182c; 
-    margin: 5px 0px 8px 0px; /* Removendo margem lateral */
-    padding: 0 15px 8px 15px; /* Usando padding para o texto e mantendo a borda 100% */
-    font-weight: 800;
-    letter-spacing: 0.8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border-bottom: 1px solid #547299; /* Borda sutil e profissional */
-    border-radius: 0; 
-}
-
-/* Container da Lista de Botões */
-.lista-botoes-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 2px; /* Espaço mínimo para não ficar grudado */
-    width: 100%;
-    padding-bottom: 20px;
-}
-
-/* Botões da Sidebar */
-.lista-botoes-vertical button {
-    width: 100%; /* Agora ocupa 100% para a borda alinhar com o título */
-    text-align: left;
-    padding: 10px 20px; /* Altura confortável */
-
-
-    /* Reset visual */
-    background: transparent;
-    border: none;
-    border-top: none !important; /* Garante override de estilos antigos */
-    border-bottom: 1px solid #547299 !important;
-    
-    color: #4a5568; /* Cinza escuro profissional */
-    font-weight: 600;
-    font-size: 14px;
-    
-    /* Design System: Aba lateral */
-    border-radius: 0; 
-    
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Garante alinhamento à esquerda */
-}
-
-/* Hover Suave */
-.lista-botoes-vertical button:hover:not(.BotaoBloqueado) {
-    background-color: #e6f7ff; /* Azul bem claro */
-    color: #0077cc; /* Azul link */
-    padding-left: 25px; /* Movimento de feedback */
-}
-
-/* Tratamento para Botões Bloqueados (🔒) dentro da lista */
-.lista-botoes-vertical button.BotaoBloqueado {
-    opacity: 0.5;
-    background: transparent !important;
-    color: #a0aec0 !important;
-    cursor: not-allowed;
-}
-
-
-
-
-
-
-
-
-
-
-
-/* 📐 📐 📐 LOGS DE ESTILO: SidebarCuidadora.css */
-
-.menu-sidebar-cuidadora-container {
-    position: relative;
-    width: 100%; 
-    background: #ffffff; 
-    background-color: rgb(212, 175, 55) !important; 
-    border-radius: 20px; 
-    box-shadow: 0 8px 30px rgba(142, 68, 173, 0.08); /* Sombra levemente roxa */
-    border: 1px solid rgba(142, 68, 173, 0.1); 
-    padding: 20px; 
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition: all 0.3s ease;
-}
-
-.menu-sidebar-cuidadora-header {
-    border-bottom: 2px solid #8e44ad; /* Cor Roxa Operacional */
-    padding-bottom: 12px;
-    margin-bottom: 8px;
-}
-
-.menu-sidebar-cuidadora-funcao {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.menu-sidebar-cuidadora-titulo {
-    font-size: 15px;
-    font-weight: 800;
-    color: #2c3e50;
-    text-transform: uppercase;
-}
-
-.menu-sidebar-cuidadora-badge {
-    font-size: 10px;
-    background: #8e44ad;
-    color: #ffffff;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-weight: 900;
-}
-
-.menu-sidebar-cuidadora-lista-botoes {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.menu-sidebar-cuidadora-btn-item {
-    font-size: 14px;
-    font-weight: 600;
-    color: #4b5563;
-    background: #f9fafb;
-    border: 1px solid #f3f4f6;
-    padding: 14px 16px;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ✨ HOVER EXCLUSIVO CUIDADORA */
-.menu-sidebar-cuidadora-btn-item:hover {
-    background: #8e44ad;
-    color: #ffffff;
-    transform: translateX(6px);
-    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.25);
-}
-
-/* 🚨 BOTÃO DE SUPORTE COM DESTAQUE */
-.menu-sidebar-cuidadora-btn-alerta:hover {
-    background: #e74c3c !important;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3) !important;
-}
-
-.menu-sidebar-cuidadora-icon {
-    font-size: 1.2rem;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 💻 AJUSTE PC: LAYOUT SIDEBAR QUANDO LOGADO (UNIFICADO) */
-
-@media (min-width: 768px) {
-    
-   
-
-
-
-
-
-
-
-
-
-
-
-/* 1. Transforma o Menu Flutuante em Sidebar Fixa à Esquerda */
-.container-externo-blindado:not([data-func="visitante"]) .submenu-tudo-gerenciar-prof {
-    display: flex !important;
-    flex-direction: column;
-    
-    position: fixed !important;
-    top: 70px !important;      
-    left: 0 !important;         
-    bottom: 0 !important;       
-    
-    width: 200px !important;    
-    height: calc(100vh - 70px) !important;
-    
-    opacity: 1 !important;     
-    transform: none !important; 
-    pointer-events: auto !important;
-    
-    border-radius: 0 !important; 
-    border-right: 1px solid #e0e0e0;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
-    background-color: #f8f9fa !important;
-    
-    overflow-y: auto; 
-    padding-top: 20px;
-}
-
-
-
-
-
-
-
-/* 1. Transforma o Menu Flutuante em Sidebar Fixa à Esquerda */
-.container-externo-blindado:not([data-func="visitante"]) .submenu-tudo-gerenciar-prof {
-    display: flex !important;
-    flex-direction: column;
-    
-    position: fixed !important;
-    top: 70px !important;      
-    left: 0 !important;         
-    bottom: 0 !important;       
-    
-    width: 200px !important;    
-    height: calc(100vh - 70px) !important;
-    
-    opacity: 1 !important;     
-    transform: none !important; 
-    pointer-events: auto !important;
-    
-    border-radius: 0 !important; 
-    border-right: 1px solid #e0e0e0;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
-    background-color: #f8f9fa !important;
-    
-    overflow-y: auto; 
-    padding-top: 20px;
-}
-
-
-
-
-
-
-
-
-/* 1. Transforma o Menu Flutuante em Sidebar Fixa à Esquerda */
-.container-externo-blindado:not([data-func="visitante"]) .menu-sidebar-programador {
-    display: flex !important;
-    flex-direction: column;
-    
-    position: fixed !important;
-    top: 70px !important;      
-    left: 0 !important;         
-    bottom: 0 !important;       
-    
-    width: 200px !important;    
-    height: calc(100vh - 70px) !important;
-    
-    opacity: 1 !important;     
-    transform: none !important; 
-    pointer-events: auto !important;
-    
-    border-radius: 0 !important; 
-    border-right: 1px solid #e0e0e0;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
-    background-color: #f8f9fa !important;
-    
-    overflow-y: auto; 
-    padding-top: 20px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.container-externo-blindado:not([data-func="visitante"]) .menu-sidebar-programador-container {
-    display: flex !important;
-    flex-direction: column;
-    
-    position: fixed !important;
-    top: 70px !important;      
-    left: 0 !important;         
-    bottom: 0 !important;       
-    
-    width: 200px !important;    
-    height: calc(100vh - 70px) !important;
-    
-    opacity: 1 !important;     
-    transform: none !important; 
-    pointer-events: auto !important;
-    
-    border-radius: 0 !important; 
-    border-right: 1px solid #e0e0e0;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
-    background-color: #f8f9fa !important;
-    
-    overflow-y: auto; 
-    padding-top: 20px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.container-externo-blindado:not([data-func="visitante"]) .menu-sidebar-cuidadora-container {
-    display: flex !important;
-    flex-direction: column;
-    
-    position: fixed !important;
-    top: 70px !important;      
-    left: 0 !important;         
-    bottom: 0 !important;       
-    
-    width: 250px !important;    
-    height: calc(100vh - 70px) !important;
-    
-    opacity: 1 !important;     
-    transform: none !important; 
-    pointer-events: auto !important;
-    
-    border-radius: 0 !important; 
-    border-right: 1px solid #e0e0e0;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
-    /* background-color: #f8f9fa !important; */
-    background-color: rgb(212, 175, 55) !important; 
-    
-    overflow-y: auto; 
-    padding-top: 20px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    .container-externo-blindado:not([data-func="visitante"]) .SubmenuFlutuante-Estilizado button{
-        padding: 10px 15px;
-    }
-
-    /* 2. Empurra o Conteúdo Principal (componente-de-pagina) para a Direita */
-    .container-externo-blindado:not([data-func="visitante"]) .main-area-principal {
-        padding-left: 250px; 
-        width: 100%;
-        box-sizing: border-box;
-        transition: padding-left 0.3s ease;
-    }
-
-
-
-    /* ✅ Forma correta e blindada */
-    .container-externo-blindado[data-func="programador"] .main-area-principal {
-        padding-left: 200px; 
-        width: 100%;
-        box-sizing: border-box;
-        transition: padding-left 0.3s ease;
-    }
-
-    .container-externo-blindado[data-func="administrador"] .main-area-principal {
-        padding-left: 200px; 
-        width: 100%;
-        box-sizing: border-box;
-        transition: padding-left 0.3s ease;
-    }
-
-
-
-    /* 3. Esconde o Botão de Perfil (Pois o menu já está fixo na tela) */
-    /* .container-externo-blindado:not([data-func="visitante"]) .Botao-Acao-Meu-Perfil {
+    /* Agora invertemos: Esconde a versão do Desktop */
+    /* .exibir-apenas-desktop {
         display: none !important;
     } */
 
-
-    .dados-pessoais button {
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-        font-size: 14px !important;
-    }
+    /* E mostra a versão que você colocou no Header (Mobile) */
+    /* .exibir-apenas-mobile {
+        display: block !important; 
+    } */
 
 
 
-
-
-
-
-
-
-    /* 🧱 CABEÇALHO DO MENU (NOME E CPF) */
-    .Header-Menu-Perfil {
-    
-        margin-bottom: 5px;
-    }
-
-    .Header-Menu-Perfil strong {
-        font-size: 12px;
-    }
-
-    .Header-Menu-Perfil span {
-        font-size: 12px;
-    
-    }
-
-    /* 🏷️ TAG DE FUNÇÃO (BADGE) */
-    .Header-Funcao {
-    
-        padding-top: 10px;
-        padding-bottom: 10px;
-
-        margin-bottom: 5px;
-
-    }
-
-    .Header-Funcao span {
-        font-size: 12px;
-    
-    }
-
-    .Header-Funcao strong {
-        font-size: 10px;
-    
-    }
-
-
-
-
-
-   
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 📱 MEDIA QUERY: Ativa o hambúrguer no celular */
-@media (max-width: 768px) {
-
-
-
-
-
-
-    .submenu-container-geral.menu-mobile-ativo {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        position: absolute; 
-        top: 60px;
-        left: 18px;
-        z-index: 999;
-       
-    }
-
-    .submenu-container-geral.menu-mobile-ativo button {
-       
-        font-size: 18px;
-        /* width: 160px; */
-        /* padding-top: 15px;
-        padding-bottom: 15px; */
+    /* .componente-de-pagina {
+        margin: auto;
         width: 100%;
-        
-    } 
+    } */
 
 
 
 
+    /* .submenu-container-geral {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /* MENU - programador */
-
-    .submenu-container-geral.menu-mobile-ativo .Btn-geral-programador{
-        width: 130px;
-    }
-
-
-    .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-cadastrar{
-        left: 135px;
-        top: 55px;
-        width: 155px;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /* -------------------------------- */
-    /* INICIO - MENU - programador prof */
-    /* -------------------------------- */
-
-    /* Garante que o container do submenu não limite o posicionamento */
-    .submenu-tudo-cadastrar-prof {
-        position: relative; 
-        display: block; /* Ocupa a linha toda no menu hambúrguer */
-        width: 140px;
-        
-    }
-
-    /* 📦 Submenu Flutuante PROF - Ajustado para a DIREITA no Mobile */
-    .submenu-flutuante-cadastrar-prof {
         position: absolute;
-        top: 0;          
-        left: 135px;      
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        padding: 0;
-        z-index: 1001;   
-        border-radius: 8px;
-        background-color: transparent;
-        width: 120px;
-    }
 
-    .submenu-flutuante-cadastrar-prof button{
-        height: 45px;
-        font-size: 14px !important;
-    }
-
-    /* Ajuste para que a seta mude de direção se desejar (opcional) */
-    .Btn-geral-programador-prof[aria-expanded="true"] .icone-seta {
-        transform: rotate(-90deg); /* Aponta para o submenu na direita */
-        transition: transform 0.3s;
-    }
-
-    /* Previne que o brilho do hover cause scroll horizontal indesejado no mobile */
-    .Btn-geral-programador-prof {
-        overflow: hidden;
-        height: 45px;
-    }
-
-    .submenu-flutuante-cadastrar-prof {
-        top: 0;
-        left: 135px;
-        transform: translateX(-10px);
-    }
-    .submenu-flutuante-cadastrar-prof.aberto {
-        transform: translateX(0);
-    }
-    .submenu-flutuante-cadastrar-prof.fechado {
-        transform: translateX(-10px);
-    }
-
-    /* -------------------------------- */
-    /* FIM - MENU - programador prof */
-    /* -------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /* ----------------------------------- */
-    /* INICIO - MENU - ADMINISTRADOR PROF  */
-    /* ----------------------------------- */
-
-
-
-    /* 🚀 Botão Principal Administrador */
-    .Btn-geral-administrador-prof {
-        width: 130px !important;
-        height: 45px;
-    
-    }
-
-
-    .submenu-flutuante-gerenciar-prof {
-
-        top: -5px; 
-        left: 135px;
-        /* height: 45px; */
-        width: 120px;
-    }
-
-    .submenu-flutuante-gerenciar-prof button {
-        /* width: 150px; */
-        height: 45px;
-        font-size: 14px !important; 
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /* ----------------------------------- */
-    /* INICIO - MENU - CLIENTE PROF        */
-    /* ----------------------------------- */
-
-    /* 🚀 Botão Principal Cliente */
-    .Btn-geral-cliente-prof {
-        font-size: 16px !important; 
-        width: 130px !important;
-        height: 45px;
-    }
-
-
-
-    .submenu-flutuante-cliente-prof {
-
-        top: -5px; 
-        left: 135px;
-        /* height: 45px; */
-        width: 120px;
-    }
-
-
-    .submenu-flutuante-cliente-prof button {
-        /* width: 150px; */
-        height: 45px;
-        font-size: 16px !important; 
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /* MENU - visitante */
-
-    .submenu-container-geral.menu-mobile-ativo .Btn-geral-visitante {
-        width: 100px;
-        height: 45px;
-    }
-    .submenu-container-geral.menu-mobile-ativo .Lista-Publica {
-        font-size: 12px;
-    }
-
-
-
-
-
-
-
-
-
-    /* ----------------------------------- */
-    /* INICIO - MENU - CUIDADORA PROF      */
-    /* ----------------------------------- */
-
-    /* 🚀 Botão Principal Cuidadora */
-    .submenu-container-geral.menu-mobile-ativo .Btn-geral-cuidadora-prof {
-        width: 140px; 
-        height: 45px;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    /* -------------- */
-    /* MENU - cliente */
-    /* -------------- */
-    .submenu-container-geral.menu-mobile-ativo .Btn-geral-cliente {
-        width: 120px;
-        height: 45px;
-        font-size: 16px;
-    }
-
-    .submenu-container-geral.menu-mobile-ativo .Btn-geral-cliente-solicitacao {
-        font-size: 15px;
-    }
-
-    /* submenu - cliente - solicitacao*/
-    .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-solicitacao{
-        left: 125px;
-        width: 135px;
-        top: 110px; 
-    }
-    .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-solicitacao button{ 
-        width: 100px;
-        height: 45px;
-        font-size: 14px;
-    }
-
-    /* submenu - cliente - paciente */
-    .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-paciente{
-        left: 125px;
-        width: 135px;
-        top: 165px; 
-    }
-    .submenu-container-geral.menu-mobile-ativo .submenu-flutuante-paciente button{ 
-        width: 110px;
-        height: 45px;
-        font-size: 14px;
-    }
-
+        top: 50px;
+    } */
     
 
 
@@ -3867,147 +1173,8 @@ input[type="submit"]:disabled {
 
 
 
-    .submenu-container-geral.menu-mobile-ativo .Btn-geral-cliente-apresentacao{
-        font-size: 14px;
-    }
-    
-
-
-
 
 
 
     
-
-
-    .submenu-container-geral {
-        display: none;
-    }
-
-
-    .MenuHamburgerTudo {
-        display: block;
-    }
-
-
-
-
-    /* 📐 PADRÃO DE LOGS: menu-sidebar-administrador.css */
-
-    .menu-sidebar-administrador-container {
-        position: relative;
-        width: 100%; 
-        background: #ffffff; 
-        border-radius: 16px; 
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-        border: 1px solid rgba(0,0,0,0.06); 
-        padding: 15px; 
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-
-    .menu-sidebar-administrador-header {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 5px;
-    }
-
-    .menu-sidebar-administrador-funcao {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 5px;
-        border-bottom: 2px solid #306396;
-    }
-
-    .menu-sidebar-administrador-titulo {
-        font-size: 16px;
-        font-weight: 700;
-        color: #2c3e50;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .menu-sidebar-administrador-badge {
-        font-size: 10px;
-        text-transform: uppercase;
-        background: #306396; 
-        color: #ffffff;     
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-weight: 800;
-    }
-
-    .menu-sidebar-administrador-lista-botoes {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        margin-top: 10px;
-    }
-
-    .menu-sidebar-administrador-btn-item {
-        font-size: 14px;
-        font-weight: 600;
-        color: #57606f;
-        background: #f8f9fa;
-        border: 1px solid transparent;
-        padding: 12px 15px;
-        text-align: left;
-        cursor: pointer;
-        width: 100%;
-        border-radius: 10px; 
-        display: flex;
-        align-items: center;
-        justify-content: space-between; 
-        transition: all 0.2s ease;
-    }
-
-    /* ✨ HOVER EXCLUSIVO */
-    .menu-sidebar-administrador-btn-item:hover {
-        color: #ffffff; 
-        background: #306396; 
-        transform: translateX(5px); 
-        box-shadow: 4px 4px 12px rgba(48, 99, 150, 0.15);
-    }
-
-    .menu-sidebar-administrador-icon {
-        font-size: 1.1rem;
-        filter: grayscale(1);
-    }
-
-    .menu-sidebar-administrador-btn-item:hover .menu-sidebar-administrador-icon {
-        filter: grayscale(0);
-    }
-
-    /* 💻 AJUSTE PC: SIDEBAR ADMINISTRADOR */
-    @media (min-width: 768px) {
-        .container-externo-blindado:not([data-func="visitante"]) .menu-sidebar-administrador-container {
-            display: flex !important;
-            flex-direction: column;
-            position: fixed !important;
-            top: 70px !important;      
-            left: 0 !important;         
-            bottom: 0 !important;       
-            width: 200px !important;    
-            height: calc(100vh - 70px) !important;
-            opacity: 1 !important;     
-            transform: none !important; 
-            pointer-events: auto !important;
-            border-radius: 0 !important; 
-            border-right: 1px solid #e0e0e0;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05) !important;
-            background-color: #f8f9fa !important;
-            overflow-y: auto; 
-            padding-top: 20px;
-        }
-    }
-
-
-
-
-
-
 }

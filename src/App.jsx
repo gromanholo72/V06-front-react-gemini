@@ -7,7 +7,6 @@ import { useAuth } from './AutenticacaoContexto';
 
 
 import './App.css';
-// import './Logado.css'; // 🧱 Importando o CSS do layout diretamente
 
 
 // 🧱 Os Cômodos (Componentes)
@@ -81,9 +80,24 @@ import { Chat } from './Chat';
 
 // import { BalaoDica } from './componentes/BalaoDica';
 
-import {BalaoDicaMenuHamburguer} from './componentes/BalaoDicaMenuHamburguer';
+
 import {BalaoDicaCriarConta} from './componentes/BalaoDicaCriarConta.jsx';
 import {BalaoDicaEntrar} from './componentes/BalaoDicaEntrar.jsx';
+
+
+
+import {FiguraMenuHamburguer} from './FiguraMenuHamburguer';
+
+
+
+
+import {MenuSideBarCuidadora} from './MenuSideBarCuidadora.jsx';
+
+
+
+import { MenuHorizontalVisitante } from './MenuHorizontalVisitante.jsx';
+import { MenuHorizontalCuidadora } from './MenuHorizontalCuidadora';
+
 
 
 
@@ -137,7 +151,48 @@ export default function App() {
 
 
 
+
+
+
+    // -----------------------------------
+    // VERIFICA SE É COMPUTADOR OU CELULAR
+    // -----------------------------------
+
+    const [ehComputador, setEhComputador] = useState(window.innerWidth > 768);
+
+    useEffect(() => {
+
+        const checarTamanho = () => {
+
+            const larguraAtual = window.innerWidth;
+            const veredictEhComputador = larguraAtual > 768; // Se for maior que 768, é computador
+            
+            setEhComputador(veredictEhComputador);
+
+            console.log("");
+            console.log("🔍 -----------------------------------------------------------");
+            console.log("🔍 INSPEÇÃO DE DISPOSITIVO (Responsividade)");
+            console.log("🔍 Largura da Janela :", larguraAtual + "px");
+            console.log("🔍 Modo Computador   :", veredictEhComputador ? "✅ SIM (Desktop)" : "❌ NÃO (Mobile)");
+            console.log("🔍 -----------------------------------------------------------");
+        };
+
+        checarTamanho();
+
+        window.addEventListener('resize', checarTamanho);
+        return () => window.removeEventListener('resize', checarTamanho);
+        
+    }, []);
+
+    // -----------------------------------
+    // VERIFICA SE É COMPUTADOR OU CELULAR
+    // -----------------------------------
   
+
+
+
+
+
 
 
 
@@ -492,6 +547,9 @@ export default function App() {
         setMenuAberto(false);
         setSecaoAberta(null);
 
+        // 🚀 AJUSTE MAESTRO: Força o scroll para o topo imediatamente no clique
+        // window.scrollTo(0, 0);
+
         // 🧱 3. Navegação Imediata
         if (rota) {
             navigate(rota);
@@ -599,9 +657,9 @@ export default function App() {
 
 
 
-    // -------------------------------------------------------------
-    /* INICIO - 🛠️ VIGILÂNCIA DE PREENCHIMENTO DOS CARDS - CLIENTE */
-    // -------------------------------------------------------------
+    /* --------------------------------------------------------------------------------------- */
+    /* INICIO - 🛠️ VIGILÂNCIA DE PREENCHIMENTO DOS CARDS DOS USUSARIOS E VERIFICAR PERMISSOES  */
+    /* --------------------------------------------------------------------------------------- */
 
     const [statusAdministrador, setStatusAdministrador] = useState({
         contato: false,
@@ -629,7 +687,6 @@ export default function App() {
 
     // 📐 ESTADO MAESTRO: Autorização Global da Cuidadora
     const [autorizadoAdministrador, setAutorizadoAdministrador] = useState(false);
-
 
     /* 🔍 Monitor de Status Cuidadora */
     useEffect(() => {
@@ -821,13 +878,7 @@ export default function App() {
 
     }, [perfilEstaCompletoAdministrador, perfilEstaCompletoCuidadora, perfilEstaCompletoCliente]);
 
-
-
-
-    /* ---------------------------------------------------------------------------------- */
     /* INICIO - 🔍 VERIFICANDO NO BANCO DE DADOS SE O PERDIL DA CUIDADORA ESTA COMPLETO) */
-    /* ---------------------------------------------------------------------------------- */
-
     useEffect(() => {
     
         if (dadosToken?.func !== 'cuidadora') return;
@@ -845,17 +896,17 @@ export default function App() {
                 const snapshot = await get(cadastroRef);
                 const dadosAtuais = snapshot.val() || {};
 
-                console.log("");
-                console.log("📐 🔍 -----------------------------------------------------------");
-                console.log("📐 🔍 App.jsx: Verificacao para o Perfil Cuidadora");
-                console.log("📐 🔍 cpfLimpo  :", cpfLimpo );
-                console.log("📐 🔍 perfilEstaCompletoCuidadora  :", perfilEstaCompletoCuidadora );
+                // console.log("");
+                // console.log("📐 🔍 -----------------------------------------------------------");
+                // console.log("📐 🔍 App.jsx: Verificacao para o Perfil Cuidadora");
+                // console.log("📐 🔍 cpfLimpo  :", cpfLimpo );
+                // console.log("📐 🔍 perfilEstaCompletoCuidadora  :", perfilEstaCompletoCuidadora );
                 
-                console.log("📐 🔍 Dados atuais do Banco de dados - dadosAtuais:");
-                console.log(dadosAtuais);
-                console.log("📐 🔍 perfilCompleto:", dadosAtuais.perfilCompleto);
-                console.log("📐 🔍 perfilCompletoData:", dadosAtuais.perfilCompletoData);
-                console.log("📐 🔍 -----------------------------");
+                // console.log("📐 🔍 Dados atuais do Banco de dados - dadosAtuais:");
+                // console.log(dadosAtuais);
+                // console.log("📐 🔍 perfilCompleto:", dadosAtuais.perfilCompleto);
+                // console.log("📐 🔍 perfilCompletoData:", dadosAtuais.perfilCompletoData);
+                // console.log("📐 🔍 -----------------------------");
 
                 if (perfilEstaCompletoCuidadora && dadosAtuais.perfilCompleto !== true) {
 
@@ -866,11 +917,11 @@ export default function App() {
                         perfilCompletoData: dataHoje
                     });
 
-                    console.log("");
-                    console.log("📐 🔍 ✔️ -----------------------------");
-                    console.log("📐 🔍 ✔️ perfilCompleto:", true); 
-                    console.log("📐 🔍 ✔️ perfilCompletoData:", dataHoje); 
-                    console.log("📐 🔍 ✔️ -----------------------------");
+                    // console.log("");
+                    // console.log("📐 🔍 ✔️ -----------------------------");
+                    // console.log("📐 🔍 ✔️ perfilCompleto:", true); 
+                    // console.log("📐 🔍 ✔️ perfilCompletoData:", dataHoje); 
+                    // console.log("📐 🔍 ✔️ -----------------------------");
 
                 } 
 
@@ -881,11 +932,11 @@ export default function App() {
                         perfilCompletoData: ""
                     });
 
-                    console.log("");
-                    console.log("📐 🔍 ❌ -----------------------------");
-                    console.log("📐 🔍 ❌ perfilCompleto:", false);
-                    console.log("📐 🔍 ❌ perfilCompletoData:", ""); 
-                    console.log("📐 🔍 ❌ -----------------------------");
+                    // console.log("");
+                    // console.log("📐 🔍 ❌ -----------------------------");
+                    // console.log("📐 🔍 ❌ perfilCompleto:", false);
+                    // console.log("📐 🔍 ❌ perfilCompletoData:", ""); 
+                    // console.log("📐 🔍 ❌ -----------------------------");
 
                 } else {
 
@@ -905,17 +956,7 @@ export default function App() {
 
     }, [perfilEstaCompletoCuidadora, dadosToken?.func]);
 
-    /* ---------------------------------------------------------------------------------- */
-    /* FIM - 🔍 VERIFICANDO NO BANCO DE DADOS SE O PERDIL DA CUIDADORA ESTA COMPLETO) */
-    /* ---------------------------------------------------------------------------------- */
-
-
-
-
-    /* ---------------------------------------------------------------------------------- */
     /* INICIO - 🔍 VERIFICANDO NO BANCO DE DADOS SE O PERDIL DO CLIENTE ESTA COMPLETO) */
-    /* ---------------------------------------------------------------------------------- */
-
     useEffect(() => {
        
         if (dadosToken?.func !== 'cliente') return;
@@ -931,17 +972,17 @@ export default function App() {
                 const snapshot = await get(cadastroRef);
                 const dadosAtuais = snapshot.val() || {};
 
-                console.log("");
-                console.log("📐 🔍 -----------------------------------------------------------");
-                console.log("📐 🔍 App.jsx: Verificacao para o Perfil Cliente");
-                console.log("📐 🔍 cpfLimpo  :", cpfLimpo );
-                console.log("📐 🔍 perfilEstaCompletoCliente  :", perfilEstaCompletoCliente );
+                // console.log("");
+                // console.log("📐 🔍 -----------------------------------------------------------");
+                // console.log("📐 🔍 App.jsx: Verificacao para o Perfil Cliente");
+                // console.log("📐 🔍 cpfLimpo  :", cpfLimpo );
+                // console.log("📐 🔍 perfilEstaCompletoCliente  :", perfilEstaCompletoCliente );
                 
-                console.log("📐 🔍 Dados atuais do Banco de dados - dadosAtuais:");
-                console.log(dadosAtuais);
-                console.log("📐 🔍 perfilCompleto:", dadosAtuais.perfilCompleto);
-                console.log("📐 🔍 perfilCompletoData:", dadosAtuais.perfilCompletoData);
-                console.log("📐 🔍 -----------------------------");
+                // console.log("📐 🔍 Dados atuais do Banco de dados - dadosAtuais:");
+                // console.log(dadosAtuais);
+                // console.log("📐 🔍 perfilCompleto:", dadosAtuais.perfilCompleto);
+                // console.log("📐 🔍 perfilCompletoData:", dadosAtuais.perfilCompletoData);
+                // console.log("📐 🔍 -----------------------------");
 
                 if (perfilEstaCompletoCliente && dadosAtuais.perfilCompleto !== true) {
 
@@ -952,11 +993,11 @@ export default function App() {
                         perfilCompletoData: dataHoje
                     });
 
-                    console.log("");
-                    console.log("📐 🔍 ✔️ -----------------------------");
-                    console.log("📐 🔍 ✔️ perfilCompleto:", true); 
-                    console.log("📐 🔍 ✔️ perfilCompletoData:", dataHoje); 
-                    console.log("📐 🔍 ✔️ -----------------------------");
+                    // console.log("");
+                    // console.log("📐 🔍 ✔️ -----------------------------");
+                    // console.log("📐 🔍 ✔️ perfilCompleto:", true); 
+                    // console.log("📐 🔍 ✔️ perfilCompletoData:", dataHoje); 
+                    // console.log("📐 🔍 ✔️ -----------------------------");
 
                 } 
 
@@ -967,11 +1008,11 @@ export default function App() {
                         perfilCompletoData: ""
                     });
 
-                    console.log("");
-                    console.log("📐 🔍 ❌ -----------------------------");
-                    console.log("📐 🔍 ❌ perfilCompleto:", false);
-                    console.log("📐 🔍 ❌ perfilCompletoData:", ""); 
-                    console.log("📐 🔍 ❌ -----------------------------");
+                    // console.log("");
+                    // console.log("📐 🔍 ❌ -----------------------------");
+                    // console.log("📐 🔍 ❌ perfilCompleto:", false);
+                    // console.log("📐 🔍 ❌ perfilCompletoData:", ""); 
+                    // console.log("📐 🔍 ❌ -----------------------------");
 
                 } else {
 
@@ -991,19 +1032,7 @@ export default function App() {
 
     }, [perfilEstaCompletoCliente, dadosToken?.func]);
 
-    /* ---------------------------------------------------------------------------------- */
-    /* FIM - 🔍 VERIFICANDO NO BANCO DE DADOS SE O PERDIL DO CLIENTE ESTA COMPLETO) */
-    /* ---------------------------------------------------------------------------------- */
-
-
-
-
-
-    /* ------------------------------------------------------------- */
-    /* INICIO - 🔍 VERIFICANDO NO BANCO DE DADOS SE EXISTE INFORMACAO) */
-    /* INICIO - 🔍 DE AURORIZACAO DO ADMINISTRADOR ) */
-    /* ------------------------------------------------------------- */
-
+    /* INICIO - 🔍 VERIFICANDO NO BANCO DE DADOS SE EXISTE INFORMACAO DE AURORIZACAO DO ADMINISTRADOR PARA OS USUARIOS  */
     useEffect(() => {
     
         if (dadosToken?.func !== 'cuidadora' && dadosToken?.func !== 'cliente') return;
@@ -1023,14 +1052,14 @@ export default function App() {
             // 🧱 Garante que 'dados' seja um objeto mesmo se o nó for null no Firebase
             const dados = snapshot.val() || {};
 
-            console.log("");
-            console.log("✨ 🛡️ --------------------------------------");
-            console.log("✨ 🛡️ App.jsx - useEffect: Autorização Admin");
-            console.log("✨ 🛡️ Cuidadora:", dadosToken?.nome?.toUpperCase());
-            console.log("✨ 🛡️ dadosToken?.cpef:", dadosToken?.cpef);
-            console.log("✨ 🛡️ dadosToken?.func:", dadosToken?.func);
-            console.log("✨ 🛡️ autorizadoAdministrador:", dados.autorizadoAdministrador || false);
-            console.log("✨ 🛡️ ---------------------------------------");
+            // console.log("");
+            // console.log("✨ 🛡️ --------------------------------------");
+            // console.log("✨ 🛡️ App.jsx - useEffect: Autorização Admin");
+            // console.log("✨ 🛡️ Cuidadora:", dadosToken?.nome?.toUpperCase());
+            // console.log("✨ 🛡️ dadosToken?.cpef:", dadosToken?.cpef);
+            // console.log("✨ 🛡️ dadosToken?.func:", dadosToken?.func);
+            // console.log("✨ 🛡️ autorizadoAdministrador:", dados.autorizadoAdministrador || false);
+            // console.log("✨ 🛡️ ---------------------------------------");
 
             setAutorizadoAdministrador(!!dados.autorizadoAdministrador);
 
@@ -1042,22 +1071,17 @@ export default function App() {
     
     useEffect(() => {
 
-        console.log("");
-        console.log("✨ 🛡️ -----------------------------------------------------------");
-        console.log("✨ 🛡️ App.jsx - useEffect PURO - autorizadoAdministrador");
-        console.log("✨ 🛡️ autorizadoAdministrador - Valor Atual:", autorizadoAdministrador);
-        console.log("✨ 🛡️ -----------------------------------------------------------");
+        // console.log("");
+        // console.log("✨ 🛡️ -----------------------------------------------------------");
+        // console.log("✨ 🛡️ App.jsx - useEffect PURO - autorizadoAdministrador");
+        // console.log("✨ 🛡️ autorizadoAdministrador - Valor Atual:", autorizadoAdministrador);
+        // console.log("✨ 🛡️ -----------------------------------------------------------");
 
     }, [autorizadoAdministrador]);
 
-    /* ------------------------------------------------------------- */
-    /* FIM - 🔍 VERIFICANDO NO BANCO DE DADOS SE EXISTE INFORMACAO) */
-    /* FIM - 🔍 DE AURORIZACAO DO ADMINISTRADOR ) */
-    /* ------------------------------------------------------------- */
-
-
-
-
+    /* --------------------------------------------------------------------------------------- */
+    /* FIM - 🛠️ VIGILÂNCIA DE PREENCHIMENTO DOS CARDS DOS USUSARIOS E VERIFICAR PERMISSOES  */
+    /* --------------------------------------------------------------------------------------- */
 
 
 
@@ -1073,11 +1097,11 @@ export default function App() {
 
 
 
-    // -------------------------------------------------------------
+    /* ------------------------------------------------------------- */
     /* INICIO DO - MODAL 🔥 FIREBASE */
-    // -------------------------------------------------------------
+    /* ------------------------------------------------------------- */
 
-    // SEMPRE MANTER ESSE COMO SENDO O ULTIMO ANTES DO RETURN
+    /* SEMPRE MANTER ESSE COMO SENDO O ULTIMO ANTES DO RETURN */
 
     if (carregandoPermissoesFireBase) {
         return (
@@ -1109,9 +1133,9 @@ export default function App() {
 
 
 
-    /*  ------------------------------------- */
-    /*  INICIO DO RETURN - Retorno da Central: */
-    /*  ------------------------------------- */
+    /*  ---------------- */
+    /*  INICIO DO RETURN */
+    /*  ---------------- */
 
     return (
 
@@ -1126,9 +1150,8 @@ export default function App() {
         <div className="container-externo-blindado" data-func={dadosToken?.func}>
 
 
-            {/* 🛡️ MONITORAMENTO DE PROTOCOLO - BARRA DE VARREDURA */}
             {carregandoModalRapido && (
-                <div className="camada-interceptacao-fluxo">
+                <div className="modal-camada-interceptacao-fluxo">
                     <div className="painel-comando-central">
                         <span className="rotulo-identificador-sistema">PROCESSANDO...</span>
                         <div className="trilho-varredura-binaria">
@@ -1139,7 +1162,7 @@ export default function App() {
             )}
 
 
-            {/*🧱 Se carregando for true, o modal trava a tela */}
+            
             {carregandoModal && (
                 <div className="modal-overlay-projeto">
                     <div className="card-loading-moderno">
@@ -1162,12 +1185,10 @@ export default function App() {
 
 
 
+            {/* -------------------------------------------------------------------- */}
+            {/* INICIO - HEADER - header-spacer - CABEÇALHO FIXO - TOPO - HORIZONTAL */}
+            {/* -------------------------------------------------------------------- */}
 
-
-
-
-
-            {/* 🏗️ VIGA MESTRA (Controle Superior) */}
             <header className="header-container">
 
 
@@ -1175,62 +1196,45 @@ export default function App() {
 
 
 
-                {/* 🖼️ NUCLEO-IDENTIDADE (Extrema Esquerda) */}
-                <div className="header-Logo" onClick={() => navigate('/')}>
+
+                {/* ------------------------------------------ */}
+                {/* INICIO - 🖼️ LOGOMARCA (Extrema Esquerda) */}
+                {/* ------------------------------------------ */}
+
+                <div className="div-Logo-header" onClick={() => navigate('/')}>
                     <img className="Imagem-Logotipo"  src="/imagens/LogoSVG6.png" alt="Logo" />
                 </div>
 
+                {/* ------------------------------------------ */}
+                {/* FIM - 🖼️ LOGOMARCA (Extrema Esquerda) */}
+                {/* ------------------------------------------ */}
 
 
 
 
 
-                {/* ---------------------------------- */}
+
+
+
+
+
+                {/* ------------------------------------------------------------ */}
                 {/* INICIO - 🍔 O Botão Hambúrguer assume o controle direto aqui */}
-                {/* ---------------------------------- */}
+                {/* ------------------------------------------------------------ */}
 
-                <button className={`btn-menu-base ${exibirBalaoDicaMenuHamburguer ? 'pulsar-ativo' : ''}`}
-
-                    onClick={() => {
-
-                        // 🍔 Verificamos se o menu já está aberto
-                        if (menuAberto) {
-
-                            // console.log("");
-                            // console.log("📐 ----------------------------------");
-                            // console.log("📐 🚀 EVENTO: Clique no botão 'Menu Hambúrguer'");
-                            // console.log("📐 🔵 Ação: FECHANDO menu (Toggle Off).");
-                            // console.log("📐 ----------------------------------");
-                            
-                            setMenuAberto(false); // Fecha o container principal
-                            setSecaoAberta(null); // Limpa qualquer submenu aberto
-
-                        } else {
-
-                            // console.log("");
-                            // console.log("📐 ----------------------------------");
-                            // console.log("📐 🚀 EVENTO: Clique no botão 'Menu Hambúrguer'");
-                            // console.log("📐 🟢 Ação: ABRINDO menu (Toggle On).");
-                            // console.log("📐 ----------------------------------");
-                            
-                            setMenuAberto(true);
-                            // Se você usa a função abrirSecao para logs extras, chame-a aqui:
-                            // abrirSecao('menu-aberto'); 
-                        }
-
-                    }}
-                >
-                    ☰
-                </button>
-
-                {/* 🎈 O Balão de Dica (Agora apenas o componente visual) */}
-                <BalaoDicaMenuHamburguer 
-                    exibirBalaoDicaMenuHamburguer={exibirBalaoDicaMenuHamburguer} 
-                />
-
-                {/* ---------------------------------- */}
+                {/* 📱 CASO 02: É CELULAR */}
+                {!ehComputador && (
+                    <FiguraMenuHamburguer 
+                        menuAberto={menuAberto}
+                        setMenuAberto={setMenuAberto}
+                        setSecaoAberta={setSecaoAberta}
+                        exibirBalaoDicaMenuHamburguer={exibirBalaoDicaMenuHamburguer}
+                    />
+                )}
+                
+                {/* --------------------------------------------------------- */}
                 {/* FIM - 🍔 O Botão Hambúrguer assume o controle direto aqui */}
-                {/* ---------------------------------- */}
+                {/* --------------------------------------------------------- */}
 
 
 
@@ -1241,941 +1245,447 @@ export default function App() {
 
 
 
-                {/* ---------------------------------- */}
-                {/* INICIO do - 🔩 Conteiner geral individualizado*/}
-                {/* ---------------------------------- */}
+                {/* ------------------------------------------------------------- */}
+                {/* INICIO do - 🔩 Conteiner geral individualizado PARA COMPUTADOR*/}
+                {/* ------------------------------------------------------------- */}
+
+                {ehComputador &&  dadosToken?.func === 'visitante' && (
+                    <MenuHorizontalVisitante 
+                        navegarERecolher={navegarERecolher} 
+                    />
+                )}
+                
+
+                {/* 💻 CASO 01: É COMPUTADOR */}
+                {ehComputador && dadosToken?.func === 'cuidadora' && (
+                    <MenuHorizontalCuidadora 
+                        navegarERecolher={navegarERecolher}
+                        perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
+                    />
+                )}
+
+                {/* ------------------------------------------------------------- */}
+                {/* FIM do - 🔩 Conteiner geral individualizado PARA COMPUTADOR*/}
+                {/* ------------------------------------------------------------- */}
+                
+
+
+
+
+
+
+
+                {/* ------------------------------------------------------------- */}
+                {/* INICIO do - 🔩 Conteiner geral individualizado PARA CELULAR*/}
+                {/* ------------------------------------------------------------- */}
 
                 <div className={`submenu-container-geral ${menuAberto ? 'menu-mobile-ativo' : ''}`}
-                    ref={menuRef}  
+                    ref={menuRef}
                 >
 
 
+                    {/* 🛡️ É celular + É Visitante + O Menu está Aberto */}
+                    {!ehComputador && dadosToken?.func === 'visitante' && menuAberto && (
+     
+                        <MenuHorizontalVisitante 
+                            navegarERecolher={navegarERecolher} 
+                        />
 
-       
-                    {dadosToken?.func === 'programador' && (
-                        <>
-
-
-                            {/* -------------------------------------------------------------------------------------------- */}
-                            {/* INICIO - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - PROGRAMADOR */}
-                            {/* -------------------------------------------------------------------------------------------- */}
-
-                            <div className="menu-horizontal-programador-container">
-
-
-                                {/* ------------------------------------ */}
-                                {/* INICIO - BOTOES COMUNS - PROGRAMADOR */}
-                                {/* ------------------------------------ */}
-
-                                <button className="Btn-geral-programador-prof btn-centralizado"
-                                    onClick={() => navegarERecolher('/interno/UsuarioLogado')}
-                                >
-                                    Inicio
-                                </button>
-
-                                {/* ------------------------------------ */}
-                                {/* FIM - BOTOES COMUNS - PROGRAMADOR */}
-                                {/* ------------------------------------ */}
-
-
-
-                                {/* ----------------------------------------- */}
-                                {/* INICIO - SUBMENU HORIZONTAL - PROGRAMADOR */}
-                                {/* ----------------------------------------- */}
-
-                                <div className="submenu-tudo-cadastrar-prof">
-                                    <button  
-                                        className="Btn-geral-programador-prof"
-                                        onClick={(e) => lidarComClique(e, 'cadastrar')}
-                                        aria-expanded={secaoAberta === 'cadastrar'}
-                                    >
-                                        Cadastrar
-                                        <span className="icone-seta">
-                                            {secaoAberta === 'cadastrar' ? "🔼" : "🔽"}
-                                        </span>
-                                    </button>
-                                    
-                                    {/* 🚀 O Submenu não tem mais o && para permitir a animação de saída */}
-                                    <div className={`submenu-flutuante-cadastrar-prof ${secaoAberta === 'cadastrar' ? 'aberto' : 'fechado'}`}>
-                                    
-                                        <button onClick={() => navegarERecolher('/interno/CadAdministrador')}>
-                                            Administrador
-                                        </button>
-                                       
-                                    </div>
-                                </div>
-
-                                {/* ----------------------------------------- */}
-                                {/* FIM - SUBMENU HORIZONTAL - PROGRAMADOR */}
-                                {/* ----------------------------------------- */}
-
-    
-                            </div>
-
-                            {/* -------------------------------------------------------------------------------------------- */}
-                            {/* FIM - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - PROGRAMADOR */}
-                            {/* -------------------------------------------------------------------------------------------- */}
-
-
-
-
-
-                            {/* -------------------------------------------------- */}
-                            {/* INICIO - 📊 MENU SIDEBAR: PROGRAMADOR - RELATÓRIOS */}
-                            {/* -------------------------------------------------- */}
-
-                            <div className="menu-sidebar-programador-container">
-
-                                <div className="menu-sidebar-programador-header">
-                                    <div className="menu-sidebar-programador-funcao">
-                                        <span className="menu-sidebar-programador-titulo">Relatórios</span>
-                                    </div>
-                                </div>
-                                
-                                <div className="menu-sidebar-programador-lista-botoes">
-
-                                    <button 
-                                        className="menu-sidebar-programador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/RelClientes')}
-                                    >
-                                        Usuarios-leitura antiga <span className="menu-sidebar-programador-icon">👥</span>
-                                    </button>
-
-
-
-                                    <button 
-                                        className="menu-sidebar-programador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/ProgramadorRelatorioCliente')}
-                                    >
-                                        Usuarios <span className="menu-sidebar-programador-icon">👥</span>
-                                    </button>
-
-
-                                    
-                                </div>
-
-                            </div>
-
-                            {/* ----------------------------------------------- */}
-                            {/* FIM - 📊 MENU SIDEBAR: PROGRAMADOR - RELATÓRIOS */}
-                            {/* ----------------------------------------------- */}
-
-
-
-
-                        </>
                     )}
 
 
 
-
-
-
-                    {dadosToken?.func === 'administrador' && (
+                    {!ehComputador && dadosToken?.func === 'cuidadora' && menuAberto && (
                         <>
 
+                            <MenuHorizontalCuidadora 
+                                navegarERecolher={navegarERecolher}
+                                perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
+                            />
 
-                            {/* -------------------------------------------------------------------------------------------- */}
-                            {/* INICIO - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - ADMINISTRADOR */}
-                            {/* -------------------------------------------------------------------------------------------- */}
+                            <MenuSideBarCuidadora
+                                autorizadoAdministrador={autorizadoAdministrador} 
+                                navegarERecolher={navegarERecolher} 
+                            />
 
-                            <div className="menu-horizontal-administrador-container">
+                        </>
+                    )}
 
-                                {/* -------------------------------------------------------------------------------------------- */}
-                                {/* INICIO - BOTOES DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - ADMINISTRADOR */}
-                                {/* -------------------------------------------------------------------------------------------- */}
+                </div>
 
-                                <button className="Btn-geral-administrador-prof btn-centralizado"
-                                    onClick={() => navegarERecolher('/interno/UsuarioLogado')}
-                                >
-                                    Inicio
-                                </button>
-
-                                <button className="Btn-geral-administrador-prof btn-centralizado"
-                                    onClick={() => navegarERecolher('/interno/Funcoes')}
-                                >
-                                    Funcoes
-                                </button>
+                {/* ------------------------------------------------------------- */}
+                {/* INICIO do - 🔩 Conteiner geral individualizado PARA CELULAR*/}
+                {/* ------------------------------------------------------------- */}
 
 
-                                {/* -------------------------------------------------------------------------------------------- */}
-                                {/* FIM - BOTOES DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - ADMINISTRADOR */}
-                                {/* -------------------------------------------------------------------------------------------- */}
 
+
+
+
+
+                
+
+
+
+
+
+
+                {/* ----------------------- */}
+                {/* INICIO - 🔘 DIV PERFIL  */}
+                {/* ---------------------- */}
+
+                <div className="div-visitante-e-meu-perfil">
+
+
+
+
+                    {dadosToken?.func !== 'visitante' ? (
+
+
+
+                        /* ------------------------------------------------------------ */
+                        /* INICIO - AREA PRIVADA - MENU PARA LOGADOS - BOTAO MEU PERFIL */
+                        /* ------------------------------------------------------------ */
+
+                        <div className="submenu-container-perfil">
+
+
+
+
+
+
+                            {/* ------------------- */}
+                            {/* INICIO - BOTAO CHAT */}
+                            {/* ------------------- */}
+
+                            <div className="Botao-Chat" 
+                                onClick={() => {
+                                    navegarERecolher('/interno/Chat');
+                                }}
+                            >
+                                <img 
+                                    className="Img-Chat-Icone" 
+                                    alt="Chat"
+                                    src="/imagens/chat.png"    
+                                />
                             </div>
 
-                            {/* -------------------------------------------------------------------------------------------- */}
-                            {/* INICIO - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - ADMINISTRADOR */}
-                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* ---------------- */}
+                            {/* FIM - BOTAO CHAT */}
+                            {/* ---------------- */}
 
+
+
+
+
+
+
+                            {/* ------------------------- */}
+                            {/* INICIO - BOTAO MEU PERFIL */}
+                            {/* ------------------------- */}
+
+                            <button className={`Botao-Acao-Meu-Perfil ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}
+                                onClick={() => setSecaoAberta(secaoAberta === 'perfil' ? null : 'perfil')}
+                            >
+                                <div className="Avatar-Circulo">
+                                    {dadosToken?.nome ? dadosToken.nome.charAt(0).toUpperCase() : "?"}
+                                </div>
+                                <span>Meu Perfil</span>
+                                <span className={`Seta-Drop ${secaoAberta === 'perfil' ? 'Aberta' : ''}`}>▼</span>
+                            </button>
+                            {secaoAberta === 'perfil' && (
+                                <div className="Cortina-Fechar" onClick={() => setSecaoAberta(null)} />
+                            )}
+
+                            {/* ---------------------- */}
+                            {/* FIM - BOTAO MEU PERFIL */}
+                            {/* ---------------------- */}
+
+
+
+
+
+
+
+                            {/* ------------------------------------ */}
+                            {/* INICIO DO - SUB MENU - DADOS DO USUARIO */}
+                            {/* ------------------------------------ */}
                             
+                            <div className={`SubmenuFlutuante-Estilizado ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}>
 
 
-                            {/* --------------------------------------- */}
-                            {/* INICIO - MENU SIDEBAR: administrador */}
-                            {/* ---------------------------------------- */}
 
-                            <div className="menu-sidebar-administrador-container">
 
-                                <div className="menu-sidebar-administrador-header">
-                                    <div className="menu-sidebar-administrador-funcao">
-                                        <span className="menu-sidebar-administrador-titulo">Administração</span>
-                                    </div>
+                                <div className="Header-Menu-Perfil">
+                                    <strong>{dadosToken?.nome || "Usuário"}</strong>
+                                    <span>{formatarCPF(dadosToken?.cpef)}</span>
                                 </div>
-                                
-                                <div className="menu-sidebar-administrador-lista-botoes">
-                                    
-
-                                    <button 
-                                        className="menu-sidebar-administrador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/AdministradorRelatorioCuidadoras')}
-                                    >
-                                        <span>Cuidadoras</span> <span className="menu-sidebar-administrador-icon">👩‍⚕️</span>
-                                    </button>
+                          
+                                <div className="Header-Funcao">
+                                    <span>Função:</span>
+                                    <strong>{dadosToken?.func}</strong>   
+                                </div>
 
 
-                                    <button 
-                                        className="menu-sidebar-administrador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/AdministradorRelatorioClientes')}
-                                    >
-                                        <span>Clientes</span> <span className="menu-sidebar-administrador-icon">👥</span>
-                                    </button>
-
-                                
-                                    <button 
-                                        className="menu-sidebar-administrador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/AdmFinanceiro')}
-                                    >
-                                        <span>Financeiro</span> <span className="menu-sidebar-administrador-icon">💰</span>
-                                    </button>
-                                    
-
-                                    <button 
-                                        className="menu-sidebar-administrador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/AdmConfiguracoes')}
-                                    >
-                                        <span>Configurações</span> <span className="menu-sidebar-administrador-icon">⚙️</span>
-                                    </button>
 
 
-                                    <button 
-                                        className="menu-sidebar-administrador-btn-item"
-                                        onClick={() => navegarERecolher('/interno/AdmLogs')}
-                                    >
-                                        <span>Solicitações</span> <span className="menu-sidebar-administrador-icon">📝</span>
-                                    </button>
+                                {/* ----------------------- */}
+                                {/* INICIO - DADOS PESSOAIS */}
+                                {/* ----------------------- */}
 
+                                <div className="dados-pessoais">
+
+                                    {dadosToken?.func === 'administrador' && (
+                                        <>
+
+
+                                            <button                                          
+                                                className="Perfil-Opcoes"
+                                                onClick={() => navegarERecolher('/interno/UsuarioContato')}>
+                                                {statusAdministrador.contato ? "✔️" : "❌"} Contato
+                                            </button>
+
+
+                                            <button 
+                                                className="Perfil-Opcoes"
+                                                onClick={() => navegarERecolher('/interno/Endereco')}>
+                                                {statusAdministrador.endereco ? "✔️" : "❌"} Endereço
+                                            </button>
+
+
+                                        </>
+                                    )}
+
+
+                                    {dadosToken?.func === 'cuidadora' && (
+                                        <>
+
+
+                                            <button                                           
+                                                className="Perfil-Opcoes"
+                                                onClick={() => navegarERecolher('/interno/UsuarioContato')}>
+                                                {statusCuidadora.contato ? "✔️" : "❌"} Contato
+                                            </button>
+
+
+                                            <button 
+                                                className="Perfil-Opcoes"
+                                                onClick={() => navegarERecolher('/interno/Endereco')}>
+                                                {statusCuidadora.endereco ? "✔️" : "❌"} Endereço
+                                            </button>
+
+
+                                            <button  
+                                                className="Perfil-Opcoes"
+                                                onClick={() => navegarERecolher('/interno/Cnpj')}>
+                                                {statusCuidadora.cnpj ? "✔️" : "❌"} CNPJ
+                                            </button>
+                                            
+                                        
+                                            <button 
+                                                className="Perfil-Opcoes"
+                                                onClick={() => navegarERecolher('/interno/UsuarioFormacao')}>
+                                                {statusCuidadora.formacao ? "✔️" : "❌"} Formação 
+                                            </button>
+
+                                        </>
+                                    )}
+
+
+                                    {dadosToken?.func === 'cliente' && (
+                                        <>
+
+
+                                            <button                                     
+                                                className="Perfil-Opcoes"
+                                                onClick={() => navegarERecolher('/interno/UsuarioContato')}>
+                                                {statusCliente.contato ? "✔️" : "❌"} Contato
+                                            </button>
+
+
+                                            <button 
+                                                className="Perfil-Opcoes"
+                                                onClick={() => navegarERecolher('/interno/Endereco')}>
+                                                {statusCliente.endereco ? "✔️" : "❌"} Endereço
+                                            </button>
+
+
+                                        </>
+                                    )}
 
                                 </div>
+
+                                {/* ----------------------- */}
+                                {/* INICIO - DADOS PESSOAIS */}
+                                {/* ----------------------- */}
+
+
+
+                                    
+        
+                                {/* ------------------------------------------- */}
+                                {/* INICIO - BOTAO SAIR - PARA TODOS O USUARIOS */}
+                                {/* ------------------------------------------- */}
+
+                                <button className="Botao-Acao-Sair" 
+                                    onClick={() => { 
+                                        onClickSair(); 
+                                        navegarERecolher('/'); 
+                                    }}
+                                >
+                                    Sair
+                                </button>
+
+                                {/* ------------------------------------------- */}
+                                {/* FIM - BOTAO SAIR - PARA TODOS O USUARIOS */}
+                                {/* ------------------------------------------- */}
+
+
+
+
+
+
+
+                                {/* ------------------------------------------------------ */}
+                                {/* INICIO - TESTE PERMISSAO - PROVISORIO - DESENVOLVIMENTO*/}
+                                {/* ------------------------------------------------------ */}
+
+                                {/* <button onClick={() => {
+                                    console.log("");
+                                    console.log("📐 ----------------------------------");
+                                    console.log("📐 🚀 EVENTO: Clique no botão 'Teste Permissao'");
+                                    console.log("📐 📍 Navegando para /interno/TestePermissaoMelhor");
+                                    console.log("📐 ----------------------------------");
+                                    navegarERecolher('/interno/TestePermissaoMelhor');
+                                    }}>
+                                    Teste Permissao
+                                </button> */}
+
+                                {/* ------------------------------------------------------ */}
+                                {/* FIM - TESTE PERMISSAO - PROVISORIO - DESENVOLVIMENTO*/}
+                                {/* ------------------------------------------------------ */}
+
+
+
+
+
+
 
                             </div>
 
                             {/* ------------------------------------ */}
-                            {/* FIM - MENU SIDEBAR: administrador */}
-                            {/* -------------------------------- --- */}
-
-
-
-
-                        </>   
-                    )}
+                            {/* FIM DO - SUB MENU - DADOS DO USUARIO */}
+                            {/* ------------------------------------ */}
 
 
 
 
 
-                    
-                    {dadosToken?.func === 'visitante' && (
-                        <>
 
-                            <button 
-                                className="Btn-geral-visitante" 
-                                onClick={() => navegarERecolher('/')}
-                            >
-                                Início
-                            </button>
+                        </div>
 
-                            <button 
-                                className="Btn-geral-visitante" 
-                                onClick={() => navegarERecolher('/Sobre')}
-                            >
-                                Sobre
-                            </button>
-
-                            <button 
-                                className="Btn-geral-visitante" 
-                                onClick={() => navegarERecolher('/Contato')}
-                            >
-                                Contato
-                            </button>
-
-                        </>
-
-                    )}
-
-
-                    
+                        /* ------------------------------------------------------------ */
+                        /* FIM - AREA PRIVADA - MENU PARA LOGADOS - BOTAO MEU PERFIL */
+                        /* ------------------------------------------------------------ */
 
 
 
-                    {dadosToken?.func === 'cuidadora' && (
-                        <>
+                    ) : (
+                        
 
-                            {/* -------------------------------------------------------------------------------------------- */}
-                            {/* INICIO - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CUIDADORA  */}
-                            {/* -------------------------------------------------------------------------------------------- */}
 
-                            <div className="menu-horizontal-cuidadora-container">
+                        // ------------------------------------
+                        // INICIO - AREA PARA VISITANTES - ENTRAR OU CADASTRAR
+                        // ------------------------------------
 
-                                {/* -------------------------------------------------------------------------------------------- */}
-                                {/* INICIO - BOTOES DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CUIDADORA  */}
-                                {/* -------------------------------------------------------------------------------------------- */}
-
-                                <button 
-                                    className="Btn-geral-cuidadora-prof btn-centralizado"
-                                    onClick={() => navegarERecolher('/interno/UsuarioLogado')}
-                                >
-                                    Inicio
-                                </button>
+                        <div className="submenu-container-visitante">
 
 
 
-                                <button 
-                                    className="Btn-geral-cuidadora-prof btn-centralizado"
-                                    onClick={() => navegarERecolher('/interno/Funcoes')}
-                                >
-                                    Funcoes
-                                </button>
+                            {/* INICIO - BOTAO CRIAR CONTA */}
 
+                            <div style={{ position: 'relative', display: 'inline-block' }}>
 
+                                <button className={`Botao-Acao-Visitante-Perfil ${exibirBalaoDicaCriarConta ? 'pulsar-ativo' : ''}`} 
+                                
+                                    onClick={(e) => {
 
-                            
-                                <button 
-                                    className="Btn-geral-cuidadora-prof btn-centralizado"
-                                    onClick={() => navegarERecolher('/interno/Diretrizes')}
-                                >
-                                    Diretrizes
-                                </button>
-
-
-
-                                <button 
-                                    className={`Btn-geral-cuidadora-prof ${perfilEstaCompletoCuidadora ? '' : 'BotaoBloqueado'}`}
-                                    onClick={() => perfilEstaCompletoCuidadora && navegarERecolher('/interno/Chamados')}
-                                    title={!perfilEstaCompletoCuidadora ? "Complete seu perfil (Contato, Endereço, CNPJ e Formação) para liberar." : "Acessar Chamados"}
-                                >
-                                    Chamados {!perfilEstaCompletoCuidadora && "🔒"}
-                                </button>
-
-
-                                {/* -------------------------------------------------------------------------------------------- */}
-                                {/* FIM - BOTOES DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CUIDADORA     */}
-                                {/* -------------------------------------------------------------------------------------------- */}
-
-                            </div>
-
-                            {/* -------------------------------------------------------------------------------------------- */}
-                            {/* FIM - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CUIDADORA     */}
-                            {/* -------------------------------------------------------------------------------------------- */}
-
-
-
-
-                            {/* --------------------------------------------------- */}
-                            {/* INICIO - 👩‍⚕️ MENU SIDEBAR: CUIDADORA - EXCLUSIVO */}
-                            {/* --------------------------------------------------- */}
-
-                            <div className="menu-sidebar-cuidadora-container">
-
-                                <div className="menu-sidebar-cuidadora-header">
-                                    <div className="menu-sidebar-cuidadora-funcao">
-                                        <span className="menu-sidebar-cuidadora-titulo">
-                                            
-                                        {autorizadoAdministrador ? "Área da Cuidadora" : "Área da Cuidadora 🔓"}
+                                        // console.log("");
+                                        // console.log("📐 ----------------------------------");
+                                        // console.log("📐 🚀 EVENTO: Clique no botao 'Criar Conta'");
+                                        // console.log("📐 🔵 Estado 'Dica Visível' = ", exibirBalaoDicaCriarConta);
                                         
-                                        </span>
-                                    </div>
-                                </div>
-                                
-                                <div className="menu-sidebar-cuidadora-lista-botoes"
-                                style={{
-                                    opacity: autorizadoAdministrador ? 1 : 0.5,
-                                    pointerEvents: autorizadoAdministrador ? 'auto' : 'none',
-                                    filter: autorizadoAdministrador ? 'none' : 'grayscale(1)',
-                                    cursor: autorizadoAdministrador ? 'default' : 'not-allowed'
-                                }}
-                                
-                                >
-                                    
-                                    <button 
-                                        className="menu-sidebar-cuidadora-btn-item"
-                                        onClick={() => navegarERecolher('/interno/MeusPlantoes')}
-                                      
-                                    >
-                                        Meus Plantões <span className="menu-sidebar-cuidadora-icon">⏰</span>
-                                    </button>
-                                    
-                                    <button 
-                                        className="menu-sidebar-cuidadora-btn-item"
-                                        onClick={() => navegarERecolher('/interno/EvolucaoPaciente')}
-                                    >
-                                        Registrar Evolução <span className="menu-sidebar-cuidadora-icon">🩺</span>
-                                    </button>
-                                    
-                                    <button 
-                                        className="menu-sidebar-cuidadora-btn-item"
-                                        onClick={() => navegarERecolher('/interno/EscalaMensal')}
-                                    >
-                                        Minha Escala <span className="menu-sidebar-cuidadora-icon">📅</span>
-                                    </button>
+                                        navegarERecolher('/Cadastrar');
 
-                                    <button 
-                                        className="menu-sidebar-cuidadora-btn-item"
-                                        onClick={() => navegarERecolher('/interno/AssumirPlantao')}
-                                    >
-                                        Assumir Plantão <span className="menu-sidebar-cuidadora-icon">🤝</span>
-                                    </button>
-
-                                    <button 
-                                        className="menu-sidebar-cuidadora-btn-item menu-sidebar-cuidadora-btn-alerta"
-                                        onClick={() => navegarERecolher('/interno/SuporteOperacional')}
-                                    >
-                                        Suporte / S.O.S <span className="menu-sidebar-cuidadora-icon">🚨</span>
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                            {/* ------------------------------------------------- */}
-                            {/* FIM - 👩‍⚕️ MENU SIDEBAR: CUIDADORA - EXCLUSIVO */}
-                            {/* ------------------------------------------------- */}
-
-
-                        </>
-                    )}
-
-
-
-
-
-
-                    {dadosToken?.func === 'cliente' && (
-                        <>
-
-
-                            {/* -------------------------------------------------------------------------------------------- */}
-                            {/* INICIO - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CLIENTE    */}
-                            {/* -------------------------------------------------------------------------------------------- */}
-
-                            <div className="menu-horizontal-cliente-container">
-
-                                {/* -------------------------------------------------------------------------------------------- */}
-                                {/* INICIO - BOTOES DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CLIENTE    */}
-                                {/* -------------------------------------------------------------------------------------------- */}
-
-                                <button 
-                                    className="Btn-geral-cliente-prof btn-centralizado fonte-diretrizes"
-                                    onClick={() => navegarERecolher('/interno/UsuarioLogado')}
-                                >
-                                    Inicio
-                                </button>
-
-
-                                <button 
-                                    className="Btn-geral-cliente-prof btn-centralizado fonte-diretrizes" 
-                                    onClick={() => navegarERecolher('/interno/PacienteApresentacaoEmpresa')}
-                                >
-                                    Empresa
-                                </button>
-
-                                <button 
-                                    className="Btn-geral-cliente-prof btn-centralizado fonte-diretrizes" 
-                                    onClick={() => navegarERecolher('/interno/Diretrizes')}
-                                >
-                                    Diretrizes
-                                </button>
-
-
-                                <button 
-                                    className="Btn-geral-cliente-prof btn-centralizado fonte-diretrizes" 
-                                    
-                                    style={{
-                                        opacity: autorizadoAdministrador ? 1 : 0.5,
-                                        pointerEvents: autorizadoAdministrador ? 'auto' : 'none',
-                                        filter: autorizadoAdministrador ? 'none' : 'grayscale(1)',
-                                        cursor: autorizadoAdministrador ? 'default' : 'not-allowed'
                                     }}
 
-                                    onClick={() => navegarERecolher('/interno/clienteContrato')}
                                 >
-                                    Contrato
+                                    <span>Criar Conta</span>
                                 </button>
 
-                                {/* -------------------------------------------------------------------------------------------- */}
-                                {/* FIM - BOTOES DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CLIENTE       */}
-                                {/* -------------------------------------------------------------------------------------------- */}
+                                <BalaoDicaCriarConta 
+                                    exibirBalaoDicaCriarConta={exibirBalaoDicaCriarConta} 
+                                />
 
                             </div>
 
-                            {/* -------------------------------------------------------------------------------------------- */}
-                            {/* FIM - ELEMENTOS DO MENU HORIZONTAL HERDADO DA DIV - submenu-container-geral  - CLIENTE       */}
-                            {/* -------------------------------------------------------------------------------------------- */}
-
-                          
+                            {/* FIM - BOTAO CRIAR CONTA */}
 
 
-                            {/* ------------------------------- */}
-                            {/* INICIO - SIDEBAR FIXA: PACIENTE */}
-                            {/* ------------------------------- */}
 
-                            <div className="submenu-tudo-paciente-prof">
 
-                                <div className="menu-sidebar-paciente-header">
-                                    <div className="menu-sidebar-paciente-funcao">
-                                        <h3 className="titulo-setor-sidebar">
-                                            {autorizadoAdministrador ? "Prontuario do Paciente" : "Prontuario do Paciente 🔒"}
-                                        </h3>
-                                    </div>
-                                </div>
-                                
-                                <div className="lista-botoes-vertical"
-                                    style={{
-                                        opacity: autorizadoAdministrador ? 1 : 0.5,
-                                        pointerEvents: autorizadoAdministrador ? 'auto' : 'none',
-                                        filter: autorizadoAdministrador ? 'none' : 'grayscale(1)',
-                                        cursor: autorizadoAdministrador ? 'default' : 'not-allowed'
+                            {/* INICIO - BOTAO ENTRAR */}
+
+                            <div style={{ position: 'relative', display: 'inline-block' }}>
+
+                                <button className={`Botao-Acao-Visitante-Perfil ${exibirBalaoDicaEntrar ? 'pulsar-ativo' : ''}`} 
+                                    // style={{ width: '90px' }} 
+                                    onClick={(e) => {
+                                        navegarERecolher('/Logar');
                                     }}
                                 >
-                                    <button 
-                                        // className="BotaoBloqueado" 
-                                        onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}
-                                    >
-                                        Identificação
-                                    </button>
-                                    
+                                    <span>Entrar</span>
+                                </button>
+
+                                <BalaoDicaEntrar 
+                                    exibirBalaoDicaEntrar={exibirBalaoDicaEntrar} 
+                                />
+
+                            </div>     
+                                
+                            {/* FIM - BOTAO ENTRAR */}
 
 
 
 
+                        </div>
 
-                                    <button 
-                                        // className="BotaoBloqueado" 
-                                        onClick={() => navegarERecolher('/interno/PacienteEndereco')}
-                                    >
-                                        Endereço
-                                    </button>
-                                    
-                                    <button 
-                                        onClick={() => navegarERecolher('/interno/PacienteRemedio')}
-                                    >
-                                        Medicamentos
-                                    </button>
-                                    
-                                    <button 
-                                        // className="BotaoBloqueado" 
-                                        onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}
-                                    >
-                                        Alimentação
-                                    </button>
-                                    
-                                    <button 
-                                        // className="BotaoBloqueado" 
-                                        onClick={() => navegarERecolher('/interno/PacienteBanho')}
-                                    >
-                                        Banho
-                                    </button>
-                                    
-                                    <button 
-                                        // className="BotaoBloqueado" 
-                                        onClick={() => navegarERecolher('/interno/PacienteAcordado')}
-                                    >
-                                        Acordado
-                                    </button>
-                                    
-                                    <button 
-                                        // className="BotaoBloqueado" 
-                                        onClick={() => navegarERecolher('/interno/PacienteRecreacao')}
-                                    >
-                                        Recreação
-                                    </button>
-                                    
-                                    <button 
-                                        // className="BotaoBloqueado" 
-                                        onClick={() => navegarERecolher('/interno/PacienteEmergencia')}
-                                    >
-                                        Emergência
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* ------------------------------- */}
-                            {/* INICIO - SIDEBAR FIXA: PACIENTE */}
-                            {/* ------------------------------- */}
+                        // ------------------------------------
+                        // FIM - AREA PARA VISITANTES - ENTRAR OU CADASTRAR
+                        // ------------------------------------
 
 
-                        </>
+
                     )}
-
-
 
 
 
                 </div>
 
-                {/* ---------------------------------- */}
-                {/* FIM do - 🔩 Conteiner geral individualizado */}
-                {/* ---------------------------------- */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-                {/* // ------------------------------------------------- */}
-                {/* 🔘 SUBMENU FLUTUANTE DE PERFIL (Abertura por Clique) */}
-                {/* // ------------------------------------------------- */}
-
-                {dadosToken?.func !== 'visitante' ? (
-
-
-                    // ---------------------------------------------------
-                    // INICIO - AREA PRIVADA - MENU PARA LOGADOS - BOTAO MEU PERFIL
-                    // ---------------------------------------------------
-
-                    <div className="submenu-container-perfil">
-
-
-
-                        {/* BOTAO CHAT */}
-                        <div className="Botao-Chat" 
-                            onClick={() => {
-                                console.log("");
-                                console.log("📐 ----------------------------------");
-                                console.log("📐 🚀 EVENTO: Clique no botão 'Chat'");
-                                console.log("📐 📍 Navegando para /interno/Chat");
-                                console.log("📐 ----------------------------------");
-                                navegarERecolher('/interno/Chat');
-                            }}
-                        >
-                            <img 
-                                className="Img-Chat-Icone" 
-                                alt="Chat"
-                                src="/imagens/chat.png"    
-                            />
-                        </div>
-
-
-
-
-
-
-
-
-
-
-
-                        
-                        {/* INICIO - BOTAO MEU PERFIL */}
-                        <button className={`Botao-Acao-Meu-Perfil ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}
-                            onClick={() => setSecaoAberta(secaoAberta === 'perfil' ? null : 'perfil')}
-                        >
-                            <div className="Avatar-Circulo">
-                                {dadosToken?.nome ? dadosToken.nome.charAt(0).toUpperCase() : "?"}
-                            </div>
-                            <span>Meu Perfil</span>
-                            <span className={`Seta-Drop ${secaoAberta === 'perfil' ? 'Aberta' : ''}`}>▼</span>
-                        </button>
-                        {secaoAberta === 'perfil' && (
-                            <div className="Cortina-Fechar" onClick={() => setSecaoAberta(null)} />
-                        )}
-
-
-
-
-                        {/* ------------------------------------ */}
-                        {/* INICIO DO - SUB MENU - DADOS DO USUARIO */}
-                        {/* ------------------------------------ */}
-                        
-                        <div className={`SubmenuFlutuante-Estilizado ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}>
-                            
-
-
-                            <div className="Header-Menu-Perfil">
-                                <strong>{dadosToken?.nome || "Usuário"}</strong>
-                                <span>{formatarCPF(dadosToken?.cpef)}</span>
-                            </div>
-
-                          
-                            <div className="Header-Funcao">
-                                <span>Função:</span>
-                                <strong>{dadosToken?.func}</strong>   
-                            </div>
-
-
-
-                            {/* ----------------------- */}
-                            {/* INICIO - DADOS PESSOAIS */}
-                            {/* ----------------------- */}
-
-                            <div className="dados-pessoais">
-
-                                {dadosToken?.func === 'administrador' && (
-                                    <>
-
-
-                                        <button                                          
-                                            className="Perfil-Opcoes"
-                                            onClick={() => navegarERecolher('/interno/UsuarioContato')}>
-                                            {statusAdministrador.contato ? "✔️" : "❌"} Contato
-                                        </button>
-
-
-                                        <button 
-                                            className="Perfil-Opcoes"
-                                            onClick={() => navegarERecolher('/interno/Endereco')}>
-                                            {statusAdministrador.endereco ? "✔️" : "❌"} Endereço
-                                        </button>
-
-
-                                    </>
-                                )}
-
-
-                                {dadosToken?.func === 'cuidadora' && (
-                                    <>
-
-
-                                        <button                                           
-                                            className="Perfil-Opcoes"
-                                            onClick={() => navegarERecolher('/interno/UsuarioContato')}>
-                                            {statusCuidadora.contato ? "✔️" : "❌"} Contato
-                                        </button>
-
-
-                                        <button 
-                                            className="Perfil-Opcoes"
-                                            onClick={() => navegarERecolher('/interno/Endereco')}>
-                                            {statusCuidadora.endereco ? "✔️" : "❌"} Endereço
-                                        </button>
-
-
-                                        <button  
-                                            className="Perfil-Opcoes"
-                                            onClick={() => navegarERecolher('/interno/Cnpj')}>
-                                            {statusCuidadora.cnpj ? "✔️" : "❌"} CNPJ
-                                        </button>
-                                        
-                                    
-                                        <button 
-                                            className="Perfil-Opcoes"
-                                            onClick={() => navegarERecolher('/interno/UsuarioFormacao')}>
-                                            {statusCuidadora.formacao ? "✔️" : "❌"} Formação 
-                                        </button>
-
-                                    </>
-                                )}
-
-
-                                {dadosToken?.func === 'cliente' && (
-                                    <>
-
-
-                                        <button                                     
-                                            className="Perfil-Opcoes"
-                                            onClick={() => navegarERecolher('/interno/UsuarioContato')}>
-                                            {statusCliente.contato ? "✔️" : "❌"} Contato
-                                        </button>
-
-
-                                        <button 
-                                            className="Perfil-Opcoes"
-                                            onClick={() => navegarERecolher('/interno/Endereco')}>
-                                            {statusCliente.endereco ? "✔️" : "❌"} Endereço
-                                        </button>
-
-
-                                    </>
-                                )}
-
-                            </div>
-
-                            {/* ----------------------- */}
-                            {/* INICIO - DADOS PESSOAIS */}
-                            {/* ----------------------- */}
-
-
-
-                                  
-    
-                            {/* ------------------------------------------- */}
-                            {/* INICIO - BOTAO SAIR - PARA TODOS O USUARIOS */}
-                            {/* ------------------------------------------- */}
-
-                            <button className="Botao-Acao-Sair" 
-                                onClick={() => { 
-                                    onClickSair(); 
-                                    navegarERecolher('/'); 
-                                }}
-                            >
-                                Sair
-                            </button>
-
-                            {/* ------------------------------------------- */}
-                            {/* FIM - BOTAO SAIR - PARA TODOS O USUARIOS */}
-                            {/* ------------------------------------------- */}
-
-
-
-
-
-
-
-                            {/* ------------------------------------------------------ */}
-                            {/* INICIO - TESTE PERMISSAO - PROVISORIO - DESENVOLVIMENTO*/}
-                            {/* ------------------------------------------------------ */}
-
-                            {/* <button onClick={() => {
-                                console.log("");
-                                console.log("📐 ----------------------------------");
-                                console.log("📐 🚀 EVENTO: Clique no botão 'Teste Permissao'");
-                                console.log("📐 📍 Navegando para /interno/TestePermissaoMelhor");
-                                console.log("📐 ----------------------------------");
-                                navegarERecolher('/interno/TestePermissaoMelhor');
-                                }}>
-                                Teste Permissao
-                            </button> */}
-
-                            {/* ------------------------------------------------------ */}
-                            {/* FIM - TESTE PERMISSAO - PROVISORIO - DESENVOLVIMENTO*/}
-                            {/* ------------------------------------------------------ */}
-
-
-
-
-
-
-
-                        </div>
-
-                        {/* ------------------------------------ */}
-                        {/* FIM DO - SUB MENU - DADOS DO USUARIO */}
-                        {/* ------------------------------------ */}
-
-
-
-
-
-
-
-                    </div>
-
-                    // ---------------------------------------------------
-                    // FIM - AREA PRIVADA - MENU PARA LOGADOS - BOTAO MEU PERFIL
-                    // ---------------------------------------------------
-
-
-
-                ) : (
-                    
-
-
-                    // ------------------------------------
-                    // INICIO - PARA VISITANTES - ENTRAR OU CADASTRAR
-                    // ------------------------------------
-
-                    <div className="submenu-container-visitante">
-
-
-
-                        {/* INICIO - BOTAO CRIAR CONTA */}
-
-                        <div style={{ position: 'relative', display: 'inline-block' }}>
-
-                            <button 
-
-                                className={`Botao-Acao-Visitante-Perfil ${exibirBalaoDicaCriarConta ? 'pulsar-ativo' : ''}`} 
-                             
-                                onClick={(e) => {
-
-                                    // console.log("");
-                                    // console.log("📐 ----------------------------------");
-                                    // console.log("📐 🚀 EVENTO: Clique no botao 'Criar Conta'");
-                                    // console.log("📐 🔵 Estado 'Dica Visível' = ", exibirBalaoDicaCriarConta);
-                                    
-                                    navegarERecolher('/Cadastrar');
-
-                                }}
-
-                            >
-                                <span>Criar Conta</span>
-                            </button>
-
-                            <BalaoDicaCriarConta 
-                                exibirBalaoDicaCriarConta={exibirBalaoDicaCriarConta} 
-                            />
-
-                        </div>
-
-                        {/* FIM - BOTAO CRIAR CONTA */}
-
-
-
-                        {/* INICIO - BOTAO ENTRAR */}
-
-                        <div style={{ position: 'relative', display: 'inline-block' }}>
-                            <button 
-                                className={`Botao-Acao-Visitante-Perfil ${exibirBalaoDicaEntrar ? 'pulsar-ativo' : ''}`} 
-                                style={{ width: '90px' }} 
-                                onClick={(e) => {
-
-                                    // console.log("");
-                                    // console.log("📐 ----------------------------------");
-                                    // console.log("📐 🚀 EVENTO: Clique no botão 'Entrar'");
-                                    // console.log("📐 componente - 🧿 App.jsx");
-                                    // console.log("📐 📍 navegarERecolher('/Logar');");
-                                    // console.log("📐 ----------------------------------");
-
-                                    navegarERecolher('/Logar');
-
-                                }}
-                            >
-                                <span>Entrar</span>
-                            </button>
-
-                            <BalaoDicaEntrar 
-                                exibirBalaoDicaEntrar={exibirBalaoDicaEntrar} 
-                            />
-                        </div>     
-                               
-                        {/* FIM - BOTAO ENTRAR */}
-
-
-
-                    </div>
-
-                    // ------------------------------------
-                    // FIM - PARA VISITANTES - ENTRAR OU CADASTRAR
-                    // ------------------------------------
-
-
-                )}
-
-
-
+                {/* ----------------------- */}
+                {/* FIM - 🔘 DIV PERFIL  */}
+                {/* ---------------------- */}
 
              
 
 
+
+
             </header>
 
+            {/* ----------------------------------------------------------------- */}
+            {/* FIM - HEADER - header-spacer - CABEÇALHO FIXO - TOPO - HORIZONTAL */}
+            {/* ----------------------------------------------------------------- */}
 
 
 
@@ -2185,355 +1695,421 @@ export default function App() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            {/* ----------------------- */}
-            {/* INICIO - ROUTES - ROTAS */}
-            {/* ----------------------- */}
-
-            <main className="main-area-principal">
+            
+            {/* ----------------------------------------------------------------- */}
+            {/* INICIO- ESPACO (CALÇO) DE ALTURA PARA O - header-spacer */}
+            {/* ----------------------------------------------------------------- */}
 
             <div className="header-spacer"></div>
 
-            
-                <Routes>
+            {/* ----------------------------------------------------------------- */}
+            {/* INICIO - ESPACO (CALÇO) DE ALTURA PARA O - header-spacer */}
+            {/* ----------------------------------------------------------------- */}
 
 
 
-                    {/* -------------------------- */}
-                    {/* INICIO - 🌍 Rotas Públicas */}
-                    {/* -------------------------- */}
 
-                    <Route 
-                        path="/" 
-                        element={
-                            <Inicio  
 
+
+
+
+
+            {/* ---------------------------------------------------- */}
+            {/* INICIO - MAIN - main-area-principal - ROUTES - ROTAS */}
+            {/* ---------------------------------------------------- */}
+
+            <main className="main-area-principal">
+
+
+
+
+
+
+
+                {/* --------------------------------------------- */}
+                {/* INICIO - menu-sidebar - menu lateral esquerda */}
+                {/* --------------------------------------------- */}
+
+                {/* 🛡️ TRAVA GERAL: Só processa se NÃO for visitante */}
+                {dadosToken?.func !== 'visitante' && (
+                    <>
+                        {/* 💻 CASO 01: É COMPUTADOR */}
+                        {ehComputador && (
+                            <MenuSideBarCuidadora 
+                                autorizadoAdministrador={autorizadoAdministrador} 
+                                navegarERecolher={navegarERecolher} 
                             />
-                        } 
-                    />
+                        )}
+                    </>
+                )}
 
-                    <Route 
-                        path="/sobre" 
-                        element={
-                            <Sobre 
+                {/* --------------------------------------------- */}
+                {/* FIM - menu-sidebar - menu lateral esquerda */}
+                {/* --------------------------------------------- */}
 
-                            />
-                        } 
-                    /> 
-
-                    <Route 
-                        path="/contato" 
-                        element={
-                            <Contato 
-                            
-                            />
-                        } 
-                    />
-
-                    <Route 
-                        path="/logar" 
-                        element={
-                            <Logar 
-                                socket={socket} 
-                                setExibirBalaoDicaCriarConta={setExibirBalaoDicaCriarConta} 
-                            />
-                        } 
-                    />
-
-                    <Route 
-                        path="/Cadastrar" 
-                        element={
-                            <Cadastrar 
-                                socket={socket} 
-                                setExibirBalaoDicaEntrar={setExibirBalaoDicaEntrar} 
-                            />
-                        } 
-                    />
-
-                    {/* -------------------------- */}
-                    {/* FIM - 🌍 Rotas Públicas */}
-                    {/* -------------------------- */}
-               
+                
 
 
 
 
 
 
-                    {/* ----------------------------------------------------------------------- */}
-                    {/* INICIO - 🔐 Setor Privativo: Acesso condicionado ao fim do carregamento */}
-                    {/* ----------------------------------------------------------------------- */}
-
-                    <Route 
-                        path="/interno" 
-                        element={
-                            carregandoModal ? null :
-                            dadosToken?.func && dadosToken.func !== 'visitante' ? (                   
-                                <Outlet  />         
-                            ) : (
-                                <Navigate to="/" replace />
-                            )
-                        } 
-                    >
 
 
-                        {/* 🧭 Rota Index: Evita tela branca ao acessar /interno diretamente */}
+
+                {/* ----------------------------- */}
+                {/* INICIO - componente de pagina */}
+                {/* ----------------------------- */}
+
+                <div className={`componente-de-pagina ${ehComputador && dadosToken?.func !== 'visitante' ? 'com-sidebar' : 'sem-sidebar'}`}>
+
+                    <Routes>
+
+
+
+
+
+
+                        {/* -------------------------- */}
+                        {/* INICIO - 🌍 Rotas Públicas */}
+                        {/* -------------------------- */}
+
                         <Route 
-                            index 
+                            path="/" 
                             element={
-                                <Navigate to="UsuarioLogado" replace />
-                            } 
-                        />
+                                <Inicio  
 
-
-                        {/* 🧱 Controle do Programador dentro do Interno */}
-                        <Route 
-                            path="PainelMaster" 
-                            element={
-                                dadosToken?.func === 'programador' ? (
-                                    <PainelMaster />
-                                ) : (
-                                    <Navigate to="/interno/UsuarioLogado" replace />
-                                )
-                            } 
-                        />
-
-
-
-
-
-                        {/* 🚪 Sub-cômodos (Rotas Filhas de /interno) */}          
-                        <Route 
-                            path="UsuarioIdentificacao" 
-                            element={<UsuarioIdentificacao />} 
-                        />
-
-
-                        <Route 
-                            path="UsuarioContato" 
-                            element={<UsuarioContato />} 
-                        />
-
-
-                        <Route 
-                            path="Endereco" 
-                            element={<Endereco />} 
-                        />
-
-
-                        <Route 
-                            path="Cnpj" 
-                            element={<Cnpj />} 
-                        />
-
-
-                        <Route 
-                            path="UsuarioFormacao" 
-                            element={<UsuarioFormacao />} 
-                        />
-
-
-                        <Route 
-                            path="Formacao" 
-                            element={<Formacao />} 
-                        />
-
-
-                        <Route 
-                            path="Funcoes" 
-                            element={<Funcoes />} 
-                        />
-
-
-                        <Route 
-                            path="UsuarioReferencias" 
-                            element={<UsuarioReferencias />} 
-                        />
-
-
-                        <Route 
-                            path="CadAdministrador" 
-                            element={<CadAdministrador />} 
-                        />
-
-
-                        <Route 
-                            path="diretrizes" 
-                            element={<Diretrizes />} 
-                        />
-
-
-                        <Route 
-                            path="Chamados" 
-                            element={<Chamados />} 
-                        />
-
-
-                        <Route 
-                            path="RelClientes" 
-                            element={<RelClientes />} 
-                        />
-
-
-                        <Route 
-                            path="RelCuidadoras" 
-                            element={<RelCuidadoras />} 
-                        />
-
-
-                        <Route 
-                            path="ProgramadorRelatorioCliente" 
-                            element={<ProgramadorRelatorioCliente />} 
-                        />
-
-
-                        <Route 
-                            path="RelSolicitacoes" 
-                            element={<RelSolicitacoes />} 
-                        />
-                        
-
-                        <Route                  
-                            path="TestePermissao" 
-                            element={<TestePermissao />}                    
-                        />
-
-
-                        <Route                         
-                            path="TestePermissaoMelhor" 
-                            element={<TestePermissaoMelhor />}                       
-                        />
-
-
-                        <Route                           
-                            path="Notificacoes" 
-                            element={<Notificacoes />}                       
-                        />
-
-
-                        <Route                            
-                            path="Chat" 
-                            element={<Chat />} 
-                        />
-
-
-                        <Route   
-                            path="UsuarioLogado" 
-                            element={
-                                <UsuarioLogado 
-                                    perfilEstaCompletoAdministrador={perfilEstaCompletoAdministrador} 
-                                    perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
-                                    perfilEstaCompletoCliente={perfilEstaCompletoCliente} 
                                 />
                             } 
                         />
 
-
-
-                        {/* 👥 Rota do Relatório de Clientes: Administrador */}
                         <Route 
-                        path="/interno/AdministradorRelatorioClientes" 
-                        element={<AdministradorRelatorioClientes />} 
-                    />
+                            path="/sobre" 
+                            element={
+                                <Sobre 
 
+                                />
+                            } 
+                        /> 
 
-
-                        {/* -------------------------------------------------------------------------------------------- */}
-                        {/* INICIO - 👩‍⚕️ ROTA DO RELATÓRIO DE CUIDADORAS: ADMINISTRADOR                                  */}
-                        {/* -------------------------------------------------------------------------------------------- */}
                         <Route 
-                            path="/interno/AdministradorRelatorioCuidadoras" 
-                            element={<AdministradorRelatorioCuidadoras />} 
+                            path="/contato" 
+                            element={
+                                <Contato 
+                                
+                                />
+                            } 
                         />
-                        {/* -------------------------------------------------------------------------------------------- */}
-                        {/* FIM - 👩‍⚕️ ROTA DO RELATÓRIO DE CUIDADORAS: ADMINISTRADOR                                     */}
-                        {/* -------------------------------------------------------------------------------------------- */}
 
-
-
-
-
-
-                        {/* 🛣️ Definição de rotas para os setores de Pacientes */}
-                        <Route path="PacienteApresentacaoEmpresa"element={<PacienteApresentacaoEmpresa />} />
-                        <Route path="PacienteIdentificacao" element={<PacienteIdentificacao />} />
-                        <Route path="PacienteEndereco" element={<PacienteEndereco />} />
-                        <Route path="PacienteRemedio" element={<PacienteCadastroRemedio />} />
-                        <Route path="PacienteAlimentacao" element={<PacienteAlimentacao />} />
-                        <Route path="PacienteBanho" element={<PacienteBanho />} />
-                        <Route path="PacienteEmergencia" element={<PacienteEmergencia />} />
-                        <Route path="ClienteSolicitacao" element={<ClienteSolicitacao />} />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        {/* ------------------------------------------------------------- */}
-                        {/* INICIO - 📜 ROTA: CONTRATO DO CLIENTE                         */}
-                        {/* ------------------------------------------------------------- */}
                         <Route 
-                            path="clienteContrato" 
-                            element={<ClienteContrato />} 
+                            path="/logar" 
+                            element={
+                                <Logar 
+                                    socket={socket} 
+                                    setExibirBalaoDicaCriarConta={setExibirBalaoDicaCriarConta} 
+                                />
+                            } 
                         />
-                        {/* ------------------------------------------------------------- */}
-                        {/* FIM - 📜 ROTA: CONTRATO DO CLIENTE                            */}
-                        {/* ------------------------------------------------------------- */}
-                        
+
+                        <Route 
+                            path="/Cadastrar" 
+                            element={
+                                <Cadastrar 
+                                    socket={socket} 
+                                    setExibirBalaoDicaEntrar={setExibirBalaoDicaEntrar} 
+                                />
+                            } 
+                        />
+
+                        {/* -------------------------- */}
+                        {/* FIM - 🌍 Rotas Públicas */}
+                        {/* -------------------------- */}
+                
 
 
 
 
 
 
-                    </Route>
-
-                    {/* ----------------------------------------------------------------------- */}
-                    {/* FIM - 🔐 Setor Privativo: Acesso condicionado ao fim do carregamento */}
-                    {/* ----------------------------------------------------------------------- */}
 
 
 
 
+                        {/* ----------------------------------------------------------------------- */}
+                        {/* INICIO - 🔐 Setor Privativo: Acesso condicionado ao fim do carregamento */}
+                        {/* ----------------------------------------------------------------------- */}
 
-                    {/* 🛡️ Trava de Segurança: Redireciona qualquer rota inexistente para o Início */}
-                    <Route path="*" element={<Navigate to="/" />} />
+                        <Route 
+                            path="/interno" 
+                            element={
+                                carregandoModal ? null :
+                                dadosToken?.func && dadosToken.func !== 'visitante' ? (                   
+                                    <Outlet  />         
+                                ) : (
+                                    <Navigate to="/" replace />
+                                )
+                            } 
+                        >
+
+
+                            {/* 🧭 Rota Index: Evita tela branca ao acessar /interno diretamente */}
+                            <Route 
+                                index 
+                                element={
+                                    <Navigate to="UsuarioLogado" replace />
+                                } 
+                            />
+
+
+                            {/* 🧱 Controle do Programador dentro do Interno */}
+                            <Route 
+                                path="PainelMaster" 
+                                element={
+                                    dadosToken?.func === 'programador' ? (
+                                        <PainelMaster />
+                                    ) : (
+                                        <Navigate to="/interno/UsuarioLogado" replace />
+                                    )
+                                } 
+                            />
 
 
 
 
 
-                </Routes>
+                            {/* 🚪 Sub-cômodos (Rotas Filhas de /interno) */}          
+                            <Route 
+                                path="UsuarioIdentificacao" 
+                                element={<UsuarioIdentificacao />} 
+                            />
+
+
+                            <Route 
+                                path="UsuarioContato" 
+                                element={<UsuarioContato />} 
+                            />
+
+
+                            <Route 
+                                path="Endereco" 
+                                element={<Endereco />} 
+                            />
+
+
+                            <Route 
+                                path="Cnpj" 
+                                element={<Cnpj />} 
+                            />
+
+
+                            <Route 
+                                path="UsuarioFormacao" 
+                                element={<UsuarioFormacao />} 
+                            />
+
+
+                            <Route 
+                                path="Formacao" 
+                                element={<Formacao />} 
+                            />
+
+
+                            <Route 
+                                path="Funcoes" 
+                                element={<Funcoes />} 
+                            />
+
+
+                            <Route 
+                                path="UsuarioReferencias" 
+                                element={<UsuarioReferencias />} 
+                            />
+
+
+                            <Route 
+                                path="CadAdministrador" 
+                                element={<CadAdministrador />} 
+                            />
+
+
+                            <Route 
+                                path="diretrizes" 
+                                element={<Diretrizes />} 
+                            />
+
+
+                            <Route 
+                                path="Chamados" 
+                                element={<Chamados />} 
+                            />
+
+
+                            <Route 
+                                path="RelClientes" 
+                                element={<RelClientes />} 
+                            />
+
+
+                            <Route 
+                                path="RelCuidadoras" 
+                                element={<RelCuidadoras />} 
+                            />
+
+
+                            <Route 
+                                path="ProgramadorRelatorioCliente" 
+                                element={<ProgramadorRelatorioCliente />} 
+                            />
+
+
+                            <Route 
+                                path="RelSolicitacoes" 
+                                element={<RelSolicitacoes />} 
+                            />
+                            
+
+                            <Route                  
+                                path="TestePermissao" 
+                                element={<TestePermissao />}                    
+                            />
+
+
+                            <Route                         
+                                path="TestePermissaoMelhor" 
+                                element={<TestePermissaoMelhor />}                       
+                            />
+
+
+                            <Route                           
+                                path="Notificacoes" 
+                                element={<Notificacoes />}                       
+                            />
+
+
+                            <Route                            
+                                path="Chat" 
+                                element={<Chat />} 
+                            />
+
+
+                            <Route   
+                                path="UsuarioLogado" 
+                                element={
+                                    <UsuarioLogado 
+                                        perfilEstaCompletoAdministrador={perfilEstaCompletoAdministrador} 
+                                        perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
+                                        perfilEstaCompletoCliente={perfilEstaCompletoCliente} 
+                                    />
+                                } 
+                            />
+
+
+
+                            {/* 👥 Rota do Relatório de Clientes: Administrador */}
+                            <Route 
+                            path="/interno/AdministradorRelatorioClientes" 
+                            element={<AdministradorRelatorioClientes />} 
+                        />
+
+
+
+                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* INICIO - 👩‍⚕️ ROTA DO RELATÓRIO DE CUIDADORAS: ADMINISTRADOR                                  */}
+                            {/* -------------------------------------------------------------------------------------------- */}
+                            <Route 
+                                path="/interno/AdministradorRelatorioCuidadoras" 
+                                element={<AdministradorRelatorioCuidadoras />} 
+                            />
+                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* FIM - 👩‍⚕️ ROTA DO RELATÓRIO DE CUIDADORAS: ADMINISTRADOR                                     */}
+                            {/* -------------------------------------------------------------------------------------------- */}
+
+
+
+
+
+
+                            {/* 🛣️ Definição de rotas para os setores de Pacientes */}
+                            <Route path="PacienteApresentacaoEmpresa"element={<PacienteApresentacaoEmpresa />} />
+                            <Route path="PacienteIdentificacao" element={<PacienteIdentificacao />} />
+                            <Route path="PacienteEndereco" element={<PacienteEndereco />} />
+                            <Route path="PacienteRemedio" element={<PacienteCadastroRemedio />} />
+                            <Route path="PacienteAlimentacao" element={<PacienteAlimentacao />} />
+                            <Route path="PacienteBanho" element={<PacienteBanho />} />
+                            <Route path="PacienteEmergencia" element={<PacienteEmergencia />} />
+                            <Route path="ClienteSolicitacao" element={<ClienteSolicitacao />} />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            {/* ------------------------------------------------------------- */}
+                            {/* INICIO - 📜 ROTA: CONTRATO DO CLIENTE                         */}
+                            {/* ------------------------------------------------------------- */}
+                            <Route 
+                                path="clienteContrato" 
+                                element={<ClienteContrato />} 
+                            />
+                            {/* ------------------------------------------------------------- */}
+                            {/* FIM - 📜 ROTA: CONTRATO DO CLIENTE                            */}
+                            {/* ------------------------------------------------------------- */}
+                            
+
+
+
+
+
+
+                        </Route>
+
+                        {/* ----------------------------------------------------------------------- */}
+                        {/* FIM - 🔐 Setor Privativo: Acesso condicionado ao fim do carregamento */}
+                        {/* ----------------------------------------------------------------------- */}
+
+
+
+
+
+                        {/* 🛡️ Trava de Segurança: Redireciona qualquer rota inexistente para o Início */}
+                        <Route path="*" element={<Navigate to="/" />} />
+
+
+
+
+
+                    </Routes>
+
+                </div>
+
+                {/* ----------------------------- */}
+                {/* FIM - componente de pagina */}
+                {/* ----------------------------- */}
+
+
+
+
+
 
 
             </main>
 
-            {/* ----------------------- */}
-            {/* FIM - ROUTES - ROTAS */}
-            {/* ----------------------- */}
+            {/* ---------------------------------------------------- */}
+            {/* FIM - MAIN - main-area-principal - ROUTES - ROTAS */}
+            {/* ---------------------------------------------------- */}
+
+
+
 
 
 
@@ -2550,11 +2126,14 @@ export default function App() {
 
 
 
+
+
+
     );
 
-    /*  ------------------------------------- */
-    /*  FIM DO RETURN - Retorno da Central: */
-    /*  ------------------------------------- */
+    /*  ------------- */
+    /*  FIM DO RETURN */
+    /*  ------------- */
 
 
 

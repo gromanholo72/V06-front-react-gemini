@@ -7,7 +7,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin: 15px;
+    margin-top: 15px;
 
 }
 
@@ -363,13 +363,12 @@
 
 @media (max-width: 768px) {
 
-
-
-
+    
     .LoginForm-Login h3 {
        
         font-size: 34px;
        
+        font-size: 24px; /* Ajustado para não ser muito grande em telas pequenas */
     }
 
 
@@ -378,33 +377,39 @@
 
         font-size: 16px;
 
+        font-size: 14px; /* Mantém o tamanho padrão ou ajusta para menor */
     }
     
 
     
     .LoginForm-Login input {
 
-        padding: 14px;
-        font-size: 20px;
-       
+        font-size: 16px; /* Reduz o tamanho da fonte dos inputs */
     }
+
+       
+   }
 
 
 
     .BotaoPadraoLogin-Login {
       
-        padding: 18px;
+       
         font-size: 22px;
        
+       
+        font-size: 16px; /* Reduz o tamanho da fonte do botão principal */
     }
 
 
 
     #BotaoLinkCadastro-Login, #BotaoLinkEsqueci-Login {
     
-        padding: 18px;
+       
         font-size: 20px;
 
+       
+        font-size: 14px; /* Reduz o tamanho da fonte dos botões de link */
     }
 
 

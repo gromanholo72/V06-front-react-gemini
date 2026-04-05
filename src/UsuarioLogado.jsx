@@ -10,7 +10,7 @@ export function UsuarioLogado({ perfilEstaCompletoAdministrador, perfilEstaCompl
 
     return (
 
-        <div className="componente-de-pagina">
+        
 
 
 
@@ -151,6 +151,6 @@ export function UsuarioLogado({ perfilEstaCompletoAdministrador, perfilEstaCompl
 
 
 
-        </div>
+       
     );
 }

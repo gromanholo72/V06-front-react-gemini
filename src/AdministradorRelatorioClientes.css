@@ -80,7 +80,7 @@
 
 .relatorio-cliente-tabela {
     width: 100%;
-    min-width: 500px; /* 📐 Garante que a tabela não esprema demais o conteúdo */
+    /* min-width: 500px; 📐 Removido para permitir ajuste natural da largura */
     border-collapse: collapse;
     background-color: white;
 }
@@ -94,8 +94,6 @@
     font-size: 12px;
     text-align: center;
     border: 1px solid #2c3e50;
-    /* 📐 Blindagem de Layout: Permite quebra nos cabeçalhos para manter a compactação */
-    white-space: normal !important; 
 }
 
 .relatorio-cliente-tabela td {
@@ -105,10 +103,8 @@
     color: #2c3e50;
     font-weight: 600;
     font-size: 13px;
-    /* 📐 Blindagem Maestro: Força a quebra de linha para respeitar a largura da viga */
-    white-space: normal !important; 
-    word-break: break-word; /* 📐 Tenta quebrar palavras longas antes de ativar o scroll */
-    overflow-wrap: anywhere; /* 📐 Blindagem total contra vazamento de layout */
+    /* word-break: break-word; 📐 Removido para quebra de texto natural */
+    /* overflow-wrap: anywhere; 📐 Removido para quebra de texto natural */
 }
 
 .nome-destaque {

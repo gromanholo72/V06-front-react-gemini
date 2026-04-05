@@ -1,14 +1,11 @@
-/* .divContainerTudo {
-    display: flex;
-    justify-content: center; 
-    align-items: center;    
-    width: 100%;
-} */
+/* --------------------------------- */
+/* INICIO - 🏠 ESTRUTURA DO CARD PRINCIPAL */
+/* --------------------------------- */
 
 .Card-Apresentacao-Principal {
     background: #ffffff;
     border-radius: 20px;
-    padding: 30px;
+    padding: 40px;
     width: 100%;
     max-width: 650px; 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -23,6 +20,9 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
 }
+/* --------------------------------- */
+/* FIM - 🏠 ESTRUTURA DO CARD PRINCIPAL */
+/* --------------------------------- */
 
 
 
@@ -32,7 +32,36 @@
 
 
 
-/* ESTILIZAÇÃO DOS TEXTOS (REGRA 14) */
+
+/* --------------------------------- */
+/* INICIO - 🖼️ LOGOTIPO NO CARD (PROPORÇÃO BLINDADA) */
+/* --------------------------------- */
+
+.Imagem-Card-Inicio {
+    width: 100%;          
+    max-width: 300px;   
+    height: auto;        
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+    object-fit: contain;   
+}
+/* --------------------------------- */
+/* FIM - 🖼️ LOGOTIPO NO CARD (PROPORÇÃO BLINDADA) */
+/* --------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------- */
+/* INICIO - ✍️ ESTILIZAÇÃO DOS TEXTOS */
+/* --------------------------------- */
+
 .Texto-Destaque {
     font-size: 20px;
     color: #1a237e;
@@ -47,38 +76,13 @@
     margin-bottom: 20px;
     font-style: italic;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/* 🖼️ LOGOTIPO NO CARD (PROPORÇÃO BLINDADA) */
-.Imagem-Card-Inicio {
-    width: 100%;            /* Ocupa o espaço disponível... */
-    max-width: 250px;       /* ...mas não passa de 250px (tamanho ideal) */
-    height: auto;           /* 📐 A ALTURA SE AJUSTA SOZINHA (NÃO DEFORMA) */
-    display: block;
-    /* margin-top: 20px; */
-    /* margin-bottom: 20px; */
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
-    object-fit: contain;    /* Garante que o conteúdo da imagem fique íntegro */
-}
-
-
-
 .Texto-Chamada {
-
   margin-top: 30px;
   margin-bottom: 30px;
-
 }
+/* --------------------------------- */
+/* FIM - ✍️ ESTILIZAÇÃO DOS TEXTOS */
+/* --------------------------------- */
 
 
 
@@ -88,11 +92,32 @@
 
 
 
+
+/* --------------------------------- */
+/* INICIO - 📊 GRADE ORGANIZADORA DE CARDS */
+/* --------------------------------- */
 .container-apresentacao-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr; /* 📐 Ajuste Maestro: Força cada card a ocupar 100% da largura (stack vertical) */
     gap: 30px;
+    width: 100%;
   }
+/* --------------------------------- */
+/* FIM - 📊 GRADE ORGANIZADORA DE CARDS */
+/* --------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------- */
+/* INICIO - 🩺 CARDS DE SERVIÇO (CONTEÚDO) */
+/* --------------------------------- */
 
 .card-apresentacao-servico {
     background: rgba(175, 174, 174, 0.623);
@@ -105,14 +130,47 @@
     flex-direction: column;
     align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    width: 100%; /* 📐 Garante a ocupação total dentro do grid container */
+    box-sizing: border-box;
   }
+/* --------------------------------- */
+/* FIM - 🩺 CARDS DE SERVIÇO (CONTEÚDO) */
+/* --------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------- */
+/* INICIO - ✨ EFEITOS DE INTERAÇÃO */
+/* --------------------------------- */
   
-  /* // ✨ Efeito de Elevação ao passar o mouse nos cards */
   .card-apresentacao-servico:hover {
     transform: translateY(-10px);
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     border-color: #3f51b5;
   }
+/* --------------------------------- */
+/* FIM - ✨ EFEITOS DE INTERAÇÃO */
+/* --------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------- */
+/* INICIO - 🔡 TIPOGRAFIA DOS SERVIÇOS */
+/* --------------------------------- */
   
   .card-apresentacao-servico h3 {
     color: #1a237e;
@@ -125,4 +183,13 @@
     color: #455a64;
     line-height: 1.6;
     font-size: 1rem;
-  }
+}
+/* --------------------------------- */
+/* FIM - 🔡 TIPOGRAFIA DOS SERVIÇOS */
+/* --------------------------------- */
+
+
+
+
+
+

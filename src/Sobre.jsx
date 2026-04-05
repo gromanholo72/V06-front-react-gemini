@@ -40,7 +40,7 @@ export function Sobre() {
 
     return (
 
-        <div className="componente-de-pagina">
+        // <div className="componente-de-pagina">
 
 
 
@@ -130,7 +130,7 @@ export function Sobre() {
 
 
 
-        </div> 
+        // </div> 
 
     );
 }

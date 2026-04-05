@@ -1,28 +1,12 @@
 
 
 import { useState, useEffect } from 'react'; 
-
-// import { getDatabase, ref, get } from "firebase/database"; 
-
 import { useAuth } from './AutenticacaoContexto'; 
-
 import './Inicio.css';
-
-
 
 export function Inicio() {
 
-
     const { dadosToken, carregandoPermissoesFireBase } = useAuth();
-
-    
-    
-   
-
-
-
-
-
 
     /* 🎫 VISTORIA DOS DADOS DO TOKEN */
     useEffect(() => {
@@ -35,7 +19,6 @@ export function Inicio() {
         // console.log("✨ ----------------------------------");
 
     }, [dadosToken]);
-
 
     /* ⌛ VISTORIA DA TRAVA DE CARREGAMENTO DO FIREBASE*/
     useEffect(() => {
@@ -50,21 +33,7 @@ export function Inicio() {
     }, [carregandoPermissoesFireBase]);
 
 
-
-
-
-
-
-
-
-
-
     
-
-    // ----------------------------------------
-    // INICIO DO - TEXTE DE SEGURANCA DO FIREBASE
-    // ----------------------------------------
-
     const [statusIntegridadeBanco, setStatusIntegridadeBanco] = useState(() => {
 
         const valorInicial = "verificando"; 
@@ -93,92 +62,9 @@ export function Inicio() {
 
 
 
-
-
-
-
-    
-
-    // useEffect(() => {
-
-        // -----------------------
-        // INICIO DA - DUPLA TRAVA
-        // -----------------------
-
-        // Se o Vigia ainda está conferindo os documentos na portaria vai ser igual a true
-        // if (carregandoPermissoesFireBase) {
-        //     return;
-        // }
-
-        
-        // Isso garante que não estamos pegando o "cheiro" do crachá antigo
-        // if (dadosToken?.func !== 'visitante') {
-        //     return; 
-        // }
-
-        // -----------------------
-        // FIM DA - DUPLA TRAVA
-        // -----------------------
-
-    //     const carregarTesteSemCracha = async () => {
-
-    //         const db = getDatabase();
-
-    //         const caminhoNoBanco = ref(db, 'usuarios'); 
-            
-    //         try {
-
-    //             const snapshot = await get(caminhoNoBanco);
-
-    //             setStatusIntegridadeBanco("vulneravel");
-
-    //             console.log("");
-    //             console.error("✨ 👣 🏁 ----------------------------------");
-    //             console.error("✨ 👣 🏁 useEffect() - Componente - 🏁 inicio.jsx");
-    //             console.error("✨ 👣 🏁 Visitante tentando acessar o banco de dados");
-    //             console.error("✨ 👣 🏁 🎫 dadosToken?.func = ", dadosToken?.func);
-    //             console.error("✨ 👣 🏁 🔓 BRECHA ENCONTRADA: Consegui ler sem crachá!", snapshot.val());
-    //             console.error("✨ 👣 🏁 ----------------------------------");
-
-    //         } catch (error) {
-
-    //             setStatusIntegridadeBanco("protegido");
-
-    //             console.log("");
-    //             console.error("✨ 👣 🏁 ----------------------------------");
-    //             console.error("✨ 👣 🏁 useEffect() - Componente - 🏁 inicio.jsx");
-    //             console.error("✨ 👣 🏁 Visitante tentando acessar o banco de dados");
-    //             console.error("✨ 👣 🏁 🎫 dadosToken?.func = ", dadosToken?.func);
-    //             console.error("✨ 👣 🏁 🛡️ VIGIA ATENTO: Acesso negado.");
-    //             console.error("✨ 👣 🏁 📋 Código:", error.code); 
-    //             console.error("✨ 👣 🏁 ----------------------------------");
-
-    //         }
-
-    //     };
-
-    //     carregarTesteSemCracha();
-
-    // }, [dadosToken?.func]);
-
-
-    // ----------------------------------------
-    // FIM DO - TEXTE DE SEGURANCA DO FIREBASE
-    // ----------------------------------------
-
-
-
-
-
-
-
-
-
-
-
     return (
 
-        <div className="componente-de-pagina">
+        // <div className="componente-de-pagina">
 
 
 
@@ -191,10 +77,10 @@ export function Inicio() {
                         <span className="Subtexto-Especialidade">Especializada em cuidar.</span>  
                     </p>
                 
-                    <img 
+                    <img className="Imagem-Card-Inicio"
                         src="imagens/LogoSVG6.png" 
                         alt="Logo Padrao" 
-                        className="Imagem-Card-Inicio"
+                        
                     />
 
                     <p className="Texto-Chamada">
@@ -231,7 +117,7 @@ export function Inicio() {
 
 
 
-        </div> 
+        // </div> 
 
     );
 }

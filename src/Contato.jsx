@@ -3,7 +3,7 @@ import './Contato.css';
 export function Contato() {
     return (
 
-        <div className="componente-de-pagina">
+        // <div className="componente-de-pagina">
 
 
 
@@ -37,7 +37,7 @@ export function Contato() {
 
 
 
-        </div> 
+        // </div> 
         
     );
 }

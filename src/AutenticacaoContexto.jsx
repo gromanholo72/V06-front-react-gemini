@@ -348,7 +348,8 @@ export const AutenticacaoProvider = ({ children }) => {
 
         return novaConexao;
 
-    }, []); /* 📐 Trava a conexão para não repetir o aperto de mão */
+    }, []);
+    /* 📐 Trava a conexão para não repetir o aperto de mão */
 
     // ----------------------------------------------------
     // FIM - CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)
@@ -691,12 +692,12 @@ export const AutenticacaoProvider = ({ children }) => {
     
         const monitorarVigia = onAuthStateChanged(auth, async (user) => {
 
-        console.log("");
-        console.warn("✨ 📢 🟢 ----------------------------------");
-        console.warn("✨ 📢 🟢 Componente - 🏛️ AutenticacaoContexto.jsx");
-        console.warn("✨ 📢 🟢 useEffect() - const monitorarVigia firebase");
-        console.warn("✨ 📢 🟢 VIGIA ACORDOU!");
-        console.warn("✨ 📢 🟢 user:", user );
+        // console.log("");
+        // console.warn("✨ 📢 🟢 ----------------------------------");
+        // console.warn("✨ 📢 🟢 Componente - 🏛️ AutenticacaoContexto.jsx");
+        // console.warn("✨ 📢 🟢 useEffect() - const monitorarVigia firebase");
+        // console.warn("✨ 📢 🟢 VIGIA ACORDOU!");
+        // console.warn("✨ 📢 🟢 user:", user );
        
             try {
 
@@ -712,7 +713,7 @@ export const AutenticacaoProvider = ({ children }) => {
 
                 } else {
 
-                    console.warn("✨ 📢 🛑 Nenhum usuário ativo. Definindo como visitante.");
+                    // console.warn("✨ 📢 🛑 Nenhum usuário ativo. Definindo como visitante.");
 
                     setDadosToken({ ...valores_padrao_dadosToken });
 
@@ -726,7 +727,7 @@ export const AutenticacaoProvider = ({ children }) => {
 
             } finally {
 
-                console.warn("✨ 📢 🟢 ----------------------------------");
+                // console.warn("✨ 📢 🟢 ----------------------------------");
 
                 setCarregandoPermissoesFireBase(false); 
                 

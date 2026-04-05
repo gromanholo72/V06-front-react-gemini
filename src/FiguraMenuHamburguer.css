@@ -1,0 +1,81 @@
+/* ------------------------------------------------------------- */
+/* INICIO - 🎨 CSS: ANIMAÇÃO HAMBÚRGUER MAESTRO                  */
+/* ------------------------------------------------------------- */
+
+.botao-figura-menu-hamburguer {
+
+    display: none;
+
+    background: transparent;
+
+    border: none;
+    cursor: pointer;
+   
+    align-items: center;
+    justify-content: center;
+    z-index: 1002;
+
+    overflow: visible; 
+    /* padding-left: 10px; */
+    /* padding-right: 10px; */
+}
+
+.container-linhas-maestro {
+    width: 35px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.linha-maestro-hamburguer {
+    width: 100%;
+    height: 4px; 
+    background-color: #FFFFFF; 
+    border-radius: 10px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Linha Superior: Desce 9px e gira 45° */
+.menu-ativo .linha-maestro-hamburguer:nth-child(1) {
+    transform: translateY(13px) rotate(45deg);
+}
+
+/* Linha do Meio: Some para a esquerda */
+.menu-ativo .linha-maestro-hamburguer:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+/* Linha Inferior: Sobe 9px e gira -45° */
+.menu-ativo .linha-maestro-hamburguer:nth-child(3) {
+    transform: translateY(-13px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+
+    .botao-figura-menu-hamburguer {
+    
+        display: flex;
+    
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* FIM - 🎨 CSS: ANIMAÇÃO HAMBÚRGUER                              */
+/* ------------------------------------------------------------- */
+

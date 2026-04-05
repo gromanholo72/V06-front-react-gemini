@@ -1,0 +1,157 @@
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* INICIO - 📐 CONTAINER PRINCIPAL DA SIDEBAR: menu-sidebar-cuidadora-container                                     */
+/* ---------------------------------------------------------------------------------------------------------------- */
+
+.menu-sidebar-cuidadora-container {
+    width: var(--LarguraSidebarCuidadora);
+
+    position: fixed;
+    top: var(--altura-header); 
+
+    height: calc(100vh - var(--altura-header)); 
+
+    background-color: var(--cor-padrao-amarelo);
+
+    border-right: 1px solid rgb(61, 57, 57);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding-right: 5px;
+    z-index: 10;
+}
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* INICIO - 📐 CABEÇALHO DA SIDEBAR: menu-sidebar-cuidadora-header                                                  */
+/* ---------------------------------------------------------------------------------------------------------------- */
+
+.menu-sidebar-cuidadora-header {
+    padding: 10px 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* INICIO - 📐 TÍTULO DA ÁREA: menu-sidebar-cuidadora-titulo                                                        */
+/* ---------------------------------------------------------------------------------------------------------------- */
+
+.menu-sidebar-cuidadora-titulo {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* INICIO - 📐 LISTA DE BOTÕES VERTICAIS: menu-sidebar-cuidadora-lista-botoes                                       */
+/* ---------------------------------------------------------------------------------------------------------------- */
+
+.menu-sidebar-cuidadora-lista-botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px 5px;
+}
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* INICIO - 🔘 BOTÃO DE ITEM DO MENU: menu-sidebar-cuidadora-btn-item                                               */
+/* ---------------------------------------------------------------------------------------------------------------- */
+
+.menu-sidebar-cuidadora-btn-item {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 8px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    background-color: var(--cor-padraoFundoBotao);
+    color: var(--cor-padraoTextoBotao);
+}
+
+.menu-sidebar-cuidadora-btn-item:hover {
+    transform: translateX(5px);
+    background-color: var(--cor-padraoFundoBotaoHover);
+    color: var(--cor-padraoTextoBotaoHover);
+}
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* INICIO - 🚨 BOTÃO DE ALERTA (S.O.S): menu-sidebar-cuidadora-btn-alerta                                           */
+/* ---------------------------------------------------------------------------------------------------------------- */
+
+.menu-sidebar-cuidadora-btn-alerta {
+    color: var(--cor-padrao-vermalho);
+    font-weight: bold;
+}
+
+.menu-sidebar-cuidadora-btn-alerta:hover {
+    background-color: var(--cor-padrao-vermalho) !important;
+    color: white !important;
+}
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* INICIO - 📍 ÍCONES DO MENU: menu-sidebar-cuidadora-icon                                                          */
+/* ---------------------------------------------------------------------------------------------------------------- */
+
+.menu-sidebar-cuidadora-icon {
+    font-size: 16px;
+    margin-left: 5px;
+}

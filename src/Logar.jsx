@@ -146,6 +146,13 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
     // ----------------------------------------------------------------------
     };
 
+    // ----------------------------------------------------------------------
+    // FIM - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
+    // ----------------------------------------------------------------------
+
+
+
+
 
 
 
@@ -394,6 +401,10 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
+
+
+
+
     // ----------------------------------------------------
     // INICIO DO - Enviar dados de login para o servidor
     // ----------------------------------------------------
@@ -528,6 +539,10 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
+
+
+
+
     /*  ----------------- */
     /*  INICIO - Mascaras */
     /*  ----------------- */
@@ -595,10 +610,11 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
     /*  ----------------------------*/
 
     return (
+        
+        <>
 
 
-
-        <div className="componente-de-pagina">
+        {/* <div className="componente-de-pagina"> */}
 
 
 
@@ -906,9 +922,10 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
-        </div>
+        {/* </div> */}
 
 
+        </>
 
     ); 
 

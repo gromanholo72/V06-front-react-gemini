@@ -812,10 +812,10 @@ const handleChange = (e) => {
     /*  ------------------------------------- */
 
     return (
+        <>
 
 
-
-        <div className="componente-de-pagina">
+        {/* <div className="componente-de-pagina"> */}
 
 
 
@@ -908,7 +908,7 @@ const handleChange = (e) => {
                                     <div className="linha-foco">AGORA FAÇA SEU LOGIN</div>
                                 </>
                             ) : (
-                                <>⚠️ {msgErro}</>
+                                <>{msgErro}</>
                             )}
                         </span>
                     </div>
@@ -1205,8 +1205,9 @@ const handleChange = (e) => {
 
 
 
-        </div> // FIM DO - <div className="DivConteudo">
+        {/* </div>  */}
 
+        </>
 
     ); 
 
