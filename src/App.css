@@ -153,37 +153,102 @@
 
 
 
+/* MENU HORIZONTAL E SIDEBAR */
 
-
-/* ---------------------------------------------- */
-/* INICIO do - 🔩 Conteiner geral individualizado */
-/* ---------------------------------------------- */
-
-
-.submenu-container-geral.menu-mobile-ativo {
-
-    background-color: #222;
-
-    display: flex;
-    flex-direction: column;
-
-    position: absolute; 
-    top: 68px;
-    left: 0; 
-    z-index: 999;
+.div-pai-menu-mobile {
+    position: fixed;
+    top: var(--altura-header); 
+    left: 0;
     width: 100%;
+    
+    display: flex !important;
+    flex-direction: column !important; 
+    
+    justify-content: flex-start !important;
+    /* gap: 20px; */
+    background-color: rgb(216, 187, 187);
+    z-index: 999;
+    overflow-y: auto !important; 
+    overflow-x: hidden;
+    /* padding: 20px 0 20px 0;  */
 
-   
+    animation: slideDown 0.3s ease-out;
+    
 }
 
-.submenu-container-geral.menu-mobile-ativo button {
-    font-size: 18px;
-} 
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 
-/* ---------------------------------------------- */
-/* FIM do - 🔩 Conteiner geral individualizado */
-/* ---------------------------------------------- */
+
+
+
+
+
+
+/* MENU HORIZONTAL E SIDEBAR */
+
+.div-pai-menu-mobile-cliente {
+    position: fixed;
+    top: var(--altura-header); 
+    left: 0;
+    width: 100%;
+    
+    display: flex !important;
+    flex-direction: column !important; 
+    
+    justify-content: flex-start !important;
+    /* gap: 20px; */
+    background-color: rgb(216, 187, 187);
+    z-index: 999;
+    overflow-y: auto !important; 
+    overflow-x: hidden;
+    /* padding: 20px 0 20px 0;  */
+
+    animation: slideDown 0.3s ease-out;
+    
+}
+
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -230,106 +295,6 @@
 
 
 
-
-
-
-
-
-
-/* --------------------------------------------- */
-/* INICIO - menu-sidebar - menu lateral esquerda */
-/* --------------------------------------------- */
-
-.menu-sidebar-cuidadora-container {
-    width: var(--LarguraSidebarCuidadora);
-
-    position: fixed;
-    top: var(--altura-header); 
-
-    height: calc(100vh - var(--altura-header)); 
-
-    background-color: var(--cor-padrao-amarelo);
-
-    border-right: 1px solid rgb(61, 57, 57);
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    padding-right: 5px;
-    z-index: 10;
-}
-
-
-.menu-sidebar-cuidadora-header {
-    padding: 10px 10px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.menu-sidebar-cuidadora-titulo {
-    font-size: 18px;
-    font-weight: bold;
-    color: black;
-    display: block;
-}
-
-.menu-sidebar-cuidadora-lista-botoes {
-
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 5px 5px;
-
-}
-
-.menu-sidebar-cuidadora-btn-item {
-   
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 8px;
-    border: none;
-    border-radius: 8px;
-    font-size: 13px;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.3s ease;
-
-    background-color: var(--cor-padraoFundoBotao);
-    color: var(--cor-padraoTextoBotao);
-
-}
-
-.menu-sidebar-cuidadora-btn-item:hover {
-
-    transform: translateX(5px);
-
-    background-color: var(--cor-padraoFundoBotaoHover);
-    color: var(--cor-padraoTextoBotaoHover);
-
-}
-
-.menu-sidebar-cuidadora-icon {
-    font-size: 16px;
-    margin-left: 5px;
-}
-
-.menu-sidebar-cuidadora-btn-alerta {
-
-    color: var(--cor-padrao-vermalho);
-    font-weight: bold;
-
-}
-
-.menu-sidebar-cuidadora-btn-alerta:hover {
-
-    background-color: var(--cor-padrao-vermalho);
-
-}
-
-/* --------------------------------------------- */
-/* FIM - menu-sidebar - menu lateral esquerda */
-/* --------------------------------------------- */
 
 
 
@@ -1111,70 +1076,3 @@
 /* =====================================*/
 /* FIM - RELACIONADOS DO MENU PERFIL */
 /* =====================================*/
-
-
-
-
-
-
-
-
-
-
-
-
-/* --- CONFIGURAÇÃO PADRÃO (DESKTOP / COMPUTADOR) --- */
-
-/* Esconde a versão mobile por padrão no PC */
-/* .exibir-apenas-mobile {
-    display: none !important;
-} */
-
-/* Mostra a versão desktop no PC */
-/* .exibir-apenas-desktop {
-    display: block; 
-} */
-
-
-/* --- CONFIGURAÇÃO PARA CELULAR (MOBILE) --- */
-
-@media (max-width: 768px) {
-    
-    /* Agora invertemos: Esconde a versão do Desktop */
-    /* .exibir-apenas-desktop {
-        display: none !important;
-    } */
-
-    /* E mostra a versão que você colocou no Header (Mobile) */
-    /* .exibir-apenas-mobile {
-        display: block !important; 
-    } */
-
-
-
-    /* .componente-de-pagina {
-        margin: auto;
-        width: 100%;
-    } */
-
-
-
-
-    /* .submenu-container-geral {
-
-        position: absolute;
-
-        top: 50px;
-    } */
-    
-
-
-
-
-
-
-
-
-
-    
-}

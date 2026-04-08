@@ -3,7 +3,7 @@
     position: absolute;
 
 
-    top: 135%; /* Empurra para baixo do botão/ícone */
+    top: 128%; /* Empurra para baixo do botão/ícone */
     right: -5px;   /* Alinha o balão pela direita do container */
     
 
@@ -29,7 +29,7 @@
     position: absolute;
     
     bottom: 100%; /* Coloca a seta no TOPO do balão */
-    right: 43px;  /* Afasta um pouco da quina direita */
+    right: 33px;  /* Afasta um pouco da quina direita */
     
     /* 📐 Construção do triângulo apontando para cima */
     border-width: 8px;

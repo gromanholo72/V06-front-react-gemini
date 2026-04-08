@@ -1,16 +1,5 @@
 
 /* -------------------------------------------------------------------- */
-/* 🧱 ESTRUTURA DE ANCORAGEM (CONTAINER PAI)                             */
-/* -------------------------------------------------------------------- */
-/* .container-externo-blindado-sincronizado {
-    position: relative;
-    width: fit-content;
-    height: fit-content;
-    display: inline-block;
-    z-index: 2000; 
-} */
-
-/* -------------------------------------------------------------------- */
 /* 🍔 BOTÃO HAMBURGUER (ESTILO BASE)                                     */
 /* -------------------------------------------------------------------- */
 .btn-menu-base {
@@ -46,25 +35,12 @@
 /* 🖱️ Interação do Operário */
 .btn-menu-base:hover {
     transform: scale(1.1);
-    /* background-color: rgba(255, 255, 255, 0.1); */
 }
 
 .btn-menu-base:active {
     transform: scale(0.95);
 }
 
-/* -------------------------------------------------------------------- */
-/* ✨ EFEITO DE PULSAÇÃO (ATIVADO VIA ESTADO)                           */
-/* -------------------------------------------------------------------- */
-/* .btn-menu-base.pulsar-ativo { */
-    
-    /* 🚫 Sem energia no pulso no desktop */
-    /* animation: none;  */
-    /* box-shadow: none; */
-
-
-    /* animation: pulsoMestreSincronizado 2s infinite ease-in-out; */
-/* } */
 
 /* -------------------------------------------------------------------- */
 /* 🎈 BALÃO DE DICA (O CARD FLUTUANTE)                                  */
@@ -102,7 +78,7 @@
     content: '';
     position: absolute;
     bottom: 100%;       /* Grudado no topo do balão */
-    left: 20px;         /* Alinhado com o ícone */
+    left: 15px;         /* Alinhado com o ícone */
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 12px solid #25d366; /* Cor do início do gradiente */

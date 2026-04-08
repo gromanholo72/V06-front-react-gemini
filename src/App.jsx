@@ -78,11 +78,6 @@ import { Chamados } from './Chamados';
 import { Chat } from './Chat';
 
 
-// import { BalaoDica } from './componentes/BalaoDica';
-
-
-import {BalaoDicaCriarConta} from './componentes/BalaoDicaCriarConta.jsx';
-import {BalaoDicaEntrar} from './componentes/BalaoDicaEntrar.jsx';
 
 
 
@@ -91,12 +86,20 @@ import {FiguraMenuHamburguer} from './FiguraMenuHamburguer';
 
 
 
-import {MenuSideBarCuidadora} from './MenuSideBarCuidadora.jsx';
+// BALAO DICA
+import {BalaoDicaCriarConta} from './componentes/BalaoDica/BalaoDicaCriarConta';
+import {BalaoDicaEntrar} from './componentes/BalaoDica/BalaoDicaEntrar';
 
 
+// MENU HORIZONTAL
+import { MenuHorizontalVisitante } from './componentes/MenuHorizontal/MenuHorizontalVisitante';
+import { MenuHorizontalCuidadora } from './componentes/MenuHorizontal/MenuHorizontalCuidadora';
+import { MenuHorizontalCliente } from './componentes/MenuHorizontal/MenuHorizontalCliente';
 
-import { MenuHorizontalVisitante } from './MenuHorizontalVisitante.jsx';
-import { MenuHorizontalCuidadora } from './MenuHorizontalCuidadora';
+
+//MENU SIDEBAR
+import { MenuSideBarCuidadora } from './componentes/MenuSideBar/MenuSideBarCuidadora';
+import { MenuSideBarCliente } from './componentes/MenuSideBar/MenuSideBarCliente';
 
 
 
@@ -165,16 +168,21 @@ export default function App() {
         const checarTamanho = () => {
 
             const larguraAtual = window.innerWidth;
-            const veredictEhComputador = larguraAtual > 768; // Se for maior que 768, é computador
+
+            // Se for maior que 768, é computador
+            const veredictEhComputador = larguraAtual > 768; 
             
             setEhComputador(veredictEhComputador);
 
-            console.log("");
-            console.log("🔍 -----------------------------------------------------------");
-            console.log("🔍 INSPEÇÃO DE DISPOSITIVO (Responsividade)");
-            console.log("🔍 Largura da Janela :", larguraAtual + "px");
-            console.log("🔍 Modo Computador   :", veredictEhComputador ? "✅ SIM (Desktop)" : "❌ NÃO (Mobile)");
-            console.log("🔍 -----------------------------------------------------------");
+            // console.log("");
+            // console.log("🔍 -----------------------------------------------------------");
+            // console.log("🔍 INSPEÇÃO DE DISPOSITIVO (Responsividade)");
+            // console.log("🔍 App.jsx");
+            // console.log("🔍 Largura da Janela :", larguraAtual + "px");
+            // console.log("🔍 veredictEhComputador :", veredictEhComputador);
+            // console.log("🔍 Modo Computador   :", veredictEhComputador ? "✅ SIM (Desktop)" : "❌ NÃO (Mobile)");   
+            // console.log("🔍 -----------------------------------------------------------");
+      
         };
 
         checarTamanho();
@@ -1197,6 +1205,7 @@ export default function App() {
 
 
 
+
                 {/* ------------------------------------------ */}
                 {/* INICIO - 🖼️ LOGOMARCA (Extrema Esquerda) */}
                 {/* ------------------------------------------ */}
@@ -1222,14 +1231,16 @@ export default function App() {
                 {/* INICIO - 🍔 O Botão Hambúrguer assume o controle direto aqui */}
                 {/* ------------------------------------------------------------ */}
 
-                {/* 📱 CASO 02: É CELULAR */}
+                {/* 📱 CASO 02: É CELULAR - MOSTRAR A FIGURA DO MENU HAMBURGUER */}
                 {!ehComputador && (
+
                     <FiguraMenuHamburguer 
                         menuAberto={menuAberto}
                         setMenuAberto={setMenuAberto}
                         setSecaoAberta={setSecaoAberta}
                         exibirBalaoDicaMenuHamburguer={exibirBalaoDicaMenuHamburguer}
                     />
+
                 )}
                 
                 {/* --------------------------------------------------------- */}
@@ -1245,77 +1256,157 @@ export default function App() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 {/* ------------------------------------------------------------- */}
-                {/* INICIO do - 🔩 Conteiner geral individualizado PARA COMPUTADOR*/}
+                {/* INICIO do - 🔩💻 Conteiner geral individualizado PARA COMPUTADOR*/}
                 {/* ------------------------------------------------------------- */}
 
-                {ehComputador &&  dadosToken?.func === 'visitante' && (
-                    <MenuHorizontalVisitante 
-                        navegarERecolher={navegarERecolher} 
-                    />
-                )}
-                
 
                 {/* 💻 CASO 01: É COMPUTADOR */}
-                {ehComputador && dadosToken?.func === 'cuidadora' && (
-                    <MenuHorizontalCuidadora 
-                        navegarERecolher={navegarERecolher}
-                        perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
-                    />
-                )}
+                {ehComputador && (
+                    <>
 
-                {/* ------------------------------------------------------------- */}
-                {/* FIM do - 🔩 Conteiner geral individualizado PARA COMPUTADOR*/}
-                {/* ------------------------------------------------------------- */}
-                
+                        {/* VISITANTE */}
+                        {dadosToken?.func === 'visitante' && (
+                            <MenuHorizontalVisitante 
+                                navegarERecolher={navegarERecolher} 
+                            />
+                        )}
+                        
 
-
-
-
-
-
-
-                {/* ------------------------------------------------------------- */}
-                {/* INICIO do - 🔩 Conteiner geral individualizado PARA CELULAR*/}
-                {/* ------------------------------------------------------------- */}
-
-                <div className={`submenu-container-geral ${menuAberto ? 'menu-mobile-ativo' : ''}`}
-                    ref={menuRef}
-                >
-
-
-                    {/* 🛡️ É celular + É Visitante + O Menu está Aberto */}
-                    {!ehComputador && dadosToken?.func === 'visitante' && menuAberto && (
-     
-                        <MenuHorizontalVisitante 
-                            navegarERecolher={navegarERecolher} 
-                        />
-
-                    )}
-
-
-
-                    {!ehComputador && dadosToken?.func === 'cuidadora' && menuAberto && (
-                        <>
-
+                        {/* CUIDADORA */}
+                        {dadosToken?.func === 'cuidadora' && (
                             <MenuHorizontalCuidadora 
                                 navegarERecolher={navegarERecolher}
                                 perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
                             />
+                        )}
 
-                            <MenuSideBarCuidadora
-                                autorizadoAdministrador={autorizadoAdministrador} 
-                                navegarERecolher={navegarERecolher} 
+                        {/* CLIENTE */}
+                        {dadosToken?.func === 'cliente' && (
+                            <MenuHorizontalCliente 
+                                navegarERecolher={navegarERecolher}
+                                autorizadoAdministrador={autorizadoAdministrador}
                             />
+                        )}
 
-                        </>
-                    )}
+                    </>
+                )}
 
-                </div>
 
                 {/* ------------------------------------------------------------- */}
-                {/* INICIO do - 🔩 Conteiner geral individualizado PARA CELULAR*/}
+                {/* FIM do - 🔩💻 Conteiner geral individualizado PARA COMPUTADOR*/}
                 {/* ------------------------------------------------------------- */}
+                
+
+
+
+
+
+
+
+
+
+
+
+
+                {/* ------------------------------------------------------------- */}
+                {/* INICIO do - 🔩📱 Conteiner geral individualizado PARA CELULAR*/}
+                {/* ------------------------------------------------------------- */}
+
+                {/* 📱 CASO 02: É CELULAR + MENU ABERTO */}
+                {!ehComputador && menuAberto && (
+
+                    <div className={`submenu-container-geral ${menuAberto ? 'menu-mobile-ativo' : ''}`}
+                        ref={menuRef}
+                    >
+
+
+                        {/* 👤 CASO VISITANTE */}
+                        {dadosToken?.func === 'visitante' && (
+                        
+                            <MenuHorizontalVisitante 
+                                navegarERecolher={navegarERecolher} 
+                                menuAberto={menuAberto}
+                            />
+                            
+                        )}
+
+
+
+                        {/* 👩‍⚕️ CASO CUIDADORA */}
+                        {dadosToken?.func === 'cuidadora' && (
+
+                            <div className="div-pai-menu-mobile">
+                                
+                                {/* ⬆️ Parte de Cima: Horizontal */}
+                                <MenuHorizontalCuidadora 
+                                    navegarERecolher={navegarERecolher}
+                                    perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
+                                    menuAberto={menuAberto}
+                                />
+                                
+                                {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
+                                <MenuSideBarCuidadora
+                                    autorizadoAdministrador={autorizadoAdministrador} 
+                                    navegarERecolher={navegarERecolher} 
+                                    menuAberto={menuAberto}
+                                />
+                            
+                            </div>
+
+                        )}
+
+
+
+                        {/* 🏠 CASO CLIENTE */}
+                        {dadosToken?.func === 'cliente' && (
+                            
+
+                            <div className="div-pai-menu-mobile-cliente">
+                                
+                                <MenuHorizontalCliente 
+                                    navegarERecolher={navegarERecolher}
+                                    autorizadoAdministrador={autorizadoAdministrador}
+                                    menuAberto={menuAberto}
+                                />
+
+
+                                {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
+                                <MenuSideBarCliente
+                                    autorizadoAdministrador={autorizadoAdministrador} 
+                                    navegarERecolher={navegarERecolher} 
+                                    menuAberto={menuAberto}
+                                />
+
+                            </div>
+                            
+                        )}
+
+                        
+                    </div>
+
+                )}
+
+                {/* ------------------------------------------------------------- */}
+                {/* INICIO do - 🔩📱 Conteiner geral individualizado PARA CELULAR*/}
+                {/* ------------------------------------------------------------- */}
+
 
 
 
@@ -1681,6 +1772,9 @@ export default function App() {
 
 
 
+
+
+
             </header>
 
             {/* ----------------------------------------------------------------- */}
@@ -1730,18 +1824,18 @@ export default function App() {
                 {/* INICIO - menu-sidebar - menu lateral esquerda */}
                 {/* --------------------------------------------- */}
 
-                {/* 🛡️ TRAVA GERAL: Só processa se NÃO for visitante */}
-                {dadosToken?.func !== 'visitante' && (
-                    <>
-                        {/* 💻 CASO 01: É COMPUTADOR */}
-                        {ehComputador && (
-                            <MenuSideBarCuidadora 
-                                autorizadoAdministrador={autorizadoAdministrador} 
-                                navegarERecolher={navegarERecolher} 
-                            />
-                        )}
-                    </>
+
+                {/* 💻 CASO 01: É COMPUTADOR + CUIDADORA */}
+                {ehComputador && dadosToken?.func === 'cuidadora' && (
+
+                    <MenuSideBarCuidadora 
+                    autorizadoAdministrador={autorizadoAdministrador} 
+                    navegarERecolher={navegarERecolher} 
+                    />
+
                 )}
+
+
 
                 {/* --------------------------------------------- */}
                 {/* FIM - menu-sidebar - menu lateral esquerda */}

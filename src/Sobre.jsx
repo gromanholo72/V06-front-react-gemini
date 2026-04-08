@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PulsarTitulo } from './componentes/PulsarTitulo';
+import { PulsarTitulo } from './componentes/BalaoDica/PulsarTitulo';
 import './Sobre.css';
 
 export function Sobre() {

@@ -8,7 +8,7 @@ export const BalaoDicaCriarConta = ({ exibirBalaoDicaCriarConta }) => {
             {exibirBalaoDicaCriarConta && (
                 <motion.div 
                     key="balao-criar-conta"
-                    initial={{ opacity: 0, x: -20 }} /* ✨ Efeito lateral para variar */
+                    initial={{ opacity: 0, x: -20 }} 
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, scale: 0.8 }}
                     className="BalaoDicaCriarContaCorpo"

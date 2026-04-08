@@ -86,8 +86,8 @@ export function Funcoes() {
 
     return (
 
-        <div className="componente-de-pagina">
-
+        // <div className="componente-de-pagina">
+<>
            {/* O "Pai" precisa ser relative para o balão se basear nele */}
            <div className="Card-Informativo-Funcoes" style={{ position: 'relative' }}>
 
@@ -110,10 +110,10 @@ export function Funcoes() {
                 </div>
 
             </div>
+            </>
 
 
-
-        </div>
+        // </div>
 
     );
 }

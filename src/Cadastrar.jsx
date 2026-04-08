@@ -404,33 +404,49 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
     // ----------------------------------------------------------------------
-    // INICIO - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
+    // INICIO - CPF TESTES - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
     // ----------------------------------------------------------------------
+
     const [cpfsCadastrados, setCpfsCadastrados] = useState([]);
 
     useEffect(() => {
+
         if (!db_realtime) return;
 
         const verificarUsuariosCadastrados = async () => {
+
+            console.log("");
             console.log("🕵️‍♂️ ----------------------------------");
             console.log("🕵️‍♂️ Cadastrar.jsx: Verificando usuários já cadastrados...");
 
             const usuariosRef = ref(db_realtime, 'usuarios');
+
             try {
+
                 const snapshot = await get(usuariosRef);
+
                 if (snapshot.exists()) {
-                    const listaCpfs = Object.keys(snapshot.val()); 
+
+                    const dados = snapshot.val();
+                    const listaCpfs = Object.keys(dados); 
                     setCpfsCadastrados(listaCpfs);
-                    console.log("🕵️‍♂️ Cadastrados encontrados:", listaCpfs.length);
+
+                    console.log("🕵️‍♂️ Total de CPFs encontrados:", listaCpfs.length);
+                    console.log("🕵️‍♂️ Lista Completa de CPFs:", listaCpfs);
+
                 }
             } catch (error) {
+
                 console.error("❌ Erro ao verificar cadastros:", error);
+
             }
         };
 
         verificarUsuariosCadastrados();
+
     }, [db_realtime]);
 
+    //  PINTA OS BOTOES TESTES CPF PARA VER QUEM ESTA CADASTRADO OU NAO
     const getEstiloBotao = (cpfFormatado) => {
         const cpfLimpo = cpfFormatado.replace(/\D/g, "");
         if (cpfsCadastrados.includes(cpfLimpo)) {
@@ -438,9 +454,15 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
         }
         return {};
     };
+
     // ----------------------------------------------------------------------
-    // FIM - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
+    // FIM - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões 
     // ----------------------------------------------------------------------
+
+
+
+
+
 
     // ---------------------------------------------------------------------------
     // INICIO DO - CpefTextes - organizar preenchimento (CATEGORIZADO)
@@ -487,41 +509,49 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
 
-// 2. ✍️ Escriturário do Cadastro (V11 - Ajustado para Pastas)
-const handleChange = (e) => {
 
-    // ✅ Correto: Use 'let' para permitir a transformação
-    let { name, value } = e.target;
 
-    // 🛠️ Se o pincel estiver no campo "nome", transformamos em MAIÚSCULO
-    if (name === "nome") {
-        value = value.toUpperCase();
-    }
 
-    // 🚀 O SEGREDO DO MAESTRO:
-    // Identificamos para qual pasta o dado deve ir
-    setNovoUsuario(prev => {
-        // Se for cpef, nome ou func -> vai para dadosBasico
-        if (["cpef", "nome", "func"].includes(name)) {
-            return {
-                ...prev,
-                dadosBasico: { ...prev.dadosBasico, [name]: value }
-            };
+    // -----------------------------------------------------------------
+    // INICIO - ✍️ Escriturário do Cadastro (V11 - Ajustado para Pastas)
+    // -----------------------------------------------------------------
+
+    const handleChange = (e) => {
+
+        // ✅ Correto: Use 'let' para permitir a transformação
+        let { name, value } = e.target;
+
+        // 🛠️ Se o pincel estiver no campo "nome", transformamos em MAIÚSCULO
+        if (name === "nome") {
+            value = value.toUpperCase();
         }
-        // Se for a senha -> vai para dadosSeguranca
-        if (name === "senh") {
-            return {
-                ...prev,
-                dadosSeguranca: { ...prev.dadosSeguranca, [name]: value }
-            };
-        }
-        // Se cair aqui, é um campo desconhecido
-        return prev;
-    });
 
-};
+        // 🚀 O SEGREDO DO MAESTRO:
+        // Identificamos para qual pasta o dado deve ir
+        setNovoUsuario(prev => {
+            // Se for cpef, nome ou func -> vai para dadosBasico
+            if (["cpef", "nome", "func"].includes(name)) {
+                return {
+                    ...prev,
+                    dadosBasico: { ...prev.dadosBasico, [name]: value }
+                };
+            }
+            // Se for a senha -> vai para dadosSeguranca
+            if (name === "senh") {
+                return {
+                    ...prev,
+                    dadosSeguranca: { ...prev.dadosSeguranca, [name]: value }
+                };
+            }
+            // Se cair aqui, é um campo desconhecido
+            return prev;
+        });
 
+    };
 
+    // -----------------------------------------------------------------
+    // FIM - ✍️ Escriturário do Cadastro (V11 - Ajustado para Pastas)
+    // -----------------------------------------------------------------
 
 
 
@@ -548,7 +578,7 @@ const handleChange = (e) => {
         setMsgVisivel(false);
 
         console.log("");
-        console.log("📡 -----------------------------------------------------------");
+        console.log("📡 --------------------------------");
         console.log("📡 PROTOCOLO DE CADASTRO INICIADO");
         console.log("📡 Alvo:", novoUsuario.nome);
         console.log("📡 CPF:", novoUsuario.cpef);
@@ -669,21 +699,6 @@ const handleChange = (e) => {
 
     };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // ----------------------------------------------------
     // FIM DO - Enviar dados de cadastro para o servidor
     // ----------------------------------------------------
@@ -728,8 +743,6 @@ const handleChange = (e) => {
         }));
     };
 
-
-
     const mascaraTelefone = (e) => {
         // 🧱 Passo 1: Limpeza total
         let v = e.target.value.replace(/\D/g, '');
@@ -760,9 +773,6 @@ const handleChange = (e) => {
             fone: v
         });
     };
-
-
-
 
     const mascaraSenha = (e) => {
         // 🧱 Remove espaços em branco (senha não deve ter espaços)
@@ -928,7 +938,7 @@ const handleChange = (e) => {
                             <label>Nome:</label>
                             <input 
                                 type="text" 
-                                name="nome" // 🔑 Etiqueta para o Escriturário
+                                name="nome"
                                 placeholder="Nome Completo"
                                 value={novoUsuario.dadosBasico.nome}
                                 autoComplete="name"
@@ -942,7 +952,7 @@ const handleChange = (e) => {
                             <label>CPF:</label>
                             <input 
                                 type="text" 
-                                name="cpef" // 🔑 Etiqueta para o Escriturário
+                                name="cpef"
                                 placeholder="000.000.000-00"
                                 value={novoUsuario.dadosBasico.cpef}
                                 onChange={mascaraCpef} 
@@ -997,9 +1007,6 @@ const handleChange = (e) => {
                             </select>     
                         </div>
                     
-
-
-
                         {/* --- SENHA --- */}
                         <div className="CadUsuarioLargSenh">                  
                             <label>Senha:</label>
@@ -1029,10 +1036,6 @@ const handleChange = (e) => {
 
                         </div>
 
-
-
-
-
                         {/* --- DATA (APENAS LEITURA) --- */}
                         <div className="CadUsuarioLargDatC">                  
                             <label>Data Cadastro:</label>                                                                                    
@@ -1044,10 +1047,12 @@ const handleChange = (e) => {
                             />           
                         </div>
                         
+                        {/* --- AREA DE BOTOES) --- */}
                         <div className="CampoBotoes">
                             {/* <button type="button" onClick={() => navigate('/')}>Voltar</button> */}
                             <button type="submit">Cadastrar</button> 
                         </div>
+
                     </form>
 
                     {/* fim do - 🏢 CAD-USUARIO-FORM */ }
@@ -1061,6 +1066,9 @@ const handleChange = (e) => {
                 
 
 
+
+
+                {/* INICIO DO - <div className="CpefTextes-Cad"> */}
 
                 <div className="CpefTextes-Cad">
 
@@ -1157,17 +1165,17 @@ const handleChange = (e) => {
                             style={getEstiloBotao("729.583.410-09")}
                             onClick={() => preencherCampos({
                                 nome: "ROBERTO CARLOS REI",
-                                cpef: "729.583.410-09",
+                                cpef: "236.326.400-25",
                                 func: "cliente", 
-                                senh: "12345"
+                                senh: "123"
                             })}/> 
                         <input type="button" className="Botao-Teste-Cad" value="SANDRA" 
                             style={getEstiloBotao("810.332.940-03")}
                             onClick={() => preencherCampos({
                                 nome: "SANDRA ROSA MADALENA",
-                                cpef: "810.332.940-03",
+                                cpef: "765.316.010-78",
                                 func: "cliente", 
-                                senh: "12345"
+                                senh: "1111"
                             })}/> 
                     </div>
 
@@ -1193,7 +1201,12 @@ const handleChange = (e) => {
                             })}
                         />
                     </div>
-                </div> {/* FIM DO - <div className="CpefTextes-Cad"> */}
+                </div> 
+
+                {/* FIM DO - <div className="CpefTextes-Cad"> */}
+
+
+
 
 
 

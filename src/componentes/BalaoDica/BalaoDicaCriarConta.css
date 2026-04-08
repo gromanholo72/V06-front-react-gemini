@@ -1,10 +1,10 @@
-.BalaoDicaEntrarCorpo {
+.BalaoDicaCriarContaCorpo {
     /* 📐 Posicionamento: Agora ele fica ABAIXO do elemento */
     position: absolute;
 
 
-    top: 135%; /* Empurra para baixo do botão/ícone */
-    right: -5px;   /* Alinha o balão pela direita do container */
+    top: 128%; /* Empurra para baixo do botão/ícone */
+    right: -85px;   /* Alinha o balão pela direita do container */
     
 
     /* 🎨 Estilo do Card */
@@ -20,16 +20,16 @@
     pointer-events: none;
 
     animation: pulsarVerde 2s infinite;
-
+    
 }
 
 /* ✨ A Seta (Triângulo) apontando para CIMA no canto DIREITO */
-.BalaoDicaEntrarCorpo::after {
+.BalaoDicaCriarContaCorpo::after {
     content: "";
     position: absolute;
     
     bottom: 100%; /* Coloca a seta no TOPO do balão */
-    right: 43px;  /* Afasta um pouco da quina direita */
+    right: 132px;  /* Afasta um pouco da quina direita */
     
     /* 📐 Construção do triângulo apontando para cima */
     border-width: 8px;
@@ -41,20 +41,10 @@
 .Botao-Acao-Visitante-Perfil.pulsar-ativo {
     animation: pulsarVerde 2s infinite;
     border: 2px solid #25d366;
-    background-color: #74d899;
 }
 
 @keyframes pulsarVerde {
-    0% { 
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 1); 
-       
-    }
-    70% { 
-        box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); 
-       
-    }
-    100% { 
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); 
-      
-    }
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 1); }
+    70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }

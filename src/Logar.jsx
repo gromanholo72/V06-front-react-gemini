@@ -867,15 +867,15 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                         <input type="button" className="Botao-Teste-Login" value="ROBERTO" 
                             style={getEstiloBotao("729.583.410-09")}
                             onClick={() => preencherCampos({
-                                cpef: "729.583.410-09",
-                                senh: "12345"
+                                cpef: "236.326.400-25",
+                                senh: "123"
                             })}/>
 
                         <input type="button" className="Botao-Teste-Login" value="SANDRA" 
                             style={getEstiloBotao("810.332.940-03")}
                             onClick={() => preencherCampos({
-                                cpef: "810.332.940-03",
-                                senh: "12345"
+                                cpef: "765.316.010-78",
+                                senh: "1111"
                             })}/>
                     </div>
 

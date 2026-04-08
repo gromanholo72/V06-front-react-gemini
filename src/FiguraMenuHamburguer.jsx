@@ -1,6 +1,6 @@
 import React from 'react';
 import './FiguraMenuHamburguer.css';
-import {BalaoDicaMenuHamburguer} from './componentes/BalaoDicaMenuHamburguer';
+import {BalaoDicaMenuHamburguer} from './componentes/BalaoDica/BalaoDicaMenuHamburguer';
 
 export const FiguraMenuHamburguer = ({ 
     menuAberto, 

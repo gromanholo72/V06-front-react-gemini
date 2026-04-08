@@ -53,6 +53,26 @@
     transform: translateY(-13px) rotate(-45deg);
 }
 
+
+
+.pulsar-ativo {
+    animation: pulsar-maestro 1.5s infinite;
+}
+
+@keyframes pulsar-maestro {
+    0% {
+        box-shadow: 0 0 0 0 rgb(79, 170, 128); /* Cor da cuidadora */
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(79, 170, 128, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(79, 170, 128, 0);
+    }
+}
+
+
+
 @media (max-width: 768px) {
 
     .botao-figura-menu-hamburguer {

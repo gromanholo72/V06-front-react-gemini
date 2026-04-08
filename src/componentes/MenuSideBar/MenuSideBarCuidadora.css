@@ -1,0 +1,221 @@
+
+
+
+/* --------------------------------------------- */
+/* INICIO - menu-sidebar - menu lateral esquerda */
+/* --------------------------------------------- */
+
+.menu-sidebar-cuidadora-container {
+    width: var(--LarguraSidebarCuidadora);
+
+    position: fixed;
+    top: var(--altura-header); 
+
+    height: calc(100vh - var(--altura-header)); 
+
+    background-color: var(--cor-padrao-amarelo);
+
+    border-right: 1px solid rgb(61, 57, 57);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding-right: 5px;
+    z-index: 10;
+}
+
+
+.menu-sidebar-cuidadora-header {
+    padding: 10px 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-sidebar-cuidadora-titulo {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    display: block;
+}
+
+.menu-sidebar-cuidadora-lista-botoes {
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px 5px;
+
+}
+
+.menu-sidebar-cuidadora-btn-item {
+   
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 8px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+
+    background-color: var(--cor-padraoFundoBotao);
+    color: var(--cor-padraoTextoBotao);
+
+}
+
+.menu-sidebar-cuidadora-btn-item:hover {
+
+    transform: translateX(5px);
+
+    background-color: var(--cor-padraoFundoBotaoHover);
+    color: var(--cor-padraoTextoBotaoHover);
+
+}
+
+.menu-sidebar-cuidadora-icon {
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.menu-sidebar-cuidadora-btn-alerta {
+
+    color: var(--cor-padrao-vermalho);
+    font-weight: bold;
+
+}
+
+.menu-sidebar-cuidadora-btn-alerta:hover {
+
+    background-color: var(--cor-padrao-vermalho);
+
+}
+
+/* --------------------------------------------- */
+/* FIM - menu-sidebar - menu lateral esquerda */
+/* --------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------- */
+/* FIM - menu-sidebar - menu lateral esquerda    */
+/* --------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* ----------------------------------------------------------- */
+/* 🔩 📱 INICIO - CLASSE DE ATIVAÇÃO MOBILE: menu-sidebar-cuidadora-ativo */
+/* ----------------------------------------------------------- */
+
+.menu-sidebar-cuidadora-ativo {
+
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    background-color: var(--cor-padraobranco) !important; 
+    
+    display: flex !important;
+    flex-direction: column !important; /* Mantém o Título em cima e a Lista embaixo */
+    justify-content: center !important;
+    align-items: center !important;
+    
+    /* 📐 Ajuste de encaixe no mobile stack */
+    padding: 0 0 15px 0 !important;
+    z-index: 1002 !important; 
+    
+    border-left: 2px solid var(--cor-padrao-azul);
+    border-right: 2px solid var(--cor-padrao-azul);
+    border-bottom: 2px solid var(--cor-padrao-azul);
+    border-top: none !important;
+    box-shadow: none !important;
+}
+
+/* 🏷️ Título do Menu Mobile (Sidebar Ativa) - Sincronizado com Menu Horizontal */
+.menu-sidebar-cuidadora-ativo .menu-sidebar-cuidadora-header {
+    width: 100% !important;
+    padding: 10px 0 0 0 !important; /* 📐 Removido respiro inferior no mobile ativo */
+    border-bottom: none !important;
+}
+
+.menu-sidebar-cuidadora-ativo .menu-sidebar-cuidadora-titulo {
+
+    /* 📐 Log de Estilo: Padronizando Título da Sidebar Mobile */
+    font-size: 20px !important; 
+    font-weight: bold !important;
+    color: var(--cor-padrao-azul) !important; 
+    text-align: center !important; 
+    width: 100% !important; 
+    display: block !important;
+}
+
+/* 🧱 Ajuste Maestro: Força a lista de botões a ficar horizontal (lado a lado) */
+.menu-sidebar-cuidadora-ativo .menu-sidebar-cuidadora-lista-botoes {
+    display: flex !important;
+    flex-direction: row !important; 
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 10px !important;
+    width: 100% !important;
+}
+
+/* 🔘 Padronização dos Botões internos conforme MenuHorizontalCuidadora.css */
+.menu-sidebar-cuidadora-ativo .menu-sidebar-cuidadora-btn-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    padding: 10px 15px !important;
+    width: auto !important;
+    min-width: fit-content !important;
+    
+    background-color: var(--cor-padraobranco) !important;
+    color: var(--cor-padraoTextoBotao) !important;
+    
+    /* Estética Maestro: Bordas Horizontais Azuis */
+    border-top: 2px solid var(--cor-padrao-azul) !important;
+    border-bottom: 2px solid var(--cor-padrao-azul) !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 10px !important;
+    
+    font-weight: bold !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+/* ✨ Efeito Hover Maestro Mobile (Sincronizado com Menu Horizontal) */
+.menu-sidebar-cuidadora-ativo .menu-sidebar-cuidadora-btn-item:hover {
+    background-color: var(--cor-padraoFundoBotaoHover) !important;
+    color: var(--cor-padraobranco) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+
+/* ----------------------------------------------------------- */
+/* 🔩 📱 FIM - CLASSE DE ATIVAÇÃO MOBILE                          */
+/* ----------------------------------------------------------- */

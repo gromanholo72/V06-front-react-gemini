@@ -3,7 +3,8 @@ import './MenuSideBarCuidadora.css';
 
 export const MenuSideBarCuidadora = ({ 
     navegarERecolher, 
-    autorizadoAdministrador 
+    autorizadoAdministrador,
+    menuAberto
 }) => {
 
     // 🎨 Estilo dinâmico para bloqueio de área
@@ -15,7 +16,8 @@ export const MenuSideBarCuidadora = ({
     };
 
     return (
-        <div className="menu-sidebar-cuidadora-container">
+
+        <div className={`menu-sidebar-cuidadora-container ${menuAberto ? 'menu-sidebar-cuidadora-ativo' : ''}`}>
 
             <div className="menu-sidebar-cuidadora-header">
                 <div className="menu-sidebar-cuidadora-funcao">
@@ -68,5 +70,8 @@ export const MenuSideBarCuidadora = ({
             </div>
 
         </div>
+
+
+
     );
 };
