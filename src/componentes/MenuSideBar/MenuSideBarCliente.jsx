@@ -32,29 +32,19 @@ export const MenuSideBarCliente = ({
     };
 
 
-
-
-
-
-
-
-
-
     return (
         // --------------------------------------------------------------------------------------------
         // INICIO - 🧱 ESTRUTURA DA SIDEBAR: CLIENTE (PACIENTE)
         // --------------------------------------------------------------------------------------------
-        <div className={`menu-sidebar-cliente-container ${!ehComputador ? 'menu-sidebar-cliente-ativo' : ''}`}>
+        <div className={`menu-sidebar-cliente-container ${!ehComputador ? 'menu-sidebar-cliente-celular' : ''}`}>
 
 
-
-
-        {ehComputador ? (
+            {ehComputador ? (
                 /* 💻 Estrutura Completa para Desktop */
                 <div className="menu-sidebar-paciente-header">
                     <div className="menu-sidebar-paciente-funcao">
                         <span className="titulo-setor-sidebar">
-                            {autorizadoAdministrador ? "Prontuário do Paciente" : "Prontuário do Paciente 🔒"}
+                            Prontuário do Paciente {autorizadoAdministrador ? "" : "🔒"}
                         </span>
                     </div>
                 </div>
@@ -68,31 +58,51 @@ export const MenuSideBarCliente = ({
 
 
 
-            <div className="lista-botoes-vertical" 
+            <div className="lista-botoes-cliente-vertical" 
                 style={estiloListaBloqueada}
             >
-
-                <button className="Btn-geral-cliente-prof" onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}>
+                
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}>
                     👤 Identificação <span className="menu-sidebar-cliente-icon"></span>
                 </button>
 
-                <button className="Btn-geral-cliente-prof" onClick={() => navegarERecolher('/interno/PacienteEndereco')}>
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteEndereco')}>
                     📍 Endereço <span className="menu-sidebar-cliente-icon"></span>
                 </button>
+
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteContatos')}>
+                    📞 Família / Responsáveis <span className="menu-sidebar-cliente-icon"></span>
+                </button>
+
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteHistorico')}>
+                    📜 Histórico Clínico <span className="menu-sidebar-cliente-icon"></span>
+                </button>
                 
-                <button className="Btn-geral-cliente-prof" onClick={() => navegarERecolher('/interno/PacienteRemedio')}>
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteSinaisVitais')}>
+                    🌡️ Sinais Vitais <span className="menu-sidebar-cliente-icon"></span>
+                </button>
+
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteRemedio')}>
                     💊 Medicamentos <span className="menu-sidebar-cliente-icon"></span>
                 </button>
                 
-                <button className="Btn-geral-cliente-prof" onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}>
-                 🍏 Alimentação <span className="menu-sidebar-cliente-icon"></span>
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}>
+                    🍏 Alimentação <span className="menu-sidebar-cliente-icon"></span>
                 </button>
                 
-                <button className="Btn-geral-cliente-prof" onClick={() => navegarERecolher('/interno/PacienteBanho')}>
-                    🚿Banho <span className="menu-sidebar-cliente-icon"></span>
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteBanho')}>
+                    🚿 Banho / Higiene <span className="menu-sidebar-cliente-icon"></span>
+                </button>
+
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteMobilidade')}>
+                    🚶 Mobilidade / Quedas <span className="menu-sidebar-cliente-icon"></span>
+                </button>
+
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteExames')}>
+                    📁 Exames / Laudos <span className="menu-sidebar-cliente-icon"></span>
                 </button>
                 
-                <button className="Btn-geral-cliente-prof" onClick={() => navegarERecolher('/interno/PacienteEmergencia')}>
+                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteEmergencia')}>
                     🚨 Emergência <span className="menu-sidebar-cliente-icon"></span>
                 </button>
 

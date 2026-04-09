@@ -38,31 +38,31 @@ export const MenuHorizontalCliente = ({
 
 
             {/* 🧱 Wrapper para garantir alinhamento horizontal dos botões */}
-            <div className="botoes-cliente-wrapper">
+            <div className="lista-botoes-cliente-horizontal">
 
                 <button 
-                    className="Btn-geral-cliente-prof"
+                    className="Btn-geral-cliente-horizontal"
                     onClick={() => navegarERecolher('/interno/UsuarioLogado')}
                 >
                     Inicio
                 </button>
 
                 <button 
-                    className="Btn-geral-cliente-prof" 
+                    className="Btn-geral-cliente-horizontal" 
                     onClick={() => navegarERecolher('/interno/PacienteApresentacaoEmpresa')}
                 >
                     Empresa
                 </button>
 
                 <button 
-                    className="Btn-geral-cliente-prof" 
+                    className="Btn-geral-cliente-horizontal" 
                     onClick={() => navegarERecolher('/interno/Diretrizes')}
                 >
                     Diretrizes
                 </button>
 
                 <button 
-                    className="Btn-geral-cliente-prof" 
+                    className="Btn-geral-cliente-horizontal" 
                     style={{
                         opacity: autorizadoAdministrador ? 1 : 0.5,
                         pointerEvents: autorizadoAdministrador ? 'auto' : 'none',

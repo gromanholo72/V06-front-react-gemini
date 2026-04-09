@@ -55,8 +55,7 @@ export function UsuarioLogado({ perfilEstaCompletoAdministrador, perfilEstaCompl
 
                         <h2>👋 Olá, {dadosToken?.nome || "Usuário"}!</h2>
                         <p> Você acessou sua area interna com sucesso.</p>
-                        <br />
-                        
+                    
                     </div>
 
                     {/* ------------------------------- */}

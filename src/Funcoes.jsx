@@ -86,34 +86,33 @@ export function Funcoes() {
 
     return (
 
-        // <div className="componente-de-pagina">
-<>
-           {/* O "Pai" precisa ser relative para o balão se basear nele */}
-           <div className="Card-Informativo-Funcoes" style={{ position: 'relative' }}>
+        <div className="Grid-Status-Informativo-Funcoes">
+            <>
 
-                <h2 className="Texto-Destaque-Funcoes">⚙️ Suas Funções na empresa</h2>
-                
-                <span className="Subtexto-Especialidade-Funcoes">
-                🛠️ Definição de responsabilidades para: <strong>{dadosToken?.func?.toUpperCase() || "VISITANTE"}</strong>
-                </span>
+                <div className="Card-Informativo-Funcoes" style={{ position: 'relative' }}>
 
-                <div className="Corpo-Texto-Funcoes">
-                    <p>
-                    📝 É sua função como {dadosToken?.func || "visitante"}:
-                    </p>
+                    <h2 className="Texto-Destaque-Funcoes">⚙️ Suas Funções na empresa</h2>
+                    
+                    <span className="Subtexto-Especialidade-Funcoes">
+                        🛠️ Definição de responsabilidades para: <strong>{dadosToken?.func?.toUpperCase() || "VISITANTE"}</strong>
+                    </span>
 
-                    {conteudoAtual}
+                    <div className="Corpo-Texto-Funcoes">
+                        <p>
+                            📝 É sua função como {dadosToken?.func || "visitante"}:
+                        </p>
 
-                    <p className="Frase-Final-Funcoes">
-                        <strong>Mantenha seu cadastro atualizado para acessar todas as funcionalidades do seu perfil.</strong>
-                    </p>
+                        {conteudoAtual}
+
+                        <p className="Frase-Final-Funcoes">
+                            <strong>Mantenha seu cadastro atualizado para acessar todas as funcionalidades do seu perfil.</strong>
+                        </p>
+                    </div>
+
                 </div>
 
-            </div>
             </>
-
-
-        // </div>
+        </div>
 
     );
 }

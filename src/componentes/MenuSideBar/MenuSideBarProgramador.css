@@ -1,36 +1,44 @@
+/* -------------------------------------------------------------- */
+/* INICIO - 📐 CONTAINER PRINCIPAL DA SIDEBAR: PROGRAMADOR - COMPUTADOR */
 /* ----------------------------------------------------------------- */
-/* INICIO - 📐 CONTAINER PRINCIPAL DA SIDEBAR: CLIENTE - COMPUTADOR  */
-/* -------------------------------------------------- -------------- */
 
-.menu-sidebar-cliente-container {
-    width: var(--LarguraSidebarCliente); 
+.menu-sidebar-programador-container {
+    width: var(--LarguraSidebarProgramador); 
     position: fixed;
     top: var(--altura-header); 
     height: calc(100vh - var(--altura-header)); 
-    background-color: var(--cor-padrao-amarelo);
+    background-color: var(--cor-padraobranco);
     border-right: 1px solid rgb(61, 57, 57);
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
     padding-right: 5px;
     z-index: 10;
+    padding-top: 10px;
 }
 
 /* ------------------------------------------------ */
-/* FIM - 📐 CONTAINER PRINCIPAL DA SIDEBAR: CLIENTE - COMPUTADOR */
+/* FIM - 📐 CONTAINER PRINCIPAL DA SIDEBAR: PROGRAMADOR - COMPUTADOR */
 /* ------------------------------------------------- */
 
 
 
 
+
+
+
+
+
+
+
 /* --------------------------------------------------------------- */
-/* INICIO - 🏷️ CABEÇALHO E TÍTULO DA SIDEBAR: CLIENTE - COMPUTADOR */
+/* INICIO - 🏷️ CABEÇALHO E TÍTULO DA SIDEBAR: PROGRAMADOR - COMPUTADOR */
 /* --------------------------------------------------------------- */
 
-.menu-sidebar-paciente-header {
+.menu-sidebar-programador-header {
     padding: 10px 10px;
     text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .titulo-setor-sidebar {
@@ -39,31 +47,35 @@
     color: black;
     display: block;
 }
+
 /* ------------------------------------------------ */
-/* FIM - 🏷️ CABEÇALHO E TÍTULO DA SIDEBAR: CLIENTE - COMPUTADOR  */
+/* FIM - 🏷️ CABEÇALHO E TÍTULO DA SIDEBAR: PROGRAMADOR - COMPUTADOR  */
 /* ------------------------------------------------ */
+
+
+
+
+
+
+
 
 
 
 
 /* ------------------------------------------------- */
-/* INICIO - 🔘 LISTA DE BOTÕES VERTICAIS: CLIENTE - COMPUTADOR    */
+/* INICIO - 🔘 LISTA DE BOTÕES VERTICAIS: PROGRAMADOR - COMPUTADOR    */
 /* ------------------------------------------------- */
 
-
-
-
-.lista-botoes-cliente-vertical { /* 🔘 3. LISTA DE BOTÕES VERTICAIS (SÊNIOR) */
+.lista-botoes-programador-vertical {
     display: flex;
-    flex-direction: column; /* 📐 Corrigido: Sidebar é vertical */
+    flex-direction: column;
     gap: 5px;
     padding: 10px 8px;
     width: 100%;
     overflow-y: auto;
 }
 
-
-.Btn-geral-cliente-vertical {
+.Btn-geral-programador-vertical {
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -82,24 +94,20 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.Btn-geral-cliente-vertical:hover {
+.Btn-geral-programador-vertical:hover {
     background-color: var(--cor-padraoFundoBotaoHover);
     color: var(--cor-padraobranco);
     transform: translateX(5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.Btn-geral-cliente-vertical:active {
-    transform: translateY(-1px);
-}
-
-.menu-sidebar-cliente-icon {
+.menu-sidebar-programador-icon {
     font-size: 16px;
     margin-left: 5px;
 }
 
 /* -------------------------------------------- */
-/* FIM - 🔘 LISTA DE BOTÕES VERTICAIS: CLIENTE - COMPUTADOR  */
+/* FIM - 🔘 LISTA DE BOTÕES VERTICAIS: PROGRAMADOR - COMPUTADOR  */
 /* -------------------------------------------- */
 
 
@@ -112,31 +120,11 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ----------------------------------------------------------- */
-/* 🔩 📱 CLASSE DE ATIVAÇÃO MOBILE: menu-sidebar-cliente-celular */
+/* 🔩 📱 CLASSE DE ATIVAÇÃO MOBILE: menu-sidebar-programador-celular */
 /* ----------------------------------------------------------- */
 
-.menu-sidebar-cliente-celular {
+.menu-sidebar-programador-celular {
     position: static;
     width: 100% !important;
     left: 0 !important;
@@ -144,7 +132,7 @@
     min-height: 0 !important;
     background-color: var(--cor-padraobranco) !important;
 
-    /* 🚀 PADRÃO MAESTRO: Flex Row com Wrap */
+    /* 🚀 PADRÃO MAESTRO: Flex Row com Wrap para Mobile */
     display: flex !important;
     flex-direction: row !important; 
     justify-content: center !important;
@@ -155,25 +143,22 @@
     z-index: 999 !important; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     
-    /* Mantendo as bordas conforme o modelo */
     border-left: 2px solid var(--cor-padrao-azul);
     border-right: 2px solid var(--cor-padrao-azul);
     border-top: 2px solid var(--cor-padrao-azul);
 }
 
-/* 🏷️ Título do Menu Mobile (Sidebar Ativa) */
-.menu-sidebar-cliente-celular .titulo-setor-sidebar {
+.menu-sidebar-programador-celular .titulo-setor-sidebar {
     font-size: 20px !important; 
     font-weight: bold !important;
     color: #306396 !important; 
     text-align: left !important; 
     width: 100% !important; 
-    /* margin-bottom: 10px !important; */
     display: block !important;
+    margin-bottom: 10px;
 }
 
-/* 🧱 Wrapper para garantir o alinhamento (Equivalente ao botoes-cliente-wrapper) */
-.menu-sidebar-cliente-celular .lista-botoes-cliente-vertical {
+.menu-sidebar-programador-celular .lista-botoes-programador-vertical {
     display: flex !important;
     flex-direction: row !important; 
     justify-content: center !important; 
@@ -183,34 +168,15 @@
     width: 100% !important;
 }
 
-/* 🔘 Ajuste fino nos botões para mobile (Igual ao seu modelo) */
-.menu-sidebar-cliente-celular .Btn-geral-cliente-vertical {
+.menu-sidebar-programador-celular .Btn-geral-programador-vertical {
     padding: 12px 15px !important;
     font-size: 14px !important;
-    
-    /* ❗ Importante: 100% faz eles empilharem se o wrapper for row */
     width: 100% !important; 
     justify-content: flex-start !important;
-      
-    background-color: var(--cor-padraobranco);
-    color: var(--cor-padraoTextoBotao);
-    border-top: 2px solid var(--cor-padrao-azul);
-    border-bottom: 2px solid var(--cor-padrao-azul);
     border-left: none;
     border-right: none;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* Efeito Hover para manter a interatividade */
-.menu-sidebar-cliente-celular .Btn-geral-cliente-vertical:hover {
-    background-color: var(--cor-padraoFundoBotaoHover);
-    color: var(--cor-padraobranco);
-    transform: translateY(-3px);
 }
 
 /* ----------------------------------------------------------- */
-/* FIM - 📱 CLASSE DE ATIVAÇÃO MOBILE: CLIENTE                 */
+/* FIM - 📱 CLASSE DE ATIVAÇÃO MOBILE: PROGRAMADOR             */
 /* ----------------------------------------------------------- */

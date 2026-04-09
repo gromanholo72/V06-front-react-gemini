@@ -4,15 +4,13 @@
 .Grid-Status-Informativo-logado {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    /* gap: 20px; */
     
-    padding: 20px;
+    padding: 10px;
     width: 100%;
-    max-width: 700px; /* 📐 Largura de leitura confortável (Padrão Funcoes) */
-    margin: 0 auto;   /* 🧱 Centraliza o bloco na tela */
+    max-width: 700px;
+    margin: 0 auto;   
 
-    /* 🚀 IMPLEMENTAÇÃO: Entrada suave por opacidade (Esconde o deslizamento do menu) */
-    animation: fadeInSecoTotal 1.2s ease-out backwards;
 }
 
 /* 📋 Cards Padrão */
@@ -25,24 +23,19 @@
     
     display: flex;
     flex-direction: column;
-    align-items: center; /* 📐 Centraliza conteúdo interno */
+    align-items: center;
     text-align: center;
     
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* 📐 Sombra mais difusa */
+    /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); */
     /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
 
     /* 🎨 Identidade Visual (Viga Superior) */
-    border-top: 5px solid #306396;
+    /* border-top: 5px solid #306396;
     border-left: none;
     border-right: none;
-    border-bottom: none;
+    border-bottom: none; */
     border: 1px solid #f0f0f0; /* Borda sutil apenas para contraste */
-    border-top: 5px solid #306396; /* Reforço da viga */
-}
-
-/* 🧱 RESET: Remove animação individual para o Grid controlar tudo */
-.Card-Status-Informativo-logado {
-    /* Animação delegada para o grid pai */
+    /* border-top: 5px solid #306396;  */
 }
 
 /* ✨ Efeito Hover */

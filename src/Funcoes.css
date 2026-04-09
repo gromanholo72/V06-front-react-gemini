@@ -1,80 +1,82 @@
-
-
-
-.Card-Informativo-Funcoes {
-
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 30px;
+/* ------------------------------------------------------------- */
+/* INICIO - 🏠 1. CONTAINER PRINCIPAL (GRID DE STATUS)            */
+/* ------------------------------------------------------------- */
+.Grid-Status-Informativo-Funcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    
+    /* 📐 Implementação Solicitada: Padding de 10px */
+    padding: 10px;
     width: 100%;
-    max-width: 650px; 
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    border-top: 6px solid #1a237e; 
+    max-width: 700px;
+    margin: 0 auto;   
+}
+/* ------------------------------------------------------------- */
+/* FIM - 🏠 1. CONTAINER PRINCIPAL (GRID DE STATUS)               */
+/* ------------------------------------------------------------- */
 
-    /* margin-top: 15px;
-    margin-left: 20px;
-    margin-right: 20px; */
-    margin: 20px;
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📋 2. CARD INFORMATIVO (PADRÃO MAESTRO)               */
+/* ------------------------------------------------------------- */
+.Card-Informativo-Funcoes {
+    background-color: #ffffff;
+    border-radius: 12px; /* 📐 Ajustado para 12px conforme UsuarioLogado.css */
+    padding: 25px;
     
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+   
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    
+    /* 🎨 Identidade Visual (Viga Superior Maestro) */
+    border-top: 5px solid #306396;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border: 1px solid #f0f0f0; 
+    
+    transition: box-shadow 0.3s ease;
 }
 
+.Card-Informativo-Funcoes:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+/* ------------------------------------------------------------- */
+/* FIM - 📋 2. CARD INFORMATIVO (PADRÃO MAESTRO)                  */
+/* ------------------------------------------------------------- */
 
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - ✍️ 3. TEXTOS E TIPOGRAFIA                             */
+/* ------------------------------------------------------------- */
 .Texto-Destaque-Funcoes {
-    font-size: 26px;
-    color: #1a237e;
-    /* line-height: 2; */
+    font-size: 1.8rem; /* 📐 Alinhado ao padrão UsuarioLogado.css */
+    color: #1a237e; 
+    font-weight: 800;
     margin-bottom: 5px;
 }
 
 .Subtexto-Especialidade-Funcoes {
     display: block;
-    font-size: 16px;
+    font-size: 1.1rem;
     color: #7f8c8d;
     font-style: italic;
+    margin-bottom: 10px;
 }
 
-
-/* ✍️ TEXTOS E LISTA */
 .Corpo-Texto-Funcoes {
-    text-align: center;
     color: #34495e;
     line-height: 1.6;
     margin-top: 20px;
-}
-
-.Lista-Diferenciais-Funcoes {
-    margin: 20px 0;
-    /* padding-left: 20px; */
-    list-style-type: none; /* Tiramos a bolinha padrão para usar emojis ou estilo próprio */
-}
-
-.Lista-Diferenciais-Funcoes li {
-   
-    /* Mantendo suas regras base intactas */
-    margin-bottom: 12px;
-    position: relative;
-
-    /* Adicionando a nova camada suave */
-    background-color: rgba(79, 170, 128, 0.1); 
-    color: #2c3e50;                            
-    padding: 15px 20px 15px 25px;              
-    border-radius: 8px;                      
-    list-style: none;
-    
-    /* Detalhe: Uma borda sólida à esquerda com o seu verde padrão */
-    border-left: 5px solid #1a237e;
-    
-    transition: all 0.3s ease;
-
-
-}
-
-.Lista-Diferenciais-Funcoes li::before {
-    margin-right: 10px;
+    font-size: 1rem;
 }
 
 .Frase-Final-Funcoes {
@@ -82,4 +84,41 @@
     font-size: 1.1rem;
     color: #1a237e;
     margin-top: 30px;
+    font-weight: 600;
 }
+/* ------------------------------------------------------------- */
+/* FIM - ✍️ 3. TEXTOS E TIPOGRAFIA                                */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📝 4. LISTA DE DIFERENCIAIS (ESTILIZAÇÃO SENIOR)      */
+/* ------------------------------------------------------------- */
+.Lista-Diferenciais-Funcoes {
+    margin: 20px 0;
+    list-style-type: none;
+    width: 100%;
+}
+
+.Lista-Diferenciais-Funcoes li {
+    margin-bottom: 12px;
+    position: relative;
+    background-color: rgba(79, 170, 128, 0.1); 
+    color: #2c3e50;                            
+    padding: 15px 20px 15px 25px;              
+    border-radius: 8px;                      
+    border-left: 5px solid #306396; /* 📐 Viga lateral azul maestro */
+    transition: all 0.3s ease;
+    text-align: left;
+}
+/* ------------------------------------------------------------- */
+/* FIM - 📝 4. LISTA DE DIFERENCIAIS (ESTILIZAÇÃO SENIOR)         */
+/* ------------------------------------------------------------- */

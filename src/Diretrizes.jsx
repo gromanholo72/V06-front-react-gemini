@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Diretrizes.css';
 
 /* ------------------------------------------------------------- */
 /* INICIO - ⚖️ COMPONENTE: Diretrizes                            */
 /* ------------------------------------------------------------- */
 export function Diretrizes() {
-    return (
-        <div className="componente-de-pagina">
 
+    // ---------------------------------
+    // INICIO - ✨ Sensor de Carregamento
+    // ---------------------------------
+    useEffect(() => {
+        console.log("");
+        console.log("✨ 📋 -----------------------------------------------------------");
+        console.log("✨ 📋 componente: Diretrizes.jsx");
+        console.log("✨ 📋 Ação: Renderizando Grid-Status-Informativo-Diretrizes");
+        console.log("✨ 📋 -----------------------------------------------------------");
+    }, []);
+    // ---------------------------------
+    // FIM - ✨ Sensor de Carregamento
+    // ---------------------------------
+
+
+
+
+    return (
+        <div className="Grid-Status-Informativo-Diretrizes">
            <div className="Card-Informativo-Diretrizes">
                 
                 <h2 className="Texto-Destaque-Diretrizes">⚖️ Diretrizes de Conduta</h2>
@@ -26,35 +43,35 @@ export function Diretrizes() {
                         <li>
                             <strong>🍎 Alimentação:</strong> 
                             <br /> 
-                            Não é permitido alimentar-se com as provisões do cliente. 
+                            Não é permitido alimentar-se com as provisões do cliente.
                             Traga sua própria refeição e mantenha o ambiente limpo.
                         </li>
                         
                         <li>
                             <strong>💊 Medicação e Cuidados:</strong> 
                             <br /> 
-                            Ministrar medicamentos <b>apenas</b> sob orientação médica. 
+                            Ministrar medicamentos **apenas** sob orientação médica.
                             Siga rigorosamente os horários registrados neste sistema.
                         </li>
                         
                         <li>
                             <strong>🤝 Respeito e Ética:</strong> 
                             <br /> 
-                            Priorizamos o respeito absoluto. Qualquer comportamento 
+                            Priorizamos o respeito absoluto. Qualquer comportamento
                             desrespeitoso é considerado uma infração grave.
                         </li>
 
                         <li>
                             <strong>🧠 Terapia Ocupacional:</strong> 
                             <br /> 
-                            O entretenimento recreativo não é função direta da cuidadora. 
+                            O entretenimento recreativo não é função direta da cuidadora.
                             Atividades específicas são realizadas por profissionais qualificados.
                         </li>
 
                         <li>
                             <strong>Horario de visita:</strong> 
                             <br /> 
-                            Familiares podem visitar a qualquer momento podendo integrar com pacientes a qualguer momento
+                            Familiares podem visitar a qualquer momento podendo integrar com pacientes a qualquer momento
                         </li>
 
                         <li>

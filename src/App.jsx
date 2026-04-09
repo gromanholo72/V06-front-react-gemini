@@ -95,12 +95,14 @@ import {BalaoDicaEntrar} from './componentes/BalaoDica/BalaoDicaEntrar';
 import { MenuHorizontalVisitante } from './componentes/MenuHorizontal/MenuHorizontalVisitante';
 import { MenuHorizontalCuidadora } from './componentes/MenuHorizontal/MenuHorizontalCuidadora';
 import { MenuHorizontalCliente } from './componentes/MenuHorizontal/MenuHorizontalCliente';
+import { MenuHorizontalProgramador } from './componentes/MenuHorizontal/MenuHorizontalProgramador';
 
 
 //MENU SIDEBAR
 import { MenuSideBarCuidadora } from './componentes/MenuSideBar/MenuSideBarCuidadora';
 import { MenuSideBarCliente } from './componentes/MenuSideBar/MenuSideBarCliente';
 
+import { MenuSideBarProgramador } from './componentes/MenuSideBar/MenuSideBarProgramador';
 
 
 
@@ -119,11 +121,27 @@ const formatarCPF = (cpf) => {
 
 
 
+// 1️⃣ Crie um mapa de larguras (Pode ficar fora do componente para organizar)
+const LARGURAS_SIDEBAR = {
+
+    visitante:   '0px',
+    programador: 'var(--LarguraSidebarProgramador)',
+    admininistrador: 'var(--LarguraSidebarAdmininstrador)',
+    cuidadora:    'var(--LarguraSidebarCuidadora)',
+    cliente:     'var(--LarguraSidebarCliente)',
+
+    financeiro:  'var(--LarguraSidebarFinanceiro)'
+    
+};
+
+
+
+
+
 export default function App() {
 
 
     const navigate = useNavigate();
-
 
 
     // --------------------------------------------------------------
@@ -151,6 +169,9 @@ export default function App() {
 
 
 
+
+
+    const larguraAtual = LARGURAS_SIDEBAR[dadosToken?.func] || '0px';
 
 
 
@@ -724,9 +745,10 @@ export default function App() {
 
 
 
-// ------------------------------------------------------------------
+    // ------------------------------------------------------------------
     // INICIO - 🔒 TRAVA DE MOVIMENTO SEM SUMIR SCROLL (ANTI-PULO)
     // ------------------------------------------------------------------
+
     useEffect(() => {
         if (!ehComputador && menuAberto) {
             console.log("🔒 📐 SCROLL LOCK: Travando movimento, mantendo visual.");
@@ -762,6 +784,7 @@ export default function App() {
             document.body.style.overscrollBehavior = '';
         };
     }, [menuAberto, ehComputador]);
+
     // ------------------------------------------------------------------
     // FIM - 🔒 TRAVA DE MOVIMENTO
     // ------------------------------------------------------------------
@@ -1366,62 +1389,25 @@ export default function App() {
 
 
 
-                {/* ------------------------------------------------------------ */}
-                {/* INICIO - 🍔 O Botão Hambúrguer assume o controle direto aqui */}
-                {/* ------------------------------------------------------------ */}
+        
 
-                {/* 📱 CASO 02: É CELULAR - MOSTRAR A FIGURA DO MENU HAMBURGUER */}
-                {!ehComputador && (
-
-                    <FiguraMenuHamburguer 
-                        menuAberto={menuAberto}
-                        setMenuAberto={setMenuAberto}
-
-                        secaoAberta={secaoAberta}
-                        setSecaoAberta={setSecaoAberta}
-
-                        exibirBalaoDicaMenuHamburguer={exibirBalaoDicaMenuHamburguer}
-                    />
-
-                )}
-                
-                {/* --------------------------------------------------------- */}
-                {/* FIM - 🍔 O Botão Hambúrguer assume o controle direto aqui */}
-                {/* --------------------------------------------------------- */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                {/* ------------------------------------------------------------- */}
-                {/* INICIO do - 🔩💻 Conteiner geral individualizado PARA COMPUTADOR*/}
-                {/* ------------------------------------------------------------- */}
-
+                {/* ------------------------------------------------- */}
+                {/* INICIO do - 💻🔩 MENU HORIZONTAL PARA COMPUTADOR */}
+                {/* ------------------------------------------------- */}
 
                 {/* 💻 CASO 01: É COMPUTADOR */}
                 {ehComputador && (
                     <>
+
+
+
+                        {/* PROGRAMADOR */}
+                        {dadosToken?.func === 'programador' && (
+                            <MenuHorizontalProgramador 
+                            navegarERecolher={navegarERecolher}
+                            ehComputador={ehComputador}
+                            />
+                        )}
 
 
                         {/* VISITANTE */}
@@ -1444,6 +1430,7 @@ export default function App() {
                         )}
 
 
+
                         {/* CLIENTE */}
                         {dadosToken?.func === 'cliente' && (
                             <MenuHorizontalCliente 
@@ -1458,10 +1445,9 @@ export default function App() {
                     </>
                 )}
 
-
-                {/* ------------------------------------------------------------- */}
-                {/* FIM do - 🔩💻 Conteiner geral individualizado PARA COMPUTADOR*/}
-                {/* ------------------------------------------------------------- */}
+                {/* ------------------------------------------------- */}
+                {/* INICIO do - 💻🔩 MENU HORIZONTAL PARA COMPUTADOR */}
+                {/* ------------------------------------------------- */}
                 
 
 
@@ -1475,86 +1461,142 @@ export default function App() {
 
 
 
+
+                {/* ------------------------------------------------------------ */}
+                {/* INICIO - 🍔 O Botão Hambúrguer assume o controle direto aqui */}
+                {/* ------------------------------------------------------------ */}
+
+                {/* 📱 CASO 02: É CELULAR - MOSTRAR A FIGURA DO MENU HAMBURGUER */}
+                {!ehComputador && (
+
+                    <FiguraMenuHamburguer 
+                        menuAberto={menuAberto}
+                        setMenuAberto={setMenuAberto}
+
+                        secaoAberta={secaoAberta}
+                        setSecaoAberta={setSecaoAberta}
+
+                        exibirBalaoDicaMenuHamburguer={exibirBalaoDicaMenuHamburguer}
+                    />
+
+                )}
+
+                {/* --------------------------------------------------------- */}
+                {/* FIM - 🍔 O Botão Hambúrguer assume o controle direto aqui */}
+                {/* --------------------------------------------------------- */}
+
+
                 {/* ------------------------------------------------------------- */}
-                {/* INICIO do - 🔩📱 Conteiner geral individualizado PARA CELULAR*/}
+                {/* INICIO do - 📱🔩 Conteiner geral individualizado PARA CELULAR*/}
                 {/* ------------------------------------------------------------- */}
 
                 {/* 📱 CASO 02: É CELULAR + MENU ABERTO */}
                 {!ehComputador && menuAberto && (
 
-                    <div className={`submenu-container-geral ${menuAberto ? 'menu-mobile-ativo' : ''}`}
-                        ref={menuRef}
-                    >
+                <div className={`submenu-container-geral ${menuAberto ? 'menu-mobile-ativo' : ''}`}
+                    ref={menuRef}
+                >
 
 
-                        {/* 👤 CASO VISITANTE */}
-                        {dadosToken?.func === 'visitante' && (
-                        
-                            <MenuHorizontalVisitante 
-                                navegarERecolher={navegarERecolher} 
-                                menuAberto={menuAberto}
+
+                    {/* 👩‍⚕️ CASO CUIDADORA */}
+                    {dadosToken?.func === 'programador' && (
+
+                        <div className="div-pai-menu-mobile">
+                            
+                            {/* ⬆️ Parte de Cima: Horizontal */}
+                            <MenuHorizontalProgramador 
+                                navegarERecolher={navegarERecolher}
+                                autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
                             />
                             
-                        )}
+                            {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
+                            <MenuSideBarProgramador
+                                navegarERecolher={navegarERecolher}
+                                autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
+                            />
+
+                        </div>
+
+                    )}
 
 
 
-                        {/* 👩‍⚕️ CASO CUIDADORA */}
-                        {dadosToken?.func === 'cuidadora' && (
-
-                            <div className="div-pai-menu-mobile">
-                                
-                                {/* ⬆️ Parte de Cima: Horizontal */}
-                                <MenuHorizontalCuidadora 
-                                    navegarERecolher={navegarERecolher}
-                                    autorizadoAdministrador={autorizadoAdministrador}
-                                    ehComputador={ehComputador}
-                                />
-                                
-                                {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
-                                <MenuSideBarCuidadora
-                                    navegarERecolher={navegarERecolher}
-                                    autorizadoAdministrador={autorizadoAdministrador}
-                                    ehComputador={ehComputador}
-                                />
-                            
-                            </div>
-
-                        )}
 
 
 
-                        {/* 🏠 CASO CLIENTE */}
-                        {dadosToken?.func === 'cliente' && (
-                            
-
-                            <div className="div-pai-menu-mobile-cliente">
-                                
-                                <MenuHorizontalCliente 
-                                    navegarERecolher={navegarERecolher}
-                                    autorizadoAdministrador={autorizadoAdministrador}
-                                    ehComputador={ehComputador}
-                                />
 
 
-                                {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
-                                <MenuSideBarCliente
-                                     navegarERecolher={navegarERecolher}
-                                     autorizadoAdministrador={autorizadoAdministrador}
-                                     ehComputador={ehComputador}
-                                />
-
-                            </div>
-                            
-                        )}
-
+                    {/* 👤 CASO VISITANTE */}
+                    {dadosToken?.func === 'visitante' && (
+                    
+                        <MenuHorizontalVisitante 
+                            navegarERecolher={navegarERecolher} 
+                            menuAberto={menuAberto}
+                        />
                         
-                    </div>
+                    )}
+
+
+
+                    {/* 👩‍⚕️ CASO CUIDADORA */}
+                    {dadosToken?.func === 'cuidadora' && (
+
+                        <div className="div-pai-menu-mobile">
+                            
+                            {/* ⬆️ Parte de Cima: Horizontal */}
+                            <MenuHorizontalCuidadora 
+                                navegarERecolher={navegarERecolher}
+                                autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
+                            />
+                            
+                            {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
+                            <MenuSideBarCuidadora
+                                navegarERecolher={navegarERecolher}
+                                autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
+                            />
+                        
+                        </div>
+
+                    )}
+
+
+
+                    {/* 🏠 CASO CLIENTE */}
+                    {dadosToken?.func === 'cliente' && (
+                        
+
+                        <div className="div-pai-menu-mobile-cliente">
+                            
+                            <MenuHorizontalCliente 
+                                navegarERecolher={navegarERecolher}
+                                autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
+                            />
+
+
+                            {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
+                            <MenuSideBarCliente
+                                navegarERecolher={navegarERecolher}
+                                autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
+                            />
+
+                        </div>
+                        
+                    )}
+
+                    
+                </div>
 
                 )}
 
                 {/* ------------------------------------------------------------- */}
-                {/* INICIO do - 🔩📱 Conteiner geral individualizado PARA CELULAR*/}
+                {/* INICIO do - 📱🔩 Conteiner geral individualizado PARA CELULAR*/}
                 {/* ------------------------------------------------------------- */}
 
 
@@ -1563,8 +1605,6 @@ export default function App() {
 
 
 
-
-                
 
 
 
@@ -1927,6 +1967,7 @@ export default function App() {
 
 
 
+    
 
 
 
@@ -1975,13 +2016,26 @@ export default function App() {
 
 
 
-                {/* --------------------------------------------- */}
-                {/* INICIO - menu-sidebar - menu lateral esquerda */}
-                {/* --------------------------------------------- */}
 
 
+
+                {/* ------------------------------------------------- */}
+                {/* INICIO do - 💻🔩 MENU SIDEBAR PARA COMPUTADOR */}
+                {/* ------------------------------------------------- */}
+
+                {/* 💻 CASO 01: É COMPUTADOR */}
                 {ehComputador && (
                     <>
+
+                        {/* PROGRAMADOR*/}
+                        {dadosToken?.func === 'programador' && (
+                            <MenuSideBarProgramador
+                                navegarERecolher={navegarERecolher}
+                                autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
+                            />
+                        )}
+
 
 
                         {/* CLIENTE */}
@@ -2007,11 +2061,9 @@ export default function App() {
                     </>
                 )}
 
-
-
-                {/* --------------------------------------------- */}
-                {/* FIM - menu-sidebar - menu lateral esquerda */}
-                {/* --------------------------------------------- */}
+                {/* ------------------------------------------------- */}
+                {/* FIM do - 💻🔩 MENU SIDEBAR PARA COMPUTADOR */}
+                {/* ------------------------------------------------- */}
 
                 
 
@@ -2027,7 +2079,12 @@ export default function App() {
                 {/* INICIO - componente de pagina */}
                 {/* ----------------------------- */}
 
-                <div className={`componente-de-pagina ${ehComputador && dadosToken?.func !== 'visitante' ? 'com-sidebar' : 'sem-sidebar'}`}>
+                <div className={`componente-de-pagina 
+
+                    ${ehComputador && dadosToken?.func !== 'visitante' ? 'com-sidebar' : 'sem-sidebar'}`}
+                    style={{ '--largura-dinamica': larguraAtual }}
+                    
+                >
 
                     <Routes>
 

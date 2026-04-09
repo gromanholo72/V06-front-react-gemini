@@ -48,7 +48,7 @@ export const MenuSideBarCuidadora = ({
             <div className="menu-sidebar-cuidadora-header">
                 <div className="menu-sidebar-cuidadora-funcao">
                     <span className="menu-sidebar-cuidadora-titulo">
-                        {autorizadoAdministrador ? "Área da Cuidadora" : "Área da Cuidadora 🔓"}
+                    Área da Cuidadora {autorizadoAdministrador ? "" : "🔓"}
                     </span>
                 </div>
             </div>
