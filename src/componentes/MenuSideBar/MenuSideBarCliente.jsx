@@ -5,7 +5,7 @@ import './MenuSideBarCliente.css';
 export const MenuSideBarCliente = ({ 
     autorizadoAdministrador, 
     navegarERecolher, 
-    menuAberto 
+    ehComputador 
 }) => {
 
     // ---------------------------------
@@ -44,18 +44,26 @@ export const MenuSideBarCliente = ({
         // --------------------------------------------------------------------------------------------
         // INICIO - 🧱 ESTRUTURA DA SIDEBAR: CLIENTE (PACIENTE)
         // --------------------------------------------------------------------------------------------
-        <div className={`menu-sidebar-cliente-container ${menuAberto ? 'menu-sidebar-cliente-ativo' : ''}`}>
+        <div className={`menu-sidebar-cliente-container ${!ehComputador ? 'menu-sidebar-cliente-ativo' : ''}`}>
 
 
 
 
-            <div className="menu-sidebar-paciente-header">
-                <div className="menu-sidebar-paciente-funcao">
-                    <span className="titulo-setor-sidebar">
-                        {autorizadoAdministrador ? "Prontuário do Paciente" : "Prontuário do Paciente 🔒"}
-                    </span>
+        {ehComputador ? (
+                /* 💻 Estrutura Completa para Desktop */
+                <div className="menu-sidebar-paciente-header">
+                    <div className="menu-sidebar-paciente-funcao">
+                        <span className="titulo-setor-sidebar">
+                            {autorizadoAdministrador ? "Prontuário do Paciente" : "Prontuário do Paciente 🔒"}
+                        </span>
+                    </div>
                 </div>
-            </div>
+            ) : (
+                /* 📱 No Celular: Renderiza APENAS o título direto */
+                <h3 className="titulo-setor-sidebar">
+                   Prontuário do Paciente {autorizadoAdministrador ? "" : "🔒"}
+                </h3>
+            )}
             
 
 

@@ -3,18 +3,27 @@ import './MenuHorizontalVisitante.css';
 
 export const MenuHorizontalVisitante = ({ 
     navegarERecolher,
-    menuAberto
+    ehComputador
 }) => {
+
+    // 🚀 CONSOLE DE INSPEÇÃO MAESTRO
+    console.log("");
+    console.log("🔍 ---------------------------------");
+    console.log("🔍 MenuHorizontalVisitante ");
+    console.log("🔍 ehComputador         :", ehComputador);
+    // console.log("🔍 navegarERecolher   :", navegarERecolher);
+    console.log("🔍 ---------------------------------");
+
     return (
 
 
 
 
-        <div className={`menu-horizontal-visitante-container ${menuAberto ? 'visitante-container-ativo' : ''}`}>
+        <div className={`menu-horizontal-visitante-container ${!ehComputador ? 'visitante-container-ativo' : ''}`}>
             
 
             {/* 🏷️ Título condicional: Só aparece se o menu estiver aberto */}
-            {menuAberto && (
+            {!ehComputador && (
                 <h3 className="titulo-menu-mobile">Menu Geral</h3>
             )}
 

@@ -5,34 +5,35 @@ import './MenuHorizontalCliente.css';
 export const MenuHorizontalCliente = ({ 
     navegarERecolher, 
     autorizadoAdministrador, 
-    menuAberto 
+    ehComputador
 }) => {
 
     // ---------------------------------
-    // INICIO - ✨ Monitor de Propriedades
+    // INICIO - ✨ Monitor de Propriedades (Inspeção Maestro)
     // ---------------------------------
     useEffect(() => {
         console.log("");
         console.log("✨ ----------------------------------");
-        console.log("✨ Componente: MenuHorizontalCliente.jsx");
-        console.log("✨ Status: ✅ Carregado com Sucesso");
+        console.log("✨ MenuHorizontalCliente.jsx");
+        console.log("✨ ehComputador            :", ehComputador);
+        console.log("✨ autorizadoAdministrador :", autorizadoAdministrador);
+        // console.log("✨ navegarERecolher        :", navegarERecolher);
         console.log("✨ ----------------------------------");
-    }, []);
+    }, [ehComputador, autorizadoAdministrador, navegarERecolher]);
 
     // ---------------------------------
     // FIM - ✨ Monitor de Propriedades
     // ---------------------------------
 
     return (
-        <div className={`menu-horizontal-cliente-container ${menuAberto ? 'menu-horizontal-cliente-ativo' : ''}`}>
+        <div className={`menu-horizontal-cliente-container ${!ehComputador ? 'menu-horizontal-cliente-celular' : ''}`}>
 
 
 
             {/* 🏷️ Título condicional: Só aparece no Mobile quando aberto */}
-            {menuAberto && (
+            {!ehComputador && (
                 <h3 className="titulo-menu-mobile">Menu Geral</h3>
             )}
-
 
 
 

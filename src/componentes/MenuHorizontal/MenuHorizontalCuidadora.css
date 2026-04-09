@@ -1,6 +1,7 @@
-/* ---------------------------------------------------------------------------------------------------------------- */
-/* INICIO - 📐 CONTAINER PRINCIPAL DO MENU HORIZONTAL: CUIDADORA                                                   */
-/* ---------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------- */
+/* INICIO - 📐 CONTAINER PRINCIPAL DO MENU HORIZONTAL: CUIDADORA  */
+/* -------------------------------------------------------------- */
+
 .menu-horizontal-cuidadora-container {
     display: flex;
     flex-direction: row;
@@ -11,31 +12,18 @@
     padding: 0;
     z-index: 10;
 }
-/* ---------------------------------------------------------------------------------------------------------------- */
-/* FIM - 📐 CONTAINER PRINCIPAL DO MENU HORIZONTAL: CUIDADORA                                                      */
-/* ---------------------------------------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------*/
+/* FIM - 📐 CONTAINER PRINCIPAL DO MENU HORIZONTAL: CUIDADORA */
+/* ------------------------------------------------------------*/
 
 
 
 
+/* ------------------------------------------------- */
+/* INICIO - 🔘 BOTÕES DO MENU HORIZONTAL: CUIDADORA  */
+/* ------------------------------------------------- */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ---------------------------------------------------------------------------------------------------------------- */
-/* INICIO - 🔘 BOTÕES DO MENU HORIZONTAL: CUIDADORA                                                                */
-/* ---------------------------------------------------------------------------------------------------------------- */
 .Btn-geral-cuidadora-prof {
     display: flex;
     align-items: center;
@@ -60,9 +48,10 @@
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-/* ---------------------------------------------------------------------------------------------------------------- */
-/* FIM - 🔘 BOTÕES DO MENU HORIZONTAL: CUIDADORA                                                                   */
-/* ---------------------------------------------------------------------------------------------------------------- */
+
+/* ----------------------------------------------- */
+/* FIM - 🔘 BOTÕES DO MENU HORIZONTAL: CUIDADORA  */
+/* ----------------------------------------------- */
 
 
 
@@ -132,14 +121,14 @@
     background-color: var(--cor-padraobranco) !important;
     
     /* 🚀 AJUSTE MAESTRO: Mantém um ao lado do outro */
-    display: flex !important; /* Ativa o flexbox */
-    flex-direction: column !important; /* Empilha o título e os botões */
+    display: flex !important; 
+    flex-direction: column !important; 
     justify-content: center !important;
     align-items: center !important;
-    flex-wrap: wrap; /* Caso a tela seja muito pequena, ele quebra linha para não sumir */
+    flex-wrap: wrap; 
     
     padding: 15px 0 !important;
-    /* gap: 10px !important; */
+  
     
     z-index: 999 !important; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -147,9 +136,7 @@
     border-right: 2px solid var(--cor-padrao-azul);
     border-top: 2px solid var(--cor-padrao-azul);
     border-bottom: 2px solid var(--cor-padrao-azul);
-    
-    /* ✨ Animação suave */
-    /* animation: slideDown 0.3s ease-out; */
+
 }
 
 /* 🏷️ Título do Menu Mobile */
@@ -164,12 +151,12 @@
 /* 🧱 Container para os botões ficarem alinhados horizontalmente */
 .botoes-cuidadora-wrapper {
     display: flex;
-    flex-direction: row; /* Mantém os botões em linha */
-    justify-content: center; /* Centraliza os botões */
+    flex-direction: row; 
+    justify-content: center; 
     align-items: center;
-    flex-wrap: wrap; /* Permite quebra de linha se a tela for pequena */
+    flex-wrap: wrap;
     gap: 10px; 
-    width: 100%; /* Ocupa a largura total do container pai */
+    width: 100%;
 }
 
 
@@ -180,16 +167,3 @@
     min-width: fit-content !important;
 }
 
-/* ----------------------------------------------------------- */
-/* ✨ ANIMAÇÃO                                                 */
-/* ----------------------------------------------------------- */
-/* @keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-} */

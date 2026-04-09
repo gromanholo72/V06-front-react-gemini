@@ -4,39 +4,46 @@ import './MenuHorizontalCuidadora.css';
 
 export const MenuHorizontalCuidadora = ({ 
     navegarERecolher, 
-    perfilEstaCompletoCuidadora,
-    menuAberto
+    autorizadoAdministrador, 
+    ehComputador
 }) => {
 
     // ---------------------------------
-    // INICIO - 📐 MONITOR DE MONTAGEM MAESTRO
+    // INICIO - ✨ Monitor de Propriedades
     // ---------------------------------
 
     useEffect(() => {
         console.log("");
-        console.log("📐 -----------------------------------------------------------");
-        console.log("📐 COMPONENTE: MenuHorizontalCuidadora.jsx");
-        console.log("📐 STATUS: ✅ Estilos e Componente Carregados na Interface");
-        console.log("📐 -----------------------------------------------------------");
-    }, []);
+        console.log("✨ ----------------------------------");
+        console.log("✨ MenuHorizontalCuidadora.jsx");
+        console.log("✨ ehComputador                  :", ehComputador);
+        console.log("✨ autorizadoAdministrador  :", autorizadoAdministrador);
+        // console.log("✨ navegarERecolher            :", navegarERecolher);
+        console.log("✨ ----------------------------------");
+    }, [ehComputador, autorizadoAdministrador, navegarERecolher]);
 
     // ---------------------------------
-    // FIM - 📐 MONITOR DE MONTAGEM MAESTRO
+    // FIM - ✨ Monitor de Propriedades
     // ---------------------------------
+
 
     
     return (
-        <div className={`menu-horizontal-cuidadora-container ${menuAberto ? 'menu-horizontal-cuidadora-ativo' : ''}`}>
+
+        <div className={`menu-horizontal-cuidadora-container ${!ehComputador ? 'menu-horizontal-cuidadora-ativo' : ''}`}>
 
            
-           
+
             {/* 🏷️ Título condicional: Só aparece se o menu estiver aberto */}
-            {menuAberto && (
+            {!ehComputador && (
                 <h3 className="titulo-menu-mobile">Menu Geral</h3>
             )}
 
+
+
             {/* 🧱 Container para os botões ficarem alinhados horizontalmente */}
             <div className="botoes-cuidadora-wrapper">
+
                 <button
                     className="Btn-geral-cuidadora-prof"
                     onClick={() => navegarERecolher('/interno/UsuarioLogado')}
@@ -59,17 +66,17 @@ export const MenuHorizontalCuidadora = ({
                 </button>
 
                 <button
-                    className={`Btn-geral-cuidadora-prof ${perfilEstaCompletoCuidadora ? '' : 'BotaoBloqueado'}`}
-                    onClick={() => perfilEstaCompletoCuidadora && navegarERecolher('/interno/Chamados')}
-                    title={!perfilEstaCompletoCuidadora
-                        ? "Complete seu perfil (Contato, Endereço, CNPJ e Formação) para liberar."
-                        : "Acessar Chamados"
-                    }
+                    className={`Btn-geral-cuidadora-prof ${autorizadoAdministrador ? '' : 'BotaoBloqueado'}`}
+                    onClick={() => autorizadoAdministrador && navegarERecolher('/interno/Chamados')}
                 >
-                    Chamados {!perfilEstaCompletoCuidadora && "🔒"}
+                    Chamados {!autorizadoAdministrador && "🔒"}
                 </button>
+
             </div>
 
+            
+
         </div>
+
     );
 };

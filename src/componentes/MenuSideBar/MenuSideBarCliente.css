@@ -112,97 +112,96 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 /* ----------------------------------------------------------- */
-/* 🔩 📱 INICIO - CLASSE DE ATIVAÇÃO MOBILE: menu-sidebar-cliente-ativo */
+/* 🔩 📱 CLASSE DE ATIVAÇÃO MOBILE: menu-sidebar-cliente-ativo */
 /* ----------------------------------------------------------- */
+
 .menu-sidebar-cliente-ativo {
-    position: static !important;
+    position: static;
     width: 100% !important;
     left: 0 !important;
-    
-    /* 📏 Alinhamento perfeito abaixo do header */
-    top: calc(var(--altura-header) - 2px) !important; 
-    
+    height: auto !important; 
+    min-height: 0 !important;
     background-color: var(--cor-padraobranco) !important;
-    
-    /* 🚀 AJUSTE MAESTRO: Um item por linha alinhado à esquerda */
-    display: flex !important; /* Ativa o flexbox */
-    flex-direction: column !important; /* Empilha o título e os botões */
-    justify-content: flex-start !important;
-    align-items: flex-start !important;
-    flex-wrap: wrap; /* Caso a tela seja muito pequena, ele quebra linha para não sumir */
+
+    /* 🚀 PADRÃO MAESTRO: Flex Row com Wrap */
+    display: flex !important;
+    flex-direction: row !important; 
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap;
     
     padding: 15px 25px !important; 
-    /* gap: 10px !important; */
-    
     z-index: 999 !important; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    
+    /* Mantendo as bordas conforme o modelo */
     border-left: 2px solid var(--cor-padrao-azul);
     border-right: 2px solid var(--cor-padrao-azul);
     border-top: 2px solid var(--cor-padrao-azul);
-    border-bottom: 2px solid var(--cor-padrao-azul);
 }
 
 /* 🏷️ Título do Menu Mobile (Sidebar Ativa) */
-.menu-sidebar-cliente-ativo .menu-sidebar-paciente-header {
-    width: 100% !important;
-    padding: 10px 0 0 0 !important; 
-    border-bottom: none !important;
-}
-
 .menu-sidebar-cliente-ativo .titulo-setor-sidebar {
     font-size: 20px !important; 
     font-weight: bold !important;
-    color: var(--cor-padrao-azul) !important; 
+    color: #306396 !important; 
     text-align: left !important; 
     width: 100% !important; 
+    /* margin-bottom: 10px !important; */
     display: block !important;
 }
 
-/* 🧱 Ajuste Maestro: Força a lista de botões a ficar horizontal */
+/* 🧱 Wrapper para garantir o alinhamento (Equivalente ao botoes-cliente-wrapper) */
 .menu-sidebar-cliente-ativo .lista-botoes-vertical {
     display: flex !important;
-    flex-direction: column !important; 
-    flex-wrap: wrap !important;
-    justify-content: flex-start !important;
-    align-items: flex-start !important;
-    gap: 10px !important;
-    padding: 10px !important;
-    width: 100% !important;
-}
-
-/* 🔘 Padronização dos Botões internos */
-.menu-sidebar-cliente-ativo .menu-sidebar-cliente-btn-item {
-    display: flex !important;
+    flex-direction: row !important; 
+    justify-content: center !important; 
     align-items: center !important;
-    justify-content: flex-start !important;
-    
-    padding: 10px 15px !important;
+    flex-wrap: wrap; 
+    gap: 10px !important; 
     width: 100% !important;
-    min-width: none !important;
-    
-    background-color: var(--cor-padraobranco) !important;
-    color: var(--cor-padraoTextoBotao) !important;
-    
-    border-top: 2px solid var(--cor-padrao-azul) !important;
-    border-bottom: 2px solid var(--cor-padrao-azul) !important;
-    border-left: none !important;
-    border-right: none !important;
-    border-radius: 10px !important;
-    
-    font-weight: bold !important;
-    font-size: 13px !important;
-    cursor: pointer !important;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }
 
-/* ✨ Efeito Hover Maestro Mobile */
-.menu-sidebar-cliente-ativo .menu-sidebar-cliente-btn-item:hover {
-    background-color: var(--cor-padraoFundoBotaoHover) !important;
-    color: var(--cor-padraobranco) !important;
-    transform: translateY(-3px) !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+/* 🔘 Ajuste fino nos botões para mobile (Igual ao seu modelo) */
+.menu-sidebar-cliente-ativo .Btn-geral-cliente-prof {
+    padding: 12px 15px !important;
+    font-size: 14px !important;
+    
+    /* ❗ Importante: 100% faz eles empilharem se o wrapper for row */
+    width: 100% !important; 
+    justify-content: flex-start !important;
+    
+    background-color: var(--cor-padraobranco);
+    color: var(--cor-padraoTextoBotao);
+    border-top: 2px solid var(--cor-padrao-azul);
+    border-bottom: 2px solid var(--cor-padrao-azul);
+    border-left: none;
+    border-right: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+/* Efeito Hover para manter a interatividade */
+.menu-sidebar-cliente-ativo .Btn-geral-cliente-prof:hover {
+    background-color: var(--cor-padraoFundoBotaoHover);
+    color: var(--cor-padraobranco);
+    transform: translateY(-3px);
+}
+
 /* ----------------------------------------------------------- */
-/* 🔩 📱 FIM - CLASSE DE ATIVAÇÃO MOBILE                          */
+/* FIM - 📱 CLASSE DE ATIVAÇÃO MOBILE: CLIENTE                 */
 /* ----------------------------------------------------------- */

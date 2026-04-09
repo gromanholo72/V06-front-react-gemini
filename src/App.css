@@ -153,71 +153,55 @@
 
 
 
-/* MENU HORIZONTAL E SIDEBAR */
+/* PARA CELULAR - MENU HORIZONTAL E SIDEBAR (CUIDADORA)*/
 
 .div-pai-menu-mobile {
     position: fixed;
     top: var(--altura-header); 
     left: 0;
     width: 100%;
+    height: calc(100vh - var(--altura-header)); /* 📐 Altura limitada para habilitar o scroll interno */
     
     display: flex !important;
     flex-direction: column !important; 
     
     justify-content: flex-start !important;
-    /* gap: 20px; */
+   
     background-color: rgb(216, 187, 187);
     z-index: 999;
     overflow-y: auto !important; 
     overflow-x: hidden;
-    /* padding: 20px 0 20px 0;  */
-
+    
     animation: slideDown 0.3s ease-out;
     
 }
 
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 
-
-
-
-
-
-
-/* MENU HORIZONTAL E SIDEBAR */
+/* CELULAR - MENU HORIZONTAL E SIDEBAR EMPILHADO - CLIENTE */
 
 .div-pai-menu-mobile-cliente {
+
     position: fixed;
     top: var(--altura-header); 
     left: 0;
     width: 100%;
+    height: calc(100vh - var(--altura-header)); /* 📐 Altura limitada para habilitar o scroll interno */
     
-    display: flex !important;
+    /* display: flex !important; */
     flex-direction: column !important; 
     
-    justify-content: flex-start !important;
-    /* gap: 20px; */
+    /* justify-content: flex-start !important; */
+ 
     background-color: rgb(216, 187, 187);
     z-index: 999;
     overflow-y: auto !important; 
     overflow-x: hidden;
-    /* padding: 20px 0 20px 0;  */
-
+  
     animation: slideDown 0.3s ease-out;
     
 }
-
 
 @keyframes slideDown {
     from {

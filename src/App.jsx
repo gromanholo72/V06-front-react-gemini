@@ -533,12 +533,6 @@ export default function App() {
     // INICIO DO - SUBMENU (Sanfona Profissional)
     // ------------------------------------
 
-    // 🚪 Controle da Gaveta e Submenus
-    const [menuAberto, setMenuAberto] = useState(false);
-    const [secaoAberta, setSecaoAberta] = useState(null); 
-
-    const menuRef = useRef(null);
-
     // 🛠️ Função Mestra de Navegação - BLINDADA
     const navegarERecolher = (rota) => {
         
@@ -554,7 +548,8 @@ export default function App() {
         // 🧱 2. Reset de UI (Fecha tudo antes de mudar de página)
         setMenuAberto(false);
         setSecaoAberta(null);
-
+       
+        
         // 🚀 AJUSTE MAESTRO: Força o scroll para o topo imediatamente no clique
         // window.scrollTo(0, 0);
 
@@ -574,29 +569,83 @@ export default function App() {
         }, 500);
     };
 
+    // ------------------------------------
+    // FIM DO - SUBMENU (Sanfona Profissional)
+    // ------------------------------------
+
+
+
+
+
+
+
+
+
+
+
     // 🧱 Função de Toggle (Abre se fechado / Fecha se aberto)
-    const lidarComClique = (e, secao) => {
+    // const lidarComClique = (e, secao) => {
    
-        if (e && e.stopPropagation) e.stopPropagation();
+    //     if (e && e.stopPropagation) e.stopPropagation();
     
-        setSecaoAberta((valorAnterior) => {
+    //     setSecaoAberta((valorAnterior) => {
 
-            const novoValor = valorAnterior === secao ? null : secao;
+    //         const novoValor = valorAnterior === secao ? null : secao;
+        
+    //         if (novoValor !== null) {
+
+    //             setMenuAberto(true); 
+
+    //         }
             
-            // ✨ Segurança: Se abrir um submenu, garante que o menu lateral continue ativo
-            if (novoValor !== null) {
+    //         return novoValor;
 
-                setMenuAberto(true); 
+    //     });
 
-            }
-            
-            return novoValor;
+    // };
 
-        });
 
-    };
+    
 
-    // 🛡️ SENSOR GLOBAL: FECHAR MENU AO CLICAR EM QUALQUER LUGAR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // ------------------------------------------------------------------
+    // INICIO - 🛡️ SENSOR GLOBAL: FECHAR MENU AO CLICAR EM QUALQUER LUGAR
+    // ------------------------------------------------------------------
+
+    // 🚪 Controle da Gaveta e Submenus
+    const [menuAberto, setMenuAberto] = useState(false);
+    const [secaoAberta, setSecaoAberta] = useState(null); 
+
+    useEffect(() => {
+
+        // console.log("");
+        // console.log("🔍 -----------------------------");
+        // console.log("🔍 App.jsx");
+        // console.log("🔍 menuAberto:", menuAberto);
+        // console.log("🔍 secaoAberta:", secaoAberta);
+        // console.log("🔍 -----------------------------");
+
+    }, [menuAberto, secaoAberta]);
+
+    const menuRef = useRef(null);
+
     useEffect(() => {
         
         if (!menuAberto) return;
@@ -608,12 +657,24 @@ export default function App() {
         // console.log("👂 Status: Menu Aberto. Aguardando clique externo.");
         // console.log("👂 ----------------------------------");
     
+
+
+
         const fecharAoClicarFora = (event) => {
            
+            // 🔍 Identifica os alvos
             const clicouNoMenu = event.target.closest('.submenu-container-geral');
-            const clicouNoBotaoAbrir = event.target.closest('.btn-abrir-menu'); 
+            const clicouNoBotaoAbrir = event.target.closest('.btn-abrir-menu');
+            
+            // 🚀 NOVA EXCLUSÃO: Identifica se o clique foi no botão "Meu Perfil"
+            const clicouNoPerfil = event.target.closest('.Botao-Acao-Meu-Perfil');
     
-            if (!clicouNoMenu && !clicouNoBotaoAbrir) {
+           
+
+            // 🛡️ Só fecha se NÃO clicou no menu, nem no hambúrguer, NEM no perfil
+            if (!clicouNoMenu && !clicouNoBotaoAbrir && !clicouNoPerfil) {
+        
+                console.log("🔇 Clique fora detectado (Ignorando Perfil e Menu)");
 
                 // console.log("");
                 // console.log("🔇 ----------------------------------");
@@ -643,11 +704,67 @@ export default function App() {
 
         };
     }, [menuAberto]);
-    
-    // ------------------------------------
-    // FIM DO - SUBMENU (Sanfona Profissional)
-    // ------------------------------------
 
+    // ------------------------------------------------------------------
+    // FIM - 🛡️ SENSOR GLOBAL: FECHAR MENU AO CLICAR EM QUALQUER LUGAR
+    // ------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------------------------------------------------------------------
+    // INICIO - 🔒 TRAVA DE MOVIMENTO SEM SUMIR SCROLL (ANTI-PULO)
+    // ------------------------------------------------------------------
+    useEffect(() => {
+        if (!ehComputador && menuAberto) {
+            console.log("🔒 📐 SCROLL LOCK: Travando movimento, mantendo visual.");
+            
+            // 🛑 Impede que o scroll do menu "empurre" o scroll do fundo
+            document.body.style.overscrollBehavior = 'none';
+            
+            // 🛑 Alternativa robusta: fixa o body mas mantém a barra
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            document.body.style.top = `-${window.scrollY}px`; // Mantém a posição atual
+            document.body.style.overflowY = 'scroll'; // FORÇA a barra a continuar visível
+            
+        } else {
+            // 🧹 Restauração inteligente
+            const scrollY = document.body.style.top;
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.top = '';
+            document.body.style.overflowY = '';
+            document.body.style.overscrollBehavior = '';
+            
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
+        }
+
+        return () => {
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.top = '';
+            document.body.style.overflowY = '';
+            document.body.style.overscrollBehavior = '';
+        };
+    }, [menuAberto, ehComputador]);
+    // ------------------------------------------------------------------
+    // FIM - 🔒 TRAVA DE MOVIMENTO
+    // ------------------------------------------------------------------
 
 
 
@@ -1141,6 +1258,28 @@ export default function App() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /*  ---------------- */
     /*  INICIO DO RETURN */
     /*  ---------------- */
@@ -1237,7 +1376,10 @@ export default function App() {
                     <FiguraMenuHamburguer 
                         menuAberto={menuAberto}
                         setMenuAberto={setMenuAberto}
+
+                        secaoAberta={secaoAberta}
                         setSecaoAberta={setSecaoAberta}
+
                         exibirBalaoDicaMenuHamburguer={exibirBalaoDicaMenuHamburguer}
                     />
 
@@ -1281,29 +1423,37 @@ export default function App() {
                 {ehComputador && (
                     <>
 
+
                         {/* VISITANTE */}
                         {dadosToken?.func === 'visitante' && (
                             <MenuHorizontalVisitante 
-                                navegarERecolher={navegarERecolher} 
+                                navegarERecolher={navegarERecolher}
+                                ehComputador={ehComputador}
                             />
                         )}
-                        
+
+
 
                         {/* CUIDADORA */}
                         {dadosToken?.func === 'cuidadora' && (
                             <MenuHorizontalCuidadora 
                                 navegarERecolher={navegarERecolher}
-                                perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
+                                autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
                             />
                         )}
+
 
                         {/* CLIENTE */}
                         {dadosToken?.func === 'cliente' && (
                             <MenuHorizontalCliente 
                                 navegarERecolher={navegarERecolher}
                                 autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
                             />
                         )}
+
+
 
                     </>
                 )}
@@ -1357,15 +1507,15 @@ export default function App() {
                                 {/* ⬆️ Parte de Cima: Horizontal */}
                                 <MenuHorizontalCuidadora 
                                     navegarERecolher={navegarERecolher}
-                                    perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
-                                    menuAberto={menuAberto}
+                                    autorizadoAdministrador={autorizadoAdministrador}
+                                    ehComputador={ehComputador}
                                 />
                                 
                                 {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
                                 <MenuSideBarCuidadora
-                                    autorizadoAdministrador={autorizadoAdministrador} 
-                                    navegarERecolher={navegarERecolher} 
-                                    menuAberto={menuAberto}
+                                    navegarERecolher={navegarERecolher}
+                                    autorizadoAdministrador={autorizadoAdministrador}
+                                    ehComputador={ehComputador}
                                 />
                             
                             </div>
@@ -1383,15 +1533,15 @@ export default function App() {
                                 <MenuHorizontalCliente 
                                     navegarERecolher={navegarERecolher}
                                     autorizadoAdministrador={autorizadoAdministrador}
-                                    menuAberto={menuAberto}
+                                    ehComputador={ehComputador}
                                 />
 
 
                                 {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
                                 <MenuSideBarCliente
-                                    autorizadoAdministrador={autorizadoAdministrador} 
-                                    navegarERecolher={navegarERecolher} 
-                                    menuAberto={menuAberto}
+                                     navegarERecolher={navegarERecolher}
+                                     autorizadoAdministrador={autorizadoAdministrador}
+                                     ehComputador={ehComputador}
                                 />
 
                             </div>
@@ -1476,7 +1626,12 @@ export default function App() {
                             {/* ------------------------- */}
 
                             <button className={`Botao-Acao-Meu-Perfil ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}
-                                onClick={() => setSecaoAberta(secaoAberta === 'perfil' ? null : 'perfil')}
+                                onClick={() => {
+                                    // Garante que o menu lateral (gaveta) seja fechado
+                                    setMenuAberto(false);
+                                    // Abre/Fecha a seção de perfil
+                                    setSecaoAberta(secaoAberta === 'perfil' ? null : 'perfil');       
+                                }}
                             >
                                 <div className="Avatar-Circulo">
                                     {dadosToken?.nome ? dadosToken.nome.charAt(0).toUpperCase() : "?"}
@@ -1825,14 +1980,31 @@ export default function App() {
                 {/* --------------------------------------------- */}
 
 
-                {/* 💻 CASO 01: É COMPUTADOR + CUIDADORA */}
-                {ehComputador && dadosToken?.func === 'cuidadora' && (
+                {ehComputador && (
+                    <>
 
-                    <MenuSideBarCuidadora 
-                    autorizadoAdministrador={autorizadoAdministrador} 
-                    navegarERecolher={navegarERecolher} 
-                    />
 
+                        {/* CLIENTE */}
+                        {dadosToken?.func === 'cuidadora' && (
+                            <MenuSideBarCuidadora 
+                                navegarERecolher={navegarERecolher}
+                                autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
+                            />
+                        )}
+
+
+                         {/* CLIENTE */}
+                         {dadosToken?.func === 'cliente' && (
+                            <MenuSideBarCliente 
+                                navegarERecolher={navegarERecolher}
+                                autorizadoAdministrador={autorizadoAdministrador}
+                                ehComputador={ehComputador}
+                            />
+                        )}
+
+
+                    </>
                 )}
 
 

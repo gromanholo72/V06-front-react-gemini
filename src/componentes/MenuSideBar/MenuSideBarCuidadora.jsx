@@ -1,11 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './MenuSideBarCuidadora.css';
 
 export const MenuSideBarCuidadora = ({ 
     navegarERecolher, 
     autorizadoAdministrador,
-    menuAberto
+    ehComputador
 }) => {
+
+
+
+
+// ---------------------------------
+    // INICIO - ✨ Monitor de Propriedades (Inspeção Maestro)
+    // ---------------------------------
+    useEffect(() => {
+        console.log("");
+        console.log("✨ ----------------------------------");
+        console.log("✨ Componente: MenuSideBarCuidadora.jsx");
+        console.log("✨  ehComputador:", ehComputador);
+        console.log("✨ autorizadoAdministrador:", autorizadoAdministrador);
+        // console.log("✨ navegarERecolher        :", navegarERecolher ? "✅ Recebida" : "❌ Vazia");
+       
+        console.log("✨ ----------------------------------");
+    }, [ehComputador, autorizadoAdministrador, navegarERecolher]);
+    // ---------------------------------
+    // FIM - ✨ Monitor de Propriedades
+    // ---------------------------------
+
+
+
+
+
+
 
     // 🎨 Estilo dinâmico para bloqueio de área
     const estiloListaBloqueada = {
@@ -17,7 +43,7 @@ export const MenuSideBarCuidadora = ({
 
     return (
 
-        <div className={`menu-sidebar-cuidadora-container ${menuAberto ? 'menu-sidebar-cuidadora-ativo' : ''}`}>
+        <div className={`menu-sidebar-cuidadora-container ${!ehComputador ? 'menu-sidebar-cuidadora-ativo' : ''}`}>
 
             <div className="menu-sidebar-cuidadora-header">
                 <div className="menu-sidebar-cuidadora-funcao">
