@@ -1,0 +1,95 @@
+/* --------------------------------- */
+/* INICIO - 🎨 ESTILIZAÇÃO: MODAL LIMPO (MAESTRO V3) */
+/* --------------------------------- */
+
+.modal-overlay-limpo {
+    position: fixed;
+    inset: 0;
+
+    /* 📐 Ajuste Maestro: Fundo totalmente transparente e sem desfoque */
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+
+    /* background-color: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(5px) !important; */
+
+    /* 📐 Ajuste Maestro: Fundo semi-transparente com desfoque para bloqueio visual */
+    background-color: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(5px) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------- */
+/* INICIO - 🏠 ESTRUTURA DA JANELA BRANCA */
+/* --------------------------------- */
+
+.modal-overlay-limpo .card-loading-moderno {
+    /* 📐 Ajuste Maestro: Janela branca sólida com sombra suave para destaque */
+    background: #ffffff; 
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    text-align: center;
+    width: 90%;
+    max-width: 300px;
+    border: 1px solid #ebf2f7;
+    transform: translateY(-80px);
+    animation: modal-limpo-fadeInModal 0.4s ease-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------- */
+/* INICIO - 🌀 MOTORES VISUAIS (SPINNER) */
+/* --------------------------------- */
+
+.spinner-dual-ring {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 1.5rem;
+    border: 4px solid #f0f0f0;
+    border-top: 4px solid #306396; /* Azul Maestro */
+    border-bottom: 4px solid #306396;
+    border-radius: 50%;
+    animation: modal-limpo-rodar 1s linear infinite;
+}
+
+@keyframes modal-limpo-rodar {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes modal-limpo-fadeInModal {
+    from { 
+        opacity: 0; 
+        transform: translateY(-80px) scale(0.95); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(-80px) scale(1); 
+    }
+}

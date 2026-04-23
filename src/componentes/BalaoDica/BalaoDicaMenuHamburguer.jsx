@@ -16,7 +16,7 @@ export const BalaoDicaMenuHamburguer = ({ exibirBalaoDicaMenuHamburguer }) => {
                     exit={{ opacity: 0, scale: 0.5 }}
                     className="BalaoDicaCorpo"
                 >
-                    👋 Toque aqui para navegar!
+                    Toque aqui para navegar!
                 </motion.div>
             )}
         </AnimatePresence>

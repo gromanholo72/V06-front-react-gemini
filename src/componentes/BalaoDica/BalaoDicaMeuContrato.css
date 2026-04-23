@@ -1,0 +1,117 @@
+/* --------------------------- */
+/* INICIO - 🎈 BALÃO DE DICA   */
+/* --------------------------- */
+
+.BalaoDicaMeuContratoCorpo {
+    position: absolute;
+    top: 55px;        
+    right: 0px; 
+    
+    background: var(--CorFundoBalaoDica);
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+    z-index: 9999;
+    
+    box-shadow: 0 10px 25px var(--CorFundoBalaoDica);
+    pointer-events: none;
+    
+    animation: pulsoMaestroContrato 2s infinite ease-in-out;
+}
+
+/* --------------------------- */
+/* FIM - 🎈 BALÃO DE DICA   */
+/* --------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------- */
+/* INICIO - 📐 SETA (TRIÂNGULO) DO BALÃO */
+/* ------------------------------- */
+
+.BalaoDicaMeuContratoCorpo::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;       
+    right: 30px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 12px solid var(--CorFundoBalaoDica); 
+}
+
+/* ------------------------------- */
+/* FIM - 📐 SETA (TRIÂNGULO) DO BALÃO */
+/* ------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------- */
+/* INICIO - ✨ PULSAÇÃO DO BOTÃO  */
+/* ------------------------------- */
+
+.Btn-geral-cliente-horizontal.pulsar-ativo {
+    animation: pulsoMaestroContrato 2s infinite ease-in-out;
+    position: relative;
+    z-index: 10;
+    background-color: var(--CorFundoBalaoDica);
+}
+
+/* ------------------------------- */
+/* FIM - ✨ PULSAÇÃO DO BOTÃO  */
+/* ------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------- */
+/* INICIO - 🔄 KEYFRAMES: O BATIMENTO CARDÍACO DA UI */
+/* -------------------------------------------------- */
+
+@keyframes pulsoMaestroContrato {
+    0% {
+        box-shadow: 0 0 0 0 var(--CorFundoBalaoDica); 
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(212, 175, 55, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+    }
+}
+
+/* -------------------------------------------------- */
+/* FIM - 🔄 KEYFRAMES: O BATIMENTO CARDÍACO DA UI */
+/* -------------------------------------------------- */

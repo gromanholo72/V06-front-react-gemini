@@ -11,12 +11,30 @@ import './UsuarioContato.css';
 
 export function UsuarioContato () {
 
-    const emailInputRef = useRef(null);
+  
 
     const [ ehNovoCadastro, setEhNovoCadastro ] = useState(false);
 
-    const { dadosToken, carregandoPermissoesFireBase, setCarregandoModal } = useAuth();
+
+
+
+    const { 
+
+        dadosToken, 
+        carregandoPermissoesFireBase, 
+        // setCarregandoModal 
+
+        carregandoOperacao,
+        setCarregandoOperacao,
+
+        msg, 
+        setMsg,
+
+    } = useAuth();
     
+
+
+
     const [formContato, setFormContato] = useState({
 
         email: '',
@@ -51,16 +69,22 @@ export function UsuarioContato () {
     // ---------------------------------
 
 
-    const [podeEditar, setPodeEditar] = useState(false);
+   
 
     // ---------------------------------
     // INICIO - ✏️ Foco Automático ao Editar
     // ---------------------------------
 
+    const [podeEditar, setPodeEditar] = useState(false);
+    const emailInputRef = useRef(null);
     useEffect(() => {
+
         if (podeEditar) {
+
             emailInputRef.current?.focus();
+
         }
+
     }, [podeEditar]);
 
     // ---------------------------------
@@ -83,10 +107,6 @@ export function UsuarioContato () {
         
         setFormContato(prev => ({ ...prev, email: v }));
     };
-
-
-
-
 
 
     // 🛠️ MÁSCARA DE TELEFONE (Padrão solicitado)
@@ -127,20 +147,6 @@ export function UsuarioContato () {
 
 
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -166,13 +172,17 @@ export function UsuarioContato () {
 
     const limparCampos = useCallback(() => {
 
-        setFormContato({ email: '', telefone: '' });
+        setFormContato({ 
+
+            email: '', 
+            telefone: '' 
+
+        });
 
     }, []); 
 
     const carregarDadosDoBanco = useCallback(async () => {
 
-        // 🛡️ A trava de segurança agora vive dentro da função que é chamada
         if (!dadosToken?.cpef) return;
 
         const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
@@ -186,20 +196,11 @@ export function UsuarioContato () {
 
                 const dadosContato = snapshot.val();
 
-                console.log("");
-                console.log("✨ --------------------------------------------------");
-                console.log("✨ CARREGANDO DADOS DO CONTATO DIRETO DO FIREBASE");
-                console.log("✨ useEffect() - Componente - 📞 UsuarioContato.jsx");
-                console.log("✨ ✅ Contato encontrado no Realtime - dadosContato");
-                console.log("✨ --------------------------------------------------");
-
                 popularCamposGerais(dadosContato);
                 setEhNovoCadastro(false);
                 setPodeEditar(false);
 
             } else {
-
-                console.warn("✨ 📍 Nenhum contato no banco. Liberando edição para novo cadastro.");
               
                 limparCampos();
                 setEhNovoCadastro(true);
@@ -220,7 +221,7 @@ export function UsuarioContato () {
     useEffect(() => {
 
         if (carregandoPermissoesFireBase || !dadosToken?.cpef) {
-            console.log("✨ 🛰️ Aguardando sinal da Antena Central para carregar Contato...");
+            console.log("✨ 🛰️ Aguardando carregar ...");
             return;
         }
 
@@ -258,13 +259,22 @@ export function UsuarioContato () {
     /* INICIO - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
     /* -------------------------------------------------------- */
 
-    const [msg, setMsg] = useState({ tipo: '', texto: '' });
+  
     
     // ⏳ Função centralizada para limpar mensagens após um tempo
     const temporizadorMSG = () => {
+
         setTimeout(() => {
-            setMsg({ tipo: '', texto: '' });
+
+            setMsg({ 
+
+                tipo: '', 
+                texto: ''
+
+            });
+
         }, 3000);
+
     };
 
     const salvardadosContato = async () => {
@@ -275,8 +285,14 @@ export function UsuarioContato () {
         // console.log("💾 📞 Componente - 📞 UsuarioContato.jsx");
         // console.log("💾 📞 Funcao: salvardadosContato()");
         // console.log("💾 📞 -----------------------------------");
+
+        if (carregandoOperacao) return;
     
-        setMsg({ tipo: '', texto: '' });
+        setMsg({ 
+            tipo: '', 
+            texto: '' 
+        });
+        setCarregandoOperacao(true);
 
         try {
 
@@ -309,8 +325,6 @@ export function UsuarioContato () {
 
             }
 
-
-
             const payload = {
                 cpef: cpfLimpo,
                 dadosContato: {
@@ -319,8 +333,6 @@ export function UsuarioContato () {
                 }
             };
 
-
-
             // console.log("");
             // console.log("📐 ----------------------------------");
             // console.log("📐 📦 DADOS PREPARADOS PARA ENVIO (CONTATO):");
@@ -328,24 +340,19 @@ export function UsuarioContato () {
             // console.log("📐 payload:", payload);
             // console.log("📐 ----------------------------------");
 
+            // ⏳ UX: Garante tempo mínimo de 500 ms segundo de loading
+            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
+
             // �📡 Transmissão para a VPS
-            const resposta = await fetch(`${URL_SERVIDOR}/atualizar-contato`, {
+            const requisicao = await fetch(`${URL_SERVIDOR}/atualizar-contato`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
 
+            const [resposta] = await Promise.all([requisicao, tempoMinimo]);
+
             const resultado = await resposta.json();
-
-
-            // console.log("💾 --------------------------------------------------");
-            // console.log("💾 📥 RESPOSTA DO SERVIDOR:", { 
-            //     status: resposta.status, 
-            //     ok: resposta.ok, 
-            //     resultado 
-            // });
-
-
 
             if (resposta.ok) {
 
@@ -356,14 +363,25 @@ export function UsuarioContato () {
                 // console.log("💾 📡 Status : ✅ Sincronizado");
                 // console.log("💾 📡 -----------------------------------------------------------");
 
-                setMsg({ tipo: 'sucesso', texto: '✅ Contato atualizado com sucesso!' });
+                setMsg({ 
+
+                    tipo: 'sucesso', 
+                    texto: '✅ Contato atualizado com sucesso!' 
+
+                });
 
                 carregarDadosDoBanco();
 
             } else {
 
                 console.log("💾 ⚠️ SERVIDOR REJEITOU:", resultado.erro);
-                setMsg({ tipo: 'erro', texto: resultado.erro });
+
+                setMsg({ 
+
+                    tipo: 'erro',
+                    texto: resultado.erro 
+
+                });
 
             }
 
@@ -375,6 +393,7 @@ export function UsuarioContato () {
 
         } finally {
 
+            setCarregandoOperacao(false);
             temporizadorMSG();
 
         }
@@ -416,9 +435,11 @@ return (
 
                     <div className="perfil-contato-card-titulo">📞 CONTATO</div>
 
-                    {msg.texto && <div className={`cad-admin-feedback ${msg.tipo}`}>{msg.texto}</div>}
+                    {msg.texto && <div className={`cad-admin-feedback-endereco ${msg.tipo}`}>{msg.texto}</div>}
 
                     <div className="perfil-contato-card-corpo">
+
+                        {carregandoOperacao && <div className="loading-overlay-card">⏳ Processando...</div>}
 
                         <div className="flex-contato-mail">
                             <label>E-mail</label>

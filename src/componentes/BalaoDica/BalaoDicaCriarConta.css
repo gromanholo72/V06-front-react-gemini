@@ -1,14 +1,11 @@
 .BalaoDicaCriarContaCorpo {
-    /* 📐 Posicionamento: Agora ele fica ABAIXO do elemento */
     position: absolute;
 
-
-    top: 128%; /* Empurra para baixo do botão/ícone */
-    right: -85px;   /* Alinha o balão pela direita do container */
+    top: 128%; 
+    right: -60px;   
     
+    background-color: var(--CorFundoBalaoDica);
 
-    /* 🎨 Estilo do Card */
-    background-color: #25d366;
     color: white;
     padding: 10px 16px;
     border-radius: 12px;
@@ -28,23 +25,22 @@
     content: "";
     position: absolute;
     
-    bottom: 100%; /* Coloca a seta no TOPO do balão */
-    right: 132px;  /* Afasta um pouco da quina direita */
+    bottom: 100%; 
+    right: 102px;  
     
-    /* 📐 Construção do triângulo apontando para cima */
     border-width: 8px;
     border-style: solid;
-    border-color: transparent transparent #25d366 transparent; 
+    border-color: transparent transparent var(--CorFundoBalaoDica) transparent; 
 }
 
 /* 🌀 Brilho no Botão */
 .Botao-Acao-Visitante-Perfil.pulsar-ativo {
     animation: pulsarVerde 2s infinite;
-    border: 2px solid #25d366;
+    border: 2px solid var(--CorFundoBalaoDica);
 }
 
 @keyframes pulsarVerde {
-    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 1); }
+    0% { box-shadow: 0 0 0 0 var(--CorFundoBalaoDica); }
     70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
     100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }

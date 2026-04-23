@@ -1,13 +1,14 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { ref, get } from "firebase/database"; 
-import { db_realtime } from './firebaseConfig.js';
-import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto';
+import { db_realtime } from '../firebaseConfig.js';
+import { useAuth, URL_SERVIDOR } from '../AutenticacaoContexto.jsx';
 import './PacienteIdentificacao.css'; 
 
 export function PacienteIdentificacao() {
 
     const nomeInputRef = useRef(null);
+    const podeEditarRef = useRef(false); // 🧱 Trava de Fluxo Maestro
     const { dadosToken } = useAuth();
     
     const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
@@ -17,6 +18,16 @@ export function PacienteIdentificacao() {
     
     const [carregandoOperacao, setCarregandoOperacao] = useState(false);
     const [podeEditar, setPodeEditar] = useState(false);
+
+    // 🧱 Sincronia de Trava Sênior
+    useEffect(() => {
+        podeEditarRef.current = podeEditar;
+    }, [podeEditar]);
+
+
+
+
+
 
     // 🎯 Efeito de Injeção de Foco
     // Sempre que 'podeEditar' se tornar verdadeiro, o Maestro foca no input
@@ -48,14 +59,12 @@ export function PacienteIdentificacao() {
     }, []);
 
 
-
-
-
     const carregarDadosDoBanco = useCallback(async () => {
 
         const cpfAtivo = dadosToken?.cpef;
 
         if (cpfAtivo) {
+
             console.warn("✨ 🛰️ Identificação vazia. Buscando na Antena Central...");
             
             const cpfLimpo = cpfAtivo.replace(/\D/g, "");
@@ -74,16 +83,10 @@ export function PacienteIdentificacao() {
             
                 // 🚀 A CONDIÇÃO MESTRA: O registro só é "Encontrado" se o 'info' tiver o NOME
                 if (info && info.nome) {
-                    console.log("📐 STATUS: ✅ Identificação encontrada.");
-                    console.log("📐 DADOS EXTRAÍDOS:", info);
-            
-                    popularCamposPaciente(info);
-
                     console.log("📐 STATUS: ✅ Registro encontrado.");
                     console.log("📐 DADOS EXTRAÍDOS:", info);
 
                     popularCamposPaciente(info);
-                    setEhNovoCadastro(false);
                     setPodeEditar(false);
                 } else {
 
@@ -102,8 +105,6 @@ export function PacienteIdentificacao() {
     }, [dadosToken?.cpef, popularCamposPaciente, limparCampos]);
 
 
-
-
     useEffect(() => {
         if (dadosToken?.cpef) {
             carregarDadosDoBanco();
@@ -116,6 +117,30 @@ export function PacienteIdentificacao() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
 
     /* -------------------------------------------------------- */
@@ -133,6 +158,7 @@ export function PacienteIdentificacao() {
 
 
     const salvarDadosPaciente = async () => {
+        
         if (carregandoOperacao) return;
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -162,9 +188,21 @@ export function PacienteIdentificacao() {
                 }
             };
 
+            console.log("");
+            console.log("💾 📍 -------------------------------");
+            console.log("💾 📍 🔍 EXTRAÇÃO DE IDENTIDADE:");
+            console.log(`💾 📍 🛰️ Componente - PacienteIdentificacao.jsx`);
+            console.log("💾 📍 🆔 cpfLimpo:", cpfLimpo);
+            console.log("💾 📍 🌐 URL_SERVIDOR:", URL_SERVIDOR);
+            console.log("💾 📍 -------------------------------");
 
-
-            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
+            console.log("");
+            console.log("📐 ----------------------------------");
+            console.log(`📐 📦 DADOS PREPARADOS PARA ENVIO (Identificação Paciente):`);
+            console.log(`📐 componente - PacienteIdentificacao.jsx`);
+            console.log("📐 payload:", payload);
+            console.log("📐 ----------------------------------");
+            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 800));
 
             const requisicao = fetch(`${URL_SERVIDOR}/atualizar-paciente-identificacao`, {
                 method: 'POST',
@@ -179,7 +217,8 @@ export function PacienteIdentificacao() {
                 setMsg({ tipo: 'sucesso', texto: '✅ Identificação atualizada!' });
                 carregarDadosDoBanco();
             } else {
-                setMsg({ tipo: 'erro', texto: resultado.erro });
+                console.error("💾 ⚠️ SERVIDOR REJEITOU:", resultado.erro);
+                setMsg({ tipo: 'erro', texto: resultado.erro || "Falha na fundação." });
             }
 
         } catch (error) {
@@ -190,10 +229,32 @@ export function PacienteIdentificacao() {
             temporizadorMSG();
         }
     };
-
     /* -------------------------------------------------------- */
     /* FIM - 💾 SALVAR VIA SERVIDOR VPS                         */
     /* -------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+    // ---------------------------------
+    // INICIO - ✖️ CANCELAR EDIÇÃO
+    // ---------------------------------
+    const cancelarEdicao = () => {
+        console.log("✨ 🔄 Cancelando edição. Restaurando cards...");
+        carregarDadosDoBanco();
+        setPodeEditar(false);
+    };
+    // ---------------------------------
+    // FIM - ✖️ CANCELAR EDIÇÃO
+    // ---------------------------------
+
+
 
 
 
@@ -209,13 +270,16 @@ export function PacienteIdentificacao() {
 
                     <div className="perfil-endereco-card-corpo">
 
+
                         {carregandoOperacao && <div className="loading-overlay-card">⏳ Processando...</div>}
+
 
                         <div className="Campo flex-rua">
                             <label>Nome Completo</label>
                             <input 
                                 ref={nomeInputRef}
                                 type="text" 
+                                autoComplete="name"
                                 disabled={!podeEditar || carregandoOperacao} 
                                 value={nome} 
                                 onChange={(e) => setNome(e.target.value)} 
@@ -226,6 +290,8 @@ export function PacienteIdentificacao() {
                             <label>Idade</label>
                             <input 
                                 type="text" 
+                                inputMode="numeric"
+                                autoComplete="off"
                                 maxLength="3"
                                 disabled={!podeEditar || carregandoOperacao} 
                                 value={idade} 
@@ -269,9 +335,8 @@ export function PacienteIdentificacao() {
                                         <button 
                                             type="button" 
                                             className="BotaoCancelar" 
-                                            onClick={() => { 
-                                                carregarDadosDoBanco(); 
-                                                // setPodeEditar(false);
+                                            onClick={() => {
+                                                cancelarEdicao();
                                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                                             }}
                                         >

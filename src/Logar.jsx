@@ -17,14 +17,39 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
+
     // ----------------------------------------------------
     // INICIO DO - Ferramentas de Trabalho (Hooks)
     // ----------------------------------------------------
 
-    // 🚕 Contratando o motorista para este cômodo
+    // 🚕 Motorista para navegação
     const navigate = useNavigate();
 
-    const { logarNoFirebase, setCarregandoModal, db_realtime } = useAuth();
+    // 🧭 Sensor de localização (Teletransporte de dados)
+    const location = useLocation(); 
+
+    // 🔑 Suprimentos de Autenticação
+    const { 
+        logarNoFirebase, 
+        setCarregandoModal, 
+        db_realtime,
+        setDadosToken 
+    } = useAuth();
+
+    /* 🧱 Verifica se o usuário veio redirecionado do cadastro com sucesso */
+    const veioDoCadastro = location.state?.cadastroSucesso;
+
+    // console.log("");
+    // console.log("🔍 -----------------------------------------------------------");
+    // console.log("🔍 INSPEÇÃO DE FERRAMENTAS (Hooks Iniciais)");
+    // console.log("🔍 componente - Logar.jsx - esta no comeco do - export function");
+    // console.log("🔍 Localização Atual  :", location.pathname);
+    // console.log("🔍 Veio do Cadastro?  :", veioDoCadastro ? "✅ SIM" : "❌ NÃO");
+    // console.log("🔍 Dados no - location.state  :", location.state ? "📦 Recebidos" : "💨 Vazios");
+    // if (location.state) {
+    //     console.log("🔍 Conteúdo do State  :", location.state);
+    // }
+    // console.log("🔍 -----------------------------------------------------------");
 
     // ----------------------------------------------------
     // FIM DO - Ferramentas de Trabalho (Hooks)
@@ -36,39 +61,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
-    
 
-    // ----------------------------------------------------
-    // INICIO DO - Sensor de Localização
-    // ----------------------------------------------------
-
-    // 🧭 Sensor de localização
-    const location = useLocation(); 
-
-    /*  🧱 Verifica se o usuário veio redirecionado do cadastro com sucesso */
-    const veioDoCadastro = location.state?.cadastroSucesso;
-
-    // ----------------------------------------------------
-    // FIM DO - Sensor de Localização
-    // ----------------------------------------------------
-
-
-
-
-
-
-
-
-    // const location = useLocation();
-    // console.log("");
-    // console.log("📡📻 ✈️ ----------------------------------");
-    // console.log("📡📻 ✈️ Arquivo - Logar.jsx");
-    // console.log("📡📻 ✈️ export function Logar()");
-    // console.log("📡📻 ✈️Teste de Rádio:", socket);
-    // console.log("📡📻 📍 Cômodo atual da 🏠 Casa:", location.pathname);
-    // console.log("📡📻 ✈️ ----------------------------------");
-
-    
 
 
 
@@ -103,8 +96,9 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
     // ----------------------------------------------------------------------
-    // INICIO - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
+    // INICIO - CPF TESTES - SÒ DURANTE DESENVOLVIMENTO - 🎨 PRÉ-LEITURA DO BANCO
     // ----------------------------------------------------------------------
+
     const [cpfsCadastrados, setCpfsCadastrados] = useState([]);
 
     useEffect(() => {
@@ -112,20 +106,32 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         const verificarUsuariosCadastrados = async () => {
 
-            console.log("");
-            console.log("🕵️‍♂️ ----------------------------------");
-            console.log("🕵️‍♂️ Logar.jsx: Verificando usuários já cadastrados...");
-
             const usuariosRef = ref(db_realtime, 'usuarios');
+
             try {
+
                 const snapshot = await get(usuariosRef);
+
                 if (snapshot.exists()) {
-                    const listaCpfs = Object.keys(snapshot.val()); // Pega apenas os CPFs (chaves)
+
+                    const listaCpfs = Object.keys(snapshot.val());
+
                     setCpfsCadastrados(listaCpfs);
-                    console.log("🕵️‍♂️ Cadastrados encontrados:", listaCpfs.length);
+
+                    // console.log("");
+                    // console.log("🕵️‍♂️ ------------------------------------");
+                    // console.log("🕵️‍♂️ componente - Logar.jsx");
+                    // console.log("🕵️‍♂️ Verificando usuários já cadastrados.");
+                    // console.log("🕵️‍♂️ Usado no - CPF TESTES");
+                    // console.log("🕵️‍♂️ Apenas durante o desenvolvimento");
+                    // console.log("🕵️‍♂️ Cadastrados encontrados:", listaCpfs.length);
+                    // console.log("🕵️‍♂️ -------------------------------------");
+
                 }
             } catch (error) {
+
                 console.error("❌ Erro ao verificar cadastros:", error);
+
             }
         };
 
@@ -141,13 +147,10 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
         }
         return {};
     
-    // ----------------------------------------------------------------------
-    // FIM - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
-    // ----------------------------------------------------------------------
     };
 
     // ----------------------------------------------------------------------
-    // FIM - 🎨 PRÉ-LEITURA DO BANCO: Estilos Dinâmicos dos Botões
+    // FIM - CPF TESTES - SÒ DURANTE DESENVOLVIMENTO - 🎨 PRÉ-LEITURA DO BANCO
     // ----------------------------------------------------------------------
 
 
@@ -171,19 +174,18 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         console.log("");
         console.log("🔫 ----------------------------------");
+        console.log("🔫 const dispararMensagem ");
         console.log("🔫 Componente - Logar.jsx");
-        console.log("🔫 const dispararMensagem = (texto, deveRedirecionar, dadoExtra, tipo) => {");
-        console.log("🔫 📢 MENSAGEM DISPARADA");
         console.log("🔫 📝 Texto =", texto);
-        console.log("🔫 🚀 Redirecionar =", deveRedirecionar);
+        console.log("🔫 🚀 deveRedirecionar =", deveRedirecionar);
         console.log("🔫 🎟️ dadoExtra =", dadoExtra);
         console.log("🔫 🎨 Tipo =", tipo);
         console.log("🔫 ----------------------------------");
 
-        /* 🛡️ Armamos o gatilho: A dica pode aparecer, a menos que um clique ocorra. */
+        /* A dica pode aparecer, a menos que um clique ocorra. */
         deveExibirDicaRef.current = true;
 
-        /* // 🧱 2. RESET DE OBRA: Se já existir um timer rodando, nós o cancelamos usando o .current */
+        /* Se já existir um timer rodando, nós o cancelamos usando o .current */
         if (timerGavetaRef.current) {
             console.log("🧹 Limpando timer anterior...");
             clearTimeout(timerGavetaRef.current);
@@ -204,7 +206,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
             // 🚀 Rolar para o topo para garantir que o usuário veja a mensagem
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // 🧱 3. Timer para ESCONDER a mensagem após 4 segundos
+            // Timer para ESCONDER a mensagem após 4 segundos
             timerGavetaRef.current = setTimeout(() => {
                 
                 setMsgVisivel(false);
@@ -214,13 +216,10 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
                     setMsgErro("");
 
-
-
-                    if (texto === "Usuário não cadastrado no sistema." && deveExibirDicaRef.current) {
+                    if (texto === "Usuário não cadastrado." && deveExibirDicaRef.current) {
+                        console.log("🔫 🎈 Condição atendida: Disparando Balão de Dica (Criar Conta)");
                         setExibirBalaoDicaCriarConta(true);
                     }
-
-
 
                     // ✈️ Se houver ordem de redirecionamento (Sucesso)
                     if (deveRedirecionar) {
@@ -371,14 +370,14 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         if (location.state?.cpfVindoDoCadastro) {
 
-            console.log("");
-            console.log("✨ ----------------------------------");
-            console.log("✨ useEffect() - componente -  Logar.jsx");
-            console.log("✨ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
-            console.log("✨ 🕶️ location.state = ", location.state);
-            console.log("✨ 🕶️ ----------------------------------");
-            console.log("✨ 🕶️ 📦 CPF recebido do cadastro:", location.state.cpfVindoDoCadastro);
-            console.log("✨ 🕶️ ----------------------------------");
+            // console.log("");
+            // console.log("✨ ----------------------------------");
+            // console.log("✨ useEffect() - componente -  Logar.jsx");
+            // console.log("✨ 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
+            // console.log("✨ 🕶️ location.state = ", location.state);
+            // console.log("✨ 🕶️ ----------------------------------");
+            // console.log("✨ 🕶️ 📦 CPF recebido do cadastro:", location.state.cpfVindoDoCadastro);
+            // console.log("✨ 🕶️ ----------------------------------");
             
             setCredenciais(prev => ({
 
@@ -400,6 +399,29 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
+    // ----------------------------------------------------------------------------------------
+    // INICIO - 🕵️‍♂️ VIGIA CONSTANTE DO FORM LOGIN : Mostra o estado toda vez que ele é alterado
+    // ----------------------------------------------------------------------------------------
+
+    useEffect(() => {
+
+        // console.log("");
+        // console.log("-----------------------------------------");
+        // console.log("🔍 [DADOS DO LOGIN] Estado atual:");
+        // console.log("🔍 Logar.jsx - useEffect");
+        // console.log("🔍 variavel credenciais = :", credenciais);
+        // console.log("-----------------------------------------");
+
+    }, [credenciais]);
+
+    // ----------------------------------------------------------------------------------------
+    // FIM - 🕵️‍♂️ VIGIA CONSTANTE DO FORM LOGIN : Mostra o estado toda vez que ele é alterado
+    // ----------------------------------------------------------------------------------------
+
+
+
+
+
 
 
 
@@ -413,126 +435,104 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
         if (e) e.preventDefault(); 
 
-        if (!validarCPF(credenciais.cpef)) {
+        const cpfLimpo = credenciais.cpef.replace(/\D/g, "");
 
-            // console.log("");
-            // console.log("🔍 -----------------------------------------------------------");
-            // console.log("🔍 ALERTA DE SEGURANÇA - CPF INVÁLIDO");
-            // console.log("🔍 componente -  Logar.jsx");
-            // console.log("🔍 Valor Digitado:", credenciais.cpef);
-            // console.log("🔍 Status:", "❌ Bloqueado antes do envio");
-            // console.log("🔍 -----------------------------------------------------------");
-    
+        if (!validarCPF(credenciais.cpef)) {
             dispararMensagem("O CPF informado é inválido. Por favor, confira os números.");
             return;
         }
 
         setCarregandoModal(true);
-
         setMsgVisivel(false);
 
         try {
+            // 🔍 1. Localização do Morador na Antena Central (Firebase)
+            const usuarioRef = ref(db_realtime, `usuarios/${cpfLimpo}`);
+            
+            // ⏳ UX: Pequeno delay para simular processamento e manter o modal visível (Padrão Maestro)
+            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 800));
+            const buscaBanco = get(usuarioRef);
+
+            const [snapshot] = await Promise.all([buscaBanco, tempoMinimo]);
 
             console.log("");
             console.log("🔄 📡 ----------------------------------");
-            console.log("🔄 📡 ENVIANDO DADOS PARA O SERVIDOR...");
-            console.log("🔄 📡 componente: Logar.jsx");
-            console.log("🔄 📡 funcao: enviarDadosLoginParaServidor");
-            console.log("🔄 📡 dados:", credenciais);
-            console.log("🔄 📡 URL:", URL_SERVIDOR);
-            
-            // 📐 Preparando pacote estruturado para o servidor (Padrão Golden Reference)
-            const payload = {
-                dadosBasico: {
-                    cpef: credenciais.cpef
-                },
-                dadosSeguranca: {
-                    senh: credenciais.senh
-                }
-            };
+            console.log("🔄 📡 Logar.jsx");
+            console.log("🔄 📡 PROTOCOLO DE LOGIN DIRETO FIREBASE");
+            console.log("🔄 📡 CPF Alvo:", cpfLimpo);
+            console.log("🔄 📡 ----------------------------------");
 
-            const resposta = await fetch(`${URL_SERVIDOR}/login`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload),
-            });
+            if (snapshot.exists()) {
+                
+                const dadosUsuario = snapshot.val();
+                const senhaNoBanco = dadosUsuario.dadosSeguranca?.senh;
 
-            const resultado = await resposta.json();
+                //  2. Conferência de Chave (Senha)
+                if (senhaNoBanco === credenciais.senh) {
+                    
+                    console.log("");
+                    console.log("✅ ----------------------------------");
+                    console.log("✅ ACESSO CONCEDIDO: Credenciais Válidas.");
+                    console.log("✅ Usuário:", dadosUsuario.dadosBasico?.nome);
+                    console.log("✅ Função :", dadosUsuario.dadosBasico?.func);
+                    console.log("✅ ----------------------------------");
 
-            console.log("🔄 📡 📦 CONTEÚDO:");
-            console.log(resultado);
+                    // 🎟️ Atualiza o crachá no contexto global (Injeção Direta)
+                    setDadosToken({
+                        cpef: dadosUsuario.dadosBasico.cpef,
+                        nome: dadosUsuario.dadosBasico.nome,
+                        func: dadosUsuario.dadosBasico.func
+                    });
 
-            if (resposta.ok) {
-
-                // 📐 Verificação Dupla: Checa o status da API e a presença do crachá (Token)
-                if (resultado.status === 'logado' && resultado.firebaseToken) {
-
-                    console.log("🔄 📡 ✅ Verificação de Login: Status 'logado' e Token recebidos.");
-                    console.log("🔄 📡 ----------------------------------");
-
-                    try {
-
-                        // 🚀 Entrega o crachá para o Porteiro do Contexto validar no Firebase
-                        await logarNoFirebase(resultado.firebaseToken);
-
-                        // 🚪 Desliga o modal e abre a porta para a área interna
-                        setCarregandoModal(false);
-                        navigate('/interno/UsuarioLogado');
-
-                    } catch (fbError) {
-
-                        console.error("🔄 🔥 📡 Ação: signInWithCustomToken()");
-                        console.error("🔄 🔥 🆔 Código do Erro: ", fbError.code);
-                        console.error("🔄 🔥 📝 Mensagem: ", fbError.message);
-                        console.error("🔄 🔥 🧱 Stack: ", fbError.stack);
-                        console.error("🔄 🔥 ----------------------------------");
-
-                        setTimeout(() => {
-
-                            dispararMensagem("Erro na validação de segurança. Tente novamente.");
-                            
-                        }, 500)
-
-                    }
+                    setCarregandoModal(false);
+                    navigate('/interno/UsuarioLogado');
 
                 } else {
 
-
-                    // 🚨 Cenário de erro inesperado: A API respondeu OK, mas não enviou o crachá.
-                    console.error("🚨 Falha de Lógica: Resposta OK do servidor, mas sem firebaseToken.");
+                    console.warn("❌ ----------------------------------");
+                    console.warn("❌ ACESSO NEGADO: Senha Incorreta.");
+                    console.warn("❌ ----------------------------------");
+                    
                     setTimeout(() => {
-                        dispararMensagem("Resposta inesperada do servidor de login.");
-                    }, 500);
-
-
+                        dispararMensagem("Senha incorreta. Por favor, tente novamente.");
+                    }, 200);
                 }
-
+                
             } else {
-
+                
+                console.warn("❌ ----------------------------------");
+                console.warn("❌ ACESSO NEGADO: CPF não encontrado.");
+                console.warn("❌ ----------------------------------");
+                
                 setTimeout(() => {
-        
-                    dispararMensagem(resultado.erro);
-
-                }, 500)
-
+                    dispararMensagem("Usuário não cadastrado.");
+                }, 200);
             }
 
         } catch (error) {
+            console.log("");
+            console.error("🚨 -----------------------------------------------------------");
+            console.error("🚨 ERRO CRÍTICO NA CONEXÃO FIREBASE:", error.message);
+            console.error("🚨 -----------------------------------------------------------");
 
             setTimeout(() => {
-        
                 dispararMensagem("Erro de conexão com o servidor.");
-
             }, 500);
-
         } 
-
     };
+
+
+
+
+
+
+
+
+
 
     // ----------------------------------------------------
     // FIM DO - Enviar dados de login para o servidor
     // ----------------------------------------------------
-
 
 
 
@@ -614,9 +614,7 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
         <>
 
 
-        {/* <div className="componente-de-pagina"> */}
-
-
+        <div className="Card-Logar-Tudo">
 
             {/* -------------------------- */}
             {/* INICIO - 📋 CARD CADASTRAR */}
@@ -624,15 +622,15 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
             <div className="Card-Logar">
 
-
-
-
                 {/* ------------------------------ */}
                 {/* INICIO DO - FORM LOGIN TUDO */}
                 {/* ------------------------------ */}
 
                 <div className="LoginTudo-Login">
         
+
+
+
                     {/* <div className="info-gaveta">
                         <div>
                             <p>📡 Monitorando da gaveta - credenciais:</p>
@@ -641,20 +639,16 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                         </div>
                     </div> */}
 
+
+
+
                     <div className={`MsgForm-Login ${msgVisivel ? 'ativo-Login' : ''} ${tipoMsg}`}>
                         <span className="alerta-erro-Login">
-                            {tipoMsg === "sucesso" ? (
-                                <>
-                                    <div className="linha-topo-Login">✅ Cadastro realizado com sucesso!</div>
-                                    <div className="linha-foco-Login">AGORA FAÇA SEU LOGIN</div>
-                                </>
-                            ) : (
-                                <>⚠️ {msgErro}</>
-                            )}
+                                <> ⚠️ {msgErro} </>
                         </span>
                     </div>
 
-                    
+
 
 
                     {/* ------------------------------ */}
@@ -714,205 +708,18 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
                     {/* FIM DO - FORM LOGIN - className="LoginForm-Login" */}
                     {/* ------------------------------ */}
 
+
+
+
+
+
                 </div> 
 
                 {/* ------------------------------ */}
                 {/* FIM DO - FORM LOGIN TUDO */}
                 {/* ------------------------------ */}
             
-            
-
-
-
-
-
-                {/* ------------------------------ */}
-                {/* INICIO DO - className="CpefTextes-Login"> */}
-                {/* ------------------------------ */}
-
-                <div className="CpefTextes-Login">
-
-
-
-
-                    {/* 🛠️ LINHA 1: PROGRAMADOR */}
-                    <div className="Linha-Botoes-Teste-Login Linha-Prog-Login">
-                        <h4 className="Rotulo-Teste-Login">Programador</h4>
-                        <input type="button" className="Botao-Teste-Login" value="GIULIANO" 
-                            style={getEstiloBotao("121.149.148-01")}
-                            onClick={() => preencherCampos({
-                                cpef: "121.149.148-01",
-                                senh: "Olhoquetudove@7"
-                            })}
-                        /> 
-                    </div>
-
-
-
-
-
-                    {/* 🛡️ LINHA 2: ADMINISTRADORES */}
-                    <div className="Linha-Botoes-Teste-Login Linha-Admin-Login">
-
-
-                        <h4 className="Rotulo-Teste-Login">Administrador</h4>
-                        <input type="button" className="Botao-Teste-Login" value="ANDRESSA" 
-                            style={getEstiloBotao("663.745.531-87")}
-                            onClick={() => preencherCampos({
-                                cpef: "663.745.531-87",
-                                senh: "123"
-                            })}
-                        />
-        
-                        <input type="button" className="Botao-Teste-Login" value="JOÃO VICTOR" 
-                            style={getEstiloBotao("505.842.550-55")}
-                            onClick={() => preencherCampos({
-                                cpef: "505.842.550-55",
-                                senh: "123"
-                            })}
-                        />
-
-
-                    </div>
-
-
-
-
-
-                    {/* 👩‍⚕️ LINHA 3: CUIDADORAS */}
-                    <div className="Linha-Botoes-Teste-Login Linha-Cuida-Login">
-
-
-                        <h4 className="Rotulo-Teste-Login">Cuidadoras</h4>
-                        <input type="button" className="Botao-Teste-Login" value="JOANA" 
-                            style={getEstiloBotao("103.646.340-06")}
-                            onClick={() => preencherCampos({
-                                cpef: "103.646.340-06",
-                                senh: "1"
-                            })}/> 
-
-                        <input type="button" className="Botao-Teste-Login" value="PAULA" 
-                            style={getEstiloBotao("293.348.470-69")}
-                            onClick={() => preencherCampos({ 
-                                cpef: "293.348.470-69",
-                                senh: "12"
-                            })}/>
-
-                        <input type="button" className="Botao-Teste-Login" value="MARIA" 
-                            style={getEstiloBotao("519.310.058-93")}
-                            onClick={() => preencherCampos({
-                                cpef: "519.310.058-93",
-                                senh: "123"
-                            })}/>
-
-                        <input type="button" className="Botao-Teste-Login" value="ISABEL" 
-                            style={getEstiloBotao("200.335.920-63")}
-                            onClick={() => preencherCampos({ 
-                                cpef: "200.335.920-63",
-                                senh: "123"
-                            })}/>
-
-                        <input type="button" className="Botao-Teste-Login" value="ANA" 
-                            style={getEstiloBotao("123.456.789-09")}
-                            onClick={() => preencherCampos({ 
-                                cpef: "123.456.789-09",
-                                senh: "123"
-                            })}/>
-
-
-                    </div>
-
-
-
-
-
-                    {/* 🏠 LINHA 4: CLIENTES */}
-                    <div className="Linha-Botoes-Teste-Login Linha-Cliente-Login">
-                        <h4 className="Rotulo-Teste-Login">Clientes</h4>
-                        <input type="button" className="Botao-Teste-Login" value="BEATRIZ" 
-                            style={getEstiloBotao("060.915.660-83")}
-                            onClick={() => preencherCampos({
-                                cpef: "060.915.660-83",
-                                senh: "12345"
-                            })}/> 
-
-                        <input type="button" className="Botao-Teste-Login" value="LUCIANA" 
-                            style={getEstiloBotao("763.626.770-56")}
-                            onClick={() => preencherCampos({
-                                cpef: "763.626.770-56",
-                                senh: "12345"
-                            })}/> 
-
-                        <input type="button" className="Botao-Teste-Login" value="MARCO" 
-                            style={getEstiloBotao("844.450.750-43")}
-                            onClick={() => preencherCampos({    
-                                cpef: "844.450.750-43",
-                                senh: "12345"
-                            })}/> 
-
-                        <input type="button" className="Botao-Teste-Login" value="PEDRO" 
-                            style={getEstiloBotao("004.838.240-03")}
-                            onClick={() => preencherCampos({
-                                cpef: "004.838.240-03",
-                                senh: "12345"
-                            })}/>
-
-                        <input type="button" className="Botao-Teste-Login" value="CARLA" 
-                            style={getEstiloBotao("342.297.530-63")}
-                            onClick={() => preencherCampos({
-                                cpef: "342.297.530-63",
-                                senh: "12345"
-                            })}/>
-
-                        <input type="button" className="Botao-Teste-Login" value="ROBERTO" 
-                            style={getEstiloBotao("729.583.410-09")}
-                            onClick={() => preencherCampos({
-                                cpef: "236.326.400-25",
-                                senh: "123"
-                            })}/>
-
-                        <input type="button" className="Botao-Teste-Login" value="SANDRA" 
-                            style={getEstiloBotao("810.332.940-03")}
-                            onClick={() => preencherCampos({
-                                cpef: "765.316.010-78",
-                                senh: "1111"
-                            })}/>
-                    </div>
-
-
-                    {/* 🎧 LINHA 2.5: ATENDENTES */}
-                    <div className="Linha-Botoes-Teste-Login Linha-Atendente-Login">
-                        <h4 className="Rotulo-Teste-Login">Atendentes</h4>
-                        <input type="button" className="Botao-Teste-Login" value="FERNANDA" 
-                            style={getEstiloBotao("875.673.130-22")}
-                            onClick={() => preencherCampos({
-                                cpef: "875.673.130-22",
-                                senh: "123"
-                            })}
-                        />
-        
-                        <input type="button" className="Botao-Teste-Login" value="CARLOS" 
-                            style={getEstiloBotao("943.757.760-99")}
-                            onClick={() => preencherCampos({
-                                cpef: "943.757.760-99",
-                                senh: "123"
-                            })}
-                        />
-                    </div>
-
-
-
-                </div> 
-
-                {/* ------------------------------ */}
-                {/* FIM DO - className="CpefTextes-Login"> */}
-                {/* ------------------------------ */}
-
-
-
-
-
-
+    
             </div>
 
             {/* -------------------------- */}
@@ -922,7 +729,186 @@ export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
-        {/* </div> */}
+        </div>
+
+
+
+        
+
+        {/* ------------------------------ */}
+        {/* INICIO DO - className="CpefTextes-Login"> */}
+        {/* ------------------------------ */}
+
+        <div className="CpefTextes-Login">
+
+
+            {/* 🛠️ LINHA 1: PROGRAMADOR */}
+            <div className="Linha-Botoes-Teste-Login Linha-Prog-Login">
+                <h4 className="Rotulo-Teste-Login">Programador</h4>
+                <input type="button" className="Botao-Teste-Login" value="GIULIANO" 
+                    style={getEstiloBotao("121.149.148-01")}
+                    onClick={() => preencherCampos({
+                        cpef: "121.149.148-01",
+                        senh: "Olhoquetudove@7"
+                    })}
+                /> 
+            </div>
+
+
+            {/* 🛡️ LINHA 2: ADMINISTRADORES */}
+            <div className="Linha-Botoes-Teste-Login Linha-Admin-Login">
+
+
+                <h4 className="Rotulo-Teste-Login">Administrador</h4>
+                <input type="button" className="Botao-Teste-Login" value="ANDRESSA" 
+                    style={getEstiloBotao("663.745.531-87")}
+                    onClick={() => preencherCampos({
+                        cpef: "663.745.531-87",
+                        senh: "123"
+                    })}
+                />
+
+                <input type="button" className="Botao-Teste-Login" value="JOÃO VICTOR" 
+                    style={getEstiloBotao("505.842.550-55")}
+                    onClick={() => preencherCampos({
+                        cpef: "505.842.550-55",
+                        senh: "123"
+                    })}
+                />
+
+
+            </div>
+
+
+
+            {/* 👩‍⚕️ LINHA 3: CUIDADORAS */}
+            <div className="Linha-Botoes-Teste-Login Linha-Cuida-Login">
+
+
+                <h4 className="Rotulo-Teste-Login">Cuidadoras</h4>
+                <input type="button" className="Botao-Teste-Login" value="JOANA" 
+                    style={getEstiloBotao("103.646.340-06")}
+                    onClick={() => preencherCampos({
+                        cpef: "103.646.340-06",
+                        senh: "1"
+                    })}/> 
+
+                <input type="button" className="Botao-Teste-Login" value="PAULA" 
+                    style={getEstiloBotao("293.348.470-69")}
+                    onClick={() => preencherCampos({ 
+                        cpef: "293.348.470-69",
+                        senh: "12"
+                    })}/>
+
+                <input type="button" className="Botao-Teste-Login" value="MARIA" 
+                    style={getEstiloBotao("519.310.058-93")}
+                    onClick={() => preencherCampos({
+                        cpef: "519.310.058-93",
+                        senh: "123"
+                    })}/>
+
+                <input type="button" className="Botao-Teste-Login" value="ISABEL" 
+                    style={getEstiloBotao("200.335.920-63")}
+                    onClick={() => preencherCampos({ 
+                        cpef: "200.335.920-63",
+                        senh: "123"
+                    })}/>
+
+                <input type="button" className="Botao-Teste-Login" value="ANA" 
+                    style={getEstiloBotao("123.456.789-09")}
+                    onClick={() => preencherCampos({ 
+                        cpef: "123.456.789-09",
+                        senh: "123"
+                    })}/>
+
+
+            </div>
+
+
+            {/* 🏠 LINHA 4: CLIENTES */}
+            <div className="Linha-Botoes-Teste-Login Linha-Cliente-Login">
+                <h4 className="Rotulo-Teste-Login">Clientes</h4>
+                <input type="button" className="Botao-Teste-Login" value="BEATRIZ" 
+                    style={getEstiloBotao("060.915.660-83")}
+                    onClick={() => preencherCampos({
+                        cpef: "060.915.660-83",
+                        senh: "12345"
+                    })}/> 
+
+                <input type="button" className="Botao-Teste-Login" value="LUCIANA" 
+                    style={getEstiloBotao("763.626.770-56")}
+                    onClick={() => preencherCampos({
+                        cpef: "763.626.770-56",
+                        senh: "12345"
+                    })}/> 
+
+                <input type="button" className="Botao-Teste-Login" value="MARCO" 
+                    style={getEstiloBotao("844.450.750-43")}
+                    onClick={() => preencherCampos({    
+                        cpef: "844.450.750-43",
+                        senh: "12345"
+                    })}/> 
+
+                <input type="button" className="Botao-Teste-Login" value="PEDRO" 
+                    style={getEstiloBotao("004.838.240-03")}
+                    onClick={() => preencherCampos({
+                        cpef: "004.838.240-03",
+                        senh: "12345"
+                    })}/>
+
+                <input type="button" className="Botao-Teste-Login" value="CARLA" 
+                    style={getEstiloBotao("342.297.530-63")}
+                    onClick={() => preencherCampos({
+                        cpef: "342.297.530-63",
+                        senh: "12345"
+                    })}/>
+
+                <input type="button" className="Botao-Teste-Login" value="ROBERTO" 
+                    style={getEstiloBotao("236.326.400-25")}
+                    onClick={() => preencherCampos({
+                        cpef: "236.326.400-25",
+                        senh: "123"
+                    })}/>
+
+                <input type="button" className="Botao-Teste-Login" value="SANDRA" 
+                    style={getEstiloBotao("765.316.010-78")}
+                    onClick={() => preencherCampos({
+                        cpef: "765.316.010-78",
+                        senh: "1111"
+                    })}/>
+            </div>
+
+
+            {/* 🎧 LINHA 2.5: ATENDENTES */}
+            <div className="Linha-Botoes-Teste-Login Linha-Atendente-Login">
+                <h4 className="Rotulo-Teste-Login">Atendentes</h4>
+                <input type="button" className="Botao-Teste-Login" value="FERNANDA" 
+                    style={getEstiloBotao("875.673.130-22")}
+                    onClick={() => preencherCampos({
+                        cpef: "875.673.130-22",
+                        senh: "123"
+                    })}
+                />
+
+                <input type="button" className="Botao-Teste-Login" value="CARLOS" 
+                    style={getEstiloBotao("943.757.760-99")}
+                    onClick={() => preencherCampos({
+                        cpef: "943.757.760-99",
+                        senh: "123"
+                    })}
+                />
+            </div>
+
+
+
+        </div> 
+
+        {/* ------------------------------ */}
+        {/* FIM DO - className="CpefTextes-Login"> */}
+        {/* ------------------------------ */}
+
+
+
 
 
         </>

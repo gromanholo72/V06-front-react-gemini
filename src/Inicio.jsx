@@ -64,7 +64,7 @@ export function Inicio() {
 
     return (
 
-        // <div className="componente-de-pagina">
+        <div className="Card-Apresentacao-Tudo">
 
 
 
@@ -117,7 +117,7 @@ export function Inicio() {
 
 
 
-        // </div> 
+        </div> 
 
     );
 }

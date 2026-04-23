@@ -9,19 +9,17 @@ export const FiguraMenuHamburguer = ({
     secaoAberta,
     setSecaoAberta, 
     exibirBalaoDicaMenuHamburguer 
+    
 }) => {
 
 
     useEffect(() => {
-        console.log("");
-        console.log("🔍 -----------------------");
-        console.log("🔍 FiguraMenuHamburguer");
-        console.log("🔍 menuAberto:", menuAberto);
-        console.log("🔍 secaoAberta:", secaoAberta);
-        // console.log("🔍 exibirBalaoDicaMenuHamburguer :", exibirBalaoDicaMenuHamburguer);
-        // console.log("🔍 setMenuAberto                 :", setMenuAberto ? "✅ Recebida" : "❌ Vazia");
-        // console.log("🔍 setSecaoAberta                :", setSecaoAberta ? "✅ Recebida" : "❌ Vazia");
-        console.log("🔍 -----------------------");
+        // console.log("");
+        // console.log("🔍 -----------------------");
+        // console.log("🔍 FiguraMenuHamburguer");
+        // console.log("🔍 menuAberto:", menuAberto);
+        // console.log("🔍 secaoAberta:", secaoAberta);
+        // console.log("🔍 -----------------------");
     }, [menuAberto, secaoAberta]);
     
 

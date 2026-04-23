@@ -1,22 +1,32 @@
 /* ----------------------------------------------------------- */
 /* INICIO - 🏗️ 1. ESTRUTURA BASE (PALCO E VIGA)                 */
 /* ----------------------------------------------------------- */
-.relatorio-cuidadora-principal {
+.relatorio-cliente-principal {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
     box-sizing: border-box;
     animation: relClientes_surgir 0.6s ease-out;
 }
 
-.relatorio-cuidadora-suporte {
+.relatorio-cliente-suporte {
     width: 100%;
-    max-width: 1100px;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -25,22 +35,51 @@
 /* ------------------------------------------------------------- */
 /* INICIO - 🏷️ 2. CABEÇALHO (IDENTIDADE MAESTRO)                */
 /* ------------------------------------------------------------- */
-.relatorio-cuidadora-header {
+.relatorio-cliente-header {
     background-color: #ebf2f7; 
-    border-bottom: 3px solid #306396;
+    /* border-bottom: 3px solid #306396; */
     padding: 15px 20px;
     border-radius: 16px 16px 0 0;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.relatorio-cuidadora-header h2 {
+.relatorio-cliente-header h2 {
     margin: 0;
-    color: #2c3e50;
-    font-size: 18px;
+    color: black;
+    font-size: 15px; /* 📐 Ajuste Maestro: Título reduzido para melhor equilíbrio visual */
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
+.relatorio-cliente-btn-pdf {
+    background-color: rgb(75, 77, 75); 
+    color: #ffffff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 12px;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+.relatorio-cliente-btn-pdf:hover {
+    filter: brightness(0.9);
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -49,28 +88,25 @@
 /* ------------------------------------------------------------- */
 /* INICIO - 📊 3. TABELA E CONTAINER (BOX SHADOW)               */
 /* ------------------------------------------------------------- */
-.relatorio-cuidadora-tabela-container {
+.relatorio-cliente-tabela-container {
     background: #ffffff;
     border-radius: 0 0 16px 16px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-    overflow-x: auto !important; /* 📐 Scroll horizontal como último recurso Maestro */
-    border: 1px solid #e0e0e0;
+    /* 📐 Scroll horizontal como último recurso Maestro */
+    overflow-x: auto !important; 
+    /* border: 1px solid #e0e0e0; */
     border-top: none;
 }
 
-.relatorio-cuidadora-tabela {
+.relatorio-cliente-tabela {
     width: 100%;
     /* min-width: 500px; 📐 Removido para permitir ajuste natural da largura */
     border-collapse: collapse;
     background-color: white;
 }
 
-
-
-
-
-.relatorio-cuidadora-tabela th {
-    background-color: #34495e;
+.relatorio-cliente-tabela th {
+    background-color: #9b9fa3;
     color: #ffffff;
     padding: 12px 15px;
     font-weight: 800;
@@ -80,11 +116,7 @@
     border: 1px solid #2c3e50;
 }
 
-
-
-
-
-.relatorio-cuidadora-tabela td {
+.relatorio-cliente-tabela td {
     padding: 10px 15px;
     /* 📐 Ajuste Maestro: Linhas horizontais pretas para contraste superior */
     border-bottom: 1px solid #000000; 
@@ -102,18 +134,28 @@
     text-align: left !important;
 }
 
-.relatorio-cuidadora-tabela tbody tr {
-    cursor: pointer;
+.relatorio-cliente-tabela tbody tr {
+    /* cursor: pointer; */
     transition: background-color 0.2s ease;
 }
 
-.relatorio-cuidadora-tabela tbody tr:nth-child(even) {
+.relatorio-cliente-tabela tbody tr:nth-child(even) {
     background-color: #f9fbfd;
 }
 
-.relatorio-cuidadora-tabela tbody tr:hover {
+/* .relatorio-cliente-tabela tbody tr:hover {
     background-color: #d6d4d4;
-}
+} */
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -122,9 +164,9 @@
 /* ------------------------------------------------------------- */
 /* INICIO - 🏷️ 4. TAGS DE STATUS (REGRAS DE COR)                */
 /* ------------------------------------------------------------- */
-.relatorio-cuidadora-tag-confirmar,
-.relatorio-cuidadora-tag-pendente,
-.relatorio-cuidadora-tag-autorizado {
+.relatorio-cliente-tag-confirmar,
+.relatorio-cliente-tag-pendente,
+.relatorio-cliente-tag-autorizado {
     color: #ffffff;
     display: flex !important;
     flex-direction: row; /* 📐 Alinhamento horizontal Maestro */
@@ -133,42 +175,32 @@
     padding: 14px 12px;
     white-space: nowrap;
     width: 100%;
-    box-sizing: border-box; /* 📐 Garante que o padding interno seja respeitado */
+    box-sizing: border-box; 
     text-align: center;
     font-size: 14px;
     font-weight: bold;
     border-radius: 4px;
 }
 
-.relatorio-cuidadora-tag-pendente {
-    background-color: #c0392b; 
+.relatorio-cliente-tag-pendente {
+    background-color: #c0392b; /* Vermelho Maestro */
 }
 
-.relatorio-cuidadora-tag-confirmar {
-    background-color: rgb(212, 175, 55); 
+.relatorio-cliente-tag-confirmar {
+    background-color: rgb(212, 175, 55); /* Amarelo Maestro */
 }
 
-.relatorio-cuidadora-tag-autorizado {
-    background-color: #306396;
+.relatorio-cliente-tag-autorizado {
+    background-color: #306396; /* Azul Maestro */
 }
 
 
 
 
 
-/* ------------------------------------------------------------- */
-/* INICIO - 🛑 TAG EXCLUSIVA: RECUSADO (REJECT)                  */
-/* ------------------------------------------------------------- */
-.relatorio-cuidadora-tag-recusado {
-    /* 🎨 Maestro Alert: Vermelho vivo para sinalizar bloqueio/recusa */
-    background-color: #c0392b; 
-    color: #ffffff;
-    border-radius: 4px;
-    font-weight: 800;
-}
-/* ------------------------------------------------------------- */
-/* FIM - 🛑 TAG EXCLUSIVA: RECUSADO (REJECT)                     */
-/* ------------------------------------------------------------- */
+
+
+
 
 
 
@@ -184,9 +216,55 @@
     text-align: left !important;
 }
 
-.adm-relatorio-col-cadastro {
+.adm-relatorio-col-cadastro,
+.adm-relatorio-col-contrato {
     width: 160px;
     text-align: center !important;
+    cursor: pointer;
+}
+
+.adm-relatorio-col-cadastro:hover,
+.adm-relatorio-col-contrato:hover {
+    /* ✨ Interatividade Maestro: Feedback visual para acionamento do Modal */
+    background-color: rgba(48, 99, 150, 0.08) !important;
+    filter: brightness(1.1);
+    transition: all 0.2s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - ⏳ 6. FEEDBACK DE CARREGAMENTO (ESTILO MAESTRO)       */
+/* ------------------------------------------------------------- */
+.relatorio-cliente-loading {
+    background-color: #ffffff; /* 🎨 Fundo Branco solicitado */
+    padding: 60px;
+    text-align: center;
+    font-weight: bold;
+    color: rgb(212, 175, 55); /* 🏆 Dourado Maestro */
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    margin: 0;
+    animation: relClientes_surgir 0.4s ease-out;
 }
 
 @keyframes relClientes_surgir {
@@ -194,5 +272,5 @@
     to { opacity: 1; transform: translateY(0); }
 }
 /* ------------------------------------------------------------- */
-/* FIM - RELATÓRIO CUIDADORAS                                    */
+/* FIM - RELATÓRIO CLIENTES                                      */
 /* ------------------------------------------------------------- */

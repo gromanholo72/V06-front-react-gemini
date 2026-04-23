@@ -8,7 +8,7 @@
     
 
     /* 🎨 Estilo do Card */
-    background-color: #25d366;
+    background-color: var(--CorFundoBalaoDica);
     color: white;
     padding: 10px 16px;
     border-radius: 12px;
@@ -34,19 +34,19 @@
     /* 📐 Construção do triângulo apontando para cima */
     border-width: 8px;
     border-style: solid;
-    border-color: transparent transparent #25d366 transparent; 
+    border-color: transparent transparent var(--CorFundoBalaoDica) transparent; 
 }
 
 /* 🌀 Brilho no Botão */
 .Botao-Acao-Visitante-Perfil.pulsar-ativo {
     animation: pulsarVerde 2s infinite;
-    border: 2px solid #25d366;
-    background-color: #74d899;
+    /* border: 2px solid #25d366; */
+    background-color: var(--CorFundoBalaoDica);
 }
 
 @keyframes pulsarVerde {
     0% { 
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 1); 
+        box-shadow: 0 0 0 0 var(--CorFundoBalaoDica); 
        
     }
     70% { 

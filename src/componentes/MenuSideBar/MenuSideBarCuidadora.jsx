@@ -53,11 +53,30 @@ export const MenuSideBarCuidadora = ({
                 </div>
             </div>
             
+
+
+
+
             <div 
                 className="menu-sidebar-cuidadora-lista-botoes"
                 style={estiloListaBloqueada}
             >
                 
+
+                <button 
+                    className="menu-sidebar-cuidadora-btn-item"
+                    onClick={() => navegarERecolher('/interno/Treinamentos')}
+                >
+                    Manual e Treinamentos <span className="menu-sidebar-cuidadora-icon">📚</span>
+                </button>
+
+                <button 
+                    className="menu-sidebar-cuidadora-btn-item"
+                    onClick={() => navegarERecolher('/interno/EscalaMensal')}
+                >
+                    Minha Escala <span className="menu-sidebar-cuidadora-icon">📅</span>
+                </button>
+
                 <button 
                     className="menu-sidebar-cuidadora-btn-item"
                     onClick={() => navegarERecolher('/interno/MeusPlantoes')}
@@ -72,12 +91,7 @@ export const MenuSideBarCuidadora = ({
                     Registrar Evolução <span className="menu-sidebar-cuidadora-icon">🩺</span>
                 </button>
                 
-                <button 
-                    className="menu-sidebar-cuidadora-btn-item"
-                    onClick={() => navegarERecolher('/interno/EscalaMensal')}
-                >
-                    Minha Escala <span className="menu-sidebar-cuidadora-icon">📅</span>
-                </button>
+               
 
                 <button 
                     className="menu-sidebar-cuidadora-btn-item"

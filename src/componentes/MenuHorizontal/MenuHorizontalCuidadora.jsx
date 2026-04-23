@@ -13,14 +13,15 @@ export const MenuHorizontalCuidadora = ({
     // ---------------------------------
 
     useEffect(() => {
+        
         console.log("");
         console.log("✨ ----------------------------------");
         console.log("✨ MenuHorizontalCuidadora.jsx");
         console.log("✨ ehComputador                  :", ehComputador);
         console.log("✨ autorizadoAdministrador  :", autorizadoAdministrador);
-        // console.log("✨ navegarERecolher            :", navegarERecolher);
         console.log("✨ ----------------------------------");
-    }, [ehComputador, autorizadoAdministrador, navegarERecolher]);
+
+    }, [ehComputador, autorizadoAdministrador]);
 
     // ---------------------------------
     // FIM - ✨ Monitor de Propriedades
@@ -65,12 +66,14 @@ export const MenuHorizontalCuidadora = ({
                     Diretrizes
                 </button>
 
+
                 <button
                     className={`Btn-geral-cuidadora-prof ${autorizadoAdministrador ? '' : 'BotaoBloqueado'}`}
                     onClick={() => autorizadoAdministrador && navegarERecolher('/interno/Chamados')}
                 >
                     Chamados {!autorizadoAdministrador && "🔒"}
                 </button>
+
 
             </div>
 

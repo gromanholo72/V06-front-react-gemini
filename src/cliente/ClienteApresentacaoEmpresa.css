@@ -1,25 +1,27 @@
 /* ------------------------------------------------------------- */
 /* INICIO - 🏨 1. ESTRUTURA E FUNDO (PALCO PRINCIPAL)            */
 /* ------------------------------------------------------------- */
+.Card-Apresentacao-Tudo { 
+  width: 100%;
+  max-width: 650px; 
+  padding: 10px;
+}
+
+
 .container-apresentacao {
-  /* 🎨 Fundo Institucional: Gradiente Suave Maestro */
-  /* background: linear-gradient(180deg, #b1acac 0%, #f8fbff 100%);  */
-  background: rgb(233, 233, 232);
-  
-  /* 📐 Geometria e Respiro */
-  max-width: 850px;
-  margin: 40px auto;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  padding: 50px 30px;
-  border-radius: 30px;
-  
-  /* 🧱 Blindagem Visual: Sombra 2026 */
-  box-shadow: 0 25px 60px rgba(48, 99, 150, 0.12);
-  border: 1px solid rgba(48, 99, 150, 0.08);
-  
-  position: relative;
-  overflow: hidden;
+
   animation: surgir_suave 0.8s ease-out;
+  
 }
 /* ------------------------------------------------------------- */
 /* FIM - 🏨 1. ESTRUTURA E FUNDO (PALCO PRINCIPAL)               */
@@ -43,7 +45,7 @@
 /* INICIO - ✨ 2. TÍTULO DE DESTAQUE (IDENTIDADE)                */
 /* ------------------------------------------------------------- */
 .titulo {
-    font-size: 28px;
+    font-size: 23px;
     color: #121213;
     font-weight: 800;
    
@@ -55,7 +57,7 @@
     filter: brightness(1.1);
 
     /* // 📐 Layout e Respiro: Padding para o fundo não "apertar" o texto */
-    padding: 26px 32px;
+    padding: 20px 20px;
     border-radius: 16px;
     display: inline-flex;
     align-items: center;

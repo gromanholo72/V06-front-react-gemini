@@ -13,7 +13,7 @@ export const BalaoDicaCriarConta = ({ exibirBalaoDicaCriarConta }) => {
                     exit={{ opacity: 0, scale: 0.8 }}
                     className="BalaoDicaCriarContaCorpo"
                 >
-                    ✨ Clique aqui para criar sua conta!
+                    Clique aqui para criar sua conta!
                 </motion.div>
             )}
         </AnimatePresence>

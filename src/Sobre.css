@@ -1,31 +1,22 @@
-/* .divContainerTudo {
-    display: flex;
-    justify-content: center; 
-    align-items: center;    
+.Card-Sobre-Tudo { 
     width: 100%;
-} */
+    max-width: 650px; 
+    padding: 10px;
+}
 
 .Card-Sobre-Informativo {
     background: #ffffff;
     border-radius: 20px;
     padding: 40px;
-    width: 100%;
-    max-width: 650px; 
+   
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     border-top: 6px solid #1a237e; 
 
-    /* margin: 10px; */
-    
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 }
-
-
-
-
-
 
 
 

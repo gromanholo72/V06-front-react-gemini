@@ -1,23 +1,26 @@
 import React from 'react';
 import { ref, update } from "firebase/database";
-import { db_realtime } from './firebaseConfig';
+
+import { useAuth } from '../AutenticacaoContexto.jsx';
+
 import './DetalhesCliente.css';
 
-/* ------------------------------------------------------------- */
-/* INICIO - 🔎 COMPONENTE: DetalhesCliente (FICHA DO CLIENTE)    */
-/* ------------------------------------------------------------- */
+
 
 export function DetalhesCliente({ usuario, aoFechar }) {
+
     if (!usuario) return null;
+
+    const { db_realtime } = useAuth();
 
     // 📐 Mapeamento Seguro Maestro (Protocolo V3)
     const dBasico = usuario.dadosBasico || {};
-    const dInterno = usuario.dadosInterno || {};
+    const dadosInterno = (usuario.dadosInterno && typeof usuario.dadosInterno === 'object') ? usuario.dadosInterno : {};
+    const dadosCadastro = (usuario.dadosCadastro && typeof usuario.dadosCadastro === 'object') ? usuario.dadosCadastro : {};
     const dSeguranca = usuario.dadosSeguranca || {};
     
     // Extração do ID Limpo (Apenas números do CPF para ID de Sistema)
     const idSistema = dBasico.cpef ? dBasico.cpef.replace(/\D/g, "") : "---";
-
 
 
 
@@ -27,10 +30,11 @@ export function DetalhesCliente({ usuario, aoFechar }) {
     // ---------------------------------
     const handleConfirmarCadastro = async () => {
         const cpfLimpo = dBasico.cpef ? dBasico.cpef.replace(/\D/g, "") : null;
+        const ehParaConfirmar = !dadosCadastro.autorizadoAdministrador;
 
         console.log("");
         console.log("💾 🛡️ ------------------------------");
-        console.log("💾 🛡️ AÇÃO: Confirmar Cadastro Cliente (Admin)");
+        console.log(`💾 🛡️ AÇÃO: ${ehParaConfirmar ? "Confirmar" : "Cancelar"} Cadastro Cliente (Admin)`);
         console.log("💾 🛡️ CPF Alvo:", cpfLimpo);
         console.log("💾 🛡️ -------------------------------");
 
@@ -39,11 +43,11 @@ export function DetalhesCliente({ usuario, aoFechar }) {
         try {
             const internoRef = ref(db_realtime, `usuarios/${cpfLimpo}/dadosCadastro`);
             await update(internoRef, {
-                autorizadoAdministrador: true,
-                autorizadoAdministradorData: new Date().toLocaleDateString('pt-BR')
+                autorizadoAdministrador: ehParaConfirmar,
+                autorizadoAdministradorData: ehParaConfirmar ? new Date().toLocaleDateString('pt-BR') : ""
             });
-            console.log("📐 ✅ SUCESSO: Cliente autorizado na Antena Central.");
-            alert("✅ Cadastro do cliente confirmado com sucesso!");
+            console.log(`📐 ✅ SUCESSO: Cliente ${ehParaConfirmar ? "autorizado" : "suspenso"} na Antena Central.`);
+            alert(`✅ Cadastro do cliente ${ehParaConfirmar ? "confirmado" : "cancelado"} com sucesso!`);
             aoFechar();
         } catch (error) {
             console.error("❌ 🚨 Erro no salvamento Maestro (Cliente):", error);
@@ -56,10 +60,9 @@ export function DetalhesCliente({ usuario, aoFechar }) {
 
 
 
+
     return (
         <div className="detalhes-cliente-overlay">
-
-
 
             {/* -------------------------------- */}
             {/* INICIO - FICHA RESUMO CLIENTE    */}
@@ -67,9 +70,6 @@ export function DetalhesCliente({ usuario, aoFechar }) {
 
             <div className="detalhes-cliente-modal-card">
                 
-
-
-
                 {/* ----------------------------------------- */}
                 {/* INICIO - FICHA RESUMO CLIENTE - TITULO    */}
                 {/* ----------------------------------------- */}
@@ -145,29 +145,33 @@ export function DetalhesCliente({ usuario, aoFechar }) {
                             
                             <div className="detalhe-item-cliente">
                                 <label>SITUAÇÃO:</label>
-                                <span className={`status-pill-texto ${dInterno.situ?.toLowerCase() || 'ativo'}`}>
-                                    {dInterno.situ?.toUpperCase() || "ATIVO"}
+                                <span className={`status-pill-texto ${dadosInterno.situ?.toLowerCase() || 'ativo'}`}>
+                                    {dadosInterno.situ?.toUpperCase() || "ATIVO"}
                                 </span>
                             </div>
 
                             <div className="detalhe-item-cliente">
                                 <label>PERMISSÃO:</label>
-                                <span>{dInterno.perm?.toUpperCase() || "BASICA"}</span>
+                                <span>{dadosInterno.perm?.toUpperCase() || "BASICA"}</span>
                             </div>
 
                             <div className="detalhe-item-cliente">
                                 <label>DATA CADASTRO:</label>
-                                <span>{dInterno.datc || "---"}</span>
+                                <span>{dadosInterno.datc || "---"}</span>
                             </div>
 
                             <div className="detalhe-item-cliente">
-                                <label>MEU PREFIL:</label>
-                                <span>{dInterno.dadosUsuarioCompleto ? "✅ CADASTRO CONCLUÍDO" : "⏳ CADASTRO PENDENTE"}</span>
+                                <label>Dados Cadastrais:</label>
+                                <span>{dadosCadastro.perfilCompleto ? "✅ CADASTRO CONCLUÍDO" : "⏳ CADASTRO PENDENTE"}</span>
                             </div>
+
+
+
+
 
                             <div className="detalhe-item-cliente">
                                 <label>PRONTUARIO DO PACIENTE:</label>
-                                <span>{dInterno.usuarioLiberadoPeloAdministrador ? "🔓 LIBERADO" : "🔒 BLOQUEADO"}</span>
+                                <span>{dadosCadastro.autorizadoAdministrador ? "✅ SIM" : "❌ NÃO"}</span>
                             </div>
 
                         </div>
@@ -194,8 +198,9 @@ export function DetalhesCliente({ usuario, aoFechar }) {
                     <button 
                         className="btn-confirmar-cadastro" 
                         onClick={handleConfirmarCadastro}
+                        style={{ backgroundColor: dadosCadastro.autorizadoAdministrador ? '#c0392b' : '' }}
                     >
-                        Confirmar Cadastro
+                        {dadosCadastro.autorizadoAdministrador ? "Cancelar Cadastro" : "Confirmar Cadastro"}
                     </button>
 
                     <button className="btn-cliente-voltar" onClick={aoFechar}>Voltar ao Relatório</button>

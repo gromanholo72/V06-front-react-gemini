@@ -1,0 +1,204 @@
+/* ------------------------------------------------------------- */
+/* INICIO - 🔎 ESTILIZAÇÃO DO CARD CLIENTE (V3 MAESTRO)          */
+/* ------------------------------------------------------------- */
+.detalhes-cliente-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+
+
+
+
+.detalhes-cliente-modal-card {
+    background: #ffffff;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    animation: surgimentoCardCliente 0.3s ease-out;
+    animation: surgimentoCardCliente 0.3s ease-out;
+}
+
+
+
+
+.detalhes-cliente-header-card {
+    background-color: #ebf2f7;
+    border-bottom: 2px solid #306396;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detalhes-cliente-header-card h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 900;
+    color: #2c3e50;
+    letter-spacing: 1px;
+}
+
+.id-subtitulo {
+    font-size: 11px;
+    color: #7f8c8d;
+    font-weight: 800;
+    display: block;
+    margin-top: 2px;
+}
+
+.btn-fechar-cliente {
+    background: none; border: none;
+    font-size: 28px; color: #c0392b;
+    cursor: pointer; line-height: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📄 CORPO E SEÇÕES DO DOSSIÊ                          */
+/* ------------------------------------------------------------- */
+.detalhes-cliente-corpo-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+.card-cliente-secao-interna {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.titulo-cliente-secao-pequeno {
+    font-size: 11px;
+    font-weight: 900;
+    color: #306396;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🧬 ITENS DE DADOS (PADRÃO EM LINHA)                  */
+/* ------------------------------------------------------------- */
+.grade-cliente-detalhes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detalhe-item-cliente {
+    font-size: 12px;
+    color: #444;
+    display: flex;
+    flex-direction: row; /* 📐 Ajuste Maestro: Label e Valor em linha */
+    align-items: center;
+    gap: 10px;
+    padding: 2px 0;
+}
+
+.detalhe-item-cliente label {
+    color: #7f8c8d;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    min-width: 110px; /* 📐 Viga de Alinhamento: Garante que os valores comecem na mesma coluna */
+}
+
+.detalhe-item-cliente span {
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.valor-destaque-azul {
+    color: #306396 !important;
+    background: #eaf2f8;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.senha-texto-destaque {
+    color: #c0392b !important;
+    background: #fceceb;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+/* ------------------------------------------------------------- */
+/* FIM - 🧬 ITENS DE DADOS (PADRÃO EM LINHA)                     */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🚀 FOOTER E ANIMAÇÕES                                */
+/* ------------------------------------------------------------- */
+.detalhes-cliente-footer-card {
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    text-align: right;
+}
+
+.btn-cliente-voltar {
+    background: #306396; color: white;
+    border: none; padding: 8px 16px; border-radius: 6px;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+}
+
+@keyframes surgimentoCardCliente {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+/* FIM - 🔎 ESTILIZAÇÃO DO CARD CLIENTE (V3 MAESTRO)             */

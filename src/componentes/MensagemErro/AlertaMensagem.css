@@ -1,0 +1,82 @@
+
+/* 📐 Container da Gaveta (Efeito de Deslize Global) */
+.MsgForm-Cadastro {
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    /* transition: opacity 0.6s ease-in-out, max-height 0.5s ease-in-out, margin 0.5s ease-in-out, visibility 0.6s; */
+    overflow: hidden;
+}
+
+/* 📐 Ativação da Gaveta */
+.MsgForm-Cadastro.ativo-Cadastro {
+    visibility: visible;
+    opacity: 1;
+    max-height: 120px; 
+    margin-bottom: 20px; 
+    margin-top: 10px;
+}
+
+/* 📐 Estrutura Base do Card de Alerta */
+.alerta-erro-Cadastro {
+    padding: 15px 30px;
+    border-radius: 10px;
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    border-left: 6px solid transparent;
+    box-sizing: border-box;
+}
+
+/* 🟢 CONFIGURAÇÃO DE SUCESSO (Verde Maestro) */
+.MsgForm-Cadastro.sucesso .alerta-erro-Cadastro {
+    background-color: #77b390 !important; /* Fundo Verde Menta */
+    /* border-left-color: #27ae60; */
+}
+
+.linha-sucesso-Cadastro {
+    color: #1e4620; /* Texto Verde Escuro */
+    font-weight: 800;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: pularNaTela-Maestro 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 🔴 CONFIGURAÇÃO DE ERRO (Vermelho Maestro) */
+.MsgForm-Cadastro.erro .alerta-erro-Cadastro {
+    background-color: #b48380 !important; /* Fundo Vermelho Pálido */
+    /* border-left-color: #c0392b; */
+}
+
+.linha-erro-Cadastro {
+    color: #c0392b; /* Vermelho Oficial do Projeto */
+    font-weight: 800;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: pularNaTela-Maestro 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 📐 Animação Sagrada de Feedback Visual */
+@keyframes pularNaTela-Maestro {
+    from { 
+        opacity: 0; 
+        transform: translateY(-15px) scale(0.95); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
+}
+

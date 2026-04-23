@@ -1,0 +1,264 @@
+/* 🏠 1. COMPONENTE-PRINCIPAL (PALCO DO CONTRATO) */
+.cliente-contrato-principal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+/* 🧱 2. COMPONENTE-SUPORTE (VIGA ESTRUTURAL) */
+.cliente-contrato-suporte {
+    width: 100%;
+    min-width: 300px;
+    max-width: 850px;
+    display: grid;
+    gap: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+/* 📋 3. CARD DO CONTRATO (ESTILO MAESTRO) */
+.contrato-usuario-card {
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    /* margin: 20px; */
+}
+
+
+
+
+
+
+
+
+
+
+/* 🏷️ 4. CARD-HEADER (TOPO DO DOCUMENTO) */
+.contrato-card-header {
+    background-color: #ebf2f7;
+    border-bottom: 3px solid #306396;
+    padding: 20px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.contrato-card-header.celular {
+    padding: 20px 10px;
+   
+}
+
+.contrato-card-header h2 {
+    margin: 0;
+    color: #333333;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+
+.contrato-card-header.celular h2 {
+    font-size: 18px;
+}
+
+
+
+
+
+.btn-contrato-pdf {
+    background-color: rgb(75, 77, 75); /* Cinza Profissional Maestro */
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.btn-contrato-pdf.celular { 
+    padding: 10px;
+    font-size: 10px;
+}
+
+
+
+.btn-contrato-pdf:hover {
+    background-color: #306396; /* Destaque no Azul Maestro */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+
+
+
+
+
+/* 📄 5. CARD-BODY (CONTEÚDO TEXTUAL) */
+.contrato-card-corpo {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    color: #444444;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------- */
+/* INICIO - 📐 RODAPÉ E ASSINATURA   */
+/* --------------------------------- */
+
+.contrato-footer {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    width: 100%;
+}
+
+.alerta-contrato {
+    background-color: #fff9db;
+    border: 1px solid #ffec99;
+    color: #856404;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.area-botao-assinar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.btn-assinar-contrato {
+    background-color: rgb(212, 175, 55); /* Dourado Maestro */
+    color: white;
+    padding: 18px 50px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-assinar-contrato:hover:not(:disabled) {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* 🔒 ESTADO TRAVADO (SISTEMA DE SEGURANÇA) */
+.btn-travado {
+    background-color: #95a5a6 !important; /* Cinza Desabilitado */
+    cursor: not-allowed !important;
+    filter: grayscale(1);
+    opacity: 0.7;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.legenda-assinatura {
+    color: #27ae60; /* Verde Sucesso */
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* --------------------------------- */
+/* FIM - 📐 RODAPÉ E ASSINATURA      */
+/* --------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📋 6. LISTAS DO CONTRATO (ESTILO MAESTRO)            */
+/* ------------------------------------------------------------- */
+.contrato-lista {
+    list-style: none; /* 🚫 Remove a bolinha padrão da lista */
+    padding-left: 0;
+    /* margin: 15px 0 0 0; */
+    display: flex;
+    flex-direction: column;
+    /* gap: 5px; */
+}
+
+.contrato-lista li {
+    padding: 5px 0;
+    padding-left: 30px; /* 📐 Espaço para o ícone customizado */
+    position: relative;
+    font-size: 14px;
+    color: #444444;
+    border-bottom: 1px dashed #e0e0e0;
+    text-align: justify;
+}
+
+.contrato-lista li::before {
+    content: "✔️"; /* 🎨 Substitui a bolinha por um check elegante */
+    position: absolute;
+    left: 0;
+    font-size: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+}

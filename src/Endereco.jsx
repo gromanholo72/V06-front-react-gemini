@@ -8,7 +8,19 @@ import './Endereco.css';
 export function Endereco() {
 
     const cepInputRef = useRef(null);
-    const { dadosToken } = useAuth();
+
+    const { 
+
+        dadosToken,
+
+        carregandoOperacao,
+        setCarregandoOperacao,
+        carregandoPermissoesFireBase,
+
+        msg, 
+        setMsg
+    
+    } = useAuth();
     
     const [ehNovoCadastro, setEhNovoCadastro] = useState(false);
    
@@ -19,28 +31,35 @@ export function Endereco() {
     const [estado, setEstado] = useState('');
     const [numero, setNumero] = useState('');
     
-    const [carregandoOperacao, setCarregandoOperacao] = useState(false);
-    const [podeEditar, setPodeEditar] = useState(false);
+    
 
-    // 🧱 REF para controlar a execução da busca sem disparar o useEffect ao abrir a edição
+
+
+
+
+
+    // ---------------------------------
+    // INICIO - ✏️ Foco Automático ao Editar
+    // ---------------------------------
+
+    const [podeEditar, setPodeEditar] = useState(false);
     const podeEditarRef = useRef(podeEditar);
     useEffect(() => {
+
         podeEditarRef.current = podeEditar;
+
     }, [podeEditar]);
-
-
-    // ---------------------------------
-    // INICIO - 🧭 Sensor de localização
-    // ---------------------------------
 
     useEffect(() => {
         if (podeEditar) {
+
             cepInputRef.current?.focus();
+
         }
     }, [podeEditar]);
 
     // ---------------------------------
-    // FIM - 🧭 Sensor de localização
+    // FIM - ✏️ Foco Automático ao Editar
     // ---------------------------------
 
 
@@ -80,66 +99,53 @@ export function Endereco() {
 
     const carregarDadosDoBanco = useCallback(async () => {
 
-        const cpfAtivo = dadosToken?.cpef;
+        if (!dadosToken?.cpef) return;
+   
+        const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
+        const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/dadosEndereco`);
 
-        if (cpfAtivo) {
-             
-            console.warn("✨ 🛰️ Endereço vazio na memória. Buscando na Antena Central...");
+        try {
+
+            const snapshot = await get(caminhoNoBanco);
             
-            const cpfLimpo = cpfAtivo.replace(/\D/g, "");
-            const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/dadosEndereco`);
+            if (snapshot.exists()) {
 
-            try {
+                const dadosEnde = snapshot.val();
 
-                const snapshot = await get(caminhoNoBanco);
+                popularCamposEndereco(dadosEnde);
+                setEhNovoCadastro(false);
+                setPodeEditar(false);
+
+            } else {
                 
-                if (snapshot.exists()) {
-
-                    const dadosEnde = snapshot.val();
-
-                    // console.log("");
-                    // console.log("✨ --------------------------------------------------");
-                    // console.log("✨ CARREGANDO DADOS DO ENDERECO DIRETO DO FIREBASE");
-                    // console.log("✨ useEffect() - Componente - 📍 Endereco.jsx");
-                    // console.log("✨ ✅ Endereço encontrado no Realtime.");
-                    // console.log("✨ --------------------------------------------------");
-
-                    popularCamposEndereco(dadosEnde);
-                    setEhNovoCadastro(false);
-                    setPodeEditar(false);
-
-                } else {
-
-                    // console.log("");
-                    // console.log("✨ 🛰️ ----------------------------------");
-                    // console.log("✨ 🛰️ useEffect() - componente - 📍 Endereco.jsx");
-                    // console.log("✨ 🛰️ funcao: carregarDadosDoBanco()");
-                    // console.log("✨ 📍 Nenhum endereço no banco. Liberando edição.");
-                    // console.log("✨ --------------------------------------------------");
-                    
-                    limparCampos();  
-                    setEhNovoCadastro(true); 
-                    setPodeEditar(true);
-
-                }
-            } catch (error) {
-
-                console.error("❌ Erro ao buscar endereço na Antena Central:", error);
-                setPodeEditar(true); 
+                limparCampos();  
+                setEhNovoCadastro(true); 
+                setPodeEditar(true);
 
             }
 
+        } catch (error) {
+
+            console.error("❌ Erro ao buscar endereço na Antena Central:", error);
+
+            setPodeEditar(true); 
+
         }
+
+        
 
     }, [dadosToken?.cpef, popularCamposEndereco, limparCampos]);
 
     useEffect(() => {
-        if (dadosToken?.cpef) {
-            carregarDadosDoBanco();
-        } else {
-            console.warn("✨ 🛰️ ⏳ Aguardando sinal da Antena Central para carregar Endereço...");
+
+        if (carregandoPermissoesFireBase || !dadosToken?.cpef) {
+            console.log("✨ 🛰️ Aguardando carregar ...");
+            return;
         }
-    }, [dadosToken, carregarDadosDoBanco]);
+
+        carregarDadosDoBanco();
+
+    }, [carregandoPermissoesFireBase, dadosToken, carregarDadosDoBanco]);
 
     // ---------------------------------
     // FIM - 🕵️‍♂️ Distribui o endereço para os cards
@@ -284,12 +290,10 @@ export function Endereco() {
 
 
 
-     /* -------------------------------------------------------- */
+    /* -------------------------------------------------------- */
     /* INICIO - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
     /* -------------------------------------------------------- */
 
-    const [msg, setMsg] = useState({ tipo: '', texto: '' });
-    
     // ⏳ Função centralizada para limpar mensagens após um tempo
     const temporizadorMSG = () => {
         setTimeout(() => {
@@ -303,15 +307,11 @@ export function Endereco() {
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // console.log("");
-        // console.log("💾 📍 ------------------------------");
-        // console.log("💾 📍 INICIANDO SALVAMENTO:");
-        // console.log("💾 📍 Componente - 📍 Endereco.jsx");
-        // console.log("💾 📍 Funcao: salvardadosEndereco()");
-        // console.log("💾 📍 -------------------------------");
-
-        setMsg({ tipo: '', texto: '' });
-        setCarregandoOperacao(true); // ⏳ Ativa modo carregando
+        setMsg({ 
+            tipo: '', 
+            texto: '' 
+        });
+        setCarregandoOperacao(true);
 
         try {
 
@@ -323,16 +323,6 @@ export function Endereco() {
                 return;
 
             }
-
-            // console.log("");
-            // console.log("💾 📍 -------------------------------");
-            // console.log("💾 📍 🔍 EXTRAÇÃO DE IDENTIDADE:");
-            // console.log("💾 📍 🛰️ Componente - 📍 Endereco.jsx");
-            // console.log("💾 📍 🆔 cpfLimpo (para URL):", cpfLimpo);
-            // console.log("💾 📍 🌐 URL_SERVIDOR:", URL_SERVIDOR);
-            // console.log("💾 📍 -------------------------------");
-
-       
 
             const payload = {
                 cpef: cpfLimpo,
@@ -347,15 +337,17 @@ export function Endereco() {
             };
             
 
-
             // console.log("");
-            // console.log("📐 ----------------------------------");
-            // console.log("📐 📦 DADOS PREPARADOS PARA ENVIO (ENDERECO):");
-            // console.log("📐 componente - Endereco.jsx");
-            // console.log("📐 payload:", payload);
-            // console.log("📐 ----------------------------------");
+            // console.log("💾 -------------------------------");
+            // console.log("💾 salvardadosEndereco");
+            // console.log("💾 📍 Endereco.jsx");
+            // console.log("💾 cpfLimpo: ", cpfLimpo);
+            // console.log("💾 URL_SERVIDOR: ", URL_SERVIDOR);
+            // console.log("💾 payload: ", payload);
+            // console.log("💾 ----------------------------------");
 
-            // ⏳ UX: Garante tempo mínimo de 1 segundo de loading
+
+            // ⏳ UX: Garante tempo mínimo de 500 ms segundo de loading
             const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
 
             // �📡 Transmissão para a VPS
@@ -366,24 +358,33 @@ export function Endereco() {
             });
 
             const [resposta] = await Promise.all([requisicao, tempoMinimo]);
+
             const resultado = await resposta.json();
 
             if (resposta.ok) {
 
                 // console.log("");
-                // console.log("💾 📡 -----------------------------------------------------------");
-                // console.log("💾 📡 Resposta do Servidor OK");
-                // console.log("💾 🛰️ Componente - 📍 Endereco.jsx");
-                // console.log("💾 📡 Status : ✅ Sincronizado");
-                // console.log("💾 📡 -----------------------------------------------------------");
+                // console.log("💾 -----------------------------------------------------------");
+                // console.log("💾 Resposta do Servidor OK");
+                // console.log("💾 📍 Endereco.jsx");
+                // console.log("💾 resultado: ", resultado);
+                // console.log("💾  -----------------------------------------------------------");
 
-                setMsg({ tipo: 'sucesso', texto: '✅ Endereco atualizado com sucesso!' });
+                setMsg({ 
+
+                    tipo: 'sucesso', 
+                    texto: '✅ Endereco atualizado com sucesso!'
+
+                });
                 carregarDadosDoBanco();
 
             } else {
 
                 console.log("💾 ⚠️ SERVIDOR REJEITOU:", resultado.erro);
-                setMsg({ tipo: 'erro', texto: resultado.erro });
+                setMsg({ 
+                    tipo: 'erro', 
+                    texto: resultado.erro 
+                });
 
             }
 
@@ -395,7 +396,7 @@ export function Endereco() {
 
         } finally {
 
-            setCarregandoOperacao(false); // 🏁 Finaliza modo carregando
+            setCarregandoOperacao(false); 
             temporizadorMSG();
 
         }
@@ -453,25 +454,16 @@ export function Endereco() {
             <div className="perfil-endereco-componente-suporte">
 
 
-    
                 <div className="perfil-endereco-usuario-card">
-
-
 
                     <div className="perfil-endereco-card-titulo">📍 ENDEREÇO RESIDENCIAL</div>
 
-
-
                     {msg.texto && <div className={`cad-admin-feedback-endereco ${msg.tipo}`}>{msg.texto}</div>}
-
-
 
                     <div className="perfil-endereco-card-corpo">
 
-            
                         {carregandoOperacao && <div className="loading-overlay-card">⏳ Processando...</div>}
-
-                                
+                  
                         <div className="Campo flex-cep">
                             <label>CEP</label>
                             <input 

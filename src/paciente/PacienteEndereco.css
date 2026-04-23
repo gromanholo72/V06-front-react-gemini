@@ -1,0 +1,237 @@
+/* ------------------------------------------------------------- */
+/* INICIO - 🏗️ 1. ESTRUTURA BASE (PALCO E VIGA)                 */
+/* ------------------------------------------------------------- */
+.componente-principal-padrao-paciente {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.componente-suporte-padrao-paciente {
+    width: 100%;
+    min-width: 300px;
+    max-width: 700px;
+    display: grid;
+    gap: 20px;
+}
+/* ------------------------------------------------------------- */
+/* FIM - 🏗️ 1. ESTRUTURA BASE                                    */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📋 2. CARD E HEADER (IDENTIDADE MAESTRO)            */
+/* ------------------------------------------------------------- */
+.card-padrao-paciente {
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    /* ✨ Sombra acentuada para profundidade visual */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 20px;
+}
+
+.card-padrao-titulo {
+    background-color: #ebf2f7;
+    border-bottom: 3px solid #306396;
+    padding: 15px 20px;
+    font-weight: bold;
+    color: #333333;
+    font-size: 20px;
+    text-align: left;
+}
+/* ------------------------------------------------------------- */
+/* FIM - 📋 2. CARD E HEADER                                     */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📄 3. CARD-BODY E LAYOUT FLEXÍVEL (GOLDEN FLEX)      */
+/* ------------------------------------------------------------- */
+.card-padrao-corpo {
+    padding: 15px 30px 30px 30px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 🏆 CLASSES FLEXÍVEIS DO CORPO (IMUTÁVEIS) */
+.flex-cep    { flex: 1 1 110px; }
+.flex-rua    { flex: 6 1 320px; }
+.flex-numero { flex: 1 1 80px;  }
+.flex-bairro { flex: 4 1 270px; }
+.flex-cidade { flex: 4 1 270px; }
+.flex-estado { flex: 1 1 70px;  }
+/* ------------------------------------------------------------- */
+/* FIM - 📄 3. CARD-BODY E LAYOUT FLEXÍVEL                       */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🔍 4. CAMPOS E LABELS                               */
+/* ------------------------------------------------------------- */
+.card-padrao-corpo div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.card-padrao-corpo label {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    text-align: left;
+    margin-left: 4px;
+}
+/* ------------------------------------------------------------- */
+/* FIM - 🔍 4. CAMPOS E LABELS                                   */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🎫 5. INPUTS E AUTOFILL (O SEGREDO 2026)             */
+/* ------------------------------------------------------------- */
+.card-padrao-corpo input {
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    font-size: 14px;
+    color: black !important;
+    background-color: #ffffff !important;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* ✨ HABILITADO / AUTOFILL (Fundo Cinza #c5c0c0) */
+.card-padrao-corpo input:not(:disabled),
+.card-padrao-corpo input:-webkit-autofill {
+    background-color: #c5c0c0 !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    box-shadow: 0 0 0px 1000px #c5c0c0 inset !important; /* Blindagem Maestro */
+}
+
+/* ✨ FOCO (Cinza Leve #e9e4e4) */
+.card-padrao-corpo input:focus {
+    outline: none !important;
+    border-color: #007bff !important;
+    background-color: #e9e4e4 !important;
+    box-shadow: 0 0 0px 1000px #e9e4e4 inset, 0 0 5px rgba(0, 123, 255, 0.2) !important;
+}
+
+/* 🚫 DESABILITADO (Fundo Off-White) */
+.card-padrao-corpo input:disabled {
+    background-color: rgb(240, 240, 240) !important;
+    color: #777777 !important;
+    -webkit-text-fill-color: #777777 !important;
+    cursor: not-allowed !important;
+    box-shadow: 0 0 0px 1000px rgb(240, 240, 240) inset !important;
+}
+/* ------------------------------------------------------------- */
+/* FIM - 🎫 5. INPUTS E AUTOFILL                                 */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 🕹️ 6. ÁREA DE BOTÕES (COMANDO DOS CARDS)           */
+/* ------------------------------------------------------------- */
+.AreaBotoes {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.AreaBotoes button {
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: filter 0.2s;
+}
+
+/* 🧱 Cores Primárias do Sistema Maestro */
+.card-padrao-paciente .BotaoEditar   { background-color: #306396; color: white; width: 100%; }
+.card-padrao-paciente .BotaoSalvar   { background-color: rgb(212, 175, 55); color: white; flex: 2; }
+.card-padrao-paciente .BotaoCancelar { background-color: #c0392b; color: white; flex: 1; }
+
+.AreaBotoes button:hover {
+    filter: brightness(0.9);
+}
+/* ------------------------------------------------------------- */
+/* FIM - 🕹️ 6. ÁREA DE BOTÕES                                    */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 📱 7. MEDIA QUERIES (RESPONSIVIDADE 2026)           */
+/* ------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .AreaBotoes { flex-direction: column; }
+    .card-padrao-corpo label { font-size: 16px !important; }
+    .card-padrao-corpo input { font-size: 18px !important; }
+    .AreaBotoes button { padding: 20px !important; font-size: 18px !important; }
+}
+/* ------------------------------------------------------------- */
+/* FIM - 📱 7. MEDIA QUERIES                                     */
+/* ------------------------------------------------------------- */

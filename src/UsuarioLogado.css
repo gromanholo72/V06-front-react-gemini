@@ -67,15 +67,15 @@
 
 .Card-Status-Informativo-logado p,
 .Card-Status-Informativo-logado span {
-    font-size: 1rem;
+    font-size: 18px;
     color: #555;
-    line-height: 1.6;
+    /* line-height: 1; */
 }
 
 /* 🛠️ Variação para Card de Programador */
-.Card-Status-Informativo-logado.🛠️ {
-    background-color: #f8f9fa; /* Fundo levemente cinza */
-    border-top-color: #2c3e50; /* Viga escura */
+.Card-Status-Informativo-logado {
+   
+    border-top-color: #2c3e50; 
 }
 
 .botao-master-programador-logado {
@@ -127,6 +127,10 @@
     background-color: #f0fdf4; /* Verde bem claro */
     border-top-color: #22c55e; /* Viga Verde */
     text-align: left;
+
+    
+    /* animation: pularNaDica 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); */
+
 }
 
 /* 📡 Ícone Pulsante */
@@ -166,3 +170,101 @@
         opacity: 1;
     }
 }
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - ✨ ANIMAÇÃO: modalMaestroPop (SEM DESVIO HORIZONTAL) */
+/* ------------------------------------------------------------- */
+@keyframes modalMaestroPop {
+    from { 
+        opacity: 0; 
+        transform: scale(0.9) translateY(-30px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+    }
+}
+/* ------------------------------------------------------------- */
+/* FIM - ✨ ANIMAÇÃO: modalMaestroPop                            */
+/* ------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------- */
+/* INICIO - 💡 DICA ESTRATÉGICA MAESTRO (O RECURSO NOVO)        */
+/* ------------------------------------------------------------- */
+
+.Area-Acao-Dica-Logado {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+}
+
+.Botao-Exibir-Dica-Interna {
+    background-color: #306396; /* Azul Maestro */
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 12px rgba(48, 99, 150, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Botao-Exibir-Dica-Interna:hover {
+    background-color: #254d75;
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(48, 99, 150, 0.4);
+}
+
+.balao-dica-interno-logado {
+    background-color: #ebf2f7; /* Azul Suave Maestro */
+    border-left: 5px solid #306396;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 95%;
+    max-width: 550px;
+    text-align: left;
+    /* ✨ Animação de Entrada Sênior Maestro */
+    animation: pularNaDica 0.5s ease-out;
+}
+
+.balao-dica-interno-logado p {
+    margin: 0;
+    font-size: 15px;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+@keyframes pularNaDica {
+    0% { opacity: 0; transform: translateY(-15px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* ------------------------------------------------------------- */
+/* FIM - 💡 DICA ESTRATÉGICA MAESTRO                           */
+/* ------------------------------------------------------------- */

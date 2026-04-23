@@ -59,6 +59,25 @@
     animation: pulsar-maestro 1.5s infinite;
 }
 
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* ✨ PULSAÇÃO DO BOTÃO (SINCRO COM A DICA MAESTRO)                     */
+/* -------------------------------------------------------------------- */
+.botao-figura-menu-hamburguer.pulsar-ativo {
+    animation: pulsoMaestroPerfil 2s infinite ease-in-out;
+    /* position: relative; */
+    z-index: 10;
+    /* padding: 5px; */
+    background-color: var(--CorFundoBalaoDica);
+}
+
+
+
+
 @keyframes pulsar-maestro {
     0% {
         box-shadow: 0 0 0 0 rgb(79, 170, 128); /* Cor da cuidadora */

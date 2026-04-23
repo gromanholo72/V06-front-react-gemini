@@ -40,7 +40,7 @@ export function Sobre() {
 
     return (
 
-        // <div className="componente-de-pagina">
+        <div className="Card-Sobre-Tudo">
 
 
 
@@ -115,22 +115,7 @@ export function Sobre() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // </div> 
+        </div> 
 
     );
 }

@@ -249,13 +249,13 @@
     background-color: #f1f1f1;
     padding: 10px;
     text-align: left;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid #000000;
     color: #333;
 }
 
 .tabela-remedios td {
     padding: 10px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #000000;
     color: #555;
 }
 

@@ -6,13 +6,11 @@ export const MenuHorizontalVisitante = ({
     ehComputador
 }) => {
 
-    // 🚀 CONSOLE DE INSPEÇÃO MAESTRO
-    console.log("");
-    console.log("🔍 ---------------------------------");
-    console.log("🔍 MenuHorizontalVisitante ");
-    console.log("🔍 ehComputador         :", ehComputador);
-    // console.log("🔍 navegarERecolher   :", navegarERecolher);
-    console.log("🔍 ---------------------------------");
+    // console.log("");
+    // console.log("🔍 ---------------------------------");
+    // console.log("🔍 MenuHorizontalVisitante ");
+    // console.log("🔍 ehComputador         :", ehComputador);
+    // console.log("🔍 ---------------------------------");
 
     return (
 

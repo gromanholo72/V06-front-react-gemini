@@ -13,7 +13,7 @@ export const BalaoDicaEntrar = ({ exibirBalaoDicaEntrar }) => {
                     exit={{ opacity: 0, scale: 0.8 }}
                     className="BalaoDicaEntrarCorpo"
                 >
-                    ✨ Clique aqui para Entrar!
+                    Clique aqui para Entrar!
                 </motion.div>
             )}
         </AnimatePresence>

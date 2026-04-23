@@ -1,9 +1,8 @@
 
-// 🏗️ 2 ⚙️ Hooks (Ferramentas de trabalho) do 🧠 Gerente do React na 🏠 Casa (react)
 import { useState, useEffect, useRef } from 'react'; 
-import { ref, get } from "firebase/database"; 
 
-// 🏗️ 🚕 useNavigate (O Motorista): O Hook que contrata o piloto para a viagem entre páginas da 🏠 Casa (react).
+import { ref, get, set } from "firebase/database"; 
+
 import { useNavigate } from 'react-router-dom'; 
 
 import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto.jsx';
@@ -11,25 +10,27 @@ import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto.jsx';
 import './Cadastrar.css';
 
 
+import { ModalSucessoCadastro } from './componentes/modal/ModalSucessoCadastro';
+
+import { AlertaMensagem } from './componentes/MensagemErro/AlertaMensagem';
 
 
 
 export function Cadastrar({ setExibirBalaoDicaEntrar }) {
     
 
+
+
     // 🚕 Contratando o motorista para este cômodo
     const navigate = useNavigate();
 
+    const { 
 
+        setCarregandoModal, 
+        db_realtime 
 
-    const { setCarregandoModal, db_realtime } = useAuth();
+    } = useAuth();
 
-
-
-
-
-
-    
     // 👁️ Controle do Sensor de Visibilidade
     const [mostrarSenha, setMostrarSenha] = useState(false);
 
@@ -42,13 +43,27 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
 
+    // ---------------------------------
+    // INICIO - ⏱️ FERRAMENTAS DE SINCRONIA UX (Protocolo Maestro)
+    // ---------------------------------
+    const inicioOperacaoRef = useRef(null);
+    // ---------------------------------
+    // FIM - ⏱️ FERRAMENTAS DE SINCRONIA UX (Protocolo Maestro)
 
 
-    // ===========================================
-    // INICIO - MOSTRA o erro na <div className="MsgForm">
-    // ===========================================
 
-    /* // 🧱 1. Referência persistente para o timer (não reseta no render) */
+
+
+
+
+
+
+
+    // ======================================================================
+    // INICIO - dispararMensagem - MOSTRA o erro na <div className="MsgForm">
+    // ======================================================================
+
+    /* 🧱 1. Referência persistente para o timer (não reseta no render) */
     const timerGavetaRef = useRef(null);
     
     const [msgVisivel, setMsgVisivel] = useState(false);
@@ -57,79 +72,92 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
     const dispararMensagem = (texto, deveRedirecionar = false, dadoExtra = null, tipo = "erro") => {
 
+        // console.log("");
+        // console.log("🔫 ----------------------------------");
+        // console.log("🔫 Componente - Cadastrar.jsx");
+        // console.log("🔫 const dispararMensagem");
+        // console.log("🔫 📢 DADOS RECEBIDOS NA FUNCAO");
+        // console.log("🔫  Texto =", texto);
+        // console.log("🔫 🚀 Redirecionar =", deveRedirecionar);
+        // console.log("🔫 🎟️ dadoExtra =", dadoExtra);
+        // console.log("🔫 🎨 Tipo =", tipo);
+        // console.log("🔫 ----------------------------------");
 
+         /* A dica pode aparecer, a menos que um clique ocorra. */
+         deveExibirDicaRef.current = true;
 
-        console.log("");
-        console.log("🔫 ----------------------------------");
-        console.log("🔫 Componente - Cadastrar.jsx");
-        console.log("🔫 const dispararMensagem = (texto, deveRedirecionar, dadoExtra, tipo) => {");
-        console.log("🔫 📢 MENSAGEM DISPARADA");
-        console.log("🔫 📝 Texto =", texto);
-        console.log("🔫 🚀 Redirecionar =", deveRedirecionar);
-        console.log("🔫 🎟️ dadoExtra =", dadoExtra);
-        console.log("🔫 🎨 Tipo =", tipo);
-        console.log("🔫 ----------------------------------");
-
-
-
-
-        /* // 🧱 2. RESET DE OBRA: Se já existir um timer rodando, nós o cancelamos usando o .current */
+        /* 🧱 2. RESET DE OBRA: Se já existir um timer rodando, nós o cancelamos usando o .current */
         if (timerGavetaRef.current) {
             console.log("🔫 🧹 Limpando timer residual...");
             clearTimeout(timerGavetaRef.current);
         }
 
+        // 📐 Cálculo de Sincronia: Garante que a mensagem espere o ciclo de 1s do App.jsx
+        let delayCalculado = 500;
+
+        if (inicioOperacaoRef.current) {
+
+            const decorrido = Date.now() - inicioOperacaoRef.current;
+            delayCalculado = Math.max(500, 1500 - decorrido);
+
+            // console.log(`🔫 ⏳ Sincronizando com UX: Aguardando mais ${delayCalculado}ms para mostrar mensagem.`);   
+
+        }
+
         setTimeout(() => {
 
-            console.log("");
-            console.log("🔫 📐 ----------------------------------");
-            console.log("🔫 📐 ✅ Delay de 500ms Concluído: Atualizando Interface.");
-            console.log("🔫 📐 📢 MENSAGEM:", texto);
-            console.log("🔫 📐 ----------------------------------");
+            // console.log("");
+            // console.log("🔫 ----------------------------------");
+            // console.log("🔫 ✅ Delay de 500ms Concluído: Atualizando Interface.");
+            // console.log("🔫 📢 MENSAGEM:", texto);
+            // console.log("🔫 ----------------------------------");
 
-
-            // 🔍 LOG 2: Fechamento do Modal
-            console.log("🔫 📐 ⚪ Executando: setCarregandoModal(false)");
+            // 🔓 Libera o carregandoModal para que o App.jsx possa fechar o overlay
             setCarregandoModal(false); 
-
-            // 🔍 LOG 3: Configuração da Mensagem
-            console.log(`🔫 📐 🎨 Executando: setTipoMsg("${tipo}")`);
             setTipoMsg(tipo);
-
-            console.log(`🔫 📐 📝 Executando: setMsgErro("${texto}")`);
             setMsgErro(texto);
-
-            // 🔍 LOG 4: Ativação Visual
-            console.log("🔫 📐 👁️ Executando: setMsgVisivel(true)");
             setMsgVisivel(true);
-        
 
             /* 🚀 Localiza o container e comanda a subida suave */
             const topo = document.querySelector('.container-externo-blindado');
             if (topo) {
-                console.log("🔫 🚀 Fazendo scroll suave até .container-externo-blindado");
                 topo.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
+            
+
             /* // 🧱 3. Timer de 4 segundos para a mensagem sumir */
             timerGavetaRef.current = setTimeout(() => {
-
-                console.log("🔫 📉 Iniciando fechamento automático da gaveta (4s passados).");
+                
                 setMsgVisivel(false);
 
-                // Espera 1s (tempo da animação de descida) para limpar e navegar
-                setTimeout(() => { 
+            
+
+                if (texto?.trim() === "Cadastro concluído!") {
+
+                    setMostrarModalSucesso(true);
+    
+                }
+
+
+                if (texto === "CPF já cadastrado." && deveExibirDicaRef.current) {
+                    setExibirBalaoDicaEntrar(true);
+                }
+
+
+                
+                setTimeout(() => {
 
                     setMsgErro(""); 
 
-                    setExibirBalaoDicaEntrar(true);
-
+                    setMostrarModalSucesso(false);
+                
                     if (deveRedirecionar) {
 
-                        console.log("🔫 ✈️ 🚀 REDIRECIONANDO: Partindo para /logar");
-                        console.log("🔫 ✈️ 📦 State enviado:", { cadastroSucesso: true, cpfVindoDoCadastro: dadoExtra });
-                       
+                        // console.log("🔫 ✈️ 🚀 REDIRECIONAMENTO COMUM: Partindo para /logar");
+                        // console.log("🔫 ✈️  State enviado:", { cadastroSucesso: true, cpfVindoDoCadastro: dadoExtra });
+                    
                         navigate('/logar', {
                             state: { 
                                 cadastroSucesso: true,
@@ -139,15 +167,20 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
                     }
 
-                }, 1000);
+                }, 3000); 
 
-            }, 4000);
 
-        }, 500);
 
+            }, 3000);
+
+
+        }, delayCalculado);
 
     };
 
+    // ======================================================================
+    // FIM - dispararMensagem - MOSTRA o erro na <div className="MsgForm">
+    // ======================================================================
 
 
 
@@ -163,9 +196,33 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
 
-    // ===========================================
-    // INICIO - MOSTRA o erro na <div className="MsgForm">
-    // ===========================================
+
+    /*  ---------------------------------------------------------------------- */
+    /*  INICIO DA - 🖱️ MONITORAMENTO DE CLIQUES GLOBAIS (Cancelamento de Dicas) */
+    /*  ---------------------------------------------------------------------- */
+
+    const deveExibirDicaRef = useRef(false);
+
+    useEffect(() => {
+        const cancelarDicaFutura = () => {
+             /* 🛑 Se houver clique em qualquer lugar, cancelamos a intenção futura de abrir o balão */
+             deveExibirDicaRef.current = false;
+             /* 🛑 E garantimos que feche imediatamente se já estiver aberto */
+             setExibirBalaoDicaEntrar(false);
+        };
+        window.addEventListener('click', cancelarDicaFutura);
+        return () => window.removeEventListener('click', cancelarDicaFutura);
+    }, [setExibirBalaoDicaEntrar]);
+    
+    // ----------------------------------------------------------------------
+    // FIM - 🖱️ MONITORAMENTO DE CLIQUES GLOBAIS (Cancelamento de Dicas)
+    // ----------------------------------------------------------------------
+
+
+
+
+
+
 
 
 
@@ -184,6 +241,7 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
     // ===========================================
 
     const [mostrarModalSucesso, setMostrarModalSucesso] = useState(() => {
+
         const valorInicial = false;
 
         // console.log("📐 ----------------------------------");
@@ -193,6 +251,7 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
         // console.log("📐 ----------------------------------");
 
         return valorInicial;
+
     });
 
     // ===========================================
@@ -218,104 +277,24 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
     // ===============================================================
 
     const [cpfParaDespacho, setCpfParaDespacho] = useState("");
+
+    useEffect(() => {
+        
+        // console.log("");
+        // console.log("🔍 -----------------------------------------------------------");
+        // console.log("🔍 INSPEÇÃO DE SUPRIMENTOS (CpfParaDespacho)");
+        // console.log("🔍 Cadastro.jsx");
+        // console.log("🔍 Valor Atual do CPF :", cpfParaDespacho ? cpfParaDespacho : "⚠️ Vazio / Aguardando");
+        // console.log("🔍 Tipo do Dado       :", typeof cpfParaDespacho);
+        // console.log("🔍 Status do Despacho :", cpfParaDespacho ? "🚀 Pronto para Processar" : "🛑 Parado");
+        // console.log("🔍 -----------------------------------------------------------");
+    
+    }, [cpfParaDespacho]); 
+
     const [contagem, setContagem] = useState(3);
 
-    useEffect(() => {
+ 
 
-        let cronometro;
-
-        if (mostrarModalSucesso && contagem > 0) {
-
-            cronometro = setInterval(() => {
-
-                setContagem((v) => v - 1);
-
-            }, 1000);
-
-        }
-
-        return () => clearInterval(cronometro);
-
-    }, [mostrarModalSucesso, contagem]); 
-
-    useEffect(() => {
-
-        if (contagem === 0 && mostrarModalSucesso) {
-
-            console.log("📐 🔵 contagem final alcançada = ", 0);
-            console.log("📐 👔 CPF pronto para despacho = ", novoUsuario?.cpef);
-
-            const timeoutSaida = setTimeout(() => {
-
-                setMostrarModalSucesso(false);
-                
-                navigate('/Logar', {
-                    state: { 
-                        cadastroSucesso: true, 
-                        cpfVindoDoCadastro: cpfParaDespacho 
-                    }
-                });
-
-            }, 1000); 
-
-            return () => clearTimeout(timeoutSaida);
-        }
-
-    }, [contagem, mostrarModalSucesso, cpfParaDespacho, navigate]);
-
-    useEffect(() => {
-        if (mostrarModalSucesso) {
-            console.log("📐 🔵 contagem atual = ", contagem);
-        }
-    }, [contagem]);
-
-    // ===============================================================
-    // FIM - MODAL SUCESSO - temporizador para chamar form de login
-    // ===============================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // ===========================================
-    // INICIO - MONITORA MENSAGEM DE ERRO
-    // ===========================================
-
-    useEffect(() => {
-
-        // Só entra aqui se a gaveta tiver algo (ou se acabar de ser limpa)
-        // Apos atualizacao do setMsgErro(dadosServidor.mensagem);
-        // const [msgErro, setMsgErro] = useState("");
-
-        if (msgErro) {
-
-            console.log("📅 ----------------------------------");
-            console.log("📅 useEffect - if (msgErro) - Cadastrar.jsx");
-            console.log("📅 ----------------------------------");
-            console.log("📅 🗂️ Gaveta (msgErro) - contém agora:", msgErro);
-            console.log("📅 ----------------------------------");
-
-        } else {
-
-            console.log("📅 🧹 O Fiscal viu que a fachada foi limpa.");
-            
-        }
-
-    // 🎯 O SEGREDO: Este Sentinela só acorda quando a msgErro muda!
-
-    }, [msgErro]); 
-
-    // ===========================================
-    // FIM - MONITORA MENSAGEM DE ERRO
-    // ===========================================
 
 
 
@@ -341,12 +320,11 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
         const valorInicial = {
 
-
            // 👤 Dados Básicos
-           dadosBasico: {
-            cpef: "",
-            nome: "",
-            func: ""
+            dadosBasico: {
+                cpef: "",
+                nome: "",
+                func: ""
             },
 
             // 🔐 Dados Segurança
@@ -356,8 +334,6 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
             // ⚙️ Dados Internos
             dadosInterno: {
-                // dadosUsuarioCompleto: false,
-                // usuarioLiberadoPeloAdministrador: false,
                 perm: "basica",
                 situ: "ativo",
                 datc: new Date().toLocaleDateString('pt-BR'),
@@ -415,10 +391,6 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
         const verificarUsuariosCadastrados = async () => {
 
-            console.log("");
-            console.log("🕵️‍♂️ ----------------------------------");
-            console.log("🕵️‍♂️ Cadastrar.jsx: Verificando usuários já cadastrados...");
-
             const usuariosRef = ref(db_realtime, 'usuarios');
 
             try {
@@ -431,8 +403,12 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
                     const listaCpfs = Object.keys(dados); 
                     setCpfsCadastrados(listaCpfs);
 
-                    console.log("🕵️‍♂️ Total de CPFs encontrados:", listaCpfs.length);
-                    console.log("🕵️‍♂️ Lista Completa de CPFs:", listaCpfs);
+                    // console.log("");
+                    // console.log("🕵️‍♂️ ----------------------------------");
+                    // console.log("🕵️‍♂️ Cadastrar.jsx: Verificando usuários já cadastrados...");
+                    // console.log("🕵️‍♂️ Total de CPFs encontrados:", listaCpfs.length);
+                    // console.log("🕵️‍♂️ Lista Completa de CPFs:", listaCpfs);
+                    // console.log("🕵️‍♂️ ----------------------------------");
 
                 }
             } catch (error) {
@@ -465,19 +441,18 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
     // ---------------------------------------------------------------------------
-    // INICIO DO - CpefTextes - organizar preenchimento (CATEGORIZADO)
+    // INICIO DO - CpefTextes - durante o desenvolvimento - organizar preenchimento (CATEGORIZADO)
     // ---------------------------------------------------------------------------
 
     // Função para automatizar o preenchimento do FORM
-    // Pertence a CpefTextes e na pruducao vai ser preenchida pelo usuario
     const preencherCampos = (dadosVindosDoForm) => {
 
-        console.log("");
-        console.log("📮 ----------------------------------");
-        console.log("📮 🚚 O caminhão do rádio chegou com a entrega!");
-        console.log("📮 👍 <div className=CadUsuarioTudo> preenchido com sucesso!");
-        console.log("📮 👍 Dados do Form:", dadosVindosDoForm);
-        console.log("📮 ----------------------------------");
+        // console.log("");
+        // console.log("📮 ----------------------------------");
+        // console.log("📮 Cadastrar.jsx");
+        // console.log("📮 const preencherCampos = (dadosVindosDoForm)");
+        // console.log("📮 Dados do Form:", dadosVindosDoForm);
+        // console.log("📮 ----------------------------------");
 
         // 📐 Ajuste Maestro: Mantendo a integridade das pastas de dados
         setNovoUsuario(prev => ({
@@ -499,7 +474,7 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
     };
 
     // ---------------------------------------------------------------------------
-    // FIM DO - CpefTextes - facilitar preenchimento - sai da versao de producao
+    // FIM DO - CpefTextes - durante o desenvolvimento - organizar preenchimento (CATEGORIZADO)
     // ---------------------------------------------------------------------------
 
 
@@ -571,20 +546,19 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
     // ----------------------------------------------------
 
     const enviarDadosCadastroParaServidor = async (e) => {
-        
-        if (e) e.preventDefault(); 
 
+        if (e) e.preventDefault();
+
+        inicioOperacaoRef.current = Date.now();
         setCarregandoModal(true);
         setMsgVisivel(false);
 
-        console.log("");
-        console.log("📡 --------------------------------");
-        console.log("📡 PROTOCOLO DE CADASTRO INICIADO");
-        console.log("📡 Alvo:", novoUsuario.nome);
-        console.log("📡 CPF:", novoUsuario.cpef);
-        console.log("📡 URL:", URL_SERVIDOR);
+        const cpfLimpo = novoUsuario.dadosBasico.cpef.replace(/\D/g, "");
 
-
+        if (!validarCPF(novoUsuario.dadosBasico.cpef)) {
+            dispararMensagem("O CPF informado é inválido. Por favor, confira os números.");
+            return;
+        }
 
         // 📐 Preparando pacote para o servidor
         const payload = {
@@ -608,95 +582,57 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
         };
 
-        console.log("");
-        console.log("📐 ----------------------------------");
-        console.log("📐 📦 DADOS PREPARADOS PARA ENVIO:");
-        console.log("📐 componente - Cadastrar.jsx");
-        console.log("📐 dadosUsuario:", payload);
-        console.log("📐 ----------------------------------");
-
-
         try {
+            // 🔍 1. Verificação de Duplicidade (Pré-venda)
+            const usuarioRef = ref(db_realtime, `usuarios/${cpfLimpo}`);
+            const snapshot = await get(usuarioRef);
 
-            const resposta = await fetch(`${URL_SERVIDOR}/usuario/cadastrar/dados-bas-seg-int`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json',},
-                body: JSON.stringify(payload),
-            });
-
-            const resultado = await resposta.json();
-
-            if (resposta.ok) {
-
-                console.log("✅ FUNDAÇÃO: Usuário registrado com sucesso!");
-                console.log("📡 -----------------------------------------------------------");
-
-                setCarregandoModal(false);
-                setCpfParaDespacho(novoUsuario.cpef);
-
-                setNovoUsuario({
-
-                     // 👤 Dados Básicos
-                    dadosBasico: {
-                        cpef: "",
-                        nome: "",
-                        func: ""
-                    },
-
-                    // 🔐 Dados Segurança
-                    dadosSeguranca: {
-                        senh: ""
-                    },
-
-                    // ⚙️ Dados Internos
-                    dadosInterno: {
-                        // dadosUsuarioCompleto: false,
-                        // usuarioLiberadoPeloAdministrador: false,
-                        perm: "basica",
-                        situ: "ativo",
-                        datc: new Date().toLocaleDateString('pt-BR'),
-                        timestamp: Date.now()
-                    }
-
-                });
-
-                setMostrarModalSucesso(true);
-
-            } else {
-
-                // setCarregandoModal(false); 
-
-                console.log("");
-                console.error("❌ -----------------------------------------------------------");
-                console.error("❌ PROTOCOLO DE CADASTRO NEGADO");
-                console.error("❌ Status da Resposta:", resposta.status);
-                console.error("❌ Motivo do Servidor:", resultado.erro);
-                console.error("❌ -----------------------------------------------------------");
-
+            if (snapshot.exists()) {
+                console.warn("⚠️ CPF já cadastrado no Firebase.");
                 setTimeout(() => {
-                    dispararMensagem(resultado.erro);
+                    dispararMensagem("CPF já cadastrado.");
                 }, 500);
-
+                return;
             }
 
-        } catch (error) {
-
+            // 🔥 2. Gravação Direta no Firebase (Antena Central)
+            await set(usuarioRef, payload);
+            
             console.log("");
-            console.error("🚨 -----------------------------------------------------------");
-            console.error("🚨 ERRO CRÍTICO NA CONEXÃO");
-            console.error("🚨 ERRO CRÍTICO NA CONEXÃO:", error);
-            console.error("🚨 Mensagem:", error.message);
-            console.error("🚨 Stack:", error.stack ? "Disponível no objeto 'error'" : "N/A");
-            console.error("🚨 -----------------------------------------------------------");
-        
-            // setCarregandoModal(false);
+            console.log("🔄 ----------------------------------");
+            console.log("🔄 Cadastrar.jsx");
+            console.log("🔄 GRAVAÇÃO DIRETA NO FIREBASE SUCESSO");
+            console.log("🔄 CPF:", cpfLimpo);
+            console.log("🔄 ----------------------------------");
+
+            setCpfParaDespacho(novoUsuario.dadosBasico.cpef);
+
+            setNovoUsuario({
+                dadosBasico: { cpef: "", nome: "", func: "" },
+                dadosSeguranca: { senh: "" },
+                dadosInterno: {
+                    perm: "basica",
+                    situ: "ativo",
+                    datc: new Date().toLocaleDateString('pt-BR'),
+                    timestamp: Date.now()
+                }
+            });
 
             setTimeout(() => {
-                dispararMensagem("Erro de conexão com o servidor.");
+                dispararMensagem("Cadastro concluído!", true, novoUsuario.dadosBasico.cpef, "sucesso");
             }, 500);
 
-        }
+        } catch (error) {
+            console.log("");
+            console.error("🚨 -----------------------------------------------------------");
+            console.error("🚨 ERRO CRÍTICO NA GRAVAÇÃO FIREBASE:", error);
+            console.error("🚨 Mensagem:", error.message);
+            console.error("🚨 -----------------------------------------------------------");
 
+            setTimeout(() => {
+                dispararMensagem("Erro ao conectar com o banco de dados.");
+            }, 500);
+        }
     };
 
     // ----------------------------------------------------
@@ -723,24 +659,31 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
     /*  ----------------- */
 
     const mascaraCpef = (e) => {
-        // 🧱 Passo 1: Limpeza (Remove tudo o que não é número)
-        let v = e.target.value.replace(/\D/g, '');
-    
-        // 🧱 Passo 2: Corte (CPF tem 11 números)
+        
+        // 🧱 1. Limpeza total (Apenas dígitos)
+        let v = e.target.value.replace(/\D/g, "");
+
+        // 🧱 2. Blindagem de comprimento
         if (v.length > 11) v = v.substring(0, 11);
-    
-        // 🧱 Passo 3: Assentamento (Padrão 000.000.000-00)
-        v = v.replace(/(\d{3})(\d)/, '$1.$2');       // 000.
-        v = v.replace(/(\d{3})(\d)/, '$1.$2');       // 000.000.
-        v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // 000.000.000-00
-    
-        // 📐 👔 console.log("📐 🎫 cpef formatado = ", v);
-    
-        // 🧱 Passo 4: Atualiza o Objeto no nó correto (dadosBasico)
+
+        // 🧱 3. Assentamento Progressivo (Regex Maestro)
+        v = v.replace(/(\d{3})(\d)/, "$1.$2");
+        v = v.replace(/(\d{3})(\d)/, "$1.$2");
+        v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+        console.log("");
+        console.log("📐 👔 ----------------------------------");
+        console.log("📐 👔 Componente - Cadastrar.jsx");
+        console.log("📐 👔 Ação: Formatando CPF em tempo real");
+        console.log("📐 👔 Valor Formatado:", v);
+        console.log("📐 👔 ----------------------------------");
+
+        // 🧱 4. Atualização Atômica (Mapeamento V3)
         setNovoUsuario(prev => ({
             ...prev,
             dadosBasico: { ...prev.dadosBasico, cpef: v }
         }));
+
     };
 
     const mascaraTelefone = (e) => {
@@ -798,15 +741,38 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
 
+    // ---------------------------------
+    // INICIO - 🛡️ FUNÇÃO: validarCPF
+    // ---------------------------------
 
+    const validarCPF = (cpf) => {
 
+        // 🧱 Passo 1: Limpeza total
+        const cpfLimpo = cpf.replace(/\D/g, '');
 
+        // 🧱 Passo 2: Bloqueio de sequências óbvias (111.111.111-11, etc.)
+        if (cpfLimpo.length !== 11 || !!cpfLimpo.match(/(\d)\1{10}/)) return false;
 
+        // 🧱 Passo 3: Cálculo do 1º Dígito Verificador
+        let soma = 0;
+        for (let i = 1; i <= 9; i++) soma = soma + parseInt(cpfLimpo.substring(i - 1, i)) * (11 - i);
+        let resto = (soma * 10) % 11;
+        if ((resto === 10) || (resto === 11)) resto = 0;
+        if (resto !== parseInt(cpfLimpo.substring(9, 10))) return false;
 
+        // 🧱 Passo 4: Cálculo do 2º Dígito Verificador
+        soma = 0;
+        for (let i = 1; i <= 10; i++) soma = soma + parseInt(cpfLimpo.substring(i - 1, i)) * (12 - i);
+        resto = (soma * 10) % 11;
+        if ((resto === 10) || (resto === 11)) resto = 0;
+        if (resto !== parseInt(cpfLimpo.substring(10, 11))) return false;
 
+        return true; // 🏆 CPF Válido!
+    };
 
-
-
+    // ---------------------------------
+    // FIM - 🛡️ FUNÇÃO: validarCPF 
+    // ---------------------------------
 
 
 
@@ -825,388 +791,228 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
         <>
 
 
-        {/* <div className="componente-de-pagina"> */}
 
+            {/* --------------------------------------------- */}
+            {/* INICIO - 🔘 modal sucesso e redirecionamento */}
+            {/* --------------------------------------------- */}
 
-
-
-            {/* 🔘 MODAL DE SUCESSO E REDIRECIONAMENTO */}
             {mostrarModalSucesso && (
-                <div className="Overlay-Modal-Sucesso">
-                    <div className="Card-Modal-Redirecionamento">
-                        <div className="Icone-Sucesso-Animado">✅</div>
-                        <h2>Cadastro Realizado!</h2>
-                        <p>Sua conta foi criada com sucesso na nossa fundação.</p>
-                        <div className="Aviso-Destaque">
-                        <span>Você será redirecionado para a tela de login em {contagem} segundos...</span>
-                        </div>
 
+                <ModalSucessoCadastro
+                    contagem={contagem} 
+                />
 
-
-                        {/* <div className="Barra-Progresso-Container">
-                            <div className="Barra-Progresso-Ativa"></div>
-                        </div> */}
-
-
-                        <div className="Barra-Progresso-Container">
-                            <div 
-                                className="Barra-Progresso-Ativa"
-                                style={{ 
-                                   transition: 'width 1s linear',
-                                    width: `${((3 - contagem) / 3) * 100}%` 
-                                   
-                                }}
-                            ></div>
-                        </div>
-
-
-
-
-
-
-                    </div>
-                </div>
             )}
 
+            {/* --------------------------------------------- */}
+            {/* FIM - 🔘 modal sucesso e redirecionamento */}
+            {/* --------------------------------------------- */}
 
 
 
 
 
+            <div className="Card-Cadastrar-Tudo">
 
 
 
-            {/* 📋 CARD CADASTRAR */}
-            <div className="Card-Cadastrar">
+                {/* -------------------------- */ }
+                {/* INICIO - 📋 CARD CADASTRAR */}
+                {/* -------------------------- */ }
 
-
-
-
-
-
-                <div className="CadUsuarioTudo"> 
-
-
-
-
-                    {/* <div className="info-gaveta">
-                        <div>
-                            <p>📡 Monitorando da gaveta - novoUsuario:</p>
-
-                            <div><span>👔 cpef: </span> <strong>{novoUsuario.cpef || "---"}</strong></div>
-
-                            <div><span>✨ nome: </span> <strong>{novoUsuario.nome || "---"}</strong></div>
-                            <div><span>📧 mail: </span> <strong>{novoUsuario.mail || "---"}</strong></div>
-                            <div><span>📞 fone: </span> <strong>{novoUsuario.fone || "---"}</strong></div>
-
-                            <div><span>🎟️ func: </span> <strong>{novoUsuario.func || "---"}</strong></div>
-                    
-                            <div><span>📅 datc: </span> <strong>{novoUsuario.datc || "---"}</strong></div>
-                            <div><span>🔑 senh: </span> <strong>{novoUsuario.senh || "---"}</strong></div>
-
-                        </div>
-                    </div> */}
+                <div className="Card-Cadastrar">
 
 
 
 
-                    <div className={`MsgForm ${msgVisivel ? 'ativo' : ''} ${tipoMsg}`}>
-                        <span className="alerta-erro">
-                            {tipoMsg === "sucesso" ? (
-                                <>
-                                    <div className="linha-topo">✅ Cadastro realizado com sucesso!</div>
-                                    <div className="linha-foco">AGORA FAÇA SEU LOGIN</div>
-                                </>
-                            ) : (
-                                <>{msgErro}</>
-                            )}
-                        </span>
-                    </div>
+                    <div className="CadUsuarioTudo"> 
 
 
 
+                        {/* ----------------------------- */ }
+                        {/* INICIO - MONITORAMENTO DO FORM */ }
+                        {/* ----------------------------- */ }
+
+                        {/* <div className="info-gaveta">
+                            <div>
+                                <p>📡 Monitorando da gaveta - novoUsuario:</p>
+                                <div><span>👔 cpef: </span> <strong>{novoUsuario.dadosBasico.cpef || "---"}</strong></div>
+                                <div><span>✨ nome: </span> <strong>{novoUsuario.dadosBasico.nome || "---"}</strong></div>
+                                <div><span>🎟️ func: </span> <strong>{novoUsuario.dadosBasico.func || "---"}</strong></div>
+                                <div><span>📅 datc: </span> <strong>{dataHoje || "---"}</strong></div>
+                                <div><span>🔑 senh: </span> <strong>{novoUsuario.dadosSeguranca.senh || "---"}</strong></div>
+                            </div>
+                        </div> */}
+
+                        {/* ----------------------------- */ }
+                        {/* FIM - MONITORAMENTO DO FORM */ }
+                        {/* ----------------------------- */ }
 
 
-                    {/* 🏢 CAD-USUARIO-FORM */ }
 
-                    <form className="CadUsuarioForm" onSubmit={enviarDadosCadastroParaServidor}> 
-
-                        <h3>CADASTRO DE USUARIO</h3> 
-
-                        {/* --- NOME --- */}
-                        <div className="CadUsuarioLargNome">
-                            <label>Nome:</label>
-                            <input 
-                                type="text" 
-                                name="nome"
-                                placeholder="Nome Completo"
-                                value={novoUsuario.dadosBasico.nome}
-                                autoComplete="name"
-                                onChange={handleChange} 
-                                required
-                            />
-                        </div>  
-
-                        {/* --- CPF --- */}
-                        <div className="CadUsuarioLargCpef">
-                            <label>CPF:</label>
-                            <input 
-                                type="text" 
-                                name="cpef"
-                                placeholder="000.000.000-00"
-                                value={novoUsuario.dadosBasico.cpef}
-                                onChange={mascaraCpef} 
-                                autoComplete="username"
-                                maxLength="14"
-                                required
-                            />
-                        </div>
+                        {/* ------------------------- */}
+                        {/* INICIO - MENSAGEM DE ERRO */}
+                        {/* ------------------------- */}
                         
-                        {/* --- E-MAIL --- */}
-                        {/* <div className="CadUsuarioLargMail">                  
-                            <label>E-mail:</label>                                                                                      
-                            <input 
-                                type="email" 
-                                name="mail"
-                                placeholder="exemplo@email.com"
-                                value={novoUsuario.mail} 
-                                autoComplete="email"
-                                onChange={handleChange} 
-                                required
-                            />   
-                        </div>  */}
+                        <AlertaMensagem 
+                            visivel={msgVisivel}
+                            tipo={tipoMsg}
+                            mensagem={msgErro}
+                            prefixoClasse="Cadastro"
+                        />
 
-                        {/* --- WHATSAPP --- */}
-                        {/* <div className="CadUsuarioLargFone">                  
-                            <label>WhatsApp:</label>                                                                                    
-                            <input 
-                                type="text" 
-                                name="fone"
-                                placeholder="(00) 00000-0000"
-                                value={novoUsuario.fone} 
-                                onChange={mascaraTelefone}
-                                autoComplete="tel"
-                                maxLength="15"
-                                required
-                            />   
-                        </div>  */}
+                        {/* ------------------------- */}
+                        {/* FIM - MENSAGEM DE ERRO */}
+                        {/* ------------------------- */}
 
-                        {/* --- FUNÇÃO / INTERESSE --- */}
-                        <div className="CadUsuarioLargFunc">                  
-                            <label>Interesse:</label>                                                                                    
-                            <select 
-                                name="func" // 🔑 Etiqueta para o Escriturário
-                                value={novoUsuario.dadosBasico.func} 
-                                onChange={handleChange} 
-                                required
-                            >
-                                <option value="">---Selecione---</option>   
-                                <option value="cuidadora">Trabalhar como cuidadora</option>
-                                <option value="cliente">Contratar serviços</option> 
-                                {/* <option value="visitante">Conhecer apenas</option> */}
-                            </select>     
-                        </div>
-                    
-                        {/* --- SENHA --- */}
-                        <div className="CadUsuarioLargSenh">                  
-                            <label>Senha:</label>
-                        
-                            <div className="InputWrapper">
 
+
+                        {/* ----------------------------- */ }
+                        {/* INICIO - 🏢 CAD-USUARIO-FORM */ }
+                        {/* ----------------------------- */ }
+
+                        <form className="CadUsuarioForm" onSubmit={enviarDadosCadastroParaServidor}> 
+
+                            <h3>CADASTRO DE USUARIO</h3> 
+
+                            {/* --- NOME --- */}
+                            <div className="CadUsuarioLargNome">
+                                <label>Nome:</label>
                                 <input 
-                                    type={mostrarSenha ? "text" : "password"} 
-                                    name="senh"
-                                    // placeholder="No mínimo 4 caracteres"
-                                    value={novoUsuario.dadosSeguranca.senh} 
-                                    onChange={mascaraSenha}
-                                    autoComplete="new-password"
-                                    // minLength="4"
-                                    required 
+                                    type="text" 
+                                    name="nome"
+                                    placeholder="Nome Completo"
+                                    value={novoUsuario.dadosBasico.nome}
+                                    autoComplete="name"
+                                    onChange={handleChange} 
+                                    required
                                 />
+                            </div>  
 
-                                <img 
-                                    className="CLargImg" 
-                                    src={mostrarSenha ? "imagens/olhofechado.png" : "imagens/olhoaberto.png"} 
-                                    alt="Toggle Password" 
-                                    onClick={() => setMostrarSenha(!mostrarSenha)}
-                                    style={{ cursor: 'pointer' }} 
-                                /> 
+                            {/* --- CPF --- */}
+                            <div className="CadUsuarioLargCpef">
+                                <label>CPF:</label>
+                                <input 
+                                    type="text" 
+                                    name="cpef"
+                                    placeholder="000.000.000-00"
+                                    value={novoUsuario.dadosBasico.cpef}
+                                    onChange={mascaraCpef} 
+                                    autoComplete="username"
+                                    maxLength="14"
+                                    required
+                                />
+                            </div>
+                            
+                            {/* --- E-MAIL --- */}
+                            {/* <div className="CadUsuarioLargMail">                  
+                                <label>E-mail:</label>                                                                                      
+                                <input 
+                                    type="email" 
+                                    name="mail"
+                                    placeholder="exemplo@email.com"
+                                    value={novoUsuario.mail} 
+                                    autoComplete="email"
+                                    onChange={handleChange} 
+                                    required
+                                />   
+                            </div>  */}
+
+                            {/* --- WHATSAPP --- */}
+                            {/* <div className="CadUsuarioLargFone">                  
+                                <label>WhatsApp:</label>                                                                                    
+                                <input 
+                                    type="text" 
+                                    name="fone"
+                                    placeholder="(00) 00000-0000"
+                                    value={novoUsuario.fone} 
+                                    onChange={mascaraTelefone}
+                                    autoComplete="tel"
+                                    maxLength="15"
+                                    required
+                                />   
+                            </div>  */}
+
+                            {/* --- FUNÇÃO / INTERESSE --- */}
+                            <div className="CadUsuarioLargFunc">                  
+                                <label>Interesse:</label>                                                                                    
+                                <select 
+                                    name="func" // 🔑 Etiqueta para o Escriturário
+                                    value={novoUsuario.dadosBasico.func} 
+                                    onChange={handleChange} 
+                                    required
+                                >
+                                    <option value="">---Selecione---</option>   
+                                    <option value="cuidadora">Trabalhar como cuidadora</option>
+                                    <option value="cliente">Contratar serviços</option> 
+                                    {/* <option value="visitante">Conhecer apenas</option> */}
+                                </select>     
+                            </div>
+                        
+                            {/* --- SENHA --- */}
+                            <div className="CadUsuarioLargSenh">                  
+                                <label>Senha:</label>
+                            
+                                <div className="InputWrapper">
+
+                                    <input 
+                                        type={mostrarSenha ? "text" : "password"} 
+                                        name="senh"
+                                        // placeholder="No mínimo 4 caracteres"
+                                        value={novoUsuario.dadosSeguranca.senh} 
+                                        onChange={mascaraSenha}
+                                        autoComplete="new-password"
+                                        // minLength="4"
+                                        required 
+                                    />
+
+                                    <img 
+                                        className="CLargImg" 
+                                        src={mostrarSenha ? "imagens/olhofechado.png" : "imagens/olhoaberto.png"} 
+                                        alt="Toggle Password" 
+                                        onClick={() => setMostrarSenha(!mostrarSenha)}
+                                        style={{ cursor: 'pointer' }} 
+                                    /> 
+
+                                </div>
 
                             </div>
 
-                        </div>
+                            {/* --- DATA (APENAS LEITURA) --- */}
+                            <div className="CadUsuarioLargDatC">                  
+                                <label>Data Cadastro:</label>                                                                                    
+                                <input 
+                                    type="text" 
+                                    name="datc" 
+                                    disabled 
+                                    value={dataHoje} 
+                                />           
+                            </div>
+                            
+                            {/* --- AREA DE BOTOES) --- */}
+                            <div className="CampoBotoes">
+                                {/* <button type="button" onClick={() => navigate('/')}>Voltar</button> */}
+                                <button type="submit">Cadastrar</button> 
+                            </div>
 
-                        {/* --- DATA (APENAS LEITURA) --- */}
-                        <div className="CadUsuarioLargDatC">                  
-                            <label>Data Cadastro:</label>                                                                                    
-                            <input 
-                                type="text" 
-                                name="datc" 
-                                disabled 
-                                value={dataHoje} 
-                            />           
-                        </div>
-                        
-                        {/* --- AREA DE BOTOES) --- */}
-                        <div className="CampoBotoes">
-                            {/* <button type="button" onClick={() => navigate('/')}>Voltar</button> */}
-                            <button type="submit">Cadastrar</button> 
-                        </div>
+                        </form>
 
-                    </form>
-
-                    {/* fim do - 🏢 CAD-USUARIO-FORM */ }
-
-
+                        {/* ----------------------------- */ }
+                        {/* FIM - 🏢 CAD-USUARIO-FORM */ }
+                        {/* ----------------------------- */ }
 
 
-                </div> {/* FIM DO - <div className="CadUsuarioTudo"> */}
+
+
+                    </div> 
 
 
                 
+                </div>
 
-
-
-
-                {/* INICIO DO - <div className="CpefTextes-Cad"> */}
-
-                <div className="CpefTextes-Cad">
-
-                 
-                    {/* 👩‍⚕️ LINHA 3: CUIDADORAS */}
-                    <div className="Linha-Botoes-Teste-Cad Linha-Cuida-Cad">
-                        <h4 className="Rotulo-Teste-Cad">Cuidadoras</h4>
-                        <input type="button" className="Botao-Teste-Cad" value="JOANA" 
-                            style={getEstiloBotao("103.646.340-06")}
-                            onClick={() => preencherCampos({
-                                nome: "JOANA DE CASSIA MEDEIROS", 
-                                cpef: "103.646.340-06",
-                                func: "cuidadora", 
-                                senh: "1"
-                            })}/> 
-                        <input type="button" className="Botao-Teste-Cad" value="PAULA" 
-                            style={getEstiloBotao("293.348.470-69")}
-                            onClick={() => preencherCampos({ 
-                                nome: "PAULA TOLER DO PASSADO",
-                                cpef: "293.348.470-69",
-                                func: "cuidadora", 
-                                senh: "12"
-                            })}/>
-                        <input type="button" className="Botao-Teste-Cad" value="MARIA" 
-                            style={getEstiloBotao("519.310.058-93")}
-                            onClick={() => preencherCampos({
-                                nome: "MARIA DAS GRAÇAS MENEGUEL",
-                                cpef: "519.310.058-93",
-                                func: "cuidadora", 
-                                senh: "123"
-                            })}/>
-                        <input type="button" className="Botao-Teste-Cad" value="ISABEL" 
-                            style={getEstiloBotao("200.335.920-63")}
-                            onClick={() => preencherCampos({ 
-                                nome: "ISABEL PILANTRA PRA SEMPRE",
-                                cpef: "200.335.920-63",
-                                func: "cuidadora", 
-                                senh: "123"
-                            })}/>
-                        <input type="button" className="Botao-Teste-Cad" value="ANA" 
-                            style={getEstiloBotao("123.456.789-09")}
-                            onClick={() => preencherCampos({ 
-                                nome: "ANA MARIA BRAGA",
-                                cpef: "123.456.789-09",
-                                func: "cuidadora", 
-                                senh: "123"
-                            })}/>
-                    </div>
-
-                    {/* 🏠 LINHA 4: CLIENTES */}
-                    <div className="Linha-Botoes-Teste-Cad Linha-Cliente-Cad">
-                        <h4 className="Rotulo-Teste-Cad">Clientes</h4>
-                        <input type="button" className="Botao-Teste-Cad" value="BEATRIZ" 
-                            style={getEstiloBotao("060.915.660-83")}
-                            onClick={() => preencherCampos({
-                                nome: "BEATRIZ QUE GOSTA DO PAI",
-                                cpef: "060.915.660-83",
-                                func: "cliente", 
-                                senh: "12345"
-                            })}/> 
-                        <input type="button" className="Botao-Teste-Cad" value="LUCIANA" 
-                            style={getEstiloBotao("763.626.770-56")}
-                            onClick={() => preencherCampos({
-                                nome: "LUCIANA AMARAL MATADO MATARAIA",
-                                cpef: "763.626.770-56",
-                                func: "cliente", 
-                                senh: "12345"
-                            })}/> 
-                        <input type="button" className="Botao-Teste-Cad" value="MARCO" 
-                            style={getEstiloBotao("844.450.750-43")}
-                            onClick={() => preencherCampos({    
-                                nome: "MARCO ANTONIO CASALE",
-                                cpef: "844.450.750-43",
-                                func: "cliente", 
-                                senh: "12345"
-                            })}/> 
-                        <input type="button" className="Botao-Teste-Cad" value="PEDRO" 
-                            style={getEstiloBotao("004.838.240-03")}
-                            onClick={() => preencherCampos({
-                                nome: "PEDRO ALVARES CABRAL",
-                                cpef: "004.838.240-03",
-                                func: "cliente", 
-                                senh: "12345"
-                            })}/> 
-                        <input type="button" className="Botao-Teste-Cad" value="CARLA" 
-                            style={getEstiloBotao("342.297.530-63")}
-                            onClick={() => preencherCampos({
-                                nome: "CARLA PEREZ DO AXE",
-                                cpef: "342.297.530-63",
-                                func: "cliente", 
-                                senh: "12345"
-                            })}/> 
-                        <input type="button" className="Botao-Teste-Cad" value="ROBERTO" 
-                            style={getEstiloBotao("729.583.410-09")}
-                            onClick={() => preencherCampos({
-                                nome: "ROBERTO CARLOS REI",
-                                cpef: "236.326.400-25",
-                                func: "cliente", 
-                                senh: "123"
-                            })}/> 
-                        <input type="button" className="Botao-Teste-Cad" value="SANDRA" 
-                            style={getEstiloBotao("810.332.940-03")}
-                            onClick={() => preencherCampos({
-                                nome: "SANDRA ROSA MADALENA",
-                                cpef: "765.316.010-78",
-                                func: "cliente", 
-                                senh: "1111"
-                            })}/> 
-                    </div>
-
-                    {/* 🎧 LINHA 2.5: ATENDENTES */}
-                    <div className="Linha-Botoes-Teste-Cad Linha-Atendente-Cad">
-                        <h4 className="Rotulo-Teste-Cad">Atendentes</h4>
-                        <input type="button" className="Botao-Teste-Cad" value="FERNANDA" 
-                            style={getEstiloBotao("875.673.130-22")}
-                            onClick={() => preencherCampos({
-                                nome: "FERNANDA SOUZA SANTOS",
-                                cpef: "875.673.130-22",
-                                func: "atendente",
-                                senh: "123"
-                            })}
-                        />
-                        <input type="button" className="Botao-Teste-Cad" value="CARLOS" 
-                            style={getEstiloBotao("943.757.760-99")}
-                            onClick={() => preencherCampos({
-                                nome: "CARLOS EDUARDO OLIVEIRA",
-                                cpef: "943.757.760-99",
-                                func: "atendente",
-                                senh: "123"
-                            })}
-                        />
-                    </div>
-                </div> 
-
-                {/* FIM DO - <div className="CpefTextes-Cad"> */}
-
-
-
+                {/* -------------------------- */ }
+                {/* FIM - 📋 CARD CADASTRAR */}
+                {/* -------------------------- */ }
 
 
 
@@ -1217,11 +1023,151 @@ export function Cadastrar({ setExibirBalaoDicaEntrar }) {
 
 
 
+            {/* INICIO DO - <div className="CpefTextes-Cad"> */}
 
-        {/* </div>  */}
+            <div className="CpefTextes-Cad">
+
+            
+                {/* 👩‍⚕️ LINHA 3: CUIDADORAS */}
+                <div className="Linha-Botoes-Teste-Cad Linha-Cuida-Cad">
+                    <h4 className="Rotulo-Teste-Cad">Cuidadoras</h4>
+                    <input type="button" className="Botao-Teste-Cad" value="JOANA" 
+                        style={getEstiloBotao("103.646.340-06")}
+                        onClick={() => preencherCampos({
+                            nome: "JOANA DE CASSIA MEDEIROS", 
+                            cpef: "103.646.340-06",
+                            func: "cuidadora", 
+                            senh: "1"
+                        })}/> 
+                    <input type="button" className="Botao-Teste-Cad" value="PAULA" 
+                        style={getEstiloBotao("293.348.470-69")}
+                        onClick={() => preencherCampos({ 
+                            nome: "PAULA TOLER DO PASSADO",
+                            cpef: "293.348.470-69",
+                            func: "cuidadora", 
+                            senh: "12"
+                        })}/>
+                    <input type="button" className="Botao-Teste-Cad" value="MARIA" 
+                        style={getEstiloBotao("519.310.058-93")}
+                        onClick={() => preencherCampos({
+                            nome: "MARIA DAS GRAÇAS MENEGUEL",
+                            cpef: "519.310.058-93",
+                            func: "cuidadora", 
+                            senh: "123"
+                        })}/>
+                    <input type="button" className="Botao-Teste-Cad" value="ISABEL" 
+                        style={getEstiloBotao("200.335.920-63")}
+                        onClick={() => preencherCampos({ 
+                            nome: "ISABEL PILANTRA PRA SEMPRE",
+                            cpef: "200.335.920-63",
+                            func: "cuidadora", 
+                            senh: "123"
+                        })}/>
+                    <input type="button" className="Botao-Teste-Cad" value="ANA" 
+                        style={getEstiloBotao("123.456.789-09")}
+                        onClick={() => preencherCampos({ 
+                            nome: "ANA MARIA BRAGA",
+                            cpef: "123.456.789-09",
+                            func: "cuidadora", 
+                            senh: "123"
+                        })}/>
+                </div>
+
+                {/* 🏠 LINHA 4: CLIENTES */}
+                <div className="Linha-Botoes-Teste-Cad Linha-Cliente-Cad">
+                    <h4 className="Rotulo-Teste-Cad">Clientes</h4>
+                    <input type="button" className="Botao-Teste-Cad" value="BEATRIZ" 
+                        style={getEstiloBotao("060.915.660-83")}
+                        onClick={() => preencherCampos({
+                            nome: "BEATRIZ QUE GOSTA DO PAI",
+                            cpef: "060.915.660-83",
+                            func: "cliente", 
+                            senh: "12345"
+                        })}/> 
+                    <input type="button" className="Botao-Teste-Cad" value="LUCIANA" 
+                        style={getEstiloBotao("763.626.770-56")}
+                        onClick={() => preencherCampos({
+                            nome: "LUCIANA AMARAL MATADO MATARAIA",
+                            cpef: "763.626.770-56",
+                            func: "cliente", 
+                            senh: "12345"
+                        })}/> 
+                    <input type="button" className="Botao-Teste-Cad" value="MARCO" 
+                        style={getEstiloBotao("844.450.750-43")}
+                        onClick={() => preencherCampos({    
+                            nome: "MARCO ANTONIO CASALE",
+                            cpef: "844.450.750-43",
+                            func: "cliente", 
+                            senh: "12345"
+                        })}/> 
+                    <input type="button" className="Botao-Teste-Cad" value="PEDRO" 
+                        style={getEstiloBotao("004.838.240-03")}
+                        onClick={() => preencherCampos({
+                            nome: "PEDRO ALVARES CABRAL",
+                            cpef: "004.838.240-03",
+                            func: "cliente", 
+                            senh: "12345"
+                        })}/> 
+                    <input type="button" className="Botao-Teste-Cad" value="CARLA" 
+                        style={getEstiloBotao("342.297.530-63")}
+                        onClick={() => preencherCampos({
+                            nome: "CARLA PEREZ DO AXE",
+                            cpef: "342.297.530-63",
+                            func: "cliente", 
+                            senh: "12345"
+                        })}/> 
+                    <input type="button" className="Botao-Teste-Cad" value="ROBERTO" 
+                        style={getEstiloBotao("236.326.400-25")}
+                        onClick={() => preencherCampos({
+                            nome: "ROBERTO CARLOS REI",
+                            cpef: "236.326.400-25",
+                            func: "cliente", 
+                            senh: "123"
+                        })}/> 
+                    <input type="button" className="Botao-Teste-Cad" value="SANDRA" 
+                        style={getEstiloBotao("765.316.010-78")}
+                        onClick={() => preencherCampos({
+                            nome: "SANDRA ROSA MADALENA",
+                            cpef: "765.316.010-78",
+                            func: "cliente", 
+                            senh: "1111"
+                        })}/> 
+                </div>
+
+                {/* 🎧 LINHA 2.5: ATENDENTES */}
+                <div className="Linha-Botoes-Teste-Cad Linha-Atendente-Cad">
+                    <h4 className="Rotulo-Teste-Cad">Atendentes</h4>
+                    <input type="button" className="Botao-Teste-Cad" value="FERNANDA" 
+                        style={getEstiloBotao("875.673.130-22")}
+                        onClick={() => preencherCampos({
+                            nome: "FERNANDA SOUZA SANTOS",
+                            cpef: "875.673.130-22",
+                            func: "atendente",
+                            senh: "123"
+                        })}
+                    />
+                    <input type="button" className="Botao-Teste-Cad" value="CARLOS" 
+                        style={getEstiloBotao("943.757.760-99")}
+                        onClick={() => preencherCampos({
+                            nome: "CARLOS EDUARDO OLIVEIRA",
+                            cpef: "943.757.760-99",
+                            func: "atendente",
+                            senh: "123"
+                        })}
+                    />
+                </div>
+            </div> 
+
+            {/* FIM DO - <div className="CpefTextes-Cad"> */}
+
+
+
+
+
+
+
 
         </>
-
     ); 
 
     /*  ------------------------------------- */

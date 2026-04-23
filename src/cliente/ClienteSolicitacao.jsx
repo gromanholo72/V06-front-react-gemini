@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { ref, update, get, set } from "firebase/database"; 
 // import { db_realtime } from './firebaseConfig.js';
-import { useAuth } from './AutenticacaoContexto.jsx';
+import { useAuth } from '../AutenticacaoContexto.jsx';
 
 /* // 🧱 Importação do estilo padrão */
-import './PacienteEstilo.css';
+// import './PacienteEstilo.css';
 
 export function ClienteSolicitacao() {
-    const { dadosPublicos } = useAuth();
+    const { dadosToken, db_realtime } = useAuth();
 
     /* // 🧰 Ferramentas de Trabalho (Hooks) */
     const [dataInicio, setDataInicio] = useState('');
@@ -19,9 +19,14 @@ export function ClienteSolicitacao() {
 
     /* // 🕵️‍♂️ FUNÇÃO: Carregar dados da Raiz Global */
     const carregarDados = async () => {
-        if (!dadosPublicos.cpef) return;
+        
+        console.log("");
+        console.log("🔍 📡 ----------------------------------");
+        console.log("🔍 📡 ClienteSolicitacao.jsx - carregarDados()");
+        
+        if (!dadosToken?.cpef) return;
 
-        const cpfLimpo = dadosPublicos.cpef.replace(/\D/g, "");
+        const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
         const caminhoNoBanco = ref(db_realtime, `solicitacao/${cpfLimpo}`);
 
         try {
@@ -46,17 +51,17 @@ export function ClienteSolicitacao() {
 
     useEffect(() => { 
         carregarDados(); 
-    }, [dadosPublicos.cpef]);
+    }, [dadosToken?.cpef]);
 
     /* // 💾 SALVAR NA RAIZ GLOBAL */
     const salvarNoBanco = async () => {
         try {
-            const cpfLimpo = dadosPublicos.cpef.replace(/\D/g, "");
+            const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
             const caminhoNoBanco = ref(db_realtime, `solicitacao/${cpfLimpo}`);
 
             const vetorDados = {
                 cpef_cliente: cpfLimpo,
-                nome_cliente: dadosPublicos.nome || "Não informado",
+                nome_cliente: dadosToken.nome || "Não informado",
                 dataInicio: dataInicio,
                 dataFim: dataFim,
                 horarioSolicitado: horarioSolicitado,

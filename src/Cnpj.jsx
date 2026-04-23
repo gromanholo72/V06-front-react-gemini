@@ -33,6 +33,11 @@ export function Cnpj() {
         podeEditarRef.current = podeEditar;
     }, [podeEditar]);
 
+
+
+
+
+
     /* -------------------------------------------------------- */
     /* INICIO - 📨 SISTEMA DE MENSAGENS E FEEDBACK VISUAL */
     /* -------------------------------------------------------- */
@@ -48,6 +53,10 @@ export function Cnpj() {
     /* -------------------------------------------------------- */
     /* FIM - 📨 SISTEMA DE MENSAGENS E FEEDBACK VISUAL */
     /* -------------------------------------------------------- */
+
+
+
+
 
 
 
@@ -74,6 +83,9 @@ export function Cnpj() {
 
 
 
+
+
+
     
 
 
@@ -81,41 +93,43 @@ export function Cnpj() {
     // INICIO - 🕵️‍♂️ Distribui os dados para os cards
     // ---------------------------------
 
-    // 🏆 Envolvida em useCallback (v1 estável)
+    
     const popularCamposCnpj = useCallback((dados) => {
+
         setCnpj(String(dados.num_cnpj || dados.cnpj || '').trim());
         setRazaoSocial(String(dados.raza || dados.razao || '').trim());
         setNomeFantasia(String(dados.Fant || dados.fantasia || 'NÃO INFORMADO').trim());
         setSituacao(String(dados.situ || '').trim());
         setAtividades(String(dados.ativ || '').trim());
         setSocios(String(dados.soci || 'NÃO INFORMADO').trim());
+
     }, []);
 
-    // 🏆 Envolvida em useCallback (v1 estável)
     const limparCampos = useCallback(() => {
+
         setCnpj('');
         setRazaoSocial('');
         setNomeFantasia('');
         setSituacao('');
         setAtividades('');
         setSocios('');
+
     }, []);
         
-    // 🏆 Envolvida em useCallback (dependente de popular... e limpar...)
+
     const carregarDadosDoBanco = useCallback(async () => {
 
         const cpfAtivo = dadosToken?.cpef;
 
         if (cpfAtivo) {
             
-            console.warn("✨ 🛰️ CNPJ vazio na memória. Buscando na Antena Central...");
-            
             const cpfLimpo = cpfAtivo.replace(/\D/g, "");
-            // 📐 Ajuste Ouro: Usar nó sagrado 'dadosEmpresa' (conforme payload VPS)
+
             const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/dadosEmpresa`);
 
             try {
-                setCarregandoOperacao(true); // Ativa loading
+
+                setCarregandoOperacao(true); 
 
                 const snapshot = await get(caminhoNoBanco);
                 
@@ -127,23 +141,27 @@ export function Cnpj() {
                     console.log("✨ --------------------------------------------------");
                     console.log("✨ CARREGANDO DADOS DO CNPJ DIRETO DO FIREBASE");
                     console.log("✨ useEffect() - Componente - 🏢 Cnpj.jsx");
-                    console.log("✨ ✅ CNPJ encontrado no Realtime - dadosEmpresa.");
+                    console.log("✨ 🆔 cpfLimpo:", cpfLimpo);
+                    console.log("✨ ✅ CNPJ encontrado no Realtime - dadosEmpresa."); 
+                    console.log("✨  snapshot recebido:", snapshot);
+                    console.log("✨ 📦 dadosCnpj (val):", dadosCnpj);
                     console.log("✨ --------------------------------------------------");
 
-                    popularCamposCnpj(dadosCnpj); // Usa referência v1 estável
+                    popularCamposCnpj(dadosCnpj);
                     setEhNovoCadastro(false);
                     setPodeEditar(false);
 
                 } else {
 
-                    console.log("");
-                    console.log("✨ 🛰️ ----------------------------------");
-                    console.log("✨ 🛰️ useEffect() - componente - 🏢 Cnpj.jsx");
-                    console.log("✨ 🛰️ funcao: carregarDadosDoBanco()");
-                    console.log("✨ 📍 Nenhum CNPJ no banco. Liberando edição.");
-                    console.log("✨ --------------------------------------------------");
+                    // console.log("");
+                    // console.log("✨ ----------------------------------");
+                    // console.log("✨ useEffect() - componente - 🏢 Cnpj.jsx");
+                    // console.log("✨ funcao: carregarDadosDoBanco()");
+                    // console.log("✨ 🆔 cpfLimpo pesquisado:", cpfLimpo);
+                    // console.log("✨ 📍 Nenhum CNPJ no banco. Liberando edição.");
+                    // console.log("✨ ----------------------------------");
                     
-                    limparCampos();  // Usa referência v1 estável
+                    limparCampos(); 
                     setEhNovoCadastro(true); 
                     setPodeEditar(true);
 
@@ -154,21 +172,38 @@ export function Cnpj() {
                 setPodeEditar(true); 
 
             } finally {
-                setCarregandoOperacao(false); // Desativa loading
+
+                setCarregandoOperacao(false); 
+
             }
 
         }
 
     }, [dadosToken?.cpef, popularCamposCnpj, limparCampos]); // 📐 Dependências sagradas
 
-    // 🏆 Gatilho Seguro do useEffect (v1 estável)
     useEffect(() => {
+
         if (dadosToken?.cpef) {
+
+            // console.log("");
+            // console.log("✨  ----------------------------------");
+            // console.log("✨  useEffect() - componente - 🏢 Cnpj.jsx");
+            // console.log("✨  carregarDadosDoBanco()");
+            // console.log("✨  ----------------------------------");
+
             carregarDadosDoBanco();
+
         } else {
-            console.warn("✨ 🛰️ ⏳ Aguardando sinal da Antena Central para carregar CNPJ...");
+
+            // console.log("");
+            // console.log("✨  ----------------------------------");
+            // console.log("✨  useEffect() - componente - 🏢 Cnpj.jsx");
+            // console.log("✨ ⏳ Aguardando sinal da Antena Central para carregar CNPJ");
+            // console.log("✨  ----------------------------------");
+
         }
-    }, [dadosToken, carregarDadosDoBanco]); // 📐 Vigia apenas o token e a função v1 estável
+
+    }, [dadosToken, carregarDadosDoBanco]);
 
     // ---------------------------------
     // FIM - 🕵️‍♂️ Distribui os dados para os cards
@@ -254,6 +289,12 @@ export function Cnpj() {
 
 
 
+
+
+
+
+
+
     // ------------------
     // INICIO - 🛠️ MÁSCARA DE CNPJ
     // ------------------
@@ -281,6 +322,11 @@ export function Cnpj() {
     // ------------------
     // INICIO - 🛠️ MÁSCARA DE CNPJ
     // ------------------
+
+
+
+
+
 
 
 
@@ -329,7 +375,6 @@ export function Cnpj() {
                 return;
             }
 
-
             console.log("");
             console.log("💾 🏢 -------------------------------");
             console.log("💾 🏢 🔍 EXTRAÇÃO DE IDENTIDADE:");
@@ -341,6 +386,7 @@ export function Cnpj() {
        
             // Payload Sagrado (Conforme rota VPS)
             const payload = {
+
                 cpef: cpfLimpo,
                 dadosEmpresa: {
                     cnpj: cnpj,
@@ -350,6 +396,7 @@ export function Cnpj() {
                     ativ: atividades,
                     soci: socios
                 }
+
             };
 
 

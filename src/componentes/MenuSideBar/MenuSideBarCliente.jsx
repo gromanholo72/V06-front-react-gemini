@@ -1,41 +1,53 @@
 import React, { useEffect } from 'react';
+import { BalaoDicaProntuarioPaciente } from '../BalaoDica/BalaoDicaProntuarioPaciente';
 import './MenuSideBarCliente.css';
 
-// 🏗️ Componente: MenuSideBarCliente (Padronizado Maestro V3)
+
 export const MenuSideBarCliente = ({ 
-    autorizadoAdministrador, 
+
     navegarERecolher, 
-    ehComputador 
+   
+    dadosUsuarioBanco,
+
+    ehComputador ,
+
+    exibirBalaoDicaProntuarioPaciente
+
 }) => {
 
-    // ---------------------------------
-    // INICIO - ✨ Monitor de Propriedades
-    // ---------------------------------
-    useEffect(() => {
-        console.log("");
-        console.log("✨ ----------------------------------");
-        console.log("✨ Componente: MenuSideBarCliente.jsx");
-        console.log("✨ Status: ✅ Carregado com Sucesso");
-        console.log("✨ Autorizado Admin:", autorizadoAdministrador);
-        console.log("✨ ----------------------------------");
-    }, [autorizadoAdministrador]);
-    // ---------------------------------
-    // FIM - ✨ Monitor de Propriedades
-    // ---------------------------------
 
+    useEffect(() => {
+
+        // console.log("");
+        // console.log("📐 ----------------------------------");
+        // console.log("📐 MONITOR: MenuSideBarCliente.jsx");
+
+        // console.log("📐 cadastroCompleto: ", dadosUsuarioBanco?.dadosCadastro?.cadastroCompleto);
+
+        // console.log("📐 contratoLiberado: ", dadosUsuarioBanco?.dadosContrato?.contratoLiberado);
+        // console.log("📐 contratoAssinado: ", dadosUsuarioBanco?.dadosContrato?.contratoAssinado);
+        // console.log("📐 modalidadeAtendimento: ", dadosUsuarioBanco?.dadosContrato?.modalidadeAtendimento);
+
+        // console.log("📐 prontuarioLiberado: ", dadosUsuarioBanco?.dadosProntuario?.prontuarioLiberado);
+
+        // console.log("📐 ----------------------------------");
+
+    }, [dadosUsuarioBanco]);
+   
+    
     // 🎨 Estilo dinâmico para bloqueio de área
     const estiloListaBloqueada = {
-        opacity: autorizadoAdministrador ? 1 : 0.5,
-        pointerEvents: autorizadoAdministrador ? 'auto' : 'none',
-        filter: autorizadoAdministrador ? 'none' : 'grayscale(1)',
-        cursor: autorizadoAdministrador ? 'default' : 'not-allowed'
+
+        opacity: dadosUsuarioBanco?.dadosProntuario?.prontuarioLiberado ? 1 : 0.5,
+        pointerEvents: dadosUsuarioBanco?.dadosProntuario?.prontuarioLiberado ? 'auto' : 'none',
+        filter: dadosUsuarioBanco?.dadosProntuario?.prontuarioLiberado ? 'none' : 'grayscale(1)',
+        cursor: dadosUsuarioBanco?.dadosProntuario?.prontuarioLiberado ? 'default' : 'not-allowed'
+
     };
 
 
     return (
-        // --------------------------------------------------------------------------------------------
-        // INICIO - 🧱 ESTRUTURA DA SIDEBAR: CLIENTE (PACIENTE)
-        // --------------------------------------------------------------------------------------------
+        
         <div className={`menu-sidebar-cliente-container ${!ehComputador ? 'menu-sidebar-cliente-celular' : ''}`}>
 
 
@@ -44,17 +56,19 @@ export const MenuSideBarCliente = ({
                 <div className="menu-sidebar-paciente-header">
                     <div className="menu-sidebar-paciente-funcao">
                         <span className="titulo-setor-sidebar">
-                            Prontuário do Paciente {autorizadoAdministrador ? "" : "🔒"}
+                            Prontuário do Paciente {dadosUsuarioBanco?.dadosProntuario?.prontuarioLiberado ? "" : "🔒"}
                         </span>
                     </div>
                 </div>
             ) : (
                 /* 📱 No Celular: Renderiza APENAS o título direto */
                 <h3 className="titulo-setor-sidebar">
-                   Prontuário do Paciente {autorizadoAdministrador ? "" : "🔒"}
+                   Prontuário do Paciente {dadosUsuarioBanco?.dadosProntuario?.prontuarioLiberado ? "" : "🔒"}
                 </h3>
             )}
             
+
+
 
 
 
@@ -62,47 +76,79 @@ export const MenuSideBarCliente = ({
                 style={estiloListaBloqueada}
             >
                 
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}>
-                    👤 Identificação <span className="menu-sidebar-cliente-icon"></span>
-                </button>
 
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteEndereco')}>
-                    📍 Endereço <span className="menu-sidebar-cliente-icon"></span>
-                </button>
 
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteContatos')}>
-                    📞 Família / Responsáveis <span className="menu-sidebar-cliente-icon"></span>
-                </button>
 
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteHistorico')}>
+
+
+
+                <div className={`Btn-dica-paciente ${exibirBalaoDicaProntuarioPaciente ? 'pulsar-ativo' : ''}`}
+                    style={{ 
+                        position: 'relative', 
+                        width: '100%', 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gap: '5px' 
+                    }}
+                >
+
+
+                    <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteIdentificacao')}>
+                        👤 Identificação <span className="menu-sidebar-cliente-icon"></span>
+                    </button>
+
+
+                    {/* 📐 Trava Maestro: Só exibe Endereço se for Home Care */}
+                    {dadosUsuarioBanco?.dadosContrato?.modalidadeAtendimento === "Atendimento no Lar" && (
+                        <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteEndereco')}>
+                            📍 Endereço <span className="menu-sidebar-cliente-icon"></span>
+                        </button>
+                    )}
+
+
+                    <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteRemedio')}>
+                        💊 Medicamentos <span className="menu-sidebar-cliente-icon"></span>
+                    </button>
+
+                    
+                    <BalaoDicaProntuarioPaciente
+                        exibirBalaoDicaProntuarioPaciente={exibirBalaoDicaProntuarioPaciente}
+                        descerDica={dadosUsuarioBanco?.dadosContrato?.modalidadeAtendimento === "Atendimento no Lar"}
+                    />
+
+
+                </div>
+
+
+
+
+
+
+                <button className="Btn-geral-cliente-vertical btn-bloqueado" disabled onClick={() => navegarERecolher('/interno/PacienteHistorico')}>
                     📜 Histórico Clínico <span className="menu-sidebar-cliente-icon"></span>
                 </button>
                 
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteSinaisVitais')}>
+                <button className="Btn-geral-cliente-vertical btn-bloqueado" disabled onClick={() => navegarERecolher('/interno/PacienteSinaisVitais')}>
                     🌡️ Sinais Vitais <span className="menu-sidebar-cliente-icon"></span>
                 </button>
 
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteRemedio')}>
-                    💊 Medicamentos <span className="menu-sidebar-cliente-icon"></span>
-                </button>
-                
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}>
+                <button className="Btn-geral-cliente-vertical btn-bloqueado" disabled onClick={() => navegarERecolher('/interno/PacienteAlimentacao')}>
                     🍏 Alimentação <span className="menu-sidebar-cliente-icon"></span>
                 </button>
                 
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteBanho')}>
+                <button className="Btn-geral-cliente-vertical btn-bloqueado" disabled onClick={() => navegarERecolher('/interno/PacienteBanho')}>
                     🚿 Banho / Higiene <span className="menu-sidebar-cliente-icon"></span>
                 </button>
 
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteMobilidade')}>
+                <button className="Btn-geral-cliente-vertical btn-bloqueado" disabled onClick={() => navegarERecolher('/interno/PacienteMobilidade')}>
                     🚶 Mobilidade / Quedas <span className="menu-sidebar-cliente-icon"></span>
                 </button>
 
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteExames')}>
+                <button className="Btn-geral-cliente-vertical btn-bloqueado" disabled onClick={() => navegarERecolher('/interno/PacienteExames')}>
                     📁 Exames / Laudos <span className="menu-sidebar-cliente-icon"></span>
                 </button>
                 
-                <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteEmergencia')}>
+                <button className="Btn-geral-cliente-vertical btn-bloqueado" disabled onClick={() => navegarERecolher('/interno/PacienteEmergencia')}>
                     🚨 Emergência <span className="menu-sidebar-cliente-icon"></span>
                 </button>
 

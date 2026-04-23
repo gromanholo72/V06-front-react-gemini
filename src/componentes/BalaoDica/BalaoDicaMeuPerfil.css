@@ -1,0 +1,82 @@
+/* -------------------------------------------------------------------- */
+/* 🎈 BALÃO DE DICA - MEU PERFIL (ESTILO MAESTRO 2026)                  */
+/* -------------------------------------------------------------------- */
+
+.BalaoDicaMeuPerfilCorpo {
+    position: absolute;
+    top: 62px;        
+    right: 0px; /* 📍 Alinhado à direita para o Perfil */
+    
+    /* Visual Premium Maestro */
+    background: var(--CorFundoBalaoDica);
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+    z-index: 9999;
+    
+    /* Sombra e Efeito */
+    box-shadow: 0 10px 25px var(--CorFundoBalaoDica);
+    pointer-events: none;
+    
+    /* Pulsação do Balão */
+    animation: pulsoMaestroPerfil 2s infinite ease-in-out;
+}
+
+
+
+
+
+
+
+/* 📐 SETA (TRIÂNGULO) DO BALÃO */
+.BalaoDicaMeuPerfilCorpo::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;       
+    right: 75px; /* 📍 Seta alinhada ao botão de perfil */
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 12px solid var(--CorFundoBalaoDica); 
+}
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* ✨ PULSAÇÃO DO BOTÃO (SINCRO COM A DICA MAESTRO)                     */
+/* -------------------------------------------------------------------- */
+.Botao-Acao-Meu-Perfil.pulsar-ativo {
+    animation: pulsoMaestroPerfil 2s infinite ease-in-out;
+    position: relative;
+    z-index: 10;
+    background-color: var(--CorFundoBalaoDica);
+}
+
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* 🔄 KEYFRAMES: O BATIMENTO CARDÍACO DA UI                             */
+/* -------------------------------------------------------------------- */
+@keyframes pulsoMaestroPerfil {
+    0% {
+        box-shadow: 0 0 0 0 var(--CorFundoBalaoDica); 
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}

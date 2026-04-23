@@ -1,0 +1,210 @@
+/* -------------------------------------------------------------- */
+/* INICIO - 📐 CONTAINER PRINCIPAL DA SIDEBAR: ADMINISTRADOR - COMPUTADOR  */
+/* ----------------------------------------------------------------- */ 
+
+.menu-sidebar-administrador-container {
+    width: var(--LarguraSidebarAdministrador); 
+    position: fixed;
+    top: var(--altura-header); 
+    height: calc(100vh - var(--altura-header)); 
+    background-color: var(--cor-padraobranco);
+    border-right: 1px solid rgb(61, 57, 57);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding-right: 5px;
+    z-index: 10;
+    padding-top: 10px;
+}
+
+/* -------------------------------------------------------- */
+/* FIM - 📐 CONTAINER PRINCIPAL DA SIDEBAR: ADMINISTRADOR - COMPUTADOR */
+/* -------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------------------- */
+/* INICIO - 🏷️ CABEÇALHO E TÍTULO DA SIDEBAR: ADMINISTRADOR - COMPUTADOR  */
+/* --------------------------------------------------------------- */ 
+
+.menu-sidebar-administrador-header {
+    padding: 10px 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.titulo-setor-sidebar {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    display: block;
+}
+
+/* -------------------------------------------------------- */
+/* FIM - 🏷️ CABEÇALHO E TÍTULO DA SIDEBAR: ADMINISTRADOR - COMPUTADOR  */
+/* -------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------- */
+/* INICIO - 🔘 LISTA DE BOTÕES VERTICAIS: ADMINISTRADOR - COMPUTADOR    */
+/* ------------------------------------------------- */ 
+
+.lista-botoes-administrador-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px 8px;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.Btn-geral-administrador-vertical {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: var(--cor-padraobranco);
+    color: var(--cor-padraoTextoBotao);
+    border-top: 2px solid var(--cor-padrao-azul);
+    border-bottom: 2px solid var(--cor-padrao-azul);
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.Btn-geral-administrador-vertical:hover {
+    background-color: var(--cor-padraoFundoBotaoHover);
+    color: var(--cor-padraobranco);
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.menu-sidebar-administrador-icon {
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+/* -------------------------------------------------------- */
+/* FIM - 🔘 LISTA DE BOTÕES VERTICAIS: ADMINISTRADOR - COMPUTADOR  */
+/* -------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------------------------------------------------- */
+/* 🔩 📱 CLASSE DE ATIVAÇÃO MOBILE: menu-sidebar-administrador-celular */
+/* ----------------------------------------------------------- */ 
+
+.menu-sidebar-administrador-celular {
+    position: static;
+    width: 100% !important;
+    left: 0 !important;
+    height: auto !important; 
+    min-height: 0 !important;
+    background-color: var(--cor-padraobranco) !important;
+
+    /* 🚀 PADRÃO MAESTRO: Flex Row com Wrap para Mobile */
+    display: flex !important;
+    flex-direction: row !important; 
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap;
+    
+    padding: 15px 25px !important; 
+    z-index: 999 !important; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    
+    border-left: 2px solid var(--cor-padrao-azul);
+    border-right: 2px solid var(--cor-padrao-azul);
+    border-top: 2px solid var(--cor-padrao-azul);
+}
+
+.menu-sidebar-administrador-celular .titulo-setor-sidebar {
+    font-size: 20px !important; 
+    font-weight: bold !important;
+    color: #306396 !important; 
+    text-align: left !important; 
+    width: 100% !important; 
+    display: block !important;
+    margin-bottom: 10px;
+}
+
+.menu-sidebar-administrador-celular .Btn-geral-administrador-vertical {
+    padding: 12px 15px !important;
+    font-size: 14px !important;
+    width: 100% !important; 
+    justify-content: flex-start !important;
+    border-left: none;
+    border-right: none;
+}
+
+/* ----------------------------------------------------------- */
+/* FIM - 📱 CLASSE DE ATIVAÇÃO MOBILE: ADMINISTRADOR           */
+/* ----------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+/* 🔐 ESTILO MAESTRO: RECURSOS EM DESENVOLVIMENTO */
+.btn-bloqueado {
+    /* 1. Mudança Visual de Estado */
+    opacity: 0.5 !important;            /* Deixa o botão "apagado" */
+    filter: grayscale(100%);             /* Remove as cores dos emojis (opcional, mas profissional) */
+    
+    /* 2. Feedback de Interação */
+    cursor: not-allowed !important;      /* Mostra o ícone de 'proibido' ao passar o mouse */
+    pointer-events: none;               /* Bloqueia qualquer evento de clique por segurança extra */
+    
+    /* 3. Estética de Fundo */
+    background-color: #e0e0e0 !important; /* Cor cinza neutra para o fundo */
+    border-color: #cccccc !important;
+    box-shadow: none !important;        /* Remove sombras de destaque se houver */
+}
+
+/* Efeito opcional: Mostrar que é um recurso futuro ao passar o mouse */
+.btn-bloqueado:hover {
+    background-color: #d6d6d6 !important;
+}
+
+/* Se você quiser adicionar uma pequena legenda "Em breve" via CSS */
+.btn-bloqueado::after {
+    content: "🔒";                      /* Adiciona um cadeado discreto */
+    position: absolute;
+    right: 8px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}

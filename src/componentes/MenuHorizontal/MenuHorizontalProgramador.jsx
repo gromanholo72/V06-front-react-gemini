@@ -6,7 +6,7 @@ export const MenuHorizontalProgramador = ({
     navegarERecolher,
     lidarComClique,
     secaoAberta,
-    ehComputador // Adicionado para responsividade
+    ehComputador 
 }) => {
 
     // ---------------------------------
@@ -16,12 +16,10 @@ export const MenuHorizontalProgramador = ({
         console.log("");
         console.log("✨ ----------------------------------");
         console.log("✨ MenuHorizontalProgramador.jsx");
-        console.log("✨ secaoAberta             :", secaoAberta);
-        // console.log("✨ navegarERecolher        :", navegarERecolher);
-        // console.log("✨ lidarComClique          :", lidarComClique); // Comentado para evitar poluir o console
-        console.log("✨ ehComputador            :", ehComputador);
+        console.log("✨ secaoAberta :", secaoAberta);
+        console.log("✨ ehComputador:", ehComputador);
         console.log("✨ ----------------------------------");
-    }, [secaoAberta, navegarERecolher, lidarComClique, ehComputador]);
+    }, [secaoAberta, ehComputador]);
 
     // ---------------------------------
     // FIM - ✨ Monitor de Propriedades

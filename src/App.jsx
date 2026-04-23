@@ -2,8 +2,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'; 
 import { Routes, Route, useNavigate, Navigate, Outlet } from 'react-router-dom'; // 🧱 Importando Outlet
 import { ref, get, set, push, serverTimestamp, onValue, update } from 'firebase/database'; // Importe do Firebase RTDB
-import { db_realtime } from './firebaseConfig';
-import { useAuth } from './AutenticacaoContexto';
+// import { db_realtime } from './firebaseConfig'; 
+import { useAuth } from './AutenticacaoContexto'; 
 
 
 import './App.css';
@@ -42,9 +42,9 @@ import {ProgramadorRelatorioCliente } from './ProgramadorRelatorioCliente';
 
 
 
-import { AdministradorRelatorioClientes } from './AdministradorRelatorioClientes';
-import { AdministradorRelatorioCuidadoras } from './AdministradorRelatorioCuidadoras';
-import { ClienteContrato } from './ClienteContrato';
+import { AdministradorRelatorioClientes } from './administrador/AdministradorRelatorioClientes';
+import { AdministradorRelatorioCuidadoras } from './administrador/AdministradorRelatorioCuidadoras';
+
 
 
 
@@ -54,17 +54,18 @@ import { RelSolicitacoes } from './RelSolicitacoes';
 
 
 /* // 🛠️ Importação dos novos componentes de cards de pacientes */
-import { PacienteApresentacaoEmpresa } from './PacienteApresentacaoEmpresa';
-import { PacienteIdentificacao } from './PacienteIdentificacao';
-import { PacienteEndereco } from './PacienteEndereco';
+import { PacienteIdentificacao } from './paciente/PacienteIdentificacao';
+import { PacienteEndereco } from './paciente/PacienteEndereco';
+
+
 import { PacienteCadastroRemedio } from './PacienteCadastroRemedio';
 import { PacienteAlimentacao } from './PacienteAlimentacao';
 import { PacienteBanho } from './PacienteBanho';
 import { PacienteEmergencia } from './PacienteEmergencia';
 
 
-import { ClienteSolicitacao } from './ClienteSolicitacao';
-
+import { ClienteSolicitacao } from './cliente/ClienteSolicitacao';
+import { ClienteContrato } from './cliente/ClienteContrato';
 
 import { PainelMaster } from './PainelMaster';
 
@@ -86,24 +87,46 @@ import {FiguraMenuHamburguer} from './FiguraMenuHamburguer';
 
 
 
+// CLIENTE
+import { ClienteApresentacaoEmpresa } from './cliente/ClienteApresentacaoEmpresa';
+
+
+
+
+
+
 // BALAO DICA
 import {BalaoDicaCriarConta} from './componentes/BalaoDica/BalaoDicaCriarConta';
 import {BalaoDicaEntrar} from './componentes/BalaoDica/BalaoDicaEntrar';
+import {BalaoDicaMeuPerfil} from './componentes/BalaoDica/BalaoDicaMeuPerfil';
+import {BalaoDicaMeuContrato} from './componentes/BalaoDica/BalaoDicaMeuContrato';
+import {BalaoDicaProntuarioPaciente} from './componentes/BalaoDica/BalaoDicaProntuarioPaciente';
 
 
 // MENU HORIZONTAL
+import { MenuHorizontalProgramador } from './componentes/MenuHorizontal/MenuHorizontalProgramador';
+import { MenuHorizontalAdministrador } from './componentes/MenuHorizontal/MenuHorizontalAdministrador';
 import { MenuHorizontalVisitante } from './componentes/MenuHorizontal/MenuHorizontalVisitante';
 import { MenuHorizontalCuidadora } from './componentes/MenuHorizontal/MenuHorizontalCuidadora';
 import { MenuHorizontalCliente } from './componentes/MenuHorizontal/MenuHorizontalCliente';
-import { MenuHorizontalProgramador } from './componentes/MenuHorizontal/MenuHorizontalProgramador';
+
 
 
 //MENU SIDEBAR
+import { MenuSideBarProgramador } from './componentes/MenuSideBar/MenuSideBarProgramador';
+import { MenuSideBarAdministrador } from './componentes/MenuSideBar/MenuSideBarAdministrador';
 import { MenuSideBarCuidadora } from './componentes/MenuSideBar/MenuSideBarCuidadora';
 import { MenuSideBarCliente } from './componentes/MenuSideBar/MenuSideBarCliente';
 
-import { MenuSideBarProgramador } from './componentes/MenuSideBar/MenuSideBarProgramador';
 
+// MODAL
+// 📐 Ajuste Maestro: Garantindo importação nomeada do caminho correto
+import { LoadingModalUX } from './componentes/modal/LoadingModalUX';
+import { LoadingModalUXLimpo } from './componentes/modal/LoadingModalUXLimpo';
+import { ModalProcessando } from './componentes/modal/ModalProcessando';
+import { ModalCompletarCadastro } from './componentes/modal/ModalCompletarCadastro';
+import { ModalCadastroCompleto } from './componentes/modal/ModalCadastroCompleto';
+import { ModalContratoLiberado } from './componentes/modal/ModalContratoLiberado';
 
 
 
@@ -123,15 +146,12 @@ const formatarCPF = (cpf) => {
 
 // 1️⃣ Crie um mapa de larguras (Pode ficar fora do componente para organizar)
 const LARGURAS_SIDEBAR = {
-
-    visitante:   '0px',
-    programador: 'var(--LarguraSidebarProgramador)',
-    admininistrador: 'var(--LarguraSidebarAdmininstrador)',
-    cuidadora:    'var(--LarguraSidebarCuidadora)',
-    cliente:     'var(--LarguraSidebarCliente)',
-
-    financeiro:  'var(--LarguraSidebarFinanceiro)'
-    
+    visitante:     '0px',
+    programador:   'var(--LarguraSidebarProgramador)',
+    administrador: 'var(--LarguraSidebarAdministrador)',
+    cuidadora:     'var(--LarguraSidebarCuidadora)',
+    cliente:       'var(--LarguraSidebarCliente)',
+    financeiro:    'var(--LarguraSidebarFinanceiro)'
 };
 
 
@@ -144,34 +164,366 @@ export default function App() {
     const navigate = useNavigate();
 
 
-    // --------------------------------------------------------------
-    // INICIO DO - Importacoes do componente AutenticacaoContexto.jsx
-    // --------------------------------------------------------------
 
     const { 
 
-        carregandoModal, 
-     
-        carregandoModalRapido, 
+        db_realtime,
+        dadosToken,  
+        onClickSair, 
+        socket,
+
+        carregandoPermissoesFireBase, 
+        carregandoModal,
         setCarregandoModalRapido,
 
-        dadosToken, 
-        carregandoPermissoesFireBase, 
-        onClickSair, 
-        socket 
+        dadosUsuarioBanco,
+
+        cadastroCompleto,
+        contratoLiberado,
+        contratoAssinado,
+        prontuarioLiberado,
+
+        exibirBalaoDicaMeuPerfil,
+        setExibirBalaoDicaMeuPerfil,
+
+        exibirBalaoDicaMeuContrato,
+        setExibirBalaoDicaMeuContrato,
+
+        exibirBalaoDicaProntuarioPaciente,
+        setExibirBalaoDicaProntuarioPaciente
+
 
     } = useAuth();
 
-    // --------------------------------------------------------------
-    // FIM DO - Importacoes do componente AutenticacaoContexto.jsx
-    // --------------------------------------------------------------
-
-
-
+  
+    
 
 
 
     const larguraAtual = LARGURAS_SIDEBAR[dadosToken?.func] || '0px';
+
+    // console.log("");
+    // console.log("🔍 -----------------------------------------------------------");
+    // console.log("🔍 INSPEÇÃO DE LAYOUT (Sidebar)");
+    // console.log("🔍 App.jsx - declarado logo no comedo");
+    // console.log("🔍 Função do Usuário :", dadosToken?.func || "Não identificado");
+    // console.log("🔍 Largura Definida  :", larguraAtual);
+    // console.log("🔍 -----------------------------------------------------------");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+    // -------------------------------------------------------------------------
+    // INICIO - 🏆 MONITOR PARA VERIFICAR SE O CADASTRO, CONTRATO E PRONTUARIO
+    // -------------------------------------------------------------------------
+    
+    const [mostrarModalCompletarCadastro, setModalCompletarCadastro] = useState(false);
+
+    const [mostrarModalCadastroCompleto, setModalCadastroCompleto] = useState(false);
+
+    const [mostrarModalContratoLiberado, setMostrarModalContratoLiberado] = useState(false);
+    const jaMostrouSucessoGeralRef = useRef(false);
+    const jaMostrouCadastroImcompletoRef = useRef(false);
+
+    useEffect(() => {
+
+        // console.log("");
+        // console.log(" ---------------------------");
+        // console.log("✨ 🧿 App.jsx");
+        // console.log("✨ 🧿 mostrarModalCadastroCompleto:", mostrarModalCadastroCompleto);
+        // console.log("✨ 🧿 mostrarModalContratoLiberado:", mostrarModalContratoLiberado);
+        // console.log(" ---------------------------");
+
+    }, [mostrarModalCadastroCompleto, mostrarModalContratoLiberado]);
+    
+    useEffect(() => {
+
+        // console.log("");
+        // console.log(" ---------------------------");
+        // console.log("✨ 🧿 App.jsx");
+        // console.log("✨ 🧿 chamando - ModalCadastroCompleto");
+      
+        //     console.log("🧿 Situação: Cadastro completo");
+        //     console.log("🧿 Esperando: liberaçao do contrato");
+        //     console.log("🧿 carregandoPermissoesFireBase:", carregandoPermissoesFireBase);
+        //     console.log("🧿 carregandoModal:", carregandoModal);
+        //     console.log("🧿 dadosToken?.func:", dadosToken?.func);
+        //     console.log("🧿 jaMostrouSucessoGeralRef.current:", jaMostrouSucessoGeralRef.current);
+        //     console.log("🧿 cadastroCompleto:", cadastroCompleto);
+        //     console.log("🧿 contratoLiberado:", contratoLiberado);
+       
+        // console.log(" ---------------------------");
+
+        if (carregandoPermissoesFireBase || carregandoModal || dadosToken?.func === 'visitante') return;
+
+        if (dadosToken?.func === 'visitante') {
+            jaMostrouSucessoGeralRef.current = false;
+            return;
+        }
+
+
+
+
+        // if (
+        //     dadosToken?.func === 'cliente' &&
+        //     mostrarModalCompletarCadastro &&
+        //     !cadastroCompleto
+        // ) {
+
+        //     setModalCompletarCadastro(true);
+        
+        //     console.log("");
+        //     console.log("-------------------------------");
+        //     console.log("🧿 App.jsx");
+        //     console.log("📝 Precisa completar o cadastro");
+        //     console.log("-------------------------------");
+
+        // }
+
+
+
+
+
+
+        // if (
+        //     dadosToken?.func === 'cliente' &&
+        //     cadastroCompleto === true && 
+        //     !contratoLiberado  
+        // ) {
+
+        //     setModalCadastroCompleto(true);
+            
+        //     console.log("");
+        //     console.log("----------------------------------");
+        //     console.log("🧿 App.jsx");
+        //     console.log("🎊 Cadastro completo");
+        //     console.log("🎊 Esperando liberaçao do contrato");
+        //     console.log("----------------------------------");
+
+        // }
+
+
+
+
+
+
+
+
+
+
+
+        // if (
+
+        //     dadosToken?.func === 'cliente' &&
+        //     cadastroCompleto === true && 
+        //     contratoLiberado && 
+        //     !contratoAssinado
+
+        // ) {
+
+        //     setMostrarModalContratoLiberado(true);
+
+        
+        //     console.log("");
+        //     console.log("------------------------------------------------------");
+        //     console.log("🎊 🏆 App.jsx");
+        //     console.log("🎊 🏆 Cadastro completo e esperando assinatura!");
+        //     console.log("------------------------------------------------------");
+
+        // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }, [
+
+        carregandoPermissoesFireBase, 
+        carregandoModal,
+        dadosToken?.func,
+        cadastroCompleto, 
+        contratoLiberado,
+        setModalCadastroCompleto
+
+    ]);
+   
+    // -------------------------------------------------------------------------
+    // FIM - 🏆 MONITOR PARA VERIFICAR SE O CADASTRO EST COMPLETO
+    // -------------------------------------------------------------------------
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // --------------------------------
+    // INICIO - MONITORA AS VARIAVEIS DE TODOS OS USUARIOS
+    // --------------------------------
+
+    useEffect(() => {
+
+        // console.log("");
+        // console.log("🚀 -------------------------");
+        // console.log("🚀 🧿 App.jsx");
+        // console.log("🚀 dadosUsuarioBanco:", dadosUsuarioBanco);
+        // console.log("🚀 -------------------------");
+        
+    }, [dadosUsuarioBanco]);
+
+    // --------------------------------
+    // FIM - MONITORA AS VARIAVEIS DE TODOS OS USUARIOS
+    // --------------------------------
+
+
+    // --------------------------------
+    // INICIO - MONITORA AS VARIAVEIS SOMENTE DOS CLIENTES
+    // --------------------------------
+
+    useEffect(() => {
+       
+        // console.log("");
+        // console.log("🔍 ---------------------------");
+        // console.log("🔍 🧿 App.jsx");
+        // console.log("🔍 2 - contratoLiberado: ", contratoLiberado);
+        // console.log("🔍 Somente para clientas");
+        // console.log("🔍 ---------------------------");
+
+    }, [contratoLiberado]);
+
+    useEffect(() => {
+       
+        // console.log("");
+        // console.log("🔍 ----------------------------------------");
+        // console.log("🔍 🧿 App.jsx");
+        // console.log("🔍 3 - contratoAssinado: ", contratoAssinado);
+        // console.log("🔍 Somente para clientas");
+        // console.log("🔍 ----------------------------------------");
+
+    }, [contratoAssinado]);
+
+    useEffect(() => {
+       
+        // console.log("");
+        // console.log("🔍 -----------------------");
+        // console.log("🔍 🧿 App.jsx");
+        // console.log("🔍 4 - prontuarioLiberado: ", prontuarioLiberado);
+        // console.log("🔍 Somente para clientas");
+        // console.log("🔍 -----------------------");
+
+    }, [prontuarioLiberado]);
+
+    // --------------------------------
+    // FIM - MONITORA AS VARIAVEIS SOMENTE DOS CLIENTES
+    // --------------------------------
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // ---------------------------------
+    // INICIO - ⏱️ CRONÔMETRO DE UX (Loading Modal - Mínimo 1s)
+    // ---------------------------------
+
+    // const [segundosCarregando, setSegundosCarregando] = useState(0);
+    const [modalVisivelUX, setModalVisivelUX] = useState(false);
+
+    useEffect(() => {
+        // let intervalo;
+
+        // Se o porteiro sinalizar início, ativamos a visibilidade visual
+        if (carregandoModal) {
+            setModalVisivelUX(true);
+        }
+
+        // Se o modal visual estiver ativo, o motor do relógio bate
+        // if (modalVisivelUX) {
+        //     intervalo = setInterval(() => {
+        //         setSegundosCarregando(prev => prev + 1);
+        //     }, 1000);
+        // }
+
+        // 🛡️ Regra Maestro: Só removemos o modal se a rede terminou E o timer bateu o mínimo de 1 segundo
+        if (!carregandoModal) {
+            
+            // console.log("");
+            // console.log("⏱️ 📐 ----------------------------------");
+            // console.log("⏱️ 📐 App.jsx - Ciclo de UX Concluído.");
+            // console.log(`⏱️ 📐 Status: Modal liberado após ${segundosCarregando}s.`);
+            // console.log("⏱️ 📐 ----------------------------------");
+
+            setModalVisivelUX(false);
+            // setSegundosCarregando(0);
+        }
+
+        // return () => {
+        //     if (intervalo) clearInterval(intervalo);
+        // };
+
+    }, [carregandoModal, modalVisivelUX]);
+
+    // ---------------------------------
+    // FIM - ⏱️ CRONÔMETRO DE UX (Loading Modal - Mínimo 1s)
+    // ---------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -217,6 +569,13 @@ export default function App() {
     // VERIFICA SE É COMPUTADOR OU CELULAR
     // -----------------------------------
   
+
+
+
+
+
+
+
 
 
 
@@ -321,6 +680,84 @@ export default function App() {
 
 
 
+    // --------------------------------------
+    // INICIO - 🛡️ SENSOR: FECHAR DICA PERFIL AO CLICAR FORA
+    // --------------------------------------
+    useEffect(() => {
+        if (!exibirBalaoDicaMeuPerfil) return;
+
+        const fecharDicaPerfilGlobal = () => {
+            // console.log("🔇 💡 Dica Perfil encerrada por clique global.");
+            setExibirBalaoDicaMeuPerfil(false);
+        };
+
+        window.addEventListener('click', fecharDicaPerfilGlobal);
+        return () => window.removeEventListener('click', fecharDicaPerfilGlobal);
+    }, [exibirBalaoDicaMeuPerfil, setExibirBalaoDicaMeuPerfil]);
+    // --------------------------------------
+    // FIM - 🛡️ SENSOR: FECHAR DICA PERFIL
+    // --------------------------------------
+
+
+
+
+
+
+
+
+
+
+    // --------------------------------------
+    // INICIO - 🛡️ SENSOR: FECHAR DICA CONTRATO AO CLICAR FORA
+    // --------------------------------------
+    useEffect(() => {
+        if (!exibirBalaoDicaMeuContrato) return;
+        const fecharDicaContratoGlobal = () => setExibirBalaoDicaMeuContrato(false);
+        window.addEventListener('click', fecharDicaContratoGlobal);
+        return () => window.removeEventListener('click', fecharDicaContratoGlobal);
+    }, [exibirBalaoDicaMeuContrato, setExibirBalaoDicaMeuContrato]);
+    // --------------------------------------
+    // FIM - 🛡️ SENSOR: FECHAR DICA CONTRATO
+    // --------------------------------------
+
+
+
+
+
+
+
+
+
+
+    // --------------------------------------
+    // INICIO - 🛡️ SENSOR: FECHAR DICA PRONTUÁRIO AO CLICAR FORA
+    // --------------------------------------
+    useEffect(() => {
+        if (!exibirBalaoDicaProntuarioPaciente) return;
+        const fecharDicaProntuarioGlobal = () => setExibirBalaoDicaProntuarioPaciente(false);
+        window.addEventListener('click', fecharDicaProntuarioGlobal);
+        return () => window.removeEventListener('click', fecharDicaProntuarioGlobal);
+    }, [exibirBalaoDicaProntuarioPaciente, setExibirBalaoDicaProntuarioPaciente]);
+    // --------------------------------------
+    // FIM - 🛡️ SENSOR: FECHAR DICA PRONTUÁRIO
+    // --------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     
@@ -395,11 +832,6 @@ export default function App() {
     // --------------------------------------
     // FIM DO - Balao Dica Criar Conta
     // --------------------------------------
-
-
-
-
-
 
 
 
@@ -490,13 +922,6 @@ export default function App() {
 
 
 
-
-
-
-
-
-
-
     // ----------------------------------------
     // INICIO DO - TEXTE DE SEGURANCA DO FIREBASE
     // ----------------------------------------
@@ -531,15 +956,6 @@ export default function App() {
     // FIM DO - TEXTE DE SEGURANCA DO FIREBASE
     // ----------------------------------------
    
-
-
-
-
-
-
-
-
-
 
 
 
@@ -604,45 +1020,37 @@ export default function App() {
 
 
 
+    // -----------------------------------------------------
+    // INICIO DO - SUBMENU (Sanfona - CADASTRAR ADMNISTRADOR
+    // -----------------------------------------------------
+
     // 🧱 Função de Toggle (Abre se fechado / Fecha se aberto)
-    // const lidarComClique = (e, secao) => {
+
+    const lidarComClique = (e, secao) => {
    
-    //     if (e && e.stopPropagation) e.stopPropagation();
+        if (e && e.stopPropagation) e.stopPropagation();
     
-    //     setSecaoAberta((valorAnterior) => {
+        setSecaoAberta((valorAnterior) => {
 
-    //         const novoValor = valorAnterior === secao ? null : secao;
+            const novoValor = valorAnterior === secao ? null : secao;
         
-    //         if (novoValor !== null) {
+            if (novoValor !== null) {
 
-    //             setMenuAberto(true); 
+                setMenuAberto(true); 
 
-    //         }
+            }
             
-    //         return novoValor;
+            return novoValor;
 
-    //     });
+        });
 
-    // };
+    };
 
+    // -----------------------------------------------------
+    // FIM DO - SUBMENU (Sanfona - CADASTRAR ADMNISTRADOR
+    // -----------------------------------------------------
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -737,14 +1145,6 @@ export default function App() {
 
 
 
-
-
-
-
-
-
-
-
     // ------------------------------------------------------------------
     // INICIO - 🔒 TRAVA DE MOVIMENTO SEM SUMIR SCROLL (ANTI-PULO)
     // ------------------------------------------------------------------
@@ -804,17 +1204,21 @@ export default function App() {
 
 
 
-
     /* --------------------------------------------------------------------------------------- */
     /* INICIO - 🛠️ VIGILÂNCIA DE PREENCHIMENTO DOS CARDS DOS USUSARIOS E VERIFICAR PERMISSOES  */
     /* --------------------------------------------------------------------------------------- */
+
+
+
+    /* -------------------------------------- */
+    /* INICIO - 🔍 Monitor de Status Administrador */
+    /* -------------------------------------- */
 
     const [statusAdministrador, setStatusAdministrador] = useState({
         contato: false,
         endereco: false
     });
 
-    /* 🔍 Monitor de Status Administrador */
     useEffect(() => {
 
         // console.log("");
@@ -825,7 +1229,27 @@ export default function App() {
         // console.log("🔍 -------------------------------------");
 
     }, [statusAdministrador]);
+
+    /* -------------------------------------- */
+    /* FIM - 🔍 Monitor de Status Administrador */
+    /* -------------------------------------- */
   
+
+
+
+
+
+
+
+
+    
+
+
+
+    /* -------------------------------------- */
+    /* INICIO - 🔍 Monitor de Status Cuidadora */
+    /* -------------------------------------- */
+
     const [statusCuidadora, setStatusCuidadora] = useState({
         contato: false,
         endereco: false,
@@ -833,10 +1257,6 @@ export default function App() {
         formacao: false
     });
 
-    // 📐 ESTADO MAESTRO: Autorização Global da Cuidadora
-    const [autorizadoAdministrador, setAutorizadoAdministrador] = useState(false);
-
-    /* 🔍 Monitor de Status Cuidadora */
     useEffect(() => {
 
         // console.log("");
@@ -850,35 +1270,140 @@ export default function App() {
 
     }, [statusCuidadora]);
 
+    /* -------------------------------------- */
+    /* FIM - 🔍 Monitor de Status Cuidadora */
+    /* -------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+    /* -------------------------------------- */
+    /* INICIO - 🔍 Monitor de Status Cliente */
+    /* -------------------------------------- */
+
     const [statusCliente, setStatusCliente] = useState({
         contato: false,
         endereco: false
     });
 
-    /* 🔍 Monitor de Status Cliente */
     useEffect(() => {
 
         // console.log("");
         // console.log("🔍 -------------------------------------");
-        // console.log("🔍 INSPEÇÃO DE STATUS CLIENTE");
+        // console.log("🔍 STATUS CLIENTE");
         // console.log("🔍 contato  :", statusCliente.contato);
         // console.log("🔍 endereco :", statusCliente.endereco);
         // console.log("🔍 -------------------------------------");
 
     }, [statusCliente]);
 
-    /* // 🧱 Nova Lógica: Busca direta no RTDB baseada no CPF do Token (Tempo Real) */
+    /* -------------------------------------- */
+    /* FIM - 🔍 Monitor de Status Cliente */
+    /* -------------------------------------- */
+
+
+
+
+
+
+
+
+    // 1. O Estado com nome mais claro
+    const [perfilCompleto, setPerfilCompleto] = useState(false);
+
+    useEffect(() => {
+        // Extraímos os valores do status que vem do Contexto
+        const { contato, endereco } = statusCliente;
+
+        // Se ambos estiverem preenchidos (true)
+        if (contato === true && endereco === true) {
+            
+            // Atualiza para completo, evitando re-renders desnecessários
+            setPerfilCompleto(prev => {
+                if (prev === true) return prev;
+                return true;
+            });
+
+        } else {
+            // Se o usuário remover um dado, o perfil deixa de estar completo
+            setPerfilCompleto(false);
+        }
+
+    }, [statusCliente]);
+
     useEffect(() => {
 
-        // 3️⃣ Verificação de Segurança usando o CPF do Token
-        // 🛡️ A trava de segurança agora vive dentro da função que é chamada
+        // console.log("");
+        // console.log("🔍 -------------------------------------");
+        // console.log("🔍 App.jsx");
+        // console.log("🔍 perfilCompleto  :", perfilCompleto);
+        // console.log("🔍 -------------------------------------");
+
+    }, [perfilCompleto]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    // 📐 ESTADO MAESTRO: Autorização Global da Cuidadora
+    const [autorizadoAdministrador, setAutorizadoAdministrador] = useState(false);
+
+
+
+
+
+
+    /* Busca direta no RTDB baseada no CPF do Token (Tempo Real) */
+    useEffect(() => {
+
         if (!dadosToken?.cpef) {
-
-            // console.log("🔍 🚨 -----------------------------------------------------------");
-            // console.log("🔍 🚨 VIGILÂNCIA DE BANCO DE DADOS:");
-            // console.log("🔍 🚨 useEffect() - componente - 🧿 App.jsx");
-            // console.log("🔍 🚨 Vigilância de integridade: Nenhum CPF detectado no token. Resetando status.");
-
 
             setStatusAdministrador({
                 contato: false,
@@ -903,7 +1428,7 @@ export default function App() {
         }
 
         
-        const cpfLimpo = dadosToken.cpef.replace(/\D/g, "");
+        const cpfLimpo = dadosToken?.cpef.replace(/\D/g, "");
        
         const usuarioRef = ref(db_realtime, `usuarios/${cpfLimpo}`);
 
@@ -912,9 +1437,6 @@ export default function App() {
             if (snapshot.exists()) {
                 
                 const dadosUsuario = snapshot.val();
-
-
-                // --- INICIO DA ANÁLISE DE INTEGRIDADE (Validações) ---
 
                 // A - 🔐 Dados de Contato
                 // Padrão: { mail, fone } (Obrigatórios)
@@ -936,12 +1458,8 @@ export default function App() {
                 const formacao = dadosUsuario?.dadosFormacao;
                 const temFormacao = !!(formacao?.nivel?.trim());
 
-                // --- FIM DA ANÁLISE DE INTEGRIDADE ---
-
-
-
-
                 // 📐 Estabilização Maestro: Só atualiza se o valor BOLEANO mudar
+
                 setStatusAdministrador(prev => {
                     if (prev.contato === temContato && prev.endereco === temEndereco) return prev;
                     return { contato: temContato, endereco: temEndereco };
@@ -1002,16 +1520,23 @@ export default function App() {
 
         return () => {
 
-            console.log("🔍 🔴 ✨ Encerrando escuta do Realtime Database (Clean-up).");
+            // console.log("🔍 🔴 ✨ Encerrando escuta do Realtime Database (Clean-up).");
             unsubscribe();
 
         };
 
     }, [dadosToken?.cpef]); 
 
+
+
+
     const perfilEstaCompletoAdministrador = Object.values(statusAdministrador).every(status => status === true);
     const perfilEstaCompletoCuidadora = Object.values(statusCuidadora).every(status => status === true);
     const perfilEstaCompletoCliente = Object.values(statusCliente).every(status => status === true);
+
+
+
+
 
     /* 🔍 Monitor de Status Geral (Calculado) */
     useEffect(() => {
@@ -1088,7 +1613,11 @@ export default function App() {
 
                 } else {
 
-                    console.log("📐 🔍  LOG: Sincronia de Cuidadora OK.");
+                    // console.log("");
+                    // console.log("📐 🔍 --------------------------------");
+                    // console.log("📐 🔍 componente - App.jsx");
+                    // console.log("📐 🔍  LOG: Sincronia de Cuidadora OK.");
+                    // console.log("📐 🔍 --------------------------------");
 
                 }
 
@@ -1104,7 +1633,17 @@ export default function App() {
 
     }, [perfilEstaCompletoCuidadora, dadosToken?.func]);
 
-    /* INICIO - 🔍 VERIFICANDO NO BANCO DE DADOS SE O PERDIL DO CLIENTE ESTA COMPLETO) */
+
+
+
+
+
+
+
+    /* ------------------------------------------------------------------------------- */
+    /* INICIO - 🔍 VERIFICANDO NO BANCO DE DADOS SE O perfilCompleto DO CLIENTE ) */
+    /* ------------------------------------------------------------------------------- */
+
     useEffect(() => {
        
         if (dadosToken?.func !== 'cliente') return;
@@ -1114,6 +1653,7 @@ export default function App() {
         if (!cpfLimpo) return;
 
         const atualizarStatusCliente = async () => {
+
             try {
 
                 const cadastroRef = ref(db_realtime, `usuarios/${cpfLimpo}/dadosCadastro`);
@@ -1126,7 +1666,7 @@ export default function App() {
                 // console.log("📐 🔍 cpfLimpo  :", cpfLimpo );
                 // console.log("📐 🔍 perfilEstaCompletoCliente  :", perfilEstaCompletoCliente );
                 
-                // console.log("📐 🔍 Dados atuais do Banco de dados - dadosAtuais:");
+                // console.log("📐 🔍 dadosAtuais:");
                 // console.log(dadosAtuais);
                 // console.log("📐 🔍 perfilCompleto:", dadosAtuais.perfilCompleto);
                 // console.log("📐 🔍 perfilCompletoData:", dadosAtuais.perfilCompletoData);
@@ -1164,7 +1704,11 @@ export default function App() {
 
                 } else {
 
-                    console.log("📐 🔍  LOG: Sincronia de Cuidadora OK.");
+                    // console.log("");
+                    // console.log("📐 🔍 --------------------------------");
+                    // console.log("📐 🔍 componente - App.jsx");
+                    // console.log("📐 🔍  LOG: Sincronia de Cuidadora OK.");
+                    // console.log("📐 🔍 --------------------------------");
 
                 }
 
@@ -1173,12 +1717,27 @@ export default function App() {
                 console.error("❌ 📐 Erro no monitor do Cliente:", error);
 
             }
-            console.log("🔍 -----------------------------------------------------------");
+
+            // console.log("🔍 ------------------------");
+
         };
 
         atualizarStatusCliente();
 
     }, [perfilEstaCompletoCliente, dadosToken?.func]);
+
+    /* ------------------------------------------------------------------------------- */
+    /* FIM - 🔍 VERIFICANDO NO BANCO DE DADOS SE O perfilCompleto DO CLIENTE ) */
+    /* ------------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
 
     /* INICIO - 🔍 VERIFICANDO NO BANCO DE DADOS SE EXISTE INFORMACAO DE AURORIZACAO DO ADMINISTRADOR PARA OS USUARIOS  */
     useEffect(() => {
@@ -1320,31 +1879,80 @@ export default function App() {
         <div className="container-externo-blindado" data-func={dadosToken?.func}>
 
 
-            {carregandoModalRapido && (
-                <div className="modal-camada-interceptacao-fluxo">
-                    <div className="painel-comando-central">
-                        <span className="rotulo-identificador-sistema">PROCESSANDO...</span>
-                        <div className="trilho-varredura-binaria">
-                            <div className="feixe-energia-dinamico"></div>
-                        </div>
-                    </div>
-                </div>
-            )}
 
 
-            
-            {carregandoModal && (
-                <div className="modal-overlay-projeto">
-                    <div className="card-loading-moderno">
-                        <div className="spinner-dual-ring"></div>
-                        <h3 className="titulo-loading">Aguarde...</h3>
-                        <p className="subtitulo-loading">Validando acessos à sua area interna.</p>
-                        <div className="barra-progresso-container">
-                            <div className="barra-progresso-infinita"></div>
-                        </div>
-                    </div>
-                </div>
-            )}
+
+
+
+            {/* ------------------------- */}
+            {/* INICIO - MODAL CARREGANDO */}
+            {/* ------------------------- */}
+
+            <LoadingModalUX 
+                visivel={carregandoModal} 
+            />
+
+            {/* ------------------------- */}
+            {/* FIM - MODAL CARREGANDO */}
+            {/* ------------------------- */}
+
+         
+
+
+            {/* ---------------------------------------------------- */}
+            {/* INICIO - MOSTRANDO MODAL SE FALTAR COMPLETAR CADASTRO */}
+            {/* ---------------------------------------------------- */}
+
+            <ModalCompletarCadastro 
+                visivel={mostrarModalCompletarCadastro && !cadastroCompleto }
+                aoFechar={() => setModalCompletarCadastro(false)}
+            />
+
+            {/* ---------------------------------------------------- */}
+            {/* FIM - MOSTRANDO MODAL SE FALTAR COMPLETAR CADASTRO */}
+            {/* ---------------------------------------------------- */}
+
+
+
+
+            {/* ------------------------------------------------------------------------------------- */}
+            {/* INICIO - MOSTRANDO MODAL SE O CADASTRO ESTIVER COMPLETO E O CONTRATO NAO FOI ASSINADO  */}
+            {/* ------------------------------------------------------------------------------------- */}
+
+            <ModalCadastroCompleto 
+                visivel={mostrarModalCadastroCompleto && cadastroCompleto && !contratoLiberado}
+                aoFechar={() => setModalCadastroCompleto(false)}
+                nomeUsuario={dadosToken?.nome}
+            />
+
+            {/* ------------------------------------------------------------------------------------- */}
+            {/* FIM - MOSTRANDO MODAL SE O CADASTRO ESTIVER COMPLETO E O CONTRATO NAO FOI ASSINADO  */}
+            {/* ------------------------------------------------------------------------------------- */}
+
+
+
+
+
+
+
+
+
+
+            <ModalContratoLiberado 
+                visivel={mostrarModalContratoLiberado && cadastroCompleto && contratoLiberado}
+                aoFechar={() => setMostrarModalContratoLiberado(false)}
+                nomeUsuario={dadosToken?.nome}
+            />
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1387,8 +1995,6 @@ export default function App() {
 
 
 
-
-
         
 
                 {/* ------------------------------------------------- */}
@@ -1404,10 +2010,23 @@ export default function App() {
                         {/* PROGRAMADOR */}
                         {dadosToken?.func === 'programador' && (
                             <MenuHorizontalProgramador 
-                            navegarERecolher={navegarERecolher}
-                            ehComputador={ehComputador}
+                                navegarERecolher={navegarERecolher}
+                                lidarComClique={lidarComClique}
+                                secaoAberta={secaoAberta}
+                                ehComputador={ehComputador}
                             />
                         )}
+
+
+
+                        {/* ADMINISTRADOR */}
+                        {dadosToken?.func === 'administrador' && (
+                            <MenuHorizontalAdministrador
+                                navegarERecolher={navegarERecolher}
+                                ehComputador={ehComputador}
+                            />
+                        )}
+
 
 
                         {/* VISITANTE */}
@@ -1435,8 +2054,9 @@ export default function App() {
                         {dadosToken?.func === 'cliente' && (
                             <MenuHorizontalCliente 
                                 navegarERecolher={navegarERecolher}
-                                autorizadoAdministrador={autorizadoAdministrador}
-                                ehComputador={ehComputador}
+                                dadosUsuarioBanco={dadosUsuarioBanco}
+                                ehComputador={ehComputador}    
+                                exibirBalaoDicaMeuContrato={exibirBalaoDicaMeuContrato}
                             />
                         )}
 
@@ -1449,11 +2069,6 @@ export default function App() {
                 {/* INICIO do - 💻🔩 MENU HORIZONTAL PARA COMPUTADOR */}
                 {/* ------------------------------------------------- */}
                 
-
-
-
-
-
 
 
 
@@ -1486,6 +2101,13 @@ export default function App() {
                 {/* --------------------------------------------------------- */}
 
 
+
+
+
+
+
+
+
                 {/* ------------------------------------------------------------- */}
                 {/* INICIO do - 📱🔩 Conteiner geral individualizado PARA CELULAR*/}
                 {/* ------------------------------------------------------------- */}
@@ -1493,105 +2115,106 @@ export default function App() {
                 {/* 📱 CASO 02: É CELULAR + MENU ABERTO */}
                 {!ehComputador && menuAberto && (
 
-                <div className={`submenu-container-geral ${menuAberto ? 'menu-mobile-ativo' : ''}`}
-                    ref={menuRef}
-                >
+                    <div className={`submenu-container-geral ${menuAberto ? 'menu-mobile-ativo' : ''}`}
+                        ref={menuRef}
+                    >
+
+
+                        {/* 👩‍⚕️ CASO PROGRAMADOR */}
+                        {dadosToken?.func === 'programador' && (
+
+                            <div className="div-pai-menu-mobile">
+                                
+                                {/* ⬆️ Parte de Cima: Horizontal */}
+                                <MenuHorizontalProgramador 
+                                    navegarERecolher={navegarERecolher}
+                                    autorizadoAdministrador={autorizadoAdministrador}
+                                    ehComputador={ehComputador}
+                                />
+                                
+                                {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
+                                <MenuSideBarProgramador
+                                    navegarERecolher={navegarERecolher}
+                                    autorizadoAdministrador={autorizadoAdministrador}
+                                    ehComputador={ehComputador}
+                                />
+
+                            </div>
+
+                        )}
 
 
 
-                    {/* 👩‍⚕️ CASO CUIDADORA */}
-                    {dadosToken?.func === 'programador' && (
-
-                        <div className="div-pai-menu-mobile">
-                            
-                            {/* ⬆️ Parte de Cima: Horizontal */}
-                            <MenuHorizontalProgramador 
-                                navegarERecolher={navegarERecolher}
-                                autorizadoAdministrador={autorizadoAdministrador}
-                                ehComputador={ehComputador}
-                            />
-                            
-                            {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
-                            <MenuSideBarProgramador
-                                navegarERecolher={navegarERecolher}
-                                autorizadoAdministrador={autorizadoAdministrador}
-                                ehComputador={ehComputador}
-                            />
-
-                        </div>
-
-                    )}
-
-
-
-
-
-
-
-
-                    {/* 👤 CASO VISITANTE */}
-                    {dadosToken?.func === 'visitante' && (
-                    
-                        <MenuHorizontalVisitante 
-                            navegarERecolher={navegarERecolher} 
-                            menuAberto={menuAberto}
-                        />
+                        {/* 👤 CASO VISITANTE */}
+                        {dadosToken?.func === 'visitante' && (
                         
-                    )}
-
-
-
-                    {/* 👩‍⚕️ CASO CUIDADORA */}
-                    {dadosToken?.func === 'cuidadora' && (
-
-                        <div className="div-pai-menu-mobile">
-                            
-                            {/* ⬆️ Parte de Cima: Horizontal */}
-                            <MenuHorizontalCuidadora 
-                                navegarERecolher={navegarERecolher}
-                                autorizadoAdministrador={autorizadoAdministrador}
-                                ehComputador={ehComputador}
+                            <MenuHorizontalVisitante 
+                                navegarERecolher={navegarERecolher} 
+                                menuAberto={menuAberto}
                             />
                             
-                            {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
-                            <MenuSideBarCuidadora
-                                navegarERecolher={navegarERecolher}
-                                autorizadoAdministrador={autorizadoAdministrador}
-                                ehComputador={ehComputador}
-                            />
-                        
-                        </div>
-
-                    )}
+                        )}
 
 
 
-                    {/* 🏠 CASO CLIENTE */}
-                    {dadosToken?.func === 'cliente' && (
-                        
+                        {/* 👩‍⚕️ CASO CUIDADORA */}
+                        {dadosToken?.func === 'cuidadora' && (
 
-                        <div className="div-pai-menu-mobile-cliente">
+                            <div className="div-pai-menu-mobile">
+                                
+                                {/* ⬆️ Parte de Cima: Horizontal */}
+                                <MenuHorizontalCuidadora 
+                                    navegarERecolher={navegarERecolher}
+                                    autorizadoAdministrador={autorizadoAdministrador}
+                                    ehComputador={ehComputador}
+                                />
+                                
+                                {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
+                                <MenuSideBarCuidadora
+                                    navegarERecolher={navegarERecolher}
+                                    autorizadoAdministrador={autorizadoAdministrador}
+                                    ehComputador={ehComputador}
+                                />
                             
-                            <MenuHorizontalCliente 
-                                navegarERecolher={navegarERecolher}
-                                autorizadoAdministrador={autorizadoAdministrador}
-                                ehComputador={ehComputador}
-                            />
+                            </div>
+
+                        )}
 
 
-                            {/* ⬇️ Parte de Baixo: Sidebar (Empilhado) */}
-                            <MenuSideBarCliente
-                                navegarERecolher={navegarERecolher}
-                                autorizadoAdministrador={autorizadoAdministrador}
-                                ehComputador={ehComputador}
-                            />
 
-                        </div>
+                        {/* 🏠 CASO CLIENTE */}
+                        {dadosToken?.func === 'cliente' && (
+                            
+
+                            /* ⬇️ Parte de Baixo: Sidebar (Empilhado) */
+                            <div className="div-pai-menu-mobile-cliente">
+                                
+                                {/* CLIENTE */}
+                                <MenuHorizontalCliente 
+                                     navegarERecolher={navegarERecolher}
+                                     dadosUsuarioBanco={dadosUsuarioBanco}
+                                     ehComputador={ehComputador}    
+                                     exibirBalaoDicaMeuContrato={exibirBalaoDicaMeuContrato}
+                                />
+                                
+
+
+                                
+                                {/* CLIENTE */}
+                                <MenuSideBarCliente 
+                                    navegarERecolher={navegarERecolher}
+                                    dadosUsuarioBanco={dadosUsuarioBanco}
+                                    ehComputador={ehComputador}
+                                    exibirBalaoDicaProntuarioPaciente={exibirBalaoDicaProntuarioPaciente}
+                                />
+                       
+
+                            </div>
+                            
+                        )}
+
                         
-                    )}
-
-                    
-                </div>
+                    </div>
 
                 )}
 
@@ -1607,13 +2230,9 @@ export default function App() {
 
 
 
-
-
-
-
-                {/* ----------------------- */}
-                {/* INICIO - 🔘 DIV PERFIL  */}
-                {/* ---------------------- */}
+                {/* -------------------------------------------- */}
+                {/* INICIO - 🔘 ESPACO PARA VISITANTE OU LOGADO  */}
+                {/* -------------------------------------------- */}
 
                 <div className="div-visitante-e-meu-perfil">
 
@@ -1665,7 +2284,7 @@ export default function App() {
                             {/* INICIO - BOTAO MEU PERFIL */}
                             {/* ------------------------- */}
 
-                            <button className={`Botao-Acao-Meu-Perfil ${secaoAberta === 'perfil' ? 'Ativo' : ''}`}
+                            <button className={`Botao-Acao-Meu-Perfil ${secaoAberta === 'perfil' ? 'Ativo' : ''} ${exibirBalaoDicaMeuPerfil ? 'pulsar-ativo' : ''}`}
                                 onClick={() => {
                                     // Garante que o menu lateral (gaveta) seja fechado
                                     setMenuAberto(false);
@@ -1682,6 +2301,10 @@ export default function App() {
                             {secaoAberta === 'perfil' && (
                                 <div className="Cortina-Fechar" onClick={() => setSecaoAberta(null)} />
                             )}
+
+                            <BalaoDicaMeuPerfil 
+                                exibirBalaoDicaMeuPerfil={exibirBalaoDicaMeuPerfil} 
+                            />
 
                             {/* ---------------------- */}
                             {/* FIM - BOTAO MEU PERFIL */}
@@ -1816,7 +2439,6 @@ export default function App() {
                                 <button className="Botao-Acao-Sair" 
                                     onClick={() => { 
                                         onClickSair(); 
-                                        navegarERecolher('/'); 
                                     }}
                                 >
                                     Sair
@@ -1958,16 +2580,15 @@ export default function App() {
 
                 </div>
 
-                {/* ----------------------- */}
-                {/* FIM - 🔘 DIV PERFIL  */}
-                {/* ---------------------- */}
+                {/* -------------------------------------------- */}
+                {/* FIM - 🔘 ESPACO PARA VISITANTE OU LOGADO  */}
+                {/* -------------------------------------------- */}
 
              
 
 
 
 
-    
 
 
 
@@ -1976,7 +2597,6 @@ export default function App() {
             {/* ----------------------------------------------------------------- */}
             {/* FIM - HEADER - header-spacer - CABEÇALHO FIXO - TOPO - HORIZONTAL */}
             {/* ----------------------------------------------------------------- */}
-
 
 
 
@@ -2038,6 +2658,18 @@ export default function App() {
 
 
 
+
+                        {/* ADMINISTRADOR*/}
+                        {dadosToken?.func === 'administrador' && (
+                            <MenuSideBarAdministrador
+                                navegarERecolher={navegarERecolher}
+                                cadastroCompleto={cadastroCompleto}
+                                ehComputador={ehComputador}
+                            />
+                        )}
+
+
+
                         {/* CLIENTE */}
                         {dadosToken?.func === 'cuidadora' && (
                             <MenuSideBarCuidadora 
@@ -2052,8 +2684,9 @@ export default function App() {
                          {dadosToken?.func === 'cliente' && (
                             <MenuSideBarCliente 
                                 navegarERecolher={navegarERecolher}
-                                autorizadoAdministrador={autorizadoAdministrador}
+                                dadosUsuarioBanco={dadosUsuarioBanco}
                                 ehComputador={ehComputador}
+                                exibirBalaoDicaProntuarioPaciente={exibirBalaoDicaProntuarioPaciente}
                             />
                         )}
 
@@ -2081,7 +2714,8 @@ export default function App() {
 
                 <div className={`componente-de-pagina 
 
-                    ${ehComputador && dadosToken?.func !== 'visitante' ? 'com-sidebar' : 'sem-sidebar'}`}
+                    ${ ehComputador && dadosToken?.func !== 'visitante' ? 'com-sidebar' : 'sem-sidebar' }`}
+
                     style={{ '--largura-dinamica': larguraAtual }}
                     
                 >
@@ -2097,14 +2731,19 @@ export default function App() {
                         {/* INICIO - 🌍 Rotas Públicas */}
                         {/* -------------------------- */}
 
+    
                         <Route 
                             path="/" 
                             element={
-                                <Inicio  
-
-                                />
+                                carregandoPermissoesFireBase ? null : 
+                                dadosToken?.func && dadosToken?.func !== 'visitante' ? (
+                                    <Navigate to="/interno/UsuarioLogado" replace />
+                                ) : (
+                                    <Inicio />
+                                )
                             } 
                         />
+
 
                         <Route 
                             path="/sobre" 
@@ -2123,6 +2762,7 @@ export default function App() {
                                 />
                             } 
                         />
+
 
                         <Route 
                             path="/logar" 
@@ -2165,8 +2805,7 @@ export default function App() {
                         <Route 
                             path="/interno" 
                             element={
-                                carregandoModal ? null :
-                                dadosToken?.func && dadosToken.func !== 'visitante' ? (                   
+                                dadosToken?.func && dadosToken?.func !== 'visitante' ? (                   
                                     <Outlet  />         
                                 ) : (
                                     <Navigate to="/" replace />
@@ -2195,8 +2834,6 @@ export default function App() {
                                     )
                                 } 
                             />
-
-
 
 
 
@@ -2315,78 +2952,94 @@ export default function App() {
                             />
 
 
-                            <Route   
+                
+                            <Route 
                                 path="UsuarioLogado" 
                                 element={
                                     <UsuarioLogado 
-                                        perfilEstaCompletoAdministrador={perfilEstaCompletoAdministrador} 
-                                        perfilEstaCompletoCuidadora={perfilEstaCompletoCuidadora}
-                                        perfilEstaCompletoCliente={perfilEstaCompletoCliente} 
+                                        setModalCompletarCadastro={setModalCompletarCadastro} 
+                                        mostrarModalCompletarCadastro={mostrarModalCompletarCadastro}
+                                        setModalCadastroCompleto={setModalCadastroCompleto} 
+                                        mostrarModalCadastroCompleto={mostrarModalCadastroCompleto}
                                     />
                                 } 
                             />
 
 
 
+
+
+
+
                             {/* 👥 Rota do Relatório de Clientes: Administrador */}
                             <Route 
-                            path="/interno/AdministradorRelatorioClientes" 
-                            element={<AdministradorRelatorioClientes />} 
-                        />
+                                path="/interno/AdministradorRelatorioClientes" 
+                                element={<AdministradorRelatorioClientes />} 
+                            />
 
 
 
-                            {/* -------------------------------------------------------------------------------------------- */}
-                            {/* INICIO - 👩‍⚕️ ROTA DO RELATÓRIO DE CUIDADORAS: ADMINISTRADOR                                  */}
-                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* -----------------------------------------------------------*/}
+                            {/* INICIO - 👩‍⚕️ ROTA DO RELATÓRIO DE CUIDADORAS: ADMINISTRADOR */}
+                            {/* ---------------------------------------------------------- */}
                             <Route 
                                 path="/interno/AdministradorRelatorioCuidadoras" 
                                 element={<AdministradorRelatorioCuidadoras />} 
                             />
-                            {/* -------------------------------------------------------------------------------------------- */}
-                            {/* FIM - 👩‍⚕️ ROTA DO RELATÓRIO DE CUIDADORAS: ADMINISTRADOR                                     */}
-                            {/* -------------------------------------------------------------------------------------------- */}
+                            {/* ----------------------------------------------------- */}
+                            {/* FIM - 👩‍⚕️ ROTA DO RELATÓRIO DE CUIDADORAS: ADMINISTRADOR  */}
+                            {/* ----------------------------------------------------- */}
 
 
 
+                            
 
 
 
                             {/* 🛣️ Definição de rotas para os setores de Pacientes */}
-                            <Route path="PacienteApresentacaoEmpresa"element={<PacienteApresentacaoEmpresa />} />
+                            
                             <Route path="PacienteIdentificacao" element={<PacienteIdentificacao />} />
                             <Route path="PacienteEndereco" element={<PacienteEndereco />} />
                             <Route path="PacienteRemedio" element={<PacienteCadastroRemedio />} />
                             <Route path="PacienteAlimentacao" element={<PacienteAlimentacao />} />
                             <Route path="PacienteBanho" element={<PacienteBanho />} />
                             <Route path="PacienteEmergencia" element={<PacienteEmergencia />} />
+                            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            {/* ----------------------------- */}
+                            {/* INICIO - 📜 ROTA DO CLIENTE   */}
+                            {/* ----------------------------- */}
+
+                            <Route path="ClienteApresentacaoEmpresa"element={<ClienteApresentacaoEmpresa />} />
                             <Route path="ClienteSolicitacao" element={<ClienteSolicitacao />} />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            {/* ------------------------------------------------------------- */}
-                            {/* INICIO - 📜 ROTA: CONTRATO DO CLIENTE                         */}
-                            {/* ------------------------------------------------------------- */}
                             <Route 
-                                path="clienteContrato" 
-                                element={<ClienteContrato />} 
+                                path="ClienteContrato" 
+                                element={
+                                    <ClienteContrato 
+                                        ehComputador={ehComputador} 
+                                    />
+                                }
                             />
-                            {/* ------------------------------------------------------------- */}
-                            {/* FIM - 📜 ROTA: CONTRATO DO CLIENTE                            */}
-                            {/* ------------------------------------------------------------- */}
+                            
+                            {/* ------------------------- */}
+                            {/* FIM - 📜 ROTA DO CLIENTE  */}
+                            {/* ------------------------- */}
                             
 
 
@@ -2430,6 +3083,16 @@ export default function App() {
             {/* ---------------------------------------------------- */}
             {/* FIM - MAIN - main-area-principal - ROUTES - ROTAS */}
             {/* ---------------------------------------------------- */}
+
+
+
+
+
+
+
+
+
+
 
 
 
