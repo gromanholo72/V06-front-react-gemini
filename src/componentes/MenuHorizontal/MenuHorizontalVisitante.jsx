@@ -43,9 +43,9 @@ export const MenuHorizontalVisitante = ({
 
                 <button 
                     className="Btn-geral-visitante-prof" 
-                    onClick={() => navegarERecolher('/Contato')}
+                    onClick={() => navegarERecolher('/Ajuda')}
                 >
-                    Contato
+                    Ajuda
                 </button>
             </div>
 

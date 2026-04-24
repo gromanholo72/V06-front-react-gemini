@@ -12,7 +12,7 @@ import './App.css';
 // 🧱 Os Cômodos (Componentes)
 import { Inicio } from './Inicio';
 import { Sobre } from './Sobre'; 
-// import { Contato } from './Contato';
+import { Ajuda } from './Ajuda';
 
 import { Logar } from './Logar';
 import { Cadastrar } from './Cadastrar';
@@ -2277,7 +2277,7 @@ export default function App() {
                             {/* INICIO - BOTAO CHAT */}
                             {/* ------------------- */}
 
-                            <div className="Botao-Chat" 
+                            {/* <div className="Botao-Chat" 
                                 onClick={() => {
                                     navegarERecolher('/interno/Chat');
                                 }}
@@ -2287,7 +2287,7 @@ export default function App() {
                                     alt="Chat"
                                     src="/imagens/chat.png"    
                                 />
-                            </div>
+                            </div> */}
 
                             {/* ---------------- */}
                             {/* FIM - BOTAO CHAT */}
@@ -2774,9 +2774,9 @@ export default function App() {
                         /> 
 
                         <Route 
-                            path="/contato" 
+                            path="/Ajuda" 
                             element={
-                                <Contato 
+                                <Ajuda 
                                 
                                 />
                             } 
@@ -2976,10 +2976,10 @@ export default function App() {
                                 path="UsuarioLogado" 
                                 element={
                                     <UsuarioLogado 
-                                        setModalCompletarCadastro={setModalCompletarCadastro} 
-                                        mostrarModalCompletarCadastro={mostrarModalCompletarCadastro}
-                                        setModalCadastroCompleto={setModalCadastroCompleto} 
-                                        mostrarModalCadastroCompleto={mostrarModalCadastroCompleto}
+                                        // setModalCompletarCadastro={setModalCompletarCadastro} 
+                                        // mostrarModalCompletarCadastro={mostrarModalCompletarCadastro}
+                                        // setModalCadastroCompleto={setModalCadastroCompleto} 
+                                        // mostrarModalCadastroCompleto={mostrarModalCadastroCompleto}
                                     />
                                 } 
                             />

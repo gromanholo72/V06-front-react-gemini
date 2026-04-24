@@ -1,6 +1,6 @@
-import './Contato.css';
+import './Ajuda.css';
 
-export function Contato() {
+export function Ajuda() {
     return (
 
         <div className="Card-Apresentacao-Tudo">

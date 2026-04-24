@@ -5,10 +5,10 @@ import './UsuarioLogado.css';
 
 export const UsuarioLogado = ({
     
-    setModalCompletarCadastro,
-    mostrarModalCompletarCadastro,
-    setModalCadastroCompleto,
-    mostrarModalCadastroCompleto
+    // setModalCompletarCadastro,
+    // mostrarModalCompletarCadastro,
+    // setModalCadastroCompleto,
+    // mostrarModalCadastroCompleto
 
     
 
