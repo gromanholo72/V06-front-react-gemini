@@ -1,16 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { ref, get, onValue, remove } from "firebase/database"; 
-import { db_realtime } from './firebaseConfig.js';
-import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto';
+import { ref, get, onValue, remove, push, set } from "firebase/database"; 
+import { db_realtime } from '../firebaseConfig.js';
+import { useAuth, URL_SERVIDOR } from '../AutenticacaoContexto.jsx';
 
-import './PacienteCadastroRemedio.css';
+import './PacienteMedicamento.css';
 
-export function PacienteCadastroRemedio() {
+export function PacienteMedicamento() {
 
     // ---------------------------------
     // INICIO - ⚓ ÂNCORAS E REFERÊNCIAS
     // ---------------------------------
-    const remedioInputRef = useRef(null);
+    const medicamentoInputRef = useRef(null);
     const { dadosToken } = useAuth();
     // ---------------------------------
     // FIM - ⚓ ÂNCORAS E REFERÊNCIAS
@@ -24,10 +24,10 @@ export function PacienteCadastroRemedio() {
     const [podeEditar, setPodeEditar] = useState(false);
 
     // Estados de Dados
-    const [remedio, setRemedio] = useState('');
+    const [medicamento, setMedicamento] = useState('');
     const [dosagem, setDosagem] = useState('');
     const [horario, setHorario] = useState('');
-    const [listaRemedios, setListaRemedios] = useState([]); // 📋 Lista para a tabela
+    const [listaMedicamento, setListaMedicamento] = useState([]); // 📋 Lista para a tabela
     // ---------------------------------
     // FIM - 📋 ESTADOS DO COMPONENTE
     // ---------------------------------
@@ -63,17 +63,27 @@ export function PacienteCadastroRemedio() {
     // ---------------------------------
     useEffect(() => {
         if (podeEditar) {
-            remedioInputRef.current?.focus();
+            medicamentoInputRef.current?.focus();
         }
     }, [podeEditar]);
     // ---------------------------------
     // FIM - 🧭 Sensor de Foco
     // ---------------------------------
 
+
+
+
+
+
+
+
+
+
+
     // ---------------------------------
     // INICIO - 📡 MONITORAMENTO DE LISTA (Igual CadAdministrador)
     // ---------------------------------
-    
+
     useEffect(() => {
         const cpfAtivo = dadosToken?.cpef;
         
@@ -82,24 +92,24 @@ export function PacienteCadastroRemedio() {
             
             const cpfLimpo = cpfAtivo.replace(/\D/g, "");
             
-            // 📐 Nó do Banco: dadosPaciente -> remedios (PLURAL para lista)
-            const caminhoLista = ref(db_realtime, `usuarios/${cpfLimpo}/dadosPaciente/remedios`);
+            // 📐 Nó do Banco: dadosPaciente -> medicamento (SINGULAR para lista)
+            const caminhoLista = ref(db_realtime, `usuarios/${cpfLimpo}/dadosPaciente/medicamento`);
 
-            console.log("✨ 📡 Iniciando monitoramento de Remédios...");
+            console.log("✨ 📡 Iniciando monitoramento de Medicamento...");
 
             const unsubscribe = onValue(caminhoLista, (snapshot) => {
                 const dados = snapshot.val();
                 
                 if (dados) {
-                    // 📐 Transforma Objeto do Firebase em Array para a Tabela
+                    // 📐 Normalização Maestro: Converte objeto em lista indexada
                     const listaFormatada = Object.keys(dados).map(key => ({
                         id: key,
                         ...dados[key]
                     }));
                     
-                    setListaRemedios(listaFormatada);
+                    setListaMedicamento(listaFormatada);
                 } else {
-                    setListaRemedios([]);
+                    setListaMedicamento([]);
                 }
             });
 
@@ -111,17 +121,27 @@ export function PacienteCadastroRemedio() {
     // FIM - 📡 MONITORAMENTO DE LISTA
     // ---------------------------------
 
+
+
+
+
+
+
+
+
+
+
     // ---------------------------------
     // INICIO - 🗑️ FUNÇÃO DE REMOVER
     // ---------------------------------
-    const removerRemedio = async (idRemedio) => {
+    const removerMedicamento = async (idMedicamento) => {
         const cpfLimpo = dadosToken?.cpef.replace(/\D/g, "");
-        if (window.confirm("⚠️ Tem certeza que deseja excluir este remédio?")) {
+        if (window.confirm("⚠️ Confirmar exclusão deste medicamento?")) {
             try {
-                const caminhoItem = ref(db_realtime, `usuarios/${cpfLimpo}/dadosPaciente/remedios/${idRemedio}`);
+                const caminhoItem = ref(db_realtime, `usuarios/${cpfLimpo}/dadosPaciente/medicamento/${idMedicamento}`);
                 await remove(caminhoItem);
             } catch (error) {
-                alert("❌ Erro ao excluir remédio.");
+                console.error("❌ Erro ao remover item:", error);
             }
         }
     };
@@ -132,17 +152,25 @@ export function PacienteCadastroRemedio() {
 
 
 
+
+
+
+
+
+
+
+
     // ---------------------------------
     // INICIO - 🕵️‍♂️ Distribui os dados para os cards
     // ---------------------------------
     const popularCampos = useCallback((dados) => {
-        setRemedio(String(dados.nome || '').trim());
+        setMedicamento(String(dados.nome || '').trim());
         setDosagem(String(dados.dose || '').trim());
         setHorario(String(dados.hora || '').trim());
     }, []);
 
     const limparCampos = useCallback(() => {
-        setRemedio('');
+        setMedicamento('');
         setDosagem('');
         setHorario('');
     }, []);
@@ -158,27 +186,27 @@ export function PacienteCadastroRemedio() {
 
             console.log("");
             console.log(" 💊 -----------------------------------------------------------");
-            console.log(" 💊 Buscando dados de Remédio direto no Firebase");
-            
+            console.log(" 💊 Buscando dados de Medicamento direto no Firebase");
             
             const cpfLimpo = cpfAtivo.replace(/\D/g, "");
-            // 📐 Nó do Banco: dadosPaciente -> remedio
-            const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/dadosPaciente/remedio`);
+
+            // 📐 Nó do Banco: dadosPaciente -> medicamento
+            const caminhoNoBanco = ref(db_realtime, `usuarios/${cpfLimpo}/dadosPaciente/medicamento`);
 
             try {
                 const snapshot = await get(caminhoNoBanco);
-                
+
                 if (snapshot.exists()) {
                     const dados = snapshot.val();
-                    console.log("✨ ✅ Remédio encontrado no Realtime.");
+                    console.log("✨ ✅ Medicamento encontrado no Realtime.");
                     popularCampos(dados);
                 } else {
-                    console.log("✨ 💊 Nenhum remédio cadastrado. Liberando edição.");
+                    console.log("✨ 💊 Antena limpa. Pronto para novo medicamento.");
                     limparCampos();
                     setPodeEditar(true);
                 }
             } catch (error) {
-                console.error("❌ Erro ao buscar Remédio na Antena Central:", error);
+                console.error("❌ Erro ao buscar Medicamento na Antena Central:", error);
                 setPodeEditar(true); 
             }
         }
@@ -193,7 +221,7 @@ export function PacienteCadastroRemedio() {
         if (dadosToken?.cpef) {
             carregarDadosDoBanco();
         } else {
-            console.warn("✨ ⏳ Aguardando sinal da Antena Central para carregar Remédio...");
+            console.warn("✨ ⏳ Aguardando sinal da Antena Central para carregar Medicamento...");
         }
     }, [dadosToken, carregarDadosDoBanco]);
     // ---------------------------------
@@ -211,97 +239,112 @@ export function PacienteCadastroRemedio() {
 
 
 
-/* -------------------------------------------------------- */
-    /* INICIO - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
+
+
+
+
+
+
+
     /* -------------------------------------------------------- */
-    const salvarDadosRemedio = async () => {
+    /* INICIO - 💾 SALVAR DIRETO NO FIREBASE (ANTENA CENTRAL)   */
+    /* -------------------------------------------------------- */
+    const salvarDadosMedicamento = async () => {
 
         if (carregandoOperacao) return;
+
+        console.log("");
+        console.log("💾 💊 -----------------------------------");
+        console.log("💾 💊 INICIANDO SALVAMENTO DIRETO:");
+        console.log("💾 💊 Componente - PacienteMedicamento.jsx");
+        console.log("💾 💊 Funcao: salvarDadosMedicamento()");
+        console.log("💾 💊 -----------------------------------");
 
         setCarregandoOperacao(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setMsg({ tipo: '', texto: '' });
 
         try {
+            const cpfLimpo = dadosToken?.cpef?.replace(/\D/g, "");
 
-            const cpfLimpo = dadosToken?.cpef ? dadosToken.cpef.replace(/\D/g, "") : "";
-
-            console.log("");
-            console.log("📡 -----------------------------------------------------------");
-            console.log("📡 componente: PacienteCadastroRemedio.jsx");
-            console.log("📡 Funcao: const salvarDadosRemedio");
-            console.log("📡 🕵️‍♂️ CPF do Paciente:", cpfLimpo);
-            console.log("📡 -----------------------------------------------------------");
-
-            // 🛡️ VALIDAÇÃO DE SEGURANÇA
             if (!cpfLimpo) {
-                setMsg({ tipo: 'erro', texto: 'Falha na identificação do usuário!' });
-                setCarregandoOperacao(false);
+                console.error("✨ 💊 🛑 Falha crítica: CPF não encontrado para salvar paciente.");
+                setMsg({ tipo: 'erro', texto: 'CPF não identificado.' });
                 return;
             }
 
-            if (!remedio.trim() || !dosagem.trim() || !horario.trim()) {
+            if (!medicamento.trim() || !dosagem.trim() || !horario.trim()) {
                 setMsg({ tipo: 'erro', texto: '⚠️ Nome, Dosagem e Período são obrigatórios!' });
-                if (!remedio.trim()) remedioInputRef.current?.focus();
-                setCarregandoOperacao(false);
+                if (!medicamento.trim()) medicamentoInputRef.current?.focus();
                 return;
             }
 
-            const payload = {
-                cpef: cpfLimpo,
-                dadosPaciente: {
-                    remedio: {
-                        nome: remedio.trim().toUpperCase(),
-                        dose: dosagem.trim(),
-                        hora: horario.trim(),
-                        datc: new Date().toLocaleDateString('pt-BR'),
-                        timestamp: Date.now()
-                    }
-                }
+            // 📐 Preparando o pacote (Mapeamento V3)
+            const novoMedicamento = {
+                nome: medicamento.trim().toUpperCase(),
+                dose: dosagem.trim(),
+                hora: horario.trim(),
+                datc: new Date().toLocaleDateString('pt-BR'),
+                timestamp: Date.now()
             };
 
-            // ⏳ UX: Garante tempo mínimo de 1 segundo de loading
-            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
+            console.log("");
+            console.log("📐 ----------------------------------");
+            console.log("📐 📦 DADOS PREPARADOS PARA GRAVAÇÃO DIRETA (FIREBASE):");
+            console.log("📐 componente - PacienteMedicamento.jsx");
+            console.log("📐 payload:", novoMedicamento);
+            console.log("📐 ----------------------------------");
 
-            const requisicao = await fetch(`${URL_SERVIDOR}/atualizar-paciente-remedio`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
+            // ⏳ UX: Garante tempo mínimo de 800 ms de loading (Padrão Maestro)
+            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 800));
 
-            const [resposta] = await Promise.all([requisicao, tempoMinimo]);
+            // 🔥 Gravação Direta na Antena Central (Lista de Medicamento)
+            const caminhoLista = ref(db_realtime, `usuarios/${cpfLimpo}/dadosPaciente/medicamento`);
+            const novaRef = push(caminhoLista);
+            const operacaoFirebase = set(novaRef, novoMedicamento);
 
-            const resultado = await resposta.json();
+            await Promise.all([operacaoFirebase, tempoMinimo]);
 
-            if (resposta.ok) {
+            console.log("");
+            console.log("💾 📡 -----------------------------------------------------------");
+            console.log("💾 📡 Gravação Direta OK");
+            console.log("💾 💊 Componente - PacienteMedicamento.jsx");
+            console.log("💾 📡 Status : ✅ Sincronizado na Antena Central");
+            console.log("💾 📡 -----------------------------------------------------------");
 
-                console.log("✅ FUNDAÇÃO: Medicamento sincronizado!");
-                setMsg({ tipo: 'sucesso', texto: '✅ Medicamento cadastrado com sucesso!' });
+            setMsg({ tipo: 'sucesso', texto: '✅ Medicamento incluído com sucesso!' });
 
-                // Limpeza de campos
-                setRemedio('');
-                setDosagem('');
-                setHorario('');
-                remedioInputRef.current?.focus(); 
-                
-            } else {
-                setMsg({ tipo: 'erro', texto: resultado.erro });
+            // Limpeza e Foco
+            setMedicamento('');
+            setDosagem('');
+            setHorario('');
+            if (medicamentoInputRef.current) {
+                medicamentoInputRef.current.focus();
             }
 
         } catch (error) {
-            console.error("🚨 ERRO CRÍTICO:", error.message);
-            setMsg({ tipo: 'erro', texto: '❌ Erro de conexão com o servidor VPS.' });
+            console.log("💾 🚨 FALHA CRÍTICA NO PROCESSO FIREBASE:");
+            console.error("💾 🚨 Detalhes:", error);
+            setMsg({ tipo: 'erro', texto: '❌ Erro ao conectar com o banco de dados.' });
         } finally {
-           
             setCarregandoOperacao(false);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            setTimeout(() => setMsg({ tipo: '', texto: '' }), 4000);
+            temporizadorMSG();
         }
     };
     /* -------------------------------------------------------- */
-    /* FIM - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API)    */
+    /* FIM - 💾 SALVAR DIRETO NO FIREBASE (ANTENA CENTRAL)      */
     /* -------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -332,7 +375,7 @@ export function PacienteCadastroRemedio() {
 
                 <div className="perfil-paciente-remedio-usuario-card">
                     
-                    <div className="perfil-paciente-remedio-card-titulo">💊 CADASTRO DE MEDICAMENTOS</div>
+                    <div className="perfil-paciente-remedio-card-titulo">💊 CADASTRO DE MEDICAMENTO</div>
 
                     {msg.texto && <div className={`cad-admin-feedback-paciente-remedio ${msg.tipo}`}>{msg.texto}</div>}
 
@@ -345,16 +388,16 @@ export function PacienteCadastroRemedio() {
 
                         {carregandoOperacao && <div className="loading-overlay-card">⏳ Processando...</div>}
 
-                        {/* Campo Remédio */}
+                        {/* Campo Medicamento */}
                         <div className="Campo flex-paciente-remedio-nome">
                             <label>Nome</label>
                             <input 
-                                ref={remedioInputRef}
+                                ref={medicamentoInputRef}
                                 type="text" 
                                 placeholder="Ex: Dipirona 500mg"
                                 // disabled={!podeEditar || carregandoOperacao} // Removido para permitir inclusão direta
-                                value={remedio} 
-                                onChange={(e) => setRemedio(e.target.value)}
+                                value={medicamento} 
+                                onChange={(e) => setMedicamento(e.target.value)}
                                 autoComplete="off" 
                                 required
                             />
@@ -408,7 +451,7 @@ export function PacienteCadastroRemedio() {
                                 type="button" 
                                 className="BotaoSalvar" 
                                 disabled={carregandoOperacao}
-                                onClick={salvarDadosRemedio}
+                                onClick={salvarDadosMedicamento}
                             >
                                 📥 Incluir Medicamento
                             </button>
@@ -422,11 +465,11 @@ export function PacienteCadastroRemedio() {
 
 
                 {/* -------------------------------------- */}
-                {/* INICIO - 📋 LISTA DE REMÉDIOS          */}
+                {/* INICIO - 📋 LISTA DE MEDICAMENTO       */}
                 {/* -------------------------------------- */}
 
                 <div className="perfil-paciente-remedio-usuario-card">
-                    <div className="perfil-paciente-remedio-card-titulo">📋 LISTA DE MEDICAMENTOS CADASTRADOS</div>
+                    <div className="perfil-paciente-remedio-card-titulo">📋 LISTA DE MEDICAMENTO CADASTRADO</div>
                     <div className="perfil-paciente-remedio-card-corpo">
                         <table className="tabela-remedios">
                             <thead>
@@ -434,23 +477,23 @@ export function PacienteCadastroRemedio() {
                                     <th>Nome</th>
                                     <th>Dose</th>
                                     <th>Período</th>
-                                    <th style={{textAlign: 'center', width: '80px'}}>Remover</th>
+                                    <th style={{textAlign: 'center', width: '80px'}}>Excluir</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {listaRemedios.length > 0 ? (
-                                    listaRemedios.map((item) => (
+                                {listaMedicamento.length > 0 ? (
+                                    listaMedicamento.map((item) => (
                                         <tr key={item.id}>
                                             <td>{item.nome}</td>
                                             <td>{item.dose}</td>
                                             <td>{item.hora}</td>
                                             <td style={{textAlign: 'center'}}>
-                                                <button className="botao-excluir-tabela" onClick={() => removerRemedio(item.id)}>🗑️</button>
+                                                <button className="botao-excluir-tabela" onClick={() => removerMedicamento(item.id)}>🗑️</button>
                                             </td>
                                         </tr>
                                     ))
                                 ) : (
-                                    <tr><td colSpan="4" style={{textAlign: 'center', padding: '20px'}}>Nenhum remédio cadastrado.</td></tr>
+                                    <tr><td colSpan="4" style={{textAlign: 'center', padding: '20px'}}>Nenhum medicamento na lista.</td></tr>
                                 )}
                             </tbody>
                         </table>
@@ -458,7 +501,7 @@ export function PacienteCadastroRemedio() {
                 </div>
 
                 {/* -------------------------------------- */}
-                {/* FIM - 📋 LISTA DE REMÉDIOS             */}
+                {/* FIM - 📋 LISTA DE MEDICAMENTO           */}
                 {/* -------------------------------------- */}
 
 

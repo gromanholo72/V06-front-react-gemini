@@ -2,28 +2,22 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'; 
 import { ref, update, get } from "firebase/database"; 
-import { db_realtime } from './firebaseConfig.js';
-import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto.jsx';
+import { db_realtime } from '../firebaseConfig.js';
+import { useAuth, URL_SERVIDOR } from '../AutenticacaoContexto.jsx';
 
-import './UsuarioContato.css'; 
+import './Contato.css'; 
 
 
 
-export function UsuarioContato () {
-
-  
+export function Contato () {
 
     const [ ehNovoCadastro, setEhNovoCadastro ] = useState(false);
-
-
-
 
     const { 
 
         dadosToken, 
         carregandoPermissoesFireBase, 
-        // setCarregandoModal 
-
+       
         carregandoOperacao,
         setCarregandoOperacao,
 
@@ -46,30 +40,6 @@ export function UsuarioContato () {
 
 
     
-
-    
-    // ---------------------------------
-    // INICIO - 🏷️ Monitoramento de formContato
-    // ---------------------------------
-
-    // useEffect(() => {
-
-    //     console.log("");
-    //     console.log("✨ --------------------------------------------------");
-    //     console.log("✨ useEffect() - Componente - 📞 UsuarioContato.jsx");
-    //     console.log("✨ 🏷️ VARIÁVEL MONITORADA QUANTO A MUDANÇA");
-    //     console.log("✨ OBS: Passa a primeira vez independente de mudancas");
-    //     console.log("✨ 📞 formContato = ", formContato);
-    //     console.log("✨ --------------------------------------------------");
-   
-    // }, [formContato]); 
-    
-    // ---------------------------------
-    // FIM - 🏷️ Monitoramento de formContato
-    // ---------------------------------
-
-
-   
 
     // ---------------------------------
     // INICIO - ✏️ Foco Automático ao Editar
@@ -252,159 +222,92 @@ export function UsuarioContato () {
 
 
 
+/* -------------------------------------------------------- */
+/* INICIO - 💾 SALVAR DIRETO NO FIREBASE (PADRÃO MAESTRO)    */
+/* -------------------------------------------------------- */
 
+// ⏳ Função centralizada para limpar mensagens após um tempo
+const temporizadorMSG = () => {
+    setTimeout(() => {
+        setMsg({ tipo: '', texto: '' });
+    }, 3000);
+};
 
-
-    /* -------------------------------------------------------- */
-    /* INICIO - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
-    /* -------------------------------------------------------- */
-
-  
+const salvardadosContato = async () => {
     
-    // ⏳ Função centralizada para limpar mensagens após um tempo
-    const temporizadorMSG = () => {
+    if (carregandoOperacao) return;
 
-        setTimeout(() => {
+    setMsg({ tipo: '', texto: '' });
+    setCarregandoOperacao(true);
 
-            setMsg({ 
-
-                tipo: '', 
-                texto: ''
-
-            });
-
-        }, 3000);
-
-    };
-
-    const salvardadosContato = async () => {
-        
-        // console.log("");
-        // console.log("💾 📞 -----------------------------------");
-        // console.log("💾 📞 INICIANDO SALVAMENTO:");
-        // console.log("💾 📞 Componente - 📞 UsuarioContato.jsx");
-        // console.log("💾 📞 Funcao: salvardadosContato()");
-        // console.log("💾 📞 -----------------------------------");
-
-        if (carregandoOperacao) return;
-    
-        setMsg({ 
-            tipo: '', 
-            texto: '' 
-        });
-        setCarregandoOperacao(true);
-
-        try {
-
-            // 🛡️ VALIDAÇÃO DE SEGURANÇA: Bloqueia salvamento de campos vazios
-            if (!formContato.email.trim() || !formContato.telefone.trim()) {
-
-                console.log("💾 ⚠️ ALERTA: Tentativa de salvar com campos vazios barrada.");
-                setMsg({ tipo: 'erro', texto: '⚠️ E-mail e Telefone são obrigatórios!' });
-                if (!formContato.email.trim()) emailInputRef.current?.focus();  
-                return; 
-
-            }
-
-            const cpefOriginal = dadosToken?.cpef;
-            const cpfLimpo = cpefOriginal?.replace(/\D/g, "");
-
-            // console.log("");
-            // console.log("💾 📞 --------------------------------------");
-            // console.log("💾 📞 🔍 EXTRAÇÃO DE IDENTIDADE:");
-            // console.log("💾 📞 🛰️ Componente - 📞 UsuarioContato.jsx");
-            // console.log("💾 📞 🆔 cpefOriginal:", cpefOriginal);
-            // console.log("💾 📞 🆔 cpfLimpo (para URL):", cpfLimpo);
-            // console.log("💾 📞 🌐 URL_SERVIDOR:", URL_SERVIDOR);
-            // console.log("💾 📞 --------------------------------------");
-
-            if (!cpfLimpo) {
-
-                console.log("💾 📞 🚨 ERRO: CPF não encontrado. Abortando fetch.");
-                throw new Error("CPF não identificado para atualização.");
-
-            }
-
-            const payload = {
-                cpef: cpfLimpo,
-                dadosContato: {
-                    mail: formContato.email.trim(),
-                    fone: formContato.telefone.trim()
-                }
-            };
-
-            // console.log("");
-            // console.log("📐 ----------------------------------");
-            // console.log("📐 📦 DADOS PREPARADOS PARA ENVIO (CONTATO):");
-            // console.log("📐 componente - UsuarioContato.jsx");
-            // console.log("📐 payload:", payload);
-            // console.log("📐 ----------------------------------");
-
-            // ⏳ UX: Garante tempo mínimo de 500 ms segundo de loading
-            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
-
-            // �📡 Transmissão para a VPS
-            const requisicao = await fetch(`${URL_SERVIDOR}/atualizar-contato`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
-
-            const [resposta] = await Promise.all([requisicao, tempoMinimo]);
-
-            const resultado = await resposta.json();
-
-            if (resposta.ok) {
-
-                // console.log("");
-                // console.log("💾 📡 -----------------------------------------------------------");
-                // console.log("💾 📡 Resposta do Servidor OK");
-                // console.log("💾 🛰️ Componente - 📞 UsuarioContato.jsx");
-                // console.log("💾 📡 Status : ✅ Sincronizado");
-                // console.log("💾 📡 -----------------------------------------------------------");
-
-                setMsg({ 
-
-                    tipo: 'sucesso', 
-                    texto: '✅ Contato atualizado com sucesso!' 
-
-                });
-
-                carregarDadosDoBanco();
-
-            } else {
-
-                console.log("💾 ⚠️ SERVIDOR REJEITOU:", resultado.erro);
-
-                setMsg({ 
-
-                    tipo: 'erro',
-                    texto: resultado.erro 
-
-                });
-
-            }
-
-        } catch (error) {
-
-            console.log("💾 🚨 FALHA CRÍTICA NO PROCESSO:");
-            console.error("💾 🚨 Detalhes:", error);
-            alert("❌ Erro de conexão com o servidor VPS.");
-
-        } finally {
-
-            setCarregandoOperacao(false);
-            temporizadorMSG();
-
+    try {
+        // 🛡️ Validação de campos obrigatórios
+        if (!formContato.email.trim() || !formContato.telefone.trim()) {
+            console.log("💾 ⚠️ ALERTA: Tentativa de salvar com campos vazios barrada.");
+            setMsg({ tipo: 'erro', texto: '⚠️ E-mail e Telefone são obrigatórios!' });
+            if (!formContato.email.trim()) emailInputRef.current?.focus();  
+            return; 
         }
-    };
 
-    /* -------------------------------------------------------- */
-    /* FIM - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
-    /* -------------------------------------------------------- */
+        // 🆔 Identificação do Usuário (Pegando do seu contexto/token)
+        const cpefOriginal = dadosToken?.cpef; 
+        const cpfLimpo = cpefOriginal?.replace(/\D/g, "");
 
+        if (!cpfLimpo) {
+            console.log("💾 📞 🚨 ERRO: CPF não encontrado para atualização.");
+            throw new Error("CPF não identificado.");
+        }
 
+        // 📐 Preparando os dados para a Antena Central
+        const updates = {};
+        updates[`usuarios/${cpfLimpo}/dadosContato`] = {
+            mail: formContato.email.trim(),
+            fone: formContato.telefone.trim(),
+            ultimaAtualizacao: Date.now()
+        };
 
+        // ⏳ UX: Garante tempo mínimo de 500ms para o usuário ver o loading
+        const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
+
+        // 🔥 Transmissão Direta para o Firebase
+        const operacaoFirebase = update(ref(db_realtime), updates);
+
+        // Aguarda a conclusão de ambos (Firebase + UX)
+        await Promise.all([operacaoFirebase, tempoMinimo]);
+
+        // 🚀 CONSOLE DE INSPEÇÃO MAESTRO
+        console.log("");
+        console.log("🔍 -----------------------------------------------------------");
+        console.log("🔍 ATUALIZAÇÃO DE CONTATO - FIREBASE");
+        console.log("🔍 Usuário (CPF)  :", cpfLimpo);
+        console.log("🔍 Novo E-mail    :", formContato.email.trim());
+        console.log("🔍 Status         : ✅ Sincronizado na Antena Central");
+        console.log("🔍 -----------------------------------------------------------");
+
+        setMsg({ 
+            tipo: 'sucesso', 
+            texto: '✅ Dados de contato atualizados!' 
+        });
+
+        // Se você tiver uma função para recarregar os dados na tela, chame aqui
+        if (typeof carregarDadosDoBanco === "function") carregarDadosDoBanco();
+
+    } catch (error) {
+        console.log("💾 🚨 FALHA CRÍTICA NO PROCESSO FIREBASE:");
+        console.error("💾 🚨 Detalhes:", error);
+        setMsg({ 
+            tipo: 'erro', 
+            texto: '❌ Erro ao salvar no banco de dados.' 
+        });
+    } finally {
+        setCarregandoOperacao(false);
+        temporizadorMSG();
+    }
+};
+
+/* -------------------------------------------------------- */
+/* FIM - 💾 SALVAR DIRETO NO FIREBASE (PADRÃO MAESTRO)       */
+/* -------------------------------------------------------- */
 
 
 

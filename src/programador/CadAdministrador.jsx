@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ref, set, get, onValue, remove, query, orderByChild } from "firebase/database";
 
-import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto.jsx';
+import { useAuth, URL_SERVIDOR } from '../AutenticacaoContexto.jsx';
 
 import './CadAdministrador.css'; 
 

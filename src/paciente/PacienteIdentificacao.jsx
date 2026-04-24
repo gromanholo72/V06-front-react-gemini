@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { ref, get } from "firebase/database"; 
+import { ref, get, update } from "firebase/database"; 
 import { db_realtime } from '../firebaseConfig.js';
 import { useAuth, URL_SERVIDOR } from '../AutenticacaoContexto.jsx';
 import './PacienteIdentificacao.css'; 
@@ -141,10 +141,8 @@ export function PacienteIdentificacao() {
 
 
     
-
-
-    /* -------------------------------------------------------- */
-    /* INICIO - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
+/* -------------------------------------------------------- */
+    /* INICIO - 💾 SALVAR DIRETO NO FIREBASE (ANTENA CENTRAL)    */
     /* -------------------------------------------------------- */
 
     const [msg, setMsg] = useState({ tipo: '', texto: '' });
@@ -154,8 +152,6 @@ export function PacienteIdentificacao() {
             setMsg({ tipo: '', texto: '' });
         }, 3000);
     };
-
-
 
     const salvarDadosPaciente = async () => {
         
@@ -167,74 +163,61 @@ export function PacienteIdentificacao() {
         setCarregandoOperacao(true); 
 
         try {
+            // 🆔 Extração do CPF (Identidade do Usuário)
             const cpfLimpo = dadosToken?.cpef ? dadosToken.cpef.replace(/\D/g, "") : "";
             
             if (!cpfLimpo) {
-                console.error("✨ 🛑 Falha crítica: CPF não encontrado.");
+                console.error("✨ 🛑 Falha crítica: CPF não encontrado para salvar paciente.");
+                setMsg({ tipo: 'erro', texto: 'CPF não identificado.' });
                 return;
             }
 
-
-
-            const payload = {
-                cpef: cpfLimpo,
-                dadosPaciente: {
-                    identificacao: {
-                        nome: nome.trim().toUpperCase(),
-                        idad: idade.trim(),
-                        datc: new Date().toLocaleDateString('pt-BR'),
-                        timestamp: Date.now()
-                    }
-                }
+            // 📐 Preparando o pacote de atualização
+            // Usamos o caminho exato para não sobrescrever outros dados do usuário
+            const updates = {};
+            updates[`usuarios/${cpfLimpo}/dadosPaciente/identificacao`] = {
+                nome: nome.trim().toUpperCase(),
+                idad: idade.trim(),
+                datc: new Date().toLocaleDateString('pt-BR'),
+                timestamp: Date.now()
             };
 
+            // 🚀 CONSOLE DE INSPEÇÃO MAESTRO
             console.log("");
             console.log("💾 📍 -------------------------------");
-            console.log("💾 📍 🔍 EXTRAÇÃO DE IDENTIDADE:");
+            console.log("💾 📍 🔍 GRAVAÇÃO DIRETA FIREBASE:");
             console.log(`💾 📍 🛰️ Componente - PacienteIdentificacao.jsx`);
-            console.log("💾 📍 🆔 cpfLimpo:", cpfLimpo);
-            console.log("💾 📍 🌐 URL_SERVIDOR:", URL_SERVIDOR);
+            console.log("💾 📍 🆔 Destino: usuarios/" + cpfLimpo);
+            console.log("💾 📍 📝 Nome:", nome.trim().toUpperCase());
             console.log("💾 📍 -------------------------------");
 
-            console.log("");
-            console.log("📐 ----------------------------------");
-            console.log(`📐 📦 DADOS PREPARADOS PARA ENVIO (Identificação Paciente):`);
-            console.log(`📐 componente - PacienteIdentificacao.jsx`);
-            console.log("📐 payload:", payload);
-            console.log("📐 ----------------------------------");
+            // ⏳ UX: Garante tempo mínimo de loading para o usuário
             const tempoMinimo = new Promise(resolve => setTimeout(resolve, 800));
 
-            const requisicao = fetch(`${URL_SERVIDOR}/atualizar-paciente-identificacao`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
+            // 🔥 Executa a atualização na Antena Central
+            const operacaoFirebase = update(ref(db_realtime), updates);
 
-            const [resposta] = await Promise.all([requisicao, tempoMinimo]);
-            const resultado = await resposta.json();
+            // Aguarda o Firebase e o tempo de UX terminarem
+            await Promise.all([operacaoFirebase, tempoMinimo]);
 
-            if (resposta.ok) {
-                setMsg({ tipo: 'sucesso', texto: '✅ Identificação atualizada!' });
+            // ✅ Sucesso
+            setMsg({ tipo: 'sucesso', texto: '✅ Identificação atualizada na nuvem!' });
+            
+            if (typeof carregarDadosDoBanco === "function") {
                 carregarDadosDoBanco();
-            } else {
-                console.error("💾 ⚠️ SERVIDOR REJEITOU:", resultado.erro);
-                setMsg({ tipo: 'erro', texto: resultado.erro || "Falha na fundação." });
             }
 
         } catch (error) {
-            console.error("💾 🚨 FALHA CRÍTICA:", error);
-            alert("❌ Erro de conexão com o servidor VPS.");
+            console.error("💾 🚨 FALHA CRÍTICA NO FIREBASE:", error);
+            setMsg({ tipo: 'erro', texto: "Erro ao salvar na Antena Central." });
         } finally {
             setCarregandoOperacao(false); 
             temporizadorMSG();
         }
     };
     /* -------------------------------------------------------- */
-    /* FIM - 💾 SALVAR VIA SERVIDOR VPS                         */
+    /* FIM - 💾 SALVAR DIRETO NO FIREBASE (ANTENA CENTRAL)       */
     /* -------------------------------------------------------- */
-
-
-
 
 
 

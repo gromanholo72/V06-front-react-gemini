@@ -1,8 +1,8 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { ref, get } from "firebase/database"; 
-import { db_realtime } from './firebaseConfig.js';
-import { useAuth, URL_SERVIDOR } from './AutenticacaoContexto';
+import { ref, update, get } from "firebase/database"; 
+import { db_realtime } from '../firebaseConfig.js';
+import { useAuth, URL_SERVIDOR } from '../AutenticacaoContexto.jsx';
 import './Endereco.css'; 
 
 export function Endereco() {
@@ -277,7 +277,7 @@ export function Endereco() {
     };
 
     // ------------------------------
-    // INICIO - 🛠️ MÁSCARA DE NUMERO
+    // FIM - 🛠️ MÁSCARA DE NUMERO
     // ------------------------------
 
 
@@ -291,7 +291,7 @@ export function Endereco() {
 
 
     /* -------------------------------------------------------- */
-    /* INICIO - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
+    /* INICIO - 💾 SALVAR DIRETO NO FIREBASE (ANTENA CENTRAL)   */
     /* -------------------------------------------------------- */
 
     // ⏳ Função centralizada para limpar mensagens após um tempo
@@ -305,6 +305,13 @@ export function Endereco() {
 
         if (carregandoOperacao) return;
 
+        console.log("");
+        console.log("💾 📍 -----------------------------------");
+        console.log("💾 📍 INICIANDO SALVAMENTO DIRETO:");
+        console.log("💾 📍 Componente - 🧿 Endereco.jsx");
+        console.log("💾 📍 Funcao: salvardadosEndereco()");
+        console.log("💾 📍 -----------------------------------");
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
         setMsg({ 
@@ -314,97 +321,81 @@ export function Endereco() {
         setCarregandoOperacao(true);
 
         try {
+            const cpfLimpo = dadosToken?.cpef?.replace(/\D/g, "");
 
-            const cpfLimpo = dadosToken?.cpef ? dadosToken.cpef.replace(/\D/g, "") : "";
-            
             if (!cpfLimpo) {
-
-                console.error("✨ 🛑 Falha crítica: CPF não encontrado para salvar nos cards.");
+                console.error("✨ 📍 🛑 Falha crítica: CPF não encontrado para salvar nos cards.");
                 return;
-
             }
 
-            const payload = {
-                cpef: cpfLimpo,
-                dadosEndereco: {
-                    cepe: cep,
-                    ruaa: rua,
-                    nume: numero,
-                    bair: bairro,
-                    cida: cidade,
-                    esta: estado
-                }
+            console.log("");
+            console.log("💾 📍 -------------------------------");
+            console.log("💾 📍 🔍 EXTRAÇÃO DE IDENTIDADE:");
+            console.log("💾 📍 🛰️ Componente - 🧿 Endereco.jsx");
+            console.log("💾 📍 🆔 cpfLimpo:", cpfLimpo);
+            console.log("💾 📍 -------------------------------");
+
+            // 📐 Preparação do Mapeamento V3
+            const dadosEndereco = {
+                cepe: cep,
+                ruaa: rua,
+                nume: numero,
+                bair: bairro,
+                cida: cidade,
+                esta: estado
             };
-            
 
-            // console.log("");
-            // console.log("💾 -------------------------------");
-            // console.log("💾 salvardadosEndereco");
-            // console.log("💾 📍 Endereco.jsx");
-            // console.log("💾 cpfLimpo: ", cpfLimpo);
-            // console.log("💾 URL_SERVIDOR: ", URL_SERVIDOR);
-            // console.log("💾 payload: ", payload);
-            // console.log("💾 ----------------------------------");
+            console.log("");
+            console.log("📐 ----------------------------------");
+            console.log("📐 📦 DADOS PREPARADOS PARA GRAVAÇÃO DIRETA (FIREBASE):");
+            console.log("📐 componente - Endereco.jsx");
+            console.log("📐 dadosEndereco:", dadosEndereco);
+            console.log("📐 ----------------------------------");
 
+            // ⏳ UX: Garante tempo mínimo de 800 ms de loading (Padrão Maestro)
+            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 800));
 
-            // ⏳ UX: Garante tempo mínimo de 500 ms segundo de loading
-            const tempoMinimo = new Promise(resolve => setTimeout(resolve, 500));
-
-            // �📡 Transmissão para a VPS
-            const requisicao = fetch(`${URL_SERVIDOR}/atualizar-endereco`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
+            //  Transmissão Direta para a Antena Central
+            const usuarioRef = ref(db_realtime, `usuarios/${cpfLimpo}`);
+            const acaoFirebase = update(usuarioRef, { 
+                dadosEndereco: dadosEndereco 
             });
 
-            const [resposta] = await Promise.all([requisicao, tempoMinimo]);
+            await Promise.all([acaoFirebase, tempoMinimo]);
 
-            const resultado = await resposta.json();
+            console.log("");
+            console.log("💾 📡 -----------------------------------------------------------");
+            console.log("💾 📡 Gravação Direta OK");
+            console.log("💾 📍 Componente - 🧿 Endereco.jsx");
+            console.log("💾 📡 Status : ✅ Sincronizado na Antena Central");
+            console.log("💾 📡 -----------------------------------------------------------");
 
-            if (resposta.ok) {
+            setMsg({ 
+                tipo: 'sucesso', 
+                texto: '✅ Endereço atualizado com sucesso!'
+            });
 
-                // console.log("");
-                // console.log("💾 -----------------------------------------------------------");
-                // console.log("💾 Resposta do Servidor OK");
-                // console.log("💾 📍 Endereco.jsx");
-                // console.log("💾 resultado: ", resultado);
-                // console.log("💾  -----------------------------------------------------------");
-
-                setMsg({ 
-
-                    tipo: 'sucesso', 
-                    texto: '✅ Endereco atualizado com sucesso!'
-
-                });
-                carregarDadosDoBanco();
-
-            } else {
-
-                console.log("💾 ⚠️ SERVIDOR REJEITOU:", resultado.erro);
-                setMsg({ 
-                    tipo: 'erro', 
-                    texto: resultado.erro 
-                });
-
-            }
+            carregarDadosDoBanco();
 
         } catch (error) {
-
-            console.log("💾 🚨 FALHA CRÍTICA NO PROCESSO:");
+            console.log("💾 🚨 FALHA CRÍTICA NO PROCESSO FIREBASE:");
             console.error("💾 🚨 Detalhes:", error);
-            alert("❌ Erro de conexão com o servidor VPS.");
+            setMsg({ 
+                tipo: 'erro', 
+                texto: '❌ Erro ao conectar com o banco de dados.' 
+            });
 
         } finally {
-
             setCarregandoOperacao(false); 
             temporizadorMSG();
-
         }
     };
 
     /* -------------------------------------------------------- */
-    /* FIM - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
+    /* FIM - 💾 SALVAR DIRETO NO FIREBASE (ANTENA CENTRAL)      */
     /* -------------------------------------------------------- */
+
+
 
 
 

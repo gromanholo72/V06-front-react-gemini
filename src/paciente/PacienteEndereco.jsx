@@ -293,12 +293,8 @@ export function PacienteEndereco() {
     /* -------------------------------------------------------- */
 
 
-
-
-
-   
-    /* -------------------------------------------------------- */
-    /* INICIO - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API) */
+/* -------------------------------------------------------- */
+    /* INICIO - 💾 SALVAR DIRETO NO FIREBASE (ANTENA CENTRAL)    */
     /* -------------------------------------------------------- */
 
     const salvardadosPacienteEndereco = async () => {
@@ -311,109 +307,71 @@ export function PacienteEndereco() {
         setCarregandoOperacao(true); // ⏳ Ativa modo carregando
 
         try {
-
+            // 🆔 Extração do CPF (Identidade do Usuário)
             const cpfLimpo = dadosToken?.cpef ? dadosToken.cpef.replace(/\D/g, "") : "";
             
             if (!cpfLimpo) {
-
-                console.error("✨ 🛑 Falha crítica: CPF não encontrado para salvar nos cards.");
+                console.error("✨ 🛑 Falha crítica: CPF não encontrado para salvar o endereço.");
+                setMsg({ tipo: 'erro', texto: 'Erro: Identidade não localizada.' });
                 return;
-
             }
 
-            const payload = {
-                cpef: cpfLimpo,
-                dadosPaciente: {
-                    endereco: {
-                        cepe: cep,
-                        ruaa: rua,
-                        nume: numero,
-                        bair: bairro,
-                        cida: cidade,
-                        esta: estado
-                    }
-                }
+            // 📐 Preparando o pacote de atualização para a Antena Central
+            // Usamos o caminho exato para atualizar apenas o nó 'endereco'
+            const updates = {};
+            updates[`usuarios/${cpfLimpo}/dadosPaciente/endereco`] = {
+                cepe: cep,
+                ruaa: rua,
+                nume: numero,
+                bair: bairro,
+                cida: cidade,
+                esta: estado,
+                ultimaAtualizacao: Date.now()
             };
-            
 
+            // 🚀 CONSOLE DE INSPEÇÃO MAESTRO
             console.log("");
             console.log("💾 📍 ------------------------------");
-            console.log("💾 📍 INICIANDO SALVAMENTO:");
+            console.log("💾 📍 INICIANDO GRAVAÇÃO DIRETA:");
             console.log(`💾 📍 Componente - PacienteEndereco.jsx`);
-            console.log(`💾 📍 Funcao: salvardadosPacienteEndereco()`);
+            console.log(`💾 📍 Destino: usuarios/${cpfLimpo}/dadosPaciente/endereco`);
             console.log("💾 📍 -------------------------------");
-
-            console.log("");
-            console.log("💾 📍 -------------------------------");
-            console.log("💾 📍 🔍 EXTRAÇÃO DE IDENTIDADE:");
-            console.log(`💾 📍 🛰️ Componente - PacienteEndereco.jsx`);
-            console.log("💾 📍 🆔 cpfLimpo (para URL):", cpfLimpo);
-            console.log("💾 📍 🌐 URL_SERVIDOR:", URL_SERVIDOR);
-            console.log("💾 📍 -------------------------------");
-
-            console.log("");
-            console.log("📐 ----------------------------------");
-            console.log(`📐 📦 DADOS PREPARADOS PARA ENVIO (Endereco Paciente):`);
-            console.log(`📐 componente - PacienteEndereco.jsx`);
-            console.log("📐 payload:", payload);
-            console.log("📐 ----------------------------------");
-
 
             // ⏳ UX: Garante tempo mínimo de 800 ms para feedback visual
             const tempoMinimo = new Promise(resolve => setTimeout(resolve, 800));
 
-            // 📡 Transmissão para a VPS
-            const requisicao = fetch(`${URL_SERVIDOR}/atualizar-paciente-endereco`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
+            // 🔥 Transmissão Direta para o Firebase
+            const operacaoFirebase = update(ref(db_realtime), updates);
 
-            const [resposta] = await Promise.all([requisicao, tempoMinimo]);
+            // Aguarda a conclusão de ambos (Firebase + UX)
+            await Promise.all([operacaoFirebase, tempoMinimo]);
 
-            const resultado = await resposta.json();
+            // ✅ Sincronização com Sucesso
+            console.log("");
+            console.log("💾 📡 --------------------------");
+            console.log("💾 📡 Sincronização Direta OK");
+            console.log("💾 📍 Componente - PacienteEndereco.jsx");
+            console.log("💾 📡 Status : ✅ Sincronizado na Nuvem");
+            console.log("💾 📡 ---------------------------");
 
-            if (resposta.ok) {
+            setMsg({ tipo: 'sucesso', texto: '✅ Endereço do paciente atualizado!' });
 
-                console.log("");
-                console.log("💾 📡 --------------------------");
-                console.log("💾 📡 Resposta do Servidor OK");
-                console.log("💾 📍 Componente - PacienteEndereco.jsx");
-                console.log("💾 📡 Status : ✅ Sincronizado");
-                console.log("💾 📡 ---------------------------");
-
-                setMsg({ tipo: 'sucesso', texto: '✅ Endereço do paciente atualizado!' });
-                carregarDadosDoBanco();
-
-            } else {
-
-                console.log("💾 ⚠️ SERVIDOR REJEITOU:", resultado.erro);
-                setMsg({ tipo: 'erro', texto: resultado.erro });
-
-            }
+            // Recarrega os dados se houver função disponível
+            if (typeof carregarDadosDoBanco === "function") carregarDadosDoBanco();
 
         } catch (error) {
-
-            console.log("💾 🚨 FALHA CRÍTICA NO PROCESSO:");
+            console.log("💾 🚨 FALHA CRÍTICA NO PROCESSO FIREBASE:");
             console.error("💾 🚨 Detalhes:", error);
-            alert("❌ Erro de conexão com o servidor VPS.");
-
+            setMsg({ tipo: 'erro', texto: '❌ Erro ao salvar no banco de dados.' });
         } finally {
-
             setCarregandoOperacao(false); // 🏁 Finaliza modo carregando
             temporizadorMSG();
-
         }
     };
 
     /* -------------------------------------------------------- */
-    /* FIM - 💾 SALVAR VIA SERVIDOR VPS (PADRÃO MAESTRO API)    */
+    /* FIM - 💾 SALVAR DIRETO NO FIREBASE (ANTENA CENTRAL)       */
     /* -------------------------------------------------------- */
-
-
-
-
-
 
 
 

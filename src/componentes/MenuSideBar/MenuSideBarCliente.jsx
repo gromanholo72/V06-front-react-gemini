@@ -106,8 +106,8 @@ export const MenuSideBarCliente = ({
                     )}
 
 
-                    <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteRemedio')}>
-                        💊 Medicamentos <span className="menu-sidebar-cliente-icon"></span>
+                    <button className="Btn-geral-cliente-vertical" onClick={() => navegarERecolher('/interno/PacienteMedicamento')}>
+                        💊 Medicamento <span className="menu-sidebar-cliente-icon"></span>
                     </button>
 
                     

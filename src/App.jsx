@@ -12,7 +12,7 @@ import './App.css';
 // 🧱 Os Cômodos (Componentes)
 import { Inicio } from './Inicio';
 import { Sobre } from './Sobre'; 
-import { Contato } from './Contato';
+// import { Contato } from './Contato';
 
 import { Logar } from './Logar';
 import { Cadastrar } from './Cadastrar';
@@ -22,17 +22,17 @@ import { Funcoes } from './Funcoes';
 
 
 import { UsuarioIdentificacao } from './UsuarioIdentificacao'; 
-import { UsuarioContato } from './UsuarioContato';
+
 import { UsuarioFormacao } from './UsuarioFormacao';
 import { UsuarioLogado } from './UsuarioLogado'; 
 
-import { Endereco } from './Endereco';
+
 import { Cnpj } from './Cnpj';
 import { Formacao } from './Formacao';
 import { UsuarioReferencias } from './UsuarioReferencias';
 
 
-import { CadAdministrador } from './CadAdministrador';
+
 import { ListaUsuarios } from './ListaUsuarios';
 import { ListaUsuariosToken } from './ListaUsuariosToken';
 
@@ -42,8 +42,7 @@ import {ProgramadorRelatorioCliente } from './ProgramadorRelatorioCliente';
 
 
 
-import { AdministradorRelatorioClientes } from './administrador/AdministradorRelatorioClientes';
-import { AdministradorRelatorioCuidadoras } from './administrador/AdministradorRelatorioCuidadoras';
+
 
 
 
@@ -54,18 +53,16 @@ import { RelSolicitacoes } from './RelSolicitacoes';
 
 
 /* // 🛠️ Importação dos novos componentes de cards de pacientes */
-import { PacienteIdentificacao } from './paciente/PacienteIdentificacao';
-import { PacienteEndereco } from './paciente/PacienteEndereco';
 
 
-import { PacienteCadastroRemedio } from './PacienteCadastroRemedio';
+
+
 import { PacienteAlimentacao } from './PacienteAlimentacao';
 import { PacienteBanho } from './PacienteBanho';
 import { PacienteEmergencia } from './PacienteEmergencia';
 
 
-import { ClienteSolicitacao } from './cliente/ClienteSolicitacao';
-import { ClienteContrato } from './cliente/ClienteContrato';
+
 
 import { PainelMaster } from './PainelMaster';
 
@@ -79,18 +76,40 @@ import { Chamados } from './Chamados';
 import { Chat } from './Chat';
 
 
-
-
-
 import {FiguraMenuHamburguer} from './FiguraMenuHamburguer';
+
+
+
+
+//USUARIO
+import { Contato } from './usuario/Contato';
+import { Endereco } from './usuario/Endereco';
+
+
+
+// PROGRAMADOR
+import { CadAdministrador } from './programador/CadAdministrador';
+
+
+// ADMINISTRADOR
+import { AdministradorRelatorioClientes } from './administrador/AdministradorRelatorioClientes';
+import { AdministradorRelatorioCuidadoras } from './administrador/AdministradorRelatorioCuidadoras';
 
 
 
 
 // CLIENTE
 import { ClienteApresentacaoEmpresa } from './cliente/ClienteApresentacaoEmpresa';
+import { ClienteSolicitacao } from './cliente/ClienteSolicitacao';
+import { ClienteContrato } from './cliente/ClienteContrato';
 
 
+
+
+// PACIENTE
+import { PacienteIdentificacao } from './paciente/PacienteIdentificacao';
+import { PacienteEndereco } from './paciente/PacienteEndereco';
+import { PacienteMedicamento } from './paciente/PacienteMedicamento';
 
 
 
@@ -2350,7 +2369,7 @@ export default function App() {
 
                                             <button                                          
                                                 className="Perfil-Opcoes"
-                                                onClick={() => navegarERecolher('/interno/UsuarioContato')}>
+                                                onClick={() => navegarERecolher('/interno/Contato')}>
                                                 {statusAdministrador.contato ? "✔️" : "❌"} Contato
                                             </button>
 
@@ -2372,7 +2391,7 @@ export default function App() {
 
                                             <button                                           
                                                 className="Perfil-Opcoes"
-                                                onClick={() => navegarERecolher('/interno/UsuarioContato')}>
+                                                onClick={() => navegarERecolher('/interno/Contato')}>
                                                 {statusCuidadora.contato ? "✔️" : "❌"} Contato
                                             </button>
 
@@ -2407,7 +2426,7 @@ export default function App() {
 
                                             <button                                     
                                                 className="Perfil-Opcoes"
-                                                onClick={() => navegarERecolher('/interno/UsuarioContato')}>
+                                                onClick={() => navegarERecolher('/interno/Contato')}>
                                                 {statusCliente.contato ? "✔️" : "❌"} Contato
                                             </button>
 
@@ -2845,8 +2864,8 @@ export default function App() {
 
 
                             <Route 
-                                path="UsuarioContato" 
-                                element={<UsuarioContato />} 
+                                path="Contato" 
+                                element={<Contato />} 
                             />
 
 
@@ -3000,7 +3019,7 @@ export default function App() {
                             
                             <Route path="PacienteIdentificacao" element={<PacienteIdentificacao />} />
                             <Route path="PacienteEndereco" element={<PacienteEndereco />} />
-                            <Route path="PacienteRemedio" element={<PacienteCadastroRemedio />} />
+                            <Route path="PacienteMedicamento" element={<PacienteMedicamento />} />
                             <Route path="PacienteAlimentacao" element={<PacienteAlimentacao />} />
                             <Route path="PacienteBanho" element={<PacienteBanho />} />
                             <Route path="PacienteEmergencia" element={<PacienteEmergencia />} />
